@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   
-  <title itemprop="name">archive_a: 2023/2 | Hexo</title>
+  <title itemprop="name">Hexo</title>
   
     <link rel="shortcut icon" href="/images/favicon.ico">
   
@@ -394,117 +394,197 @@
   </div>
 </header>
 
-      <div class="blank" style="padding-top: 75px;">
-</div>
+      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
 <div id="content" class="site-content">
-  <div id="main">
-    <header class="page-header">
-      <h1 class="cat-title">
-      归档</h1>
-      <span class="cat-des">
-        <p>
-        Archives</p>
-      </span>
-    </header>
-    <div id="main-part">
-      <article class="art">
-        <div class="art-main">
-          <div class="art-content">
-            <div id="archives">
-              <p style="text-align:right;">
-                [<span id="al_expand_collapse" style="cursor: s-resize;">
-                全部展开/收缩</span>
-              ]</p>
-              
-              
-              
-              
-              
-                
-                <h3 class="al_year">2023年</h3>
-              
-              
-                
-                <ul class="al_mon_list">
-                  <li class="al_li">
-                    <span class="al_mon" style="cursor: s-resize;">
-                      02月(<span id="post-num">
-                      3</span>
-                    篇文章)</span>
-                    <ul class="al_post_list" style="">
-              
-                      <li>
-                        <a href="/2023/02/21/positiontrasformcal/">
-                          <span style="color:#0bf;">
-                          21日17:53:12</span>
-                          
-                        </a>
-                      </li>
-                      
-              
-              
-              
-              
-              
-                      <li>
-                        <a href="/2023/02/21/sh/">
-                          <span style="color:#0bf;">
-                          21日17:53:12</span>
-                          
-                        </a>
-                      </li>
-                      
-              
-              
-              
-              
-              
-                      <li>
-                        <a href="/2023/02/21/android/">
-                          <span style="color:#0bf;">
-                          21日17:53:12</span>
-                          
-                        </a>
-                      </li>
-                      
-              
-              
-              
-              
-              
-                      <li>
-                        <a href="/2023/02/21/unityExportMethod/">
-                          <span style="color:#0bf;">
-                          21日17:53:12</span>
-                          
-                        </a>
-                      </li>
-                      
-              
-              
-              
-              
-              
-                      <li>
-                        <a href="/2023/02/21/hello-world/">
-                          <span style="color:#0bf;">
-                          21日13:56:51</span>
-                          Hello World
-                        </a>
-                      </li>
-                      
-                    </ul>
-                  </li>
-                </ul>
-              
-              
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+          <header class="entry-header">
+            <h1 class="entry-title"></h1>
+            <p class="entry-census">&nbsp;·&nbsp;2023-2-21&nbsp;·&nbsp;<span id="busuanzi_value_page_pv"></span>次阅读</p></p>
+
+            <hr>
+          </header>
+        
+        <div class="entry-content">
+          <h2 id="Integrating-Unity-as-a-library-into-standard-Android-app"><a href="#Integrating-Unity-as-a-library-into-standard-Android-app" class="headerlink" title="Integrating Unity as a library into standard Android app"></a>Integrating Unity as a library into standard Android app</h2><p>This document explains how to include Unity as a Library into standard Android application through Activity. You can read more about <a target="_blank" rel="noopener" href="https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html">Unity as a Library</a>.</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Android Studio Bumblebee (2021.1.1) or later</li>
+<li>Unity version 2022.2.0a18 or later<br>[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use <a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS">this branch</a></li>
+</ul>
+<p><strong>1. Get source</strong></p>
+<ul>
+<li>Clone or Download GitHub repo <a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/uaal-example">uaal-example</a>. It includes:<br><br><img src="images/android/rootFolderStructure.png"><ul>
+<li>Unityproject - this is a simple demo project made with Unity which will be integrated to the standard Android application</li>
+<li>NativeAndroidApp - this is the Basic Activity application from Android Studio templates where Unity project will be integrated. It has a simple UI, MainUnityActivity, which extends OverrideUnityActivity, and is prepared to start MainUnityActivity with an Intent</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. Generate Gradle project for Android platform</strong></p>
+<ul>
+<li>Open UnityProject in Unity Editor</li>
+<li>Go to Build Settings window (Menu &#x2F; File &#x2F; Build Settings)<ul>
+<li>Select and switch to Android Platform</li>
+</ul>
+</li>
+<li>Go to Player Settings window (click Player Settings button at the bottom left corner of Build Settings or use Edit &#x2F; Project Settings menu and choose Player tab on the left)<ul>
+<li>In Other Settings -&gt; Configuration section choose targeted architectures<br><br><img src="images/android/selectArchitectures.png"></li>
+</ul>
+</li>
+<li>Go back to Build Settings window<ul>
+<li>Select option “Export Project”<br><br><img src="images/android/exportProject.png" width='400px'></li>
+<li>Export UnityProject to androidBuild folder, the folder structure should look like this<br><br><img src="images/android/exportedProjectFolder.png"></li>
+</ul>
+</li>
+</ul>
+<p><strong>3. Add Unity Library module to NativeAndroidApp</strong><br><br>Do the following to add the exported androidBuild&#x2F;unityLibrary module to the NativeAndroidApp Gradle project in Android Studio:</p>
+<ul>
+<li>Open NativeAndroidApp in Android Studio</li>
+<li>Open settings.gradle file<ul>
+<li>Add a new project pointing to unityLibrary module after the main app module<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &#x27;:unityLibrary&#x27;</span><br><span class="line">project(&#x27;:unityLibrary&#x27;).projectDir=new File(&#x27;..\\UnityProject\\androidBuild\\unityLibrary&#x27;)</span><br></pre></td></tr></table></figure></li>
+<li>And add the following in dependencyResolutionManagement{repositories{ block<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flatDir &#123;</span><br><span class="line">  dirs &quot;$&#123;project(&#x27;:unityLibrary&#x27;).projectDir&#125;/libs&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="images/android/settingsGradle.png"></li>
+</ul>
+</li>
+<li>Open build.gradle(Module: NativeAndroidApp.app) file<ul>
+<li>Add the following in dependencies{ block<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation project(&#x27;:unityLibrary&#x27;)</span><br><span class="line">implementation fileTree(dir: project(&#x27;:unityLibrary&#x27;).getProjectDir().toString() + (&#x27;\\libs&#x27;), include: [&#x27;*.jar&#x27;])</span><br></pre></td></tr></table></figure>
+<img src="images/android/buildGradleApp.png"></li>
+<li>In the same file take a look at android{defaultConfig{ndk{ block and make sure abiFilters match the architectures you selected in Unity editor before exporting the project. The filter must match architectures in Unity editor exactly. If Unity exports only ARMv7 architecture, but the filter includes arm64-v8a, the application will crash on ARM64 devices. Check for valid abiFilters values in the <a target="_blank" rel="noopener" href="https://developer.android.com/ndk/guides/abis#sa">official android documentation</a>.<img src="images/android/buildGradleAppAbiFilters.png"></li>
+</ul>
+</li>
+<li>Copy the contents of the gradle.properties file from the exported Unity project root folder to the gradle.properties file in the native application root folder. Note: if you update the Unity project and re-export it again, make sure that the contents of the gradle.properties file in the exported project did not change. If they did - repeat this step.<br><br><img src="images/android/exportedASProject.png"><img src="images/android/gradlePropertiesApp.png"></li>
+<li>Click Sync Now to do a project sync since Gradle files have been modified<img src="images/android/syncGradle.png"></li>
+<li>If everything succeeds, you should see unityLibrary module added in Android view<img src="images/android/unityLibraryModule.png"></li>
+</ul>
+<h2 id="Project-is-ready"><a href="#Project-is-ready" class="headerlink" title="Project is ready"></a>Project is ready</h2><p>Everything is ready to build, run and debug:<br><br><img src="images/android/buildOnDevice.png" width='500px'><br><br>If everything succeeded, at this point you should be able to run NativeAndroidApp:</p>
+<table>
+<thead>
+<tr>
+<th>Main Activity</th>
+<th>Unity Activity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="images/android/appNativeSS.png" ></td>
+<td><img src="images/android/appUnitySS.png" height='800px'></td>
+</tr>
+<tr>
+<td>Main Activity</td>
+<td>Unity is loaded and is running in a separate Activity. Light grey buttons in the middle are added from the MainUnityActivity implemented in NativeAndroidApp</td>
+</tr>
+</tbody></table>
+<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><ul>
+<li>Unity is running in another process android:process&#x3D;”:Unity” (AndroidManifest.xml at app module)</li>
+<li>After installation there will be two icons added on the device. To leave only the icon of the main activity, remove <intent-filter>…</intent-filter> from the AndroidManifest.xml in unityLibrary</li>
+<li>(Optional) We found some Android 7.* devices set frontOfTask to wrong state for activities as a result when finishing&#x2F;quitting Unity activity whole task goes to background instead of bringing back Main activity. Next workaround keeps expected behavior: add to MainUnityActivity.java from NativeAndroidApp<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Override public void onUnityPlayerQuitted() &#123; showMainActivity(&quot;&quot;); finish(); &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+        <!-- .entry-content -->
+        <div class="single-reward">
+          <div class="reward-open">赏
+            <div class="reward-main">
+              <ul class="reward-row">
+                <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/custom/donate/AliPayQR.jpg"></li>
+                <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/custom/donate/WeChanQR.jpg"></li>
+              </ul>
             </div>
           </div>
         </div>
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
       </article>
-    </div>
-  </div>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2023/02/21/sh/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                </h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2023/02/21/unityExportMethod/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                </h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+<div id="vcomments"></div>
+<script>
+  window.onload = function(){
+      var valine = new Valine();
+      valine.init({
+        el: '#vcomments',
+        appId: "GyC3NzMvd0hT9Yyd2hYIC0MN-gzGzoHsz",
+        appKey: "mgOpfzbkHYqU92CV4IDlAUHQ",
+        path: window.location.pathname,
+        placeholder: "你是我一生只会遇见一次的惊喜 ..."
+      })
+  }
+</script>
+
+
+
+
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+          <a href="" class="profile gravatar"><img src="" itemprop="image" alt="" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="" itemprop="url" rel="author"></a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i></p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
 </div>
+
+
 
     </div>    
     <div class="ins-search">
