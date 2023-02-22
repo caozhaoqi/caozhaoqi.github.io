@@ -421,7 +421,7 @@
 </ul>
 <p><strong>1. Get source</strong></p>
 <ul>
-<li>Clone or Download GitHub repo <a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/uaal-example">uaal-example</a>. It includes:<br><br><img src="./android/rootFolderStructure.png"><ul>
+<li>Clone or Download GitHub repo <a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/uaal-example">uaal-example</a>. It includes:<br><img src="/2023/02/22/android/rootFolderStructure.png" alt="img"><ul>
 <li>Unityproject - this is a simple demo project made with Unity which will be integrated to the standard Android application</li>
 <li>NativeAndroidApp - this is the Basic Activity application from Android Studio templates where Unity project will be integrated. It has a simple UI, MainUnityActivity, which extends OverrideUnityActivity, and is prepared to start MainUnityActivity with an Intent</li>
 </ul>
@@ -435,12 +435,12 @@
 </ul>
 </li>
 <li>Go to Player Settings window (click Player Settings button at the bottom left corner of Build Settings or use Edit &#x2F; Project Settings menu and choose Player tab on the left)<ul>
-<li>In Other Settings -&gt; Configuration section choose targeted architectures<br><br><img src="./android/selectArchitectures.png"></li>
+<li>In Other Settings -&gt; Configuration section choose targeted architectures<br><img src="/2023/02/22/android/selectArchitectures.png" alt="img"></li>
 </ul>
 </li>
 <li>Go back to Build Settings window<ul>
-<li>Select option “Export Project”<br><br><img src="./android/exportProject.png" width='400px'></li>
-<li>Export UnityProject to androidBuild folder, the folder structure should look like this<br><br><img src="./android/exportedProjectFolder.png"></li>
+<li>Select option “Export Project”<br>![img](android&#x2F;exportProject.png” width&#x3D;’400px’&gt;</li>
+<li>Export UnityProject to androidBuild folder, the folder structure should look like this<br><img src="/2023/02/22/android/exportedProjectFolder.png" alt="img"></li>
 </ul>
 </li>
 </ul>
@@ -450,20 +450,20 @@
 <li>Open settings.gradle file<ul>
 <li>Add a new project pointing to unityLibrary module after the main app module<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &#x27;:unityLibrary&#x27;</span><br><span class="line">project(&#x27;:unityLibrary&#x27;).projectDir=new File(&#x27;..\\UnityProject\\androidBuild\\unityLibrary&#x27;)</span><br></pre></td></tr></table></figure></li>
 <li>And add the following in dependencyResolutionManagement{repositories{ block<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flatDir &#123;</span><br><span class="line">  dirs &quot;$&#123;project(&#x27;:unityLibrary&#x27;).projectDir&#125;/libs&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="./android/settingsGradle.png"></li>
+<img src="/2023/02/22/android/settingsGradle.png" alt="img"></li>
 </ul>
 </li>
 <li>Open build.gradle(Module: NativeAndroidApp.app) file<ul>
 <li>Add the following in dependencies{ block<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation project(&#x27;:unityLibrary&#x27;)</span><br><span class="line">implementation fileTree(dir: project(&#x27;:unityLibrary&#x27;).getProjectDir().toString() + (&#x27;\\libs&#x27;), include: [&#x27;*.jar&#x27;])</span><br></pre></td></tr></table></figure>
-<img src="./android/buildGradleApp.png"></li>
-<li>In the same file take a look at android{defaultConfig{ndk{ block and make sure abiFilters match the architectures you selected in Unity editor before exporting the project. The filter must match architectures in Unity editor exactly. If Unity exports only ARMv7 architecture, but the filter includes arm64-v8a, the application will crash on ARM64 devices. Check for valid abiFilters values in the <a target="_blank" rel="noopener" href="https://developer.android.com/ndk/guides/abis#sa">official android documentation</a>.<img src="./android/buildGradleAppAbiFilters.png"></li>
+<img src="/2023/02/22/android/buildGradleApp.png" alt="img"></li>
+<li>In the same file take a look at android{defaultConfig{ndk{ block and make sure abiFilters match the architectures you selected in Unity editor before exporting the project. The filter must match architectures in Unity editor exactly. If Unity exports only ARMv7 architecture, but the filter includes arm64-v8a, the application will crash on ARM64 devices. Check for valid abiFilters values in the <a target="_blank" rel="noopener" href="https://developer.android.com/ndk/guides/abis#sa">official android documentation</a>.<br><img src="/2023/02/22/android/buildGradleAppAbiFilters.png" alt="img"></li>
 </ul>
 </li>
-<li>Copy the contents of the gradle.properties file from the exported Unity project root folder to the gradle.properties file in the native application root folder. Note: if you update the Unity project and re-export it again, make sure that the contents of the gradle.properties file in the exported project did not change. If they did - repeat this step.<br><br><img src="./android/exportedASProject.png"><img src="./android/gradlePropertiesApp.png"></li>
-<li>Click Sync Now to do a project sync since Gradle files have been modified<img src="./android/syncGradle.png"></li>
-<li>If everything succeeds, you should see unityLibrary module added in Android view<img src="./android/unityLibraryModule.png"></li>
+<li>Copy the contents of the gradle.properties file from the exported Unity project root folder to the gradle.properties file in the native application root folder. Note: if you update the Unity project and re-export it again, make sure that the contents of the gradle.properties file in the exported project did not change. If they did - repeat this step.<br><img src="/2023/02/22/android/exportedASProject.png" alt="img"><a href="android/gradlePropertiesApp.png">img</a></li>
+<li>Click Sync Now to do a project sync since Gradle files have been modified<br><a href="android/syncGradle.png">img</a></li>
+<li>If everything succeeds, you should see unityLibrary module added in Android view<br><img src="/2023/02/22/android/unityLibraryModule.png" alt="img"></li>
 </ul>
-<h2 id="Project-is-ready"><a href="#Project-is-ready" class="headerlink" title="Project is ready"></a>Project is ready</h2><p>Everything is ready to build, run and debug:<br><br><img src="./android/buildOnDevice.png" width='500px'><br><br>If everything succeeded, at this point you should be able to run NativeAndroidApp:</p>
+<h2 id="Project-is-ready"><a href="#Project-is-ready" class="headerlink" title="Project is ready"></a>Project is ready</h2><p>Everything is ready to build, run and debug:<br>![img](android&#x2F;buildOnDevice.png” width&#x3D;’500px’&gt;<br><br>If everything succeeded, at this point you should be able to run NativeAndroidApp:</p>
 <table>
 <thead>
 <tr>
@@ -472,8 +472,8 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><img src="./android/appNativeSS.png" ></td>
-<td><img src="./android/appUnitySS.png" height='800px'></td>
+<td><img src="/2023/02/22/android/appNativeSS.png" alt="img"></td>
+<td><img src="/2023/02/22/android/appUnitySS.png" alt="img"></td>
 </tr>
 <tr>
 <td>Main Activity</td>
@@ -591,7 +591,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <input type="text" class="ins-search-input" placeholder="Type something..."/>
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -603,10 +603,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: '文章',
-            // PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
+            POSTS: 'Posts',
+            // PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
