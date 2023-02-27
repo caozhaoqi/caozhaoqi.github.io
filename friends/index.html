@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>czq-static-blog</title>
+  <title>友链 | czq-static-blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -48,6 +48,8 @@
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
 
     
+        <script src="/js/valine/index.js"></script>
+    
 
     <!-- import link -->
     
@@ -66,7 +68,8 @@
         
     
 
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="czq-static-blog" type="application/atom+xml">
+</head>
 
   
   <!-- 依赖于jquery和vue -->
@@ -211,6 +214,96 @@
     <div class="drawer-box-content">
       <ul class="drawer-box-content_menu">
         
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                      <i class="fas fa-link"></i>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
         
           <li class="drawer-box-content_item">
             <a target="_blank" rel="noopener" href="https://github.com/1120118968">
@@ -280,6 +373,94 @@
     </div>
     <nav class="navbar">
       <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="主页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友链">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                    <i class="fas fa-link"></i>
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
         
       </ul>
       
@@ -366,6 +547,32 @@
     <a target="_blank" rel="noopener" href="https://github.com/1120118968" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
   
   
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
 </header>
         <!-- 内容区域 -->
         
@@ -382,27 +589,17 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        
+        友链
       </span>
     </div>
     
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2023-02-24 |
-        </span>
-      
-
-      
-
-      
     
   </div>
   
@@ -420,61 +617,7 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="Unity-中绕某个物体旋转方法"><a href="#Unity-中绕某个物体旋转方法" class="headerlink" title="Unity 中绕某个物体旋转方法"></a>Unity 中绕某个物体旋转方法</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
-<li>旋转主要是用以下方法：<ul>
-<li>Transform.Rotate</li>
-<li>Transform.RotateAround</li>
-</ul>
-</li>
-</ul>
-<h2 id="使用方法描述"><a href="#使用方法描述" class="headerlink" title="使用方法描述"></a>使用方法描述</h2><h3 id="Transform-Rotate"><a href="#Transform-Rotate" class="headerlink" title="Transform.Rotate"></a>Transform.Rotate</h3><ul>
-<li><p>描述</p>
-<ul>
-<li><p>世界轴旋转使用 Scene 的坐标系，因此在开始旋转 GameObject 时，它的 x、y 和 z 轴与 x、y 和 z 世界轴对齐。所以，如果在世界空间中旋转一个立方体，它的轴就会与世界对齐。在 Unity 编辑器的 Scene 视图中选中一个立方体时，将显示左 Gizmos 下以及正向&#x2F;反向旋转轴的旋转 Gizmos。移动这些 Gizmos 将使立方体绕轴旋转。如果取消选择然后重新选择该立方体，这些轴将重新开始在世界中对齐。</p>
-</li>
-<li><p>本地旋转使用 GameObject 本身的坐标系。因此，新建的立方体将使用设置为零旋转的 x、y 和 z 轴。旋转该立方体将更新旋转轴。如果取消选择然后重新选择该立方体，将按之前的相同方向显示这些轴。</p>
-</li>
-</ul>
-</li>
-<li><p>例如</p>
-</li>
-</ul>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Rotate</span> (<span class="params">Vector3 eulers, Space relativeTo= Space.Self</span>)</span>;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>例子</li>
-</ul>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Transform.Rotate example</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// This script creates two different cubes: one red which is rotated using Space.Self; one green which is rotated using Space.World.</span></span><br><span class="line"><span class="comment">// Add it onto any GameObject in a scene and hit play to see it run. The rotation is controlled using xAngle, yAngle and zAngle, modifiable on the inspector.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExampleScript</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> xAngle, yAngle, zAngle;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> GameObject cube1, cube2;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);</span><br><span class="line">        cube1.transform.position = <span class="keyword">new</span> Vector3(<span class="number">0.75f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">        cube1.transform.Rotate(<span class="number">90.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, Space.Self);</span><br><span class="line">        cube1.GetComponent&lt;Renderer&gt;().material.color = Color.red;</span><br><span class="line">        cube1.name = <span class="string">&quot;Self&quot;</span>;</span><br><span class="line"></span><br><span class="line">        cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);</span><br><span class="line">        cube2.transform.position = <span class="keyword">new</span> Vector3(<span class="number">-0.75f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">        cube2.transform.Rotate(<span class="number">90.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, Space.World);</span><br><span class="line">        cube2.GetComponent&lt;Renderer&gt;().material.color = Color.green;</span><br><span class="line">        cube2.name = <span class="string">&quot;World&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        cube1.transform.Rotate(xAngle, yAngle, zAngle, Space.Self);</span><br><span class="line">        cube2.transform.Rotate(xAngle, yAngle, zAngle, Space.World);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="Transform-RotateAround"><a href="#Transform-RotateAround" class="headerlink" title="Transform.RotateAround"></a>Transform.RotateAround</h3><ul>
-<li>描述<ul>
-<li>将变换围绕穿过世界坐标中的 point 的 axis 旋转 angle 度。</li>
-</ul>
-</li>
-<li>参数<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RotateAround</span> (<span class="params">Vector3 point, Vector3 axis, <span class="built_in">float</span> angle</span>)</span>;</span><br></pre></td></tr></table></figure></li>
-<li>参数详解<ul>
-<li>point: 目标坐标点</li>
-<li>axis: 旋转轴，如：<code>new Vector3(1,0,0)</code>为绕 x 轴旋转。</li>
-<li>angle: 需旋转角度的变量（增量或减量）</li>
-</ul>
-</li>
-<li>例子</li>
-</ul>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Attach this script to a GameObject to rotate around the target position.</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Example</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//Assign a GameObject in the Inspector to rotate around</span></span><br><span class="line">    <span class="keyword">public</span> GameObject target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Spin the object around the target at 20 degrees/second.</span></span><br><span class="line">        transform.RotateAround(target.transform.position, Vector3.up, <span class="number">20</span> * Time.deltaTime);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h3><ul>
-<li>代码如下：</li>
-</ul>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">region</span> 参数</span></span><br><span class="line">    <span class="comment">//  相机调整角度倍速</span></span><br><span class="line">    [<span class="meta">Header(<span class="string">&quot;相机调整角度倍速&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> speed = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 坐标</span></span><br><span class="line">    <span class="keyword">public</span> Vector3 vect;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Header(<span class="string">&quot;需旋转目标物体&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> Transform target;<span class="comment">//获取旋转目标</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> xcream;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> ycream;</span><br><span class="line">    <span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 绕目标物旋转 UI</span></span><br><span class="line">        <span class="comment">// step 1. get target object</span></span><br><span class="line">        <span class="comment">// step 2. get target position</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 角度增加</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AngleAdd</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">float</span> x = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">float</span> y = <span class="number">50</span>;</span><br><span class="line">        x += <span class="number">5</span>;</span><br><span class="line">        y += <span class="number">5</span>;</span><br><span class="line">        <span class="built_in">float</span> currentAngle = transform.eulerAngles.x;</span><br><span class="line">        <span class="keyword">if</span> (currentAngle + speed &gt; <span class="number">50</span> &amp;&amp; currentAngle + speed &lt; <span class="number">90</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// limitangle(120);</span></span><br><span class="line">            <span class="comment">// limitangleuandd(50);</span></span><br><span class="line">            Vector3 vector3 = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">this</span>.transform.RotateAround(target.position, vector3, speed);</span><br><span class="line">            Debug.Log(<span class="string">&quot;camera controller: angle: &quot;</span> + <span class="keyword">this</span>.transform.eulerAngles);</span><br><span class="line">            <span class="comment">// this.transform.Rotate(0, x * speed, 0, Space.World);</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// currentAngle = 50;</span></span><br><span class="line">            Toast.Show(<span class="string">&quot;已经增大到最大值，请减小角度！&quot;</span>, <span class="number">1f</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 角度减少</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AngleReduce</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">float</span> x = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">float</span> y = <span class="number">90</span>;</span><br><span class="line">        x -= <span class="number">5</span>;</span><br><span class="line">        y -= <span class="number">5</span>;</span><br><span class="line">        <span class="built_in">float</span> currentAngle = transform.eulerAngles.x;</span><br><span class="line">        <span class="keyword">if</span> (currentAngle - speed &gt; <span class="number">50</span> &amp;&amp; currentAngle - speed &lt; <span class="number">90</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// limitangle(120);</span></span><br><span class="line">            <span class="comment">//limitangleuandd(50);</span></span><br><span class="line">            Vector3 vector3 = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">this</span>.transform.RotateAround(target.position, vector3, -speed);</span><br><span class="line">            Debug.Log(<span class="string">&quot;camera controller: angle: &quot;</span> + <span class="keyword">this</span>.transform.eulerAngles);</span><br><span class="line">            <span class="comment">// this.transform.Rotate(0, x * speed, 0, Space.World);</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// currentAngle = 50;</span></span><br><span class="line">            Toast.Show(<span class="string">&quot;已经减小到最小值，请增大角度！&quot;</span>, <span class="number">1f</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>目的：通过上下按键控制相机沿 x 轴对目标物体转动同时限制 x 轴坐标范围为（50,90），对大于目标坐标的值予以过滤并提示用户反向操作以达到目的。</li>
-</ul>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
-<li>[1].<a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2021.2/ScriptReference/Transform.RotateAround.html">https://docs.unity3d.com/cn/2021.2/ScriptReference/Transform.RotateAround.html</a></li>
-<li>[2].<a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2021.2/ScriptReference/Transform.Rotate.html">https://docs.unity3d.com/cn/2021.2/ScriptReference/Transform.Rotate.html</a></li>
-</ul>
-
+        
       </div>
       <div class="post-tags-categories">
         
@@ -487,7 +630,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2023/02/24/UnityRotation/" target="_blank" title="">http://1120118968.github.io/2023/02/24/UnityRotation/</a>
+    <a href="/friends/index.html" target="_blank" title="友链">http://1120118968.github.io/friends/index.html</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -505,48 +648,7 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/02/24/AndroidSocketToUnity/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text"></div>
-      </div>
-      
-      <!-- <div class="content">
-        Android 作为服务器向 UNITY 客户端发送数据简介
-分层对应协议
 
-应用层：TFTP，HTTP，SNMP，FT
-      </div> -->
-    </a>
-  </div>
-
-
-
-  
-  <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
-    </div>
-    <a href="/2023/02/24/kill-process-app/" class="post-nav-link">
-      <div class="title">
-        Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">kill_process_app 通过java代码kill进程</div>
-      </div>
-      <!-- <div class="content">
-        思路
-1.杀死指定包名对应进程
-
-123456789101112131415161718private void kil
-      </div> -->
-    </a>
-  </div>
 
 </div>
 
@@ -588,10 +690,10 @@
       </div>
       <div class="donate-box_img">
         <div class="AlipayImg" v-show="tabActive === 'Alipay'">
-          <img src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+          <img src="/" class="lazyload placeholder" data-srcset="/" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
         </div> 
         <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
-          <img src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+          <img src="/" class="lazyload placeholder" data-srcset="/" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
         </div>
       </div>
     </div>
@@ -662,8 +764,102 @@
 
   <div id="myComment">
     
-      <div id="gitment-container"></div>
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
 
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
     
   </div>
 
@@ -751,33 +947,33 @@
   
   
   
+    
+  
 
   <div class="layout_sticky">    
     
       
-<section class="widget side_toc">
+        
   
+      
+      
+        
+<section class="widget side_tagcloud">
+    
   <header>
     
-      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+      <a style="color: " href='/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
     
   </header>
 
 
-  <div class='content'>
-    <div class="toc-main">
-      <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-%E4%B8%AD%E7%BB%95%E6%9F%90%E4%B8%AA%E7%89%A9%E4%BD%93%E6%97%8B%E8%BD%AC%E6%96%B9%E6%B3%95"><span class="toc-text">Unity 中绕某个物体旋转方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E6%8F%8F%E8%BF%B0"><span class="toc-text">使用方法描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Transform-Rotate"><span class="toc-text">Transform.Rotate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Transform-RotateAround"><span class="toc-text">Transform.RotateAround</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8"><span class="toc-text">实际应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol></li></ol> -->
-        <div class="toc"></div>
-      </div>
+    <div class='content'>
+    <a href="/tags/app/" style="font-size: 24px; color: #555">app</a> <a href="/tags/unity/" style="font-size: 19px; color: #777">unity</a> <a href="/tags/%E6%8A%80%E6%9C%AF/" style="font-size: 14px; color: #999">技术</a>
     </div>
-  </div>
 </section>
-<!-- 手机端目录按钮 -->
-<div id="toc-mobile-btn">
-  <i class="fas fa-list-ul" aria-hidden="true"></i>
-</div>
 
+  
+      
       
   <section class="widget side_recent_post">
     
@@ -793,48 +989,6 @@
       <!-- hash算法 -->
       
       <div class="aside-list">
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/02/24/AndroidSocketToUnity/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">02-24</span>
-                
-              </div>
-              <a class="post-title" href="/2023/02/24/AndroidSocketToUnity/">no title</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/02/24/UnityRotation/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">02-24</span>
-                
-              </div>
-              <a class="post-title" href="/2023/02/24/UnityRotation/">no title</a>
-            </div>
-          </div>
         
           <div class="aside-list-item">
             
@@ -884,9 +1038,9 @@
             
 
             <div class="post-img-box">
-              <a href="/2023/02/22/unityexport-to-android-md/" class="post-img " style="background-size: cover; 
+              <a href="/2023/02/22/UnityRotation/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
@@ -895,13 +1049,185 @@
                   <span class="post-date">02-22</span>
                 
               </div>
-              <a class="post-title" href="/2023/02/22/unityexport-to-android-md/">unityexport_to_android.md</a>
+              <a class="post-title" href="/2023/02/22/UnityRotation/">Unity 中绕某个物体旋转方法</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/02/22/unityexport-to-android-md/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">02-22</span>
+                
+              </div>
+              <a class="post-title" href="/2023/02/22/unityexport-to-android-md/">关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/02/22/android-unity-touch-md/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">02-22</span>
+                
+              </div>
+              <a class="post-title" href="/2023/02/22/android-unity-touch-md/">关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)</a>
             </div>
           </div>
         
       </div>
     </div>
   </section>
+
+      
+  <section class="widget side_archives">
+    
+    <header><a style="color: red" href='/archives/'><i class="fas fa-archive fa-fw" aria-hidden="true"></i><span class='name'>归档</span></a></header><div class="content"><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">February 2023</span><span class="card-archive-list-count">9</span></a></li></ul></div>
+  </section>
+
+      <section class="widget side_webinfo">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-chart-line fa-fw" aria-hidden="true"></i><span class='name'>站点信息</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="webinfo">
+      
+        <div class="webinfo-item">
+          <div>文章数目：</div>
+          <div>9 篇</div>
+        </div>
+      
+
+      
+        <div class="webinfo-item">
+          <div>已运行时间：</div>
+          <div id="webinfo-runtime-count" publish_date="03/24/2020 21:34:09"></div>
+        </div>
+        <script>
+          var BirthDay = new Date(new Date('2023/02/22'));
+          var today = new Date();
+          var timeold = (today.getTime() - BirthDay.getTime());
+          var daysold = Math.floor(timeold / (24 * 60 * 60 * 1000));
+          document.getElementById('webinfo-runtime-count').innerHTML = daysold + ' 天';
+        </script>
+      
+
+
+      
+        <div class="webinfo-item">
+          <div>本站总字数：</div>
+          <div>9.5k 字</div>
+        </div>
+      
+
+      
+        <div class="webinfo-item">
+          <div>本站访客数：</div>
+          
+          <div><span id="busuanzi_value_site_uv"><i class="fas fa-fan fa-spin fa-fw" aria-hidden="true"></i></span> 人</div>
+          
+        </div>
+      
+
+      
+        <div class="webinfo-item">
+          <div>本站总访问量：</div>
+          
+          <div><span id="busuanzi_value_site_pv"><i class="fas fa-fan fa-spin fa-fw" aria-hidden="true"></i></span> 次</div>
+          
+        </div>
+      
+
+      
+        <div class="webinfo-item">
+          <div>最后活动时间：</div>
+          
+            <div id="last-update" style="display: none;">Mon Feb 27 2023 14:30:30 GMT+0800 (中国标准时间)</div>
+            <div id="last-update-show">2023-02-27 日</div>
+          
+        </div>
+        
+        <script>
+          function timeago(dateTimeStamp) {
+              var minute = 1000 * 60; //把分，时，天，周，半个月，一个月用毫秒表示
+              var hour = minute * 60;
+              var day = hour * 24;
+              var week = day * 7;
+              var month = day * 30;
+              var now = new Date().getTime(); //获取当前时间毫秒
+              var diffValue = now - dateTimeStamp; //时间差
+              if (diffValue < 0) {
+                  return;
+              }
+              var minC = diffValue / minute; //计算时间差的分，时，天，周，月
+              var hourC = diffValue / hour;
+              var dayC = diffValue / day;
+              var weekC = diffValue / week;
+              var monthC = diffValue / month;
+              if (monthC >= 1 && monthC <= 3) {
+                  result = " " + parseInt(monthC) + " 月前"
+              } else if (weekC >= 1 && weekC <= 3) {
+                  result = " " + parseInt(weekC) + " 周前"
+              } else if (dayC >= 1 && dayC <= 6) {
+                  result = " " + parseInt(dayC) + " 天前"
+              } else if (hourC >= 1 && hourC <= 23) {
+                  result = " " + parseInt(hourC) + " 小时前"
+              } else if (minC >= 1 && minC <= 59) {
+                  result = " " + parseInt(minC) + " 分钟前"
+              } else if (diffValue >= 0 && diffValue <= minute) {
+                  result = "刚刚"
+              } else {
+                  var datetime = new Date();
+                  datetime.setTime(dateTimeStamp);
+                  var Nyear = datetime.getFullYear();
+                  var Nmonth = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+                  var Ndate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+                  var Nhour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
+                  var Nminute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+                  var Nsecond = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+                  result = Nyear + "-" + Nmonth + "-" + Ndate
+              }
+              return result;
+          }
+          var lastUpDate = document.getElementById('last-update').innerHTML;
+          try {
+            document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
+          } catch (error) {
+            document.getElementById('last-update-show').innerHTML = '2023-02-27 日';
+          }
+        </script>
+        
+      
+    </div>
+  </div>
+</section>
+      
+  
 
     
   </div>
@@ -1239,7 +1565,7 @@
       
         
           <div class="footer-copyright">
-            <p>Copyright © 2023 - now <a target="_blank" rel="noopener" href="https://github.com/yuang01">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a> </p>
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/1120118968">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a> </p>
 
           </div>
         
@@ -1356,9 +1682,9 @@
 </style>
 <meting-js  
   class=""
-  server="tencent"
+  server="netease"
   type="playlist"
-  id="8062553743"
+  id="7289498727"
   fixed='true'
   autoplay='false'
   theme='#42b983'
@@ -1723,68 +2049,141 @@
 <!-- 评论所需js -->
 
   
-    <script type="text/javascript">
-  var utteranceCommon = {};
+    <!-- 弹幕所需的css和js -->
+    
+  <!-- 弹幕插件 -->
+  <link href="/js/danmu/barrager.css" rel="stylesheet">
+  <script src="/js/danmu/jquery.barrager.js"></script>
 
-  function check_utterance() {
-    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
-    if (isDark) {
-      utteranceCommon.Theme = 'github-dark';
-    } else {
-      utteranceCommon.Theme = 'github-light';
-    }
+<!-- 具体js，请前往valine/script.ejs查看 -->
 
-    return document.getElementById("gitment-container");
-  }
-  comment_el = '#gitment-container';
-  load_utterance = function () {
+    <script>
+  var requiredFields = 'nick,mail';
+  requiredFields = requiredFields.split(',');
+  comment_el = '.comment';
+  let looperValine = null;
+  load_valine = function () {
     if ($(comment_el).length) {
-      // 匿名函数，防止污染全局变量
-      const HEAD = check_utterance();
+      var valine = new Valine({
+        el: '#vcomment',
+        path: window.location.pathname,
+        notify: false,
+        verify: false,
+        app_id: "PZlzAc6FzhlN4QJ4gUgas7AQ-gzGzoHsz",
+        app_key: "YYSIuQIfbSqnug2Kq117KGAK",
+        placeholder: "客官，说点什么吧",
+        avatar: "",
+        master: "d0ca78e6945a9e55aaf81645413dde96",   //博主邮箱md5
+        tagMeta: ["博主","小伙伴","访客"],     //标识字段名
+        friends: "",
+        metaPlaceholder: { "nick": "昵称/QQ号", "mail": "邮箱" },
+        requiredFields: requiredFields,
+        enableQQ: true,
+      });
+      function debounce(fn) {
+        var timerID = null
+        return function () {
+          var arg = arguments[0]   //获取事件
+          if (timerID) {
+            clearTimeout(timerID)
+          }
+          timerID = setTimeout(function () {
+            fn(arg)              //事件传入函数
+          }, 200)
+        }
+      }
+      //查询评论 valine.Q('*').limit(7) -- 查询所有，限制7条, 下面的的代码是查询当前页面
+      var themeDanmu = eval('true');
+      var themeLoop = eval('true');
+      var themeLooperTime = '5000' || 5000;
+      var speed = '40' || 20;
+      var isBarrager = true;
+      if (themeDanmu == true) {
+        do_barrager();
+        if ($('.danmuBox').length <= 0) {
+          $('.navbar').append('<div class="danmuBox"><div class="danmuBtn open"><span class="danmuCircle"></span><span class="danmuText">弹幕</span></div></div>');
+        }
+        $('.danmuBtn').on('click', debounce(
+          function () {
+            if ($('.danmuBtn').hasClass('open')) {
+              $('.danmuBtn').removeClass('open')
+              clearInterval(looperValine);
+              $.fn.barrager.removeAll();
+            } else {
+              $('.danmuBtn').addClass("open");
+              do_barrager();
+            }
+          }
+        ))
+      }
+      function do_barrager() {
+        isBarrager && valine.Q(window.location.pathname).find().then(function (comments) {
+          // var num = 0; // 可以记录条数，循环调用的时候只取最新的评论放入弹幕中
+          var run_once = true;
+          var looper_time = themeLooperTime;
+          var total = comments.length;
+          // var looper = null;
+          var index = 0;
+          if (total > 0) {
+            barrager();
+          } else {
+            // 当评论数为0的时候，自动关闭弹幕
+            // $('.danmuBtn').removeClass('open');
+          }
+          function barrager() {
+            if (run_once) {
+              //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+              looperValine = setInterval(barrager, looper_time);
+              run_once = false;
+            }
+            var content = comments[index]._serverData.comment;
+            var email = comments[index]._serverData.mail;
+            var link = comments[index]._serverData.link;
+            var newcontent = content.substring(0, 50).replace(/<[^>]+>/g, "");
+            //发布一个弹幕
+            const item = {
+              img: `https://q1.qlogo.cn/g?b=qq&nk=${email}&s=640`, //图片 
+              info: newcontent, //文字 
+              href: link, //链接 
+              close: true, //显示关闭按钮 
+              speed: speed, //延迟,单位秒,默认6 
+              color: '#fff', //颜色,默认白色 
+              old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+            }
+            $('body').barrager(item);
+            //索引自增
+            index++;
+            //所有弹幕发布完毕，清除计时器。
+            if (index == total) {
+              clearInterval(looperValine);
+              if (themeLoop === true) {
+                setTimeout(function () {
+                  do_barrager();
+                }, 5000);
+              } else {
+                $('.danmuBtn').removeClass('open');
+              }
+              return false;
+            }
 
-      var utterances = document.createElement('script');
-      utterances.type = 'text/javascript';
-      utterances.async = true;
-      utterances.setAttribute('issue-term', 'pathname')
-      utterances.setAttribute('theme', utteranceCommon.Theme)
-      utterances.setAttribute('repo', '')
-      utterances.crossorigin = 'anonymous';
-      utterances.src = 'https://utteranc.es/client.js';
-      // content 是要插入评论的地方
-      document.getElementById('gitment-container').appendChild(utterances);
-
+          }
+        })
+      }
     }
-  }
-
-  function dark_utterance() {
-    const HEAD = check_utterance();
-    if (!HEAD) return;
-    const message = {
-      type: 'set-theme',
-      theme: utteranceCommon.Theme
-    };
-    const utteranceIframe = document.querySelector('iframe');
-    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
-  }
-
-  $(document).ready(load_utterance);
-  document.addEventListener('pjax:complete', function () {
-    load_utterance();
-  });
-
-  $('.dark').click(function () {
-    setTimeout(() => {
-      dark_utterance();
-    });
+  };
+  $(document).ready(load_valine);
+  document.addEventListener('pjax:send', function (e) {
+    
+      $('.danmuBox').length > 0 && $('.danmuBox').remove()
+      looperValine && clearInterval(looperValine);
+      $.fn.barrager.removeAll();
+    
   })
-
+  document.addEventListener('pjax:complete', function () {
+    load_valine();
+  });
 </script>
 
-<style>
-  .utterances {
-    max-width: inherit !important;
-  }
-</style>
   
 
 

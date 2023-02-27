@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>hexo-blog-createanduse | czq-static-blog</title>
+  <title>Unity 中绕某个物体旋转方法 | czq-static-blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -596,7 +596,7 @@
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        hexo-blog-createanduse
+        Unity 中绕某个物体旋转方法
       </span>
     </div>
     
@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 311 |
+            <i class="fas fa-file-text-o"></i> Words: 966 |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 1min |
+            <i class="fas fa-clock"></i> Reading time: 4min |
           </span>
   
           
@@ -643,82 +643,59 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="hexo-blog-desc"><a href="#hexo-blog-desc" class="headerlink" title="hexo blog desc"></a>hexo blog desc</h2><ul>
-<li>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</li>
+        <h1 id="Unity-中绕某个物体旋转方法"><a href="#Unity-中绕某个物体旋转方法" class="headerlink" title="Unity 中绕某个物体旋转方法"></a>Unity 中绕某个物体旋转方法</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
+<li>旋转主要是用以下方法：<ul>
+<li>Transform.Rotate</li>
+<li>Transform.RotateAround</li>
 </ul>
-<h2 id="hexo-install"><a href="#hexo-install" class="headerlink" title="hexo install"></a>hexo install</h2><ul>
-<li>安装 Node.js<br>在官方网站下载即可安装，链接如下</li>
+</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://nodejs.org/en/</span><br></pre></td></tr></table></figure>
+<h2 id="使用方法描述"><a href="#使用方法描述" class="headerlink" title="使用方法描述"></a>使用方法描述</h2><h3 id="Transform-Rotate"><a href="#Transform-Rotate" class="headerlink" title="Transform.Rotate"></a>Transform.Rotate</h3><ul>
+<li><p>描述</p>
+<ul>
+<li><p>世界轴旋转使用 Scene 的坐标系，因此在开始旋转 GameObject 时，它的 x、y 和 z 轴与 x、y 和 z 世界轴对齐。所以，如果在世界空间中旋转一个立方体，它的轴就会与世界对齐。在 Unity 编辑器的 Scene 视图中选中一个立方体时，将显示左 Gizmos 下以及正向&#x2F;反向旋转轴的旋转 Gizmos。移动这些 Gizmos 将使立方体绕轴旋转。如果取消选择然后重新选择该立方体，这些轴将重新开始在世界中对齐。</p>
+</li>
+<li><p>本地旋转使用 GameObject 本身的坐标系。因此，新建的立方体将使用设置为零旋转的 x、y 和 z 轴。旋转该立方体将更新旋转轴。如果取消选择然后重新选择该立方体，将按之前的相同方向显示这些轴。</p>
+</li>
+</ul>
+</li>
+<li><p>例如</p>
+</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Rotate</span> (<span class="params">Vector3 eulers, Space relativeTo= Space.Self</span>)</span>;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>安装 cnpm 或使用淘宝镜像（二选一）</li>
+<li>例子</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm</span><br><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Transform.Rotate example</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// This script creates two different cubes: one red which is rotated using Space.Self; one green which is rotated using Space.World.</span></span><br><span class="line"><span class="comment">// Add it onto any GameObject in a scene and hit play to see it run. The rotation is controlled using xAngle, yAngle and zAngle, modifiable on the inspector.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExampleScript</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> xAngle, yAngle, zAngle;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> GameObject cube1, cube2;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);</span><br><span class="line">        cube1.transform.position = <span class="keyword">new</span> Vector3(<span class="number">0.75f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">        cube1.transform.Rotate(<span class="number">90.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, Space.Self);</span><br><span class="line">        cube1.GetComponent&lt;Renderer&gt;().material.color = Color.red;</span><br><span class="line">        cube1.name = <span class="string">&quot;Self&quot;</span>;</span><br><span class="line"></span><br><span class="line">        cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);</span><br><span class="line">        cube2.transform.position = <span class="keyword">new</span> Vector3(<span class="number">-0.75f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">        cube2.transform.Rotate(<span class="number">90.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, Space.World);</span><br><span class="line">        cube2.GetComponent&lt;Renderer&gt;().material.color = Color.green;</span><br><span class="line">        cube2.name = <span class="string">&quot;World&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        cube1.transform.Rotate(xAngle, yAngle, zAngle, Space.Self);</span><br><span class="line">        cube2.transform.Rotate(xAngle, yAngle, zAngle, Space.World);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Transform-RotateAround"><a href="#Transform-RotateAround" class="headerlink" title="Transform.RotateAround"></a>Transform.RotateAround</h3><ul>
+<li>描述<ul>
+<li>将变换围绕穿过世界坐标中的 point 的 axis 旋转 angle 度。</li>
+</ul>
+</li>
+<li>参数<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RotateAround</span> (<span class="params">Vector3 point, Vector3 axis, <span class="built_in">float</span> angle</span>)</span>;</span><br></pre></td></tr></table></figure></li>
+<li>参数详解<ul>
+<li>point: 目标坐标点</li>
+<li>axis: 旋转轴，如：<code>new Vector3(1,0,0)</code>为绕 x 轴旋转。</li>
+<li>angle: 需旋转角度的变量（增量或减量）</li>
+</ul>
+</li>
+<li>例子</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Attach this script to a GameObject to rotate around the target position.</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Example</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//Assign a GameObject in the Inspector to rotate around</span></span><br><span class="line">    <span class="keyword">public</span> GameObject target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Spin the object around the target at 20 degrees/second.</span></span><br><span class="line">        transform.RotateAround(target.transform.position, Vector3.up, <span class="number">20</span> * Time.deltaTime);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h3><ul>
+<li>代码如下：</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">region</span> 参数</span></span><br><span class="line">    <span class="comment">//  相机调整角度倍速</span></span><br><span class="line">    [<span class="meta">Header(<span class="string">&quot;相机调整角度倍速&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> speed = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 坐标</span></span><br><span class="line">    <span class="keyword">public</span> Vector3 vect;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Header(<span class="string">&quot;需旋转目标物体&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> Transform target;<span class="comment">//获取旋转目标</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> xcream;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> ycream;</span><br><span class="line">    <span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 绕目标物旋转 UI</span></span><br><span class="line">        <span class="comment">// step 1. get target object</span></span><br><span class="line">        <span class="comment">// step 2. get target position</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 角度增加</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AngleAdd</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">float</span> x = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">float</span> y = <span class="number">50</span>;</span><br><span class="line">        x += <span class="number">5</span>;</span><br><span class="line">        y += <span class="number">5</span>;</span><br><span class="line">        <span class="built_in">float</span> currentAngle = transform.eulerAngles.x;</span><br><span class="line">        <span class="keyword">if</span> (currentAngle + speed &gt; <span class="number">50</span> &amp;&amp; currentAngle + speed &lt; <span class="number">90</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// limitangle(120);</span></span><br><span class="line">            <span class="comment">// limitangleuandd(50);</span></span><br><span class="line">            Vector3 vector3 = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">this</span>.transform.RotateAround(target.position, vector3, speed);</span><br><span class="line">            Debug.Log(<span class="string">&quot;camera controller: angle: &quot;</span> + <span class="keyword">this</span>.transform.eulerAngles);</span><br><span class="line">            <span class="comment">// this.transform.Rotate(0, x * speed, 0, Space.World);</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// currentAngle = 50;</span></span><br><span class="line">            Toast.Show(<span class="string">&quot;已经增大到最大值，请减小角度！&quot;</span>, <span class="number">1f</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 角度减少</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AngleReduce</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">float</span> x = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">float</span> y = <span class="number">90</span>;</span><br><span class="line">        x -= <span class="number">5</span>;</span><br><span class="line">        y -= <span class="number">5</span>;</span><br><span class="line">        <span class="built_in">float</span> currentAngle = transform.eulerAngles.x;</span><br><span class="line">        <span class="keyword">if</span> (currentAngle - speed &gt; <span class="number">50</span> &amp;&amp; currentAngle - speed &lt; <span class="number">90</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// limitangle(120);</span></span><br><span class="line">            <span class="comment">//limitangleuandd(50);</span></span><br><span class="line">            Vector3 vector3 = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">this</span>.transform.RotateAround(target.position, vector3, -speed);</span><br><span class="line">            Debug.Log(<span class="string">&quot;camera controller: angle: &quot;</span> + <span class="keyword">this</span>.transform.eulerAngles);</span><br><span class="line">            <span class="comment">// this.transform.Rotate(0, x * speed, 0, Space.World);</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// currentAngle = 50;</span></span><br><span class="line">            Toast.Show(<span class="string">&quot;已经减小到最小值，请增大角度！&quot;</span>, <span class="number">1f</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>安装 hexo</li>
+<li>目的：通过上下按键控制相机沿 x 轴对目标物体转动同时限制 x 轴坐标范围为（50,90），对大于目标坐标的值予以过滤并提示用户反向操作以达到目的。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<h2 id="github-pages-and-gitee-pages-open-page-services"><a href="#github-pages-and-gitee-pages-open-page-services" class="headerlink" title="github pages and gitee pages open page services"></a>github pages and gitee pages open page services</h2><ul>
-<li><p>1.github pages 开通使用</p>
-<ul>
-<li>创建与 github 用户同名仓库，命名方式如下<br>如图<br><img src="/2023/02/22/hexo-blog-createanduse/createrepo.png" class="lazyload placeholder" data-srcset="/2023/02/22/hexo-blog-createanduse/createrepo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username.github.io</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>开启 github pages 服务<br>如图：<br><img src="/2023/02/22/hexo-blog-createanduse/opengithubpages.png" class="lazyload placeholder" data-srcset="/2023/02/22/hexo-blog-createanduse/opengithubpages.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
-</ul>
-</li>
-<li><p>2.gitee pages 开通使用</p>
-<ul>
-<li><p>创建与空间名相同仓库</p>
-</li>
-<li><p>开通 pages 服务（需提前实名认证，较为复杂）</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="hexo-config-and-themes-use"><a href="#hexo-config-and-themes-use" class="headerlink" title="hexo config and themes use"></a>hexo config and themes use</h2><ul>
-<li>1.在下载结束后，可以编辑 hexo 配置<ul>
-<li>配置文件<code>_config.yml</code></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">see @link</span><br><span class="line">https://hexo.io/zh-cn/docs/configuration</span><br></pre></td></tr></table></figure>
-
-<h2 id="hexo-use"><a href="#hexo-use" class="headerlink" title="hexo use"></a>hexo use</h2><ul>
-<li><ol>
-<li>blog 编写</li>
-</ol>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new blog</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><ol start="2">
-<li>blog md 文件 书写<br>采用 MarkerDown 语法</li>
-</ol>
-</li>
-</ul>
-<h2 id="markerdown-upload-server"><a href="#markerdown-upload-server" class="headerlink" title="markerdown upload server"></a>markerdown upload server</h2><ul>
-<li><ol>
-<li>使用以下脚本推送博客更新</li>
-</ol>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用博客插件在-md-中引入图片资源（网站、vscode-均可用）"><a href="#使用博客插件在-md-中引入图片资源（网站、vscode-均可用）" class="headerlink" title="使用博客插件在 md 中引入图片资源（网站、vscode 均可用）"></a>使用博客插件在 md 中引入图片资源（网站、vscode 均可用）</h2><ul>
-<li>sh 脚本</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install https://github.com/CodeFalling/hexo-asset-image --save</span><br></pre></td></tr></table></figure>
-
-<h2 id="see-also"><a href="#see-also" class="headerlink" title="see also"></a>see also</h2><ul>
-<li>[1].<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/setup">https://hexo.io/zh-cn/docs/setup</a></li>
-<li>[2].<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/w6m21gLNji3HkJKRMwCQ4g">https://mp.weixin.qq.com/s/w6m21gLNji3HkJKRMwCQ4g</a></li>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li>[1].<a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2021.2/ScriptReference/Transform.RotateAround.html">https://docs.unity3d.com/cn/2021.2/ScriptReference/Transform.RotateAround.html</a></li>
+<li>[2].<a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2021.2/ScriptReference/Transform.Rotate.html">https://docs.unity3d.com/cn/2021.2/ScriptReference/Transform.Rotate.html</a></li>
 </ul>
 
       </div>
@@ -726,8 +703,8 @@
         
         <div class="tags">
           
-            <a href="/tags/%E6%8A%80%E6%9C%AF/" class="">
-              技术
+            <a href="/tags/unity/" class="">
+              unity
             </a>
           
         </div>
@@ -741,7 +718,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2023/02/22/hexo-blog-createanduse/" target="_blank" title="hexo-blog-createanduse">http://1120118968.github.io/2023/02/22/hexo-blog-createanduse/</a>
+    <a href="/2023/02/22/UnityRotation/" target="_blank" title="Unity 中绕某个物体旋转方法">http://1120118968.github.io/2023/02/22/UnityRotation/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -763,19 +740,17 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2023/02/24/kill-process-app/" class="post-nav-link">
+    <a href="/2023/02/22/hexo-blog-createanduse/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">kill_process_app 通过java代码kill进程</div>
+        <div class="title-text">hexo-blog-createanduse</div>
       </div>
       
       <!-- <div class="content">
-        思路
-1.杀死指定包名对应进程
-
-123456789101112131415161718private void kil
+        hexo blog desc
+Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引
       </div> -->
     </a>
   </div>
@@ -786,18 +761,18 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/02/22/UnityRotation/" class="post-nav-link">
+    <a href="/2023/02/22/unityexport-to-android-md/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">Unity 中绕某个物体旋转方法</div>
+        <div class="title-text">关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)</div>
       </div>
       <!-- <div class="content">
-        Unity 中绕某个物体旋转方法简介
-旋转主要是用以下方法：
-Transform.Rotate
-Transform.Ro
+        关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)导出方式(编译器选择)
+已有方式如下：
+
+
       </div> -->
     </a>
   </div>
@@ -1117,7 +1092,7 @@ Transform.Ro
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-blog-desc"><span class="toc-text">hexo blog desc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-install"><span class="toc-text">hexo install</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-pages-and-gitee-pages-open-page-services"><span class="toc-text">github pages and gitee pages open page services</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-config-and-themes-use"><span class="toc-text">hexo config and themes use</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-use"><span class="toc-text">hexo use</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#markerdown-upload-server"><span class="toc-text">markerdown upload server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%8D%9A%E5%AE%A2%E6%8F%92%E4%BB%B6%E5%9C%A8-md-%E4%B8%AD%E5%BC%95%E5%85%A5%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90%EF%BC%88%E7%BD%91%E7%AB%99%E3%80%81vscode-%E5%9D%87%E5%8F%AF%E7%94%A8%EF%BC%89"><span class="toc-text">使用博客插件在 md 中引入图片资源（网站、vscode 均可用）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#see-also"><span class="toc-text">see also</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-%E4%B8%AD%E7%BB%95%E6%9F%90%E4%B8%AA%E7%89%A9%E4%BD%93%E6%97%8B%E8%BD%AC%E6%96%B9%E6%B3%95"><span class="toc-text">Unity 中绕某个物体旋转方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E6%8F%8F%E8%BF%B0"><span class="toc-text">使用方法描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Transform-Rotate"><span class="toc-text">Transform.Rotate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Transform-RotateAround"><span class="toc-text">Transform.RotateAround</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8"><span class="toc-text">实际应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
