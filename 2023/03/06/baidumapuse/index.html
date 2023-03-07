@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>Integrating Unity as a library into standard Android app | czq-static-blog</title>
+  <title>百度地图功能使用 | czq-static-blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,21 +589,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        Integrating Unity as a library into standard Android app
+        百度地图功能使用
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2023-02-22 |
+          <i class="fas fa-calendar"></i> Published in：2023-03-06 |
         </span>
       
 
@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 660 |
+            <i class="fas fa-file-text-o"></i> Words: 88 |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 4min |
+            <i class="fas fa-clock"></i> Reading time: 1min |
           </span>
   
           
@@ -643,78 +643,29 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="Integrating-Unity-as-a-library-into-standard-Android-app"><a href="#Integrating-Unity-as-a-library-into-standard-Android-app" class="headerlink" title="Integrating Unity as a library into standard Android app"></a>Integrating Unity as a library into standard Android app</h2><p>This document explains how to include Unity as a Library into standard Android application through Activity. You can read more about <a target="_blank" rel="noopener" href="https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html">Unity as a Library</a>.</p>
-<p><strong>Requirements:</strong></p>
+        <h2 id="key-generate"><a href="#key-generate" class="headerlink" title="key generate"></a>key generate</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -printcert -file CERT.RSA</span><br></pre></td></tr></table></figure>
+
+<h2 id="key-select"><a href="#key-select" class="headerlink" title="key select"></a>key select</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -list -v -keystore debug.keystore</span><br></pre></td></tr></table></figure>
+
+<h2 id="key-gen"><a href="#key-gen" class="headerlink" title="key gen"></a>key gen</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkey -<span class="built_in">alias</span> test.keystore -keyalg RSA -validity 40000 -keystore demo.keystore</span><br></pre></td></tr></table></figure>
+
+<h2 id="or-see"><a href="#or-see" class="headerlink" title="or see"></a>or see</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://blog.csdn.net/qq_40808344/article/details/101148833</span><br></pre></td></tr></table></figure>
+
+<h2 id="error"><a href="#error" class="headerlink" title="error"></a>error</h2><ul>
+<li>details</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The location <span class="keyword">function</span> has been stopped because you <span class="keyword">do</span> not agree with the privacy compliance policy. Please recheck the setAgreePrivacy interface</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>Android Studio Bumblebee (2021.1.1) or later</li>
-<li>Unity version 2022.2.0a18 or later<br>[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use <a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS">this branch</a></li>
-</ul>
-<p><strong>1. Get source</strong></p>
+<li><p>solve</p>
 <ul>
-<li>Clone or Download GitHub repo <a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/uaal-example">uaal-example</a>. It includes:<br><img src="/2023/02/22/android/rootFolderStructure.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/rootFolderStructure.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"><ul>
-<li>Unityproject - this is a simple demo project made with Unity which will be integrated to the standard Android application</li>
-<li>NativeAndroidApp - this is the Basic Activity application from Android Studio templates where Unity project will be integrated. It has a simple UI, MainUnityActivity, which extends OverrideUnityActivity, and is prepared to start MainUnityActivity with an Intent</li>
+<li><p>such as figure 1 取消下列文件中对应行的注释即可解决</p>
+<p><img src="/2023/03/06/baidumapuse/solve.png" class="lazyload placeholder" data-srcset="/2023/03/06/baidumapuse/solve.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+</li>
 </ul>
 </li>
 </ul>
-<p><strong>2. Generate Gradle project for Android platform</strong></p>
-<ul>
-<li>Open UnityProject in Unity Editor</li>
-<li>Go to Build Settings window (Menu &#x2F; File &#x2F; Build Settings)<ul>
-<li>Select and switch to Android Platform</li>
-</ul>
-</li>
-<li>Go to Player Settings window (click Player Settings button at the bottom left corner of Build Settings or use Edit &#x2F; Project Settings menu and choose Player tab on the left)<ul>
-<li>In Other Settings -&gt; Configuration section choose targeted architectures<br><img src="/2023/02/22/android/selectArchitectures.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/selectArchitectures.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
-</ul>
-</li>
-<li>Go back to Build Settings window<ul>
-<li>Select option “Export Project”<br>![img](android&#x2F;exportProject.png” width&#x3D;’400px’&gt;</li>
-<li>Export UnityProject to androidBuild folder, the folder structure should look like this<br><img src="/2023/02/22/android/exportedProjectFolder.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/exportedProjectFolder.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
-</ul>
-</li>
-</ul>
-<p><strong>3. Add Unity Library module to NativeAndroidApp</strong><br><br>Do the following to add the exported androidBuild&#x2F;unityLibrary module to the NativeAndroidApp Gradle project in Android Studio:</p>
-<ul>
-<li>Open NativeAndroidApp in Android Studio</li>
-<li>Open settings.gradle file<ul>
-<li>Add a new project pointing to unityLibrary module after the main app module<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &#x27;:unityLibrary&#x27;</span><br><span class="line">project(&#x27;:unityLibrary&#x27;).projectDir=new File(&#x27;..\\UnityProject\\androidBuild\\unityLibrary&#x27;)</span><br></pre></td></tr></table></figure></li>
-<li>And add the following in dependencyResolutionManagement{repositories{ block<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flatDir &#123;</span><br><span class="line">  dirs &quot;$&#123;project(&#x27;:unityLibrary&#x27;).projectDir&#125;/libs&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/2023/02/22/android/settingsGradle.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/settingsGradle.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
-</ul>
-</li>
-<li>Open build.gradle(Module: NativeAndroidApp.app) file<ul>
-<li>Add the following in dependencies{ block<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation project(&#x27;:unityLibrary&#x27;)</span><br><span class="line">implementation fileTree(dir: project(&#x27;:unityLibrary&#x27;).getProjectDir().toString() + (&#x27;\\libs&#x27;), include: [&#x27;*.jar&#x27;])</span><br></pre></td></tr></table></figure>
-<img src="/2023/02/22/android/buildGradleApp.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/buildGradleApp.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
-<li>In the same file take a look at android{defaultConfig{ndk{ block and make sure abiFilters match the architectures you selected in Unity editor before exporting the project. The filter must match architectures in Unity editor exactly. If Unity exports only ARMv7 architecture, but the filter includes arm64-v8a, the application will crash on ARM64 devices. Check for valid abiFilters values in the <a target="_blank" rel="noopener" href="https://developer.android.com/ndk/guides/abis#sa">official android documentation</a>.<br><img src="/2023/02/22/android/buildGradleAppAbiFilters.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/buildGradleAppAbiFilters.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
-</ul>
-</li>
-<li>Copy the contents of the gradle.properties file from the exported Unity project root folder to the gradle.properties file in the native application root folder. Note: if you update the Unity project and re-export it again, make sure that the contents of the gradle.properties file in the exported project did not change. If they did - repeat this step.<br><img src="/2023/02/22/android/exportedASProject.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/exportedASProject.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"><a href="android/gradlePropertiesApp.png">img</a></li>
-<li>Click Sync Now to do a project sync since Gradle files have been modified<br><a href="android/syncGradle.png">img</a></li>
-<li>If everything succeeds, you should see unityLibrary module added in Android view<br><img src="/2023/02/22/android/unityLibraryModule.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/unityLibraryModule.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
-</ul>
-<h2 id="Project-is-ready"><a href="#Project-is-ready" class="headerlink" title="Project is ready"></a>Project is ready</h2><p>Everything is ready to build, run and debug:<br>![img](android&#x2F;buildOnDevice.png” width&#x3D;’500px’&gt;<br><br>If everything succeeded, at this point you should be able to run NativeAndroidApp:</p>
-<table>
-<thead>
-<tr>
-<th>Main Activity</th>
-<th>Unity Activity</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="/2023/02/22/android/appNativeSS.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/appNativeSS.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></td>
-<td><img src="/2023/02/22/android/appUnitySS.png" class="lazyload placeholder" data-srcset="/2023/02/22/android/appUnitySS.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></td>
-</tr>
-<tr>
-<td>Main Activity</td>
-<td>Unity is loaded and is running in a separate Activity. Light grey buttons in the middle are added from the MainUnityActivity implemented in NativeAndroidApp</td>
-</tr>
-</tbody></table>
-<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><ul>
-<li>Unity is running in another process android:process&#x3D;”:Unity” (AndroidManifest.xml at app module)</li>
-<li>After installation there will be two icons added on the device. To leave only the icon of the main activity, remove <intent-filter>…</intent-filter> from the AndroidManifest.xml in unityLibrary</li>
-<li>(Optional) We found some Android 7.* devices set frontOfTask to wrong state for activities as a result when finishing&#x2F;quitting Unity activity whole task goes to background instead of bringing back Main activity. Next workaround keeps expected behavior: add to MainUnityActivity.java from NativeAndroidApp<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Override public void onUnityPlayerQuitted() &#123; showMainActivity(&quot;&quot;); finish(); &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
+<h2 id="see"><a href="#see" class="headerlink" title="see"></a>see</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/czy_1995/article/details/128342280">https://blog.csdn.net/czy_1995/article/details/128342280</a></p>
 
       </div>
       <div class="post-tags-categories">
@@ -736,7 +687,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2023/02/22/android/" target="_blank" title="Integrating Unity as a library into standard Android app">http://1120118968.github.io/2023/02/22/android/</a>
+    <a href="/2023/03/06/baidumapuse/" target="_blank" title="百度地图功能使用">http://1120118968.github.io/2023/03/06/baidumapuse/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -754,44 +705,21 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/02/22/AndroidSocketToUnity/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">Android 作为服务器向 UNITY 客户端发送数据</div>
-      </div>
-      
-      <!-- <div class="content">
-        Android 作为服务器向 UNITY 客户端发送数据简介
-分层对应协议
-
-应用层：TFTP，HTTP，SNMP，FT
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/02/21/sh/" class="post-nav-link">
+    <a href="/2023/03/02/csharpkillprocess/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">Android常用脚本</div>
+        <div class="title-text">C#杀死unity中的进程方法</div>
       </div>
       <!-- <div class="content">
-        1. logcat 日志采集脚本1adb logcat -v time &gt; D:\log1.txt
-
-2. bug
+        unity 退出 app1234567/// &lt;summary&gt; /// exit /// &lt;/sum
       </div> -->
     </a>
   </div>
@@ -1111,7 +1039,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Integrating-Unity-as-a-library-into-standard-Android-app"><span class="toc-text">Integrating Unity as a library into standard Android app</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Project-is-ready"><span class="toc-text">Project is ready</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Notes"><span class="toc-text">Notes</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#key-generate"><span class="toc-text">key generate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#key-select"><span class="toc-text">key select</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#key-gen"><span class="toc-text">key gen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#or-see"><span class="toc-text">or see</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#error"><span class="toc-text">error</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#see"><span class="toc-text">see</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>

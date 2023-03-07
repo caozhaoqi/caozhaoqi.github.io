@@ -6,7 +6,7 @@
   <link href="http://1120118968.github.io/atom.xml" rel="self"/>
   
   <link href="http://1120118968.github.io/"/>
-  <updated>2023-03-02T07:39:36.758Z</updated>
+  <updated>2023-03-07T06:29:55.145Z</updated>
   <id>http://1120118968.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>百度地图功能使用</title>
+    <link href="http://1120118968.github.io/2023/03/06/baidumapuse/"/>
+    <id>http://1120118968.github.io/2023/03/06/baidumapuse/</id>
+    <published>2023-03-06T06:55:56.000Z</published>
+    <updated>2023-03-07T06:29:55.145Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="key-generate"><a href="#key-generate" class="headerlink" title="key generate"></a>key generate</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -printcert -file CERT.RSA</span><br></pre></td></tr></table></figure><h2 id="key-select"><a href="#key-select" class="headerlink" title="key select"></a>key select</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -list -v -keystore debug.keystore</span><br></pre></td></tr></table></figure><h2 id="key-gen"><a href="#key-gen" class="headerlink" title="key gen"></a>key gen</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkey -<span class="built_in">alias</span> test.keystore -keyalg RSA -validity 40000 -keystore demo.keystore</span><br></pre></td></tr></table></figure><h2 id="or-see"><a href="#or-see" class="headerlink" title="or see"></a>or see</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://blog.csdn.net/qq_40808344/article/details/101148833</span><br></pre></td></tr></table></figure><h2 id="error"><a href="#error" class="headerlink" title="error"></a>error</h2><ul><li>details</li></ul><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The location <span class="keyword">function</span> has been stopped because you <span class="keyword">do</span> not agree with the privacy compliance policy. Please recheck the setAgreePrivacy interface</span><br></pre></td></tr></table></figure><ul><li><p>solve</p><ul><li><p>such as figure 1 取消下列文件中对应行的注释即可解决</p><p><img src="/2023/03/06/baidumapuse/solve.png" class="lazyload placeholder" data-srcset="/2023/03/06/baidumapuse/solve.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p></li></ul></li></ul><h2 id="see"><a href="#see" class="headerlink" title="see"></a>see</h2><p><a href="https://blog.csdn.net/czy_1995/article/details/128342280">https://blog.csdn.net/czy_1995/article/details/128342280</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;key-generate&quot;&gt;&lt;a href=&quot;#key-generate&quot; class=&quot;headerlink&quot; title=&quot;key generate&quot;&gt;&lt;/a&gt;key generate&lt;/h2&gt;&lt;figure class=&quot;highlight sh&quot;&gt;&lt;tab</summary>
+      
+    
+    
+    
+    
+    <category term="app" scheme="http://1120118968.github.io/tags/app/"/>
+    
+  </entry>
   
   <entry>
     <title>C#杀死unity中的进程方法</title>
