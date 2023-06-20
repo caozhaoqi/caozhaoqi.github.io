@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/about/index.html</loc>
+    <loc>https://caozhaoqi.github.io/about/index.html</loc>
     
     <lastmod>2023-06-20</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/404.html</loc>
+    <loc>https://caozhaoqi.github.io/404.html</loc>
     
     <lastmod>2023-06-20</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/gallerygroup/index.html</loc>
+    <loc>https://caozhaoqi.github.io/gallerygroup/index.html</loc>
     
     <lastmod>2023-06-20</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/22/hexo-blog-createanduse/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/</loc>
     
     <lastmod>2023-06-20</lastmod>
     
@@ -38,7 +38,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/06/20/uvicorn-publish/</loc>
+    <loc>https://caozhaoqi.github.io/2023/06/20/uvicorn-publish/</loc>
     
     <lastmod>2023-06-20</lastmod>
     
@@ -47,7 +47,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/05/31/gateway-auth-control/</loc>
+    <loc>https://caozhaoqi.github.io/2023/05/31/gateway-auth-control/</loc>
     
     <lastmod>2023-05-31</lastmod>
     
@@ -56,7 +56,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/05/31/swagger-micro-service/</loc>
+    <loc>https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/</loc>
     
     <lastmod>2023-05-31</lastmod>
     
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/05/15/uvicorn-use/</loc>
+    <loc>https://caozhaoqi.github.io/2023/05/15/uvicorn-use/</loc>
     
     <lastmod>2023-05-15</lastmod>
     
@@ -74,7 +74,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/05/09/rest-framework-user/</loc>
+    <loc>https://caozhaoqi.github.io/2023/05/09/rest-framework-user/</loc>
     
     <lastmod>2023-05-15</lastmod>
     
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/22/android-unity-touch-md/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/</loc>
     
     <lastmod>2023-05-10</lastmod>
     
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/22/unityexport-to-android-md/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/unityexport-to-android-md/</loc>
     
     <lastmod>2023-05-10</lastmod>
     
@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/24/kill-process-app/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/24/kill-process-app/</loc>
     
     <lastmod>2023-05-09</lastmod>
     
@@ -110,7 +110,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/05/09/web-socket-electron/</loc>
+    <loc>https://caozhaoqi.github.io/2023/05/09/web-socket-electron/</loc>
     
     <lastmod>2023-05-09</lastmod>
     
@@ -119,7 +119,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/04/20/admin-manage-publish/</loc>
+    <loc>https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/</loc>
     
     <lastmod>2023-04-20</lastmod>
     
@@ -128,7 +128,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/03/10/eestudy/</loc>
+    <loc>https://caozhaoqi.github.io/2023/03/10/eestudy/</loc>
     
     <lastmod>2023-03-10</lastmod>
     
@@ -137,7 +137,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/03/06/baidumapuse/</loc>
+    <loc>https://caozhaoqi.github.io/2023/03/06/baidumapuse/</loc>
     
     <lastmod>2023-03-10</lastmod>
     
@@ -146,7 +146,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/03/02/androidopenapp-md/</loc>
+    <loc>https://caozhaoqi.github.io/2023/03/02/androidopenapp-md/</loc>
     
     <lastmod>2023-03-02</lastmod>
     
@@ -155,7 +155,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/22/android/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/android/</loc>
     
     <lastmod>2023-03-02</lastmod>
     
@@ -164,7 +164,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/03/02/csharpkillprocess/</loc>
+    <loc>https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/</loc>
     
     <lastmod>2023-03-02</lastmod>
     
@@ -173,7 +173,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/22/AndroidSocketToUnity/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/AndroidSocketToUnity/</loc>
     
     <lastmod>2023-02-27</lastmod>
     
@@ -182,7 +182,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/index.html</loc>
+    <loc>https://caozhaoqi.github.io/tags/index.html</loc>
     
     <lastmod>2023-02-27</lastmod>
     
@@ -191,7 +191,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/friends/index.html</loc>
+    <loc>https://caozhaoqi.github.io/friends/index.html</loc>
     
     <lastmod>2023-02-27</lastmod>
     
@@ -200,7 +200,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>https://caozhaoqi.github.io/categories/index.html</loc>
     
     <lastmod>2023-02-27</lastmod>
     
@@ -209,7 +209,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/22/UnityRotation/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/UnityRotation/</loc>
     
     <lastmod>2023-02-27</lastmod>
     
@@ -218,7 +218,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/21/sh/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/21/sh/</loc>
     
     <lastmod>2023-02-22</lastmod>
     
@@ -227,7 +227,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/21/hello-world/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/21/hello-world/</loc>
     
     <lastmod>2023-02-21</lastmod>
     
@@ -237,7 +237,7 @@
   
 
   <url>
-    <loc>http://example.com/</loc>
+    <loc>https://caozhaoqi.github.io/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -245,28 +245,28 @@
 
   
   <url>
-    <loc>http://example.com/tags/app/</loc>
+    <loc>https://caozhaoqi.github.io/tags/app/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/unity/</loc>
+    <loc>https://caozhaoqi.github.io/tags/unity/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/%E5%89%8D%E7%AB%AF/</loc>
+    <loc>https://caozhaoqi.github.io/tags/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/%E6%8A%80%E6%9C%AF/</loc>
+    <loc>https://caozhaoqi.github.io/tags/%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2023-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

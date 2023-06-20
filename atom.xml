@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>Zhaoqi.Cao</title>
   
+  <subtitle>浅斟低唱</subtitle>
+  <link href="https://caozhaoqi.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/atom.xml" rel="self"/>
-  
-  <link href="http://example.com/"/>
+  <link href="https://caozhaoqi.github.io/"/>
   <updated>2023-06-20T02:17:43.024Z</updated>
-  <id>http://example.com/</id>
+  <id>https://caozhaoqi.github.io/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>zhaoqi cao</name>
     
   </author>
   
@@ -18,8 +18,8 @@
   
   <entry>
     <title>uvicorn-publish</title>
-    <link href="http://example.com/2023/06/20/uvicorn-publish/"/>
-    <id>http://example.com/2023/06/20/uvicorn-publish/</id>
+    <link href="https://caozhaoqi.github.io/2023/06/20/uvicorn-publish/"/>
+    <id>https://caozhaoqi.github.io/2023/06/20/uvicorn-publish/</id>
     <published>2023-06-20T02:00:00.000Z</published>
     <updated>2023-06-20T02:17:43.024Z</updated>
     
@@ -38,8 +38,8 @@
   
   <entry>
     <title>gateway-auth-control</title>
-    <link href="http://example.com/2023/05/31/gateway-auth-control/"/>
-    <id>http://example.com/2023/05/31/gateway-auth-control/</id>
+    <link href="https://caozhaoqi.github.io/2023/05/31/gateway-auth-control/"/>
+    <id>https://caozhaoqi.github.io/2023/05/31/gateway-auth-control/</id>
     <published>2023-05-31T05:43:54.000Z</published>
     <updated>2023-05-31T06:51:57.100Z</updated>
     
@@ -58,8 +58,8 @@
   
   <entry>
     <title>swagger-micro-service</title>
-    <link href="http://example.com/2023/05/31/swagger-micro-service/"/>
-    <id>http://example.com/2023/05/31/swagger-micro-service/</id>
+    <link href="https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/"/>
+    <id>https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/</id>
     <published>2023-05-31T05:43:15.000Z</published>
     <updated>2023-05-31T06:20:33.568Z</updated>
     
@@ -78,8 +78,8 @@
   
   <entry>
     <title>uvicorn-use</title>
-    <link href="http://example.com/2023/05/15/uvicorn-use/"/>
-    <id>http://example.com/2023/05/15/uvicorn-use/</id>
+    <link href="https://caozhaoqi.github.io/2023/05/15/uvicorn-use/"/>
+    <id>https://caozhaoqi.github.io/2023/05/15/uvicorn-use/</id>
     <published>2023-05-15T03:18:53.000Z</published>
     <updated>2023-05-15T07:25:15.731Z</updated>
     
@@ -98,8 +98,8 @@
   
   <entry>
     <title>web_socket_electron</title>
-    <link href="http://example.com/2023/05/09/web-socket-electron/"/>
-    <id>http://example.com/2023/05/09/web-socket-electron/</id>
+    <link href="https://caozhaoqi.github.io/2023/05/09/web-socket-electron/"/>
+    <id>https://caozhaoqi.github.io/2023/05/09/web-socket-electron/</id>
     <published>2023-05-09T10:10:54.000Z</published>
     <updated>2023-05-09T10:29:03.828Z</updated>
     
@@ -118,8 +118,8 @@
   
   <entry>
     <title>rest-framework-user</title>
-    <link href="http://example.com/2023/05/09/rest-framework-user/"/>
-    <id>http://example.com/2023/05/09/rest-framework-user/</id>
+    <link href="https://caozhaoqi.github.io/2023/05/09/rest-framework-user/"/>
+    <id>https://caozhaoqi.github.io/2023/05/09/rest-framework-user/</id>
     <published>2023-05-09T10:10:37.000Z</published>
     <updated>2023-05-15T03:18:59.138Z</updated>
     
@@ -138,8 +138,8 @@
   
   <entry>
     <title>admin-manage-publish</title>
-    <link href="http://example.com/2023/04/20/admin-manage-publish/"/>
-    <id>http://example.com/2023/04/20/admin-manage-publish/</id>
+    <link href="https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/"/>
+    <id>https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/</id>
     <published>2023-04-20T01:27:18.000Z</published>
     <updated>2023-04-20T05:42:59.714Z</updated>
     
@@ -158,8 +158,8 @@
   
   <entry>
     <title>Electron Egg 框架研究</title>
-    <link href="http://example.com/2023/03/10/eestudy/"/>
-    <id>http://example.com/2023/03/10/eestudy/</id>
+    <link href="https://caozhaoqi.github.io/2023/03/10/eestudy/"/>
+    <id>https://caozhaoqi.github.io/2023/03/10/eestudy/</id>
     <published>2023-03-10T02:09:21.000Z</published>
     <updated>2023-03-10T06:26:23.365Z</updated>
     
@@ -175,14 +175,14 @@
     
     
     
-    <category term="前端" scheme="http://example.com/tags/%E5%89%8D%E7%AB%AF/"/>
+    <category term="前端" scheme="https://caozhaoqi.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   
   <entry>
     <title>百度地图功能使用</title>
-    <link href="http://example.com/2023/03/06/baidumapuse/"/>
-    <id>http://example.com/2023/03/06/baidumapuse/</id>
+    <link href="https://caozhaoqi.github.io/2023/03/06/baidumapuse/"/>
+    <id>https://caozhaoqi.github.io/2023/03/06/baidumapuse/</id>
     <published>2023-03-06T06:55:56.000Z</published>
     <updated>2023-03-10T02:08:11.303Z</updated>
     
@@ -197,14 +197,14 @@
     
     
     
-    <category term="app" scheme="http://example.com/tags/app/"/>
+    <category term="app" scheme="https://caozhaoqi.github.io/tags/app/"/>
     
   </entry>
   
   <entry>
     <title>C#杀死unity中的进程方法</title>
-    <link href="http://example.com/2023/03/02/csharpkillprocess/"/>
-    <id>http://example.com/2023/03/02/csharpkillprocess/</id>
+    <link href="https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/"/>
+    <id>https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/</id>
     <published>2023-03-02T07:10:58.000Z</published>
     <updated>2023-03-02T07:39:36.758Z</updated>
     
@@ -223,8 +223,8 @@
   
   <entry>
     <title>Android 在Activity中打开某个app</title>
-    <link href="http://example.com/2023/03/02/androidopenapp-md/"/>
-    <id>http://example.com/2023/03/02/androidopenapp-md/</id>
+    <link href="https://caozhaoqi.github.io/2023/03/02/androidopenapp-md/"/>
+    <id>https://caozhaoqi.github.io/2023/03/02/androidopenapp-md/</id>
     <published>2023-03-02T07:06:10.000Z</published>
     <updated>2023-03-02T09:48:07.905Z</updated>
     
@@ -243,8 +243,8 @@
   
   <entry>
     <title>kill_process_app 通过java代码kill进程</title>
-    <link href="http://example.com/2023/02/24/kill-process-app/"/>
-    <id>http://example.com/2023/02/24/kill-process-app/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/24/kill-process-app/"/>
+    <id>https://caozhaoqi.github.io/2023/02/24/kill-process-app/</id>
     <published>2023-02-24T03:02:27.000Z</published>
     <updated>2023-05-09T10:30:19.105Z</updated>
     
@@ -262,14 +262,14 @@
     
     
     
-    <category term="app" scheme="http://example.com/tags/app/"/>
+    <category term="app" scheme="https://caozhaoqi.github.io/tags/app/"/>
     
   </entry>
   
   <entry>
     <title>hexo-blog-createanduse</title>
-    <link href="http://example.com/2023/02/22/hexo-blog-createanduse/"/>
-    <id>http://example.com/2023/02/22/hexo-blog-createanduse/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/"/>
+    <id>https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/</id>
     <published>2023-02-22T05:43:29.000Z</published>
     <updated>2023-06-20T07:12:57.498Z</updated>
     
@@ -285,14 +285,14 @@
     
     
     
-    <category term="技术" scheme="http://example.com/tags/%E6%8A%80%E6%9C%AF/"/>
+    <category term="技术" scheme="https://caozhaoqi.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
   <entry>
     <title>Unity 中绕某个物体旋转方法</title>
-    <link href="http://example.com/2023/02/22/UnityRotation/"/>
-    <id>http://example.com/2023/02/22/UnityRotation/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/22/UnityRotation/"/>
+    <id>https://caozhaoqi.github.io/2023/02/22/UnityRotation/</id>
     <published>2023-02-22T03:26:41.000Z</published>
     <updated>2023-02-27T02:28:26.297Z</updated>
     
@@ -307,14 +307,14 @@
     
     
     
-    <category term="unity" scheme="http://example.com/tags/unity/"/>
+    <category term="unity" scheme="https://caozhaoqi.github.io/tags/unity/"/>
     
   </entry>
   
   <entry>
     <title>关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)</title>
-    <link href="http://example.com/2023/02/22/unityexport-to-android-md/"/>
-    <id>http://example.com/2023/02/22/unityexport-to-android-md/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/22/unityexport-to-android-md/"/>
+    <id>https://caozhaoqi.github.io/2023/02/22/unityexport-to-android-md/</id>
     <published>2023-02-22T03:26:41.000Z</published>
     <updated>2023-05-10T02:42:53.456Z</updated>
     
@@ -329,14 +329,14 @@
     
     
     
-    <category term="unity" scheme="http://example.com/tags/unity/"/>
+    <category term="unity" scheme="https://caozhaoqi.github.io/tags/unity/"/>
     
   </entry>
   
   <entry>
     <title>关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)</title>
-    <link href="http://example.com/2023/02/22/android-unity-touch-md/"/>
-    <id>http://example.com/2023/02/22/android-unity-touch-md/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/"/>
+    <id>https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/</id>
     <published>2023-02-22T03:25:46.000Z</published>
     <updated>2023-05-10T02:43:12.766Z</updated>
     
@@ -351,14 +351,14 @@
     
     
     
-    <category term="app" scheme="http://example.com/tags/app/"/>
+    <category term="app" scheme="https://caozhaoqi.github.io/tags/app/"/>
     
   </entry>
   
   <entry>
     <title>Android 作为服务器向 UNITY 客户端发送数据</title>
-    <link href="http://example.com/2023/02/22/AndroidSocketToUnity/"/>
-    <id>http://example.com/2023/02/22/AndroidSocketToUnity/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/22/AndroidSocketToUnity/"/>
+    <id>https://caozhaoqi.github.io/2023/02/22/AndroidSocketToUnity/</id>
     <published>2023-02-22T03:22:02.000Z</published>
     <updated>2023-02-27T05:56:09.278Z</updated>
     
@@ -373,14 +373,14 @@
     
     
     
-    <category term="app" scheme="http://example.com/tags/app/"/>
+    <category term="app" scheme="https://caozhaoqi.github.io/tags/app/"/>
     
   </entry>
   
   <entry>
     <title>Integrating Unity as a library into standard Android app</title>
-    <link href="http://example.com/2023/02/22/android/"/>
-    <id>http://example.com/2023/02/22/android/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/22/android/"/>
+    <id>https://caozhaoqi.github.io/2023/02/22/android/</id>
     <published>2023-02-22T03:22:02.000Z</published>
     <updated>2023-03-02T07:43:04.181Z</updated>
     
@@ -395,14 +395,14 @@
     
     
     
-    <category term="app" scheme="http://example.com/tags/app/"/>
+    <category term="app" scheme="https://caozhaoqi.github.io/tags/app/"/>
     
   </entry>
   
   <entry>
     <title>Android常用脚本</title>
-    <link href="http://example.com/2023/02/21/sh/"/>
-    <id>http://example.com/2023/02/21/sh/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/21/sh/"/>
+    <id>https://caozhaoqi.github.io/2023/02/21/sh/</id>
     <published>2023-02-21T09:53:12.238Z</published>
     <updated>2023-02-22T06:24:57.966Z</updated>
     
@@ -421,8 +421,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://example.com/2023/02/21/hello-world/"/>
-    <id>http://example.com/2023/02/21/hello-world/</id>
+    <link href="https://caozhaoqi.github.io/2023/02/21/hello-world/"/>
+    <id>https://caozhaoqi.github.io/2023/02/21/hello-world/</id>
     <published>2023-02-21T05:56:51.931Z</published>
     <updated>2023-02-21T05:56:51.931Z</updated>
     
