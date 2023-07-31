@@ -1,7 +1,8 @@
+https://caozhaoqi.github.io/2023/07/31/python-ftp-server/
+https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/
 https://caozhaoqi.github.io/about/index.html
 https://caozhaoqi.github.io/gallerygroup/index.html
 https://caozhaoqi.github.io/404.html
-https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/
 https://caozhaoqi.github.io/2023/06/20/uvicorn-publish/
 https://caozhaoqi.github.io/2023/05/31/gateway-auth-control/
 https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/
@@ -29,3 +30,4 @@ https://caozhaoqi.github.io/tags/app/
 https://caozhaoqi.github.io/tags/unity/
 https://caozhaoqi.github.io/tags/%E5%89%8D%E7%AB%AF/
 https://caozhaoqi.github.io/tags/%E6%8A%80%E6%9C%AF/
+https://caozhaoqi.github.io/tags/ftp/
