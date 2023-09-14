@@ -616,7 +616,7 @@
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 8min |
+            <i class="fas fa-clock"></i> Reading time: 9min |
           </span>
   
           
@@ -663,7 +663,7 @@
 <blockquote>
 <p>如图为单向认证流程</p>
 </blockquote>
-<img src="/2023/08/25/https-ssl-cert/liucheng.png" class="lazyload placeholder" data-srcset="/2023/08/25/https-ssl-cert/liucheng.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
+<img src="/2023/08/25/https-ssl-cert/liucheng.png" class="lazyload placeholder" data-srcset="/2023/08/25/https-ssl-cert/liucheng.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="img">
 
 <h4 id="双向认证"><a href="#双向认证" class="headerlink" title="双向认证"></a>双向认证</h4><ul>
 <li>客户端发起建立HTTPS连接请求，将SSL协议版本的信息发送给服务端；</li>
@@ -678,7 +678,7 @@
 <li>服务端和客户端在后续通讯过程中就使用这个密钥R进行通信了。<blockquote>
 <p>如图为双向认证流程</p>
 </blockquote>
-<img src="/2023/08/25/https-ssl-cert/shuangxiang.png" class="lazyload placeholder" data-srcset="/2023/08/25/https-ssl-cert/shuangxiang.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
+<img src="/2023/08/25/https-ssl-cert/shuangxiang.png" class="lazyload placeholder" data-srcset="/2023/08/25/https-ssl-cert/shuangxiang.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="img"></li>
 </ul>
 <h2 id="生成"><a href="#生成" class="headerlink" title="生成"></a>生成</h2><h3 id="自签名证书生成"><a href="#自签名证书生成" class="headerlink" title="自签名证书生成"></a>自签名证书生成</h3><ul>
 <li>1.ca证书生成(ca私钥)<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /etc/nginx/keys/</span><br><span class="line"><span class="built_in">cd</span> /etc/nginx/keys/</span><br><span class="line">openssl genrsa -out ca.key 4096</span><br></pre></td></tr></table></figure></li>
@@ -726,14 +726,25 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$JAVA_HOME</span></span><br><span class="line">sudo ./bin/keytool -import -<span class="built_in">alias</span> ttt -keystore cacerts -file /Users/fred/temp/cert5/server.crt</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h3 id="curl-工具测试"><a href="#curl-工具测试" class="headerlink" title="curl 工具测试"></a>curl 工具测试</h3><ul>
-<li>demo<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -v</span><br></pre></td></tr></table></figure></li>
-<li>test<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert ca.crt --cert client.crt --key client.key --tlsv1.2 https://192.168.0.162</span><br></pre></td></tr></table></figure></li>
-<li>detail <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#--cert指定客户端公钥证书的路径</span></span><br><span class="line"><span class="comment">#--key指定客户端私钥文件的路径</span></span><br><span class="line"><span class="comment">#-k 使用本参数不校验证书的合法性，因为我们用的是自签名证书</span></span><br><span class="line"><span class="comment">#可以使用-v来观察具体的SSL握手过程</span></span><br><span class="line">curl --cert ./client.crt --key ./client.key https://integration-fred2.fredhuang.com -k -v</span><br><span class="line">* Rebuilt URL to: https://47.93.XX.XX/</span><br><span class="line">*   Trying 47.93.XX.XX...</span><br><span class="line">* TCP_NODELAY <span class="built_in">set</span></span><br><span class="line">* Connected to 47.93.XX.XX (47.93.XX.XX) port 443 (<span class="comment">#0)</span></span><br><span class="line">* ALPN, offering h2</span><br><span class="line">* ALPN, offering http/1.1</span><br><span class="line">* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH</span><br><span class="line">* successfully <span class="built_in">set</span> certificate verify locations:</span><br><span class="line">*   CAfile: /etc/ssl/cert.pem</span><br><span class="line">  CApath: none</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, Client hello (1):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Server hello (2):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Certificate (11):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Server key exchange (12):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Request CERT (13):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Server finished (14):</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, Certificate (11):</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, CERT verify (15):</span><br><span class="line">* TLSv1.2 (OUT), TLS change cipher, Client hello (1):</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, Finished (20):</span><br><span class="line">* TLSv1.2 (IN), TLS change cipher, Client hello (1):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Finished (20):</span><br><span class="line">* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384</span><br><span class="line">* ALPN, server accepted to use http/1.1</span><br><span class="line">* Server certificate:</span><br><span class="line">*  subject: C=CN; ST=BJ; L=BJ; O=Alibaba; OU=Test; CN=integration-fred2.fredhuang.com; emailAddress=a@alibaba.com</span><br><span class="line">*  start <span class="built_in">date</span>: Nov  2 01:01:34 2019 GMT</span><br><span class="line">*  expire <span class="built_in">date</span>: Oct 30 01:01:34 2029 GMT</span><br><span class="line">*  issuer: C=CN; ST=BJ; L=BJ; O=Alibaba; OU=Test; CN=root; emailAddress=a@alibaba.com</span><br><span class="line">*  SSL certificate verify result: unable to get <span class="built_in">local</span> issuer certificate (20), continuing anyway.</span><br><span class="line">&gt; GET / HTTP/1.1</span><br><span class="line">&gt; host:integration-fred2.fredhuang.com</span><br><span class="line">&gt; User-Agent: curl/7.54.0</span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt;</span><br><span class="line">&lt; HTTP/1.1 200 OK</span><br><span class="line">&lt; Server: nginx/1.17.5</span><br><span class="line">&lt; Date: Sat, 02 Nov 2019 02:39:43 GMT</span><br><span class="line">&lt; Content-Type: text/html</span><br><span class="line">&lt; Content-Length: 612</span><br><span class="line">&lt; Last-Modified: Wed, 30 Oct 2019 11:29:45 GMT</span><br><span class="line">&lt; Connection: keep-alive</span><br><span class="line">&lt; ETag: <span class="string">&quot;5db97429-264&quot;</span></span><br><span class="line">&lt; Accept-Ranges: bytes</span><br><span class="line">&lt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;<span class="built_in">head</span>&gt;</span><br><span class="line">&lt;title&gt;Welcome to nginx!&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">    body &#123;</span><br><span class="line">        width: 35em;</span><br><span class="line">        margin: 0 auto;</span><br><span class="line">        font-family: Tahoma, Verdana, Arial, sans-serif;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;</span><br><span class="line">&lt;p&gt;If you see this page, the nginx web server is successfully installed and</span><br><span class="line">working. Further configuration is required.&lt;/p&gt;</span><br><span class="line">&lt;p&gt;For online documentation and support please refer to</span><br><span class="line">&lt;a href=<span class="string">&quot;http://nginx.org/&quot;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;</span><br><span class="line">Commercial support is available at</span><br><span class="line">&lt;a href=<span class="string">&quot;http://nginx.com/&quot;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;p&gt;&lt;em&gt;Thank you <span class="keyword">for</span> using nginx.&lt;/em&gt;&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">* Connection <span class="comment">#0 to host 47.93.XX.XX left intact</span></span><br></pre></td></tr></table></figure></li>
-<li>test demo <blockquote>
+<li><p>demo</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -v</span><br></pre></td></tr></table></figure></li>
+<li><p>test</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert ca.crt --cert client.crt --key client.key --tlsv1.2 https://192.168.0.162</span><br></pre></td></tr></table></figure></li>
+<li><p>detail </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#--cert指定客户端公钥证书的路径</span></span><br><span class="line"><span class="comment">#--key指定客户端私钥文件的路径</span></span><br><span class="line"><span class="comment">#-k 使用本参数不校验证书的合法性，因为我们用的是自签名证书</span></span><br><span class="line"><span class="comment">#可以使用-v来观察具体的SSL握手过程</span></span><br><span class="line">curl --cert ./client.crt --key ./client.key https://integration-fred2.fredhuang.com -k -v</span><br><span class="line">* Rebuilt URL to: https://47.93.XX.XX/</span><br><span class="line">*   Trying 47.93.XX.XX...</span><br><span class="line">* TCP_NODELAY <span class="built_in">set</span></span><br><span class="line">* Connected to 47.93.XX.XX (47.93.XX.XX) port 443 (<span class="comment">#0)</span></span><br><span class="line">* ALPN, offering h2</span><br><span class="line">* ALPN, offering http/1.1</span><br><span class="line">* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH</span><br><span class="line">* successfully <span class="built_in">set</span> certificate verify locations:</span><br><span class="line">*   CAfile: /etc/ssl/cert.pem</span><br><span class="line">  CApath: none</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, Client hello (1):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Server hello (2):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Certificate (11):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Server key exchange (12):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Request CERT (13):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Server finished (14):</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, Certificate (11):</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, CERT verify (15):</span><br><span class="line">* TLSv1.2 (OUT), TLS change cipher, Client hello (1):</span><br><span class="line">* TLSv1.2 (OUT), TLS handshake, Finished (20):</span><br><span class="line">* TLSv1.2 (IN), TLS change cipher, Client hello (1):</span><br><span class="line">* TLSv1.2 (IN), TLS handshake, Finished (20):</span><br><span class="line">* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384</span><br><span class="line">* ALPN, server accepted to use http/1.1</span><br><span class="line">* Server certificate:</span><br><span class="line">*  subject: C=CN; ST=BJ; L=BJ; O=Alibaba; OU=Test; CN=integration-fred2.fredhuang.com; emailAddress=a@alibaba.com</span><br><span class="line">*  start <span class="built_in">date</span>: Nov  2 01:01:34 2019 GMT</span><br><span class="line">*  expire <span class="built_in">date</span>: Oct 30 01:01:34 2029 GMT</span><br><span class="line">*  issuer: C=CN; ST=BJ; L=BJ; O=Alibaba; OU=Test; CN=root; emailAddress=a@alibaba.com</span><br><span class="line">*  SSL certificate verify result: unable to get <span class="built_in">local</span> issuer certificate (20), continuing anyway.</span><br><span class="line">&gt; GET / HTTP/1.1</span><br><span class="line">&gt; host:integration-fred2.fredhuang.com</span><br><span class="line">&gt; User-Agent: curl/7.54.0</span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt;</span><br><span class="line">&lt; HTTP/1.1 200 OK</span><br><span class="line">&lt; Server: nginx/1.17.5</span><br><span class="line">&lt; Date: Sat, 02 Nov 2019 02:39:43 GMT</span><br><span class="line">&lt; Content-Type: text/html</span><br><span class="line">&lt; Content-Length: 612</span><br><span class="line">&lt; Last-Modified: Wed, 30 Oct 2019 11:29:45 GMT</span><br><span class="line">&lt; Connection: keep-alive</span><br><span class="line">&lt; ETag: <span class="string">&quot;5db97429-264&quot;</span></span><br><span class="line">&lt; Accept-Ranges: bytes</span><br><span class="line">&lt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;<span class="built_in">head</span>&gt;</span><br><span class="line">&lt;title&gt;Welcome to nginx!&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">    body &#123;</span><br><span class="line">        width: 35em;</span><br><span class="line">        margin: 0 auto;</span><br><span class="line">        font-family: Tahoma, Verdana, Arial, sans-serif;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;</span><br><span class="line">&lt;p&gt;If you see this page, the nginx web server is successfully installed and</span><br><span class="line">working. Further configuration is required.&lt;/p&gt;</span><br><span class="line">&lt;p&gt;For online documentation and support please refer to</span><br><span class="line">&lt;a href=<span class="string">&quot;http://nginx.org/&quot;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;</span><br><span class="line">Commercial support is available at</span><br><span class="line">&lt;a href=<span class="string">&quot;http://nginx.com/&quot;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;p&gt;&lt;em&gt;Thank you <span class="keyword">for</span> using nginx.&lt;/em&gt;&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">* Connection <span class="comment">#0 to host 47.93.XX.XX left intact</span></span><br></pre></td></tr></table></figure></li>
+<li><p>test demo </p>
+<blockquote>
 <p>如图</p>
 </blockquote>
-<img src="/2023/08/25/https-ssl-cert/result.png" class="lazyload placeholder" data-srcset="/2023/08/25/https-ssl-cert/result.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
+<img src="/2023/08/25/https-ssl-cert/result.png" class="lazyload placeholder" data-srcset="/2023/08/25/https-ssl-cert/result.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="img">
+</li>
+<li><p>succ demo</p>
+<blockquote>
+<p>如图</p>
+</blockquote>
+<img src="/2023/08/25/https-ssl-cert/succ.png" class="lazyload placeholder" data-srcset="/2023/08/25/https-ssl-cert/succ.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="img"></li>
 </ul>
+<h2 id="See"><a href="#See" class="headerlink" title="See"></a>See</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27682773/article/details/104943308">https://blog.csdn.net/qq_27682773/article/details/104943308</a></p>
 
       </div>
       <div class="post-tags-categories">
@@ -764,6 +775,25 @@
 <div class="post-nav">
 
 
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/08/29/spring-cloud-activiti/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">spring-cloud-activiti</div>
+      </div>
+      
+      <!-- <div class="content">
+        基于Spring Cloud应用activiti流程框架activiti工作流简介
+Activiti 是一个开源架构的工
+      </div> -->
+    </a>
+  </div>
 
 
 
@@ -1099,7 +1129,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8ENginx%E7%9A%84http-sssl-cert%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E9%85%8D%E7%BD%AE"><span class="toc-text">基于Nginx的http_sssl_cert双向认证配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-text">流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-text">认证流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%90%91%E8%AE%A4%E8%AF%81"><span class="toc-text">单向认证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81"><span class="toc-text">双向认证</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90"><span class="toc-text">生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E7%AD%BE%E5%90%8D%E8%AF%81%E4%B9%A6%E7%94%9F%E6%88%90"><span class="toc-text">自签名证书生成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx%E9%85%8D%E7%BD%AE"><span class="toc-text">Nginx配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#java%E6%B5%8B%E8%AF%95"><span class="toc-text">java测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#curl-%E5%B7%A5%E5%85%B7%E6%B5%8B%E8%AF%95"><span class="toc-text">curl 工具测试</span></a></li></ol></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8ENginx%E7%9A%84http-sssl-cert%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E9%85%8D%E7%BD%AE"><span class="toc-text">基于Nginx的http_sssl_cert双向认证配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-text">流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-text">认证流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%90%91%E8%AE%A4%E8%AF%81"><span class="toc-text">单向认证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81"><span class="toc-text">双向认证</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90"><span class="toc-text">生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E7%AD%BE%E5%90%8D%E8%AF%81%E4%B9%A6%E7%94%9F%E6%88%90"><span class="toc-text">自签名证书生成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx%E9%85%8D%E7%BD%AE"><span class="toc-text">Nginx配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#java%E6%B5%8B%E8%AF%95"><span class="toc-text">java测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#curl-%E5%B7%A5%E5%85%B7%E6%B5%8B%E8%AF%95"><span class="toc-text">curl 工具测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -1125,6 +1155,27 @@
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/08/29/spring-cloud-activiti/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-29</span>
+                
+              </div>
+              <a class="post-title" href="/2023/08/29/spring-cloud-activiti/">spring-cloud-activiti</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -1207,27 +1258,6 @@
                 
               </div>
               <a class="post-title" href="/2023/05/31/gateway-auth-control/">gateway-auth-control</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/05/31/swagger-micro-service/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">05-31</span>
-                
-              </div>
-              <a class="post-title" href="/2023/05/31/swagger-micro-service/">swagger-micro-service</a>
             </div>
           </div>
         
