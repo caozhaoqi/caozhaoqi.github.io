@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>Android常用脚本 | Zhaoqi.Cao static Blog</title>
+  <title>Tag: blog | Zhaoqi.Cao static Blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -576,761 +576,157 @@
 </header>
         <!-- 内容区域 -->
         
- <!-- prismjs 代码高亮 -->
- 
 
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
+<div class="bg-light-floor-tagDetail" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
 
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
-
-
-  <!-- 文章详情页顶部图片和标题 -->
-
-
-
-
-<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp')">
-  <div class="post-detail-header-mask"></div>
-  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
-  
-  <div class="post-detail-header_info-box">
-    <div class="title-box">
-      <span class="title">
-        Android常用脚本
-      </span>
-    </div>
-    
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2023-02-21 |
-        </span>
-      
-
-      
-
-      
-        <div class="post-detail-header_wordcount">
-          <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 1.2k |
-          </span>
-  
-          <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 6min |
-          </span>
-  
-          
-            <span class="reading">
-              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
-            </span>
-          
-        </div>
-      
-    
+<div class="tag-header" style="background-image: url('https://pic1.zhimg.com/80/v2-604a15cef201cf177943af2d915eb2e7_1440w.jpg?source=1940ef5c');">
+  <div class="tag-header-title">
+    标签详情
   </div>
+  <div class="tag-header-desc">
   
-  
-    <script src="/js/bubble/bubble.js"></script>
-  
-</div>
-
-
-
-
-
-<div class="post-detail-content post-row" 
-  style="padding-top: 0px;">
-  <div class="main-content">
-    <article class="post post-detail">
-      <div class="post-content">
-        <h1 id="1-logcat-日志采集脚本"><a href="#1-logcat-日志采集脚本" class="headerlink" title="1. logcat 日志采集脚本"></a>1. logcat 日志采集脚本</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb logcat -v time &gt; D:\log1.txt</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-bugly-符号表上传脚本"><a href="#2-bugly-符号表上传脚本" class="headerlink" title="2. bugly 符号表上传脚本"></a>2. bugly 符号表上传脚本</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  C:\Windows\System32\cmd.exe</span><br><span class="line">java -jar C:\Users\root\Desktop\buglyqq-upload-symbol.jar -appid 4107a98858 -appkey 3bd03b8a-7c32-447c-ae4f-cb636561bae5 -bundleid com.example.apanewtuozhuai_MKZD531110DZDML1223_u3d -version 1.0.0 -platform Android -inputSymbol D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\libil2cpp.so</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>mapping 映射文件 -inputMapping <mapping file></mapping></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%~dp0\D:\Program Files\Java\jdk1.8.0_181\jre\bin\java</span><br></pre></td></tr></table></figure>
-
-<h2 id="result"><a href="#result" class="headerlink" title="result"></a>result</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">Microsoft Windows [版本 10.0.25252.1010]</span><br><span class="line">(c) Microsoft Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">D:\Program Files\Java\jdk1.8.0_181\bin&gt;java -jar C:\Users\root\Desktop\buglyqq-upload-symbol.jar -appid 4107a98858 -appkey 3bd03b8a-7c32-447c-ae4f-cb636561bae5 -bundleid com.example.apanewtuozhuai_MKZD531110DZDML1223_u3d -version 1.0.0 -platform Android -inputSymbol D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\libil2cpp.so</span><br><span class="line"><span class="comment">##[info]bugly tools android params: -appid 4107a98858 -appkey 3bd03b8a-7c32-447c-ae4f-cb636561bae5 -bundleid com.example.apanewtuozhuai_MKZD531110DZDML1223_u3d -version 1.0.0 -platform Android -inputSymbol D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\libil2cpp.so</span></span><br><span class="line"></span><br><span class="line">Bugly(bugly.qq.com)符号表工具上传工具包 V1.0.48</span><br><span class="line"></span><br><span class="line">用法 -- Usage</span><br><span class="line"> java -jar buglyqq-upload-symbol.jar -appid &lt;APP ID&gt; -appkey &lt;APP KEY&gt; -bundleid &lt;App BundleID&gt; -version &lt;App Version&gt; -platform &lt;App Platform&gt; -inputSymbol &lt;Original Symbol File Path&gt; -inputMapping &lt;Original mapping File Path&gt;</span><br><span class="line"></span><br><span class="line">参数说明 -- Introduction <span class="keyword">for</span> arguments</span><br><span class="line"> -appid APP ID of Bugly</span><br><span class="line"> -appkey APP Key of Bugly</span><br><span class="line"> -bundleid Android平台对应的是package name/iOS平台是Bundle Id</span><br><span class="line"> -version APP版本，需要和bugly平台上面看到的crash版本号保持对齐</span><br><span class="line"> -platform 平台类型包含三个选项 Android、IOS两个选项，注意大小写要正确</span><br><span class="line"> -inputSymbol 原始符号表[ios是dsym/android平台是debug so]所在文件夹目录地址</span><br><span class="line"> -inputMapping mapping所在文件夹目录地址[Android平台特有，ios忽略]</span><br><span class="line"></span><br><span class="line"><span class="comment">##[info]args is ArgsParser&#123;appId=&#x27;4107a98858&#x27;appKey=&#x27;3bd03b8a-7c32-447c-ae4f-cb636561bae5&#x27;, appPackage=&#x27;com.example.apanewtuozhuai_MKZD531110DZDML1223_u3d&#x27;, appVersion=&#x27;1.0.0&#x27;, appBuildNo=&#x27;null&#x27;, platformId=Android&#x27;, enviroment=null&#x27;, symbolPathName=&#x27;D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\libil2cpp.so&#x27;, mappingPathName=&#x27;null&#x27;, appPathName=&#x27;null&#x27;&#125;</span></span><br><span class="line"><span class="comment">##[info]deleteDirFiles file path is D:\Program Files\Java\jdk1.8.0_181\bin\buglybin</span></span><br><span class="line"><span class="comment">##[info]packSymbolFile file</span></span><br><span class="line"><span class="comment">##[warning]mapping path is null</span></span><br><span class="line"><span class="comment">##[info]mapping is exist ?: false</span></span><br><span class="line"><span class="comment">##[info]so is exist ?: true</span></span><br><span class="line"><span class="comment">##[info]bugly tools android params: -i D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\libil2cpp.so -o D:\Program Files\Java\jdk1.8.0_181\bin\buglybin\symbolResult\BuglySoStifListZip.zip</span></span><br><span class="line">D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\libil2cpp.so [armeabi-v7a] 611f94d5ee0bbee371346d6abe550c7b</span><br><span class="line"></span><br><span class="line">[SymtabTool-I] Extracting symtab file: libil2cpp.so</span><br><span class="line">[SymtabTool-I] Processing file: D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\libil2cpp.so</span><br><span class="line">[SymtabTool-I] Begin to parse file: D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\libil2cpp.so</span><br><span class="line">[SymtabTool-W] No .bugly_version section <span class="keyword">in</span> the elf file</span><br><span class="line">[SymtabTool-I] Successfully parsed the file!</span><br><span class="line">[SymtabTool-I] Begin to extract symbol table.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</span><br><span class="line">[SymtabTool-I] Successfully extracted symbol table!</span><br><span class="line">[SymtabTool-I] UUID: 611f94d5ee0bbee371346d6abe550c7b</span><br><span class="line">[SymtabTool-I] Begin to create symtab file: D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.symbol</span><br><span class="line">[SymtabTool-I] Successfully created symtab file!</span><br><span class="line">[SymtabTool-I] Begin to parse the file：D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.symbol</span><br><span class="line">[SymtabTool-I] Successfully parsed the file</span><br><span class="line">[SymtabTool-I] Begin to construct stif file: D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.stif</span><br><span class="line">[SymtabTool-I] getSymtabEntryNum: 9563453</span><br><span class="line">[SymtabTool-I] getIndexEntryLength: 24</span><br><span class="line">[SymtabTool-I] Successfully constructed stif file</span><br><span class="line">[SymtabTool-I] Add stif to symtab zip file: D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.stif</span><br><span class="line">[SymtabTool-I] Begin to zip stif file: D:\u3d_host_app_drm\unityLibrary\symbols\armeabi-v7a\buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b</span><br><span class="line">[SymtabTool-I] Successfully zipped stif file!</span><br><span class="line">[SymtabTool-I] Begin to zip symtab file: D:\Program Files\Java\jdk1.8.0_181\bin\buglybin\symbolResult\BuglySoStifListZip.zip</span><br><span class="line">[SymtabTool-I] Successfully zipped symtab file!</span><br><span class="line"><span class="comment">##[info]destFile :D:\Program Files\Java\jdk1.8.0_181\bin\buglybin\symbolResult\BuglySoStifListZip.zipdir :.\buglybin\symbolResult</span></span><br><span class="line"><span class="comment">##[info]visit file name is : buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.zip</span></span><br><span class="line"><span class="comment">##[info]parseStifFileName prefix : buglySymbol arg1 : armeabi-v7a</span></span><br><span class="line"><span class="comment">##[info]parseStifFileName arg2 : libil2cpp uuid : 611f94d5ee0bbee371346d6abe550c7b</span></span><br><span class="line"><span class="comment">##[info]parseStifFileName endfix : zip</span></span><br><span class="line"><span class="comment">##[info]so file detail :SymbolFileDetail&#123;name=&#x27;buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.zip, uuid=&#x27;611f94d5ee0bbee371346d6abe550c7b, arch=&#x27;armeabi-v7a, type=101, moduleName=&#x27;libil2cpp&#125;</span></span><br><span class="line"><span class="comment">##[info]mix symbol file detail :SymbolFileDetail&#123;name=&#x27;buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.zip, uuid=&#x27;611f94d5ee0bbee371346d6abe550c7b, arch=&#x27;armeabi-v7a, type=101, moduleName=&#x27;libil2cpp&#125;</span></span><br><span class="line"><span class="comment">##[info]androidSymbolFileDetailList size is :1</span></span><br><span class="line"><span class="comment">##[info]uploadSymbolFile file :D:\Program Files\Java\jdk1.8.0_181\bin\buglybin\symbolResult\BuglySoStifListZip.zip</span></span><br><span class="line"><span class="comment">##[info]postRqdFile fileName: BuglySoStifListZip.zip</span></span><br><span class="line"><span class="comment">##[info]now begin to uploadFile</span></span><br><span class="line"><span class="comment">##[info]buildName :null&amp;null</span></span><br><span class="line"><span class="comment">##[info]buildID :null</span></span><br><span class="line"><span class="comment">##[info]appID :4107a98858</span></span><br><span class="line"><span class="comment">##[info]bundle :com.example.apanewtuozhuai_MKZD531110DZDML1223_u3d</span></span><br><span class="line"><span class="comment">##[info]appVersion :1.0.0</span></span><br><span class="line"><span class="comment">##[info]platformId :1</span></span><br><span class="line"><span class="comment">##[info]appBuildNumber :null</span></span><br><span class="line"><span class="comment">##[info]fileType :201</span></span><br><span class="line"><span class="comment">##[info]fileMD5 :f09855ee3011c9a39b59d601374ea61f</span></span><br><span class="line"><span class="comment">##[info]fileSize :81016813</span></span><br><span class="line"><span class="comment">##[info]symbolFileDetail is [&#123;&quot;name&quot;:&quot;buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.zip&quot;,&quot;uuid&quot;:&quot;611f94d5ee0bbee371346d6abe550c7b&quot;,&quot;arch&quot;:&quot;armeabi-v7a&quot;,&quot;type&quot;:101,&quot;moduleName&quot;:&quot;libil2cpp&quot;&#125;]</span></span><br><span class="line"><span class="comment">##[info]request json is &#123;&quot;appID&quot;:&quot;4107a98858&quot;,&quot;authSign&quot;:&quot;3bd03b8a-7c32-447c-ae4f-cb636561bae5&quot;,&quot;appVersion&quot;:&quot;1.0.0&quot;,&quot;appBundleID&quot;:&quot;com.example.apanewtuozhuai_MKZD531110DZDML1223_u3d&quot;,&quot;appPlatform&quot;:1,&quot;appBuildNumber&quot;:null,&quot;fileType&quot;:201,&quot;fileSize&quot;:81016813,&quot;fileMD5&quot;:&quot;f09855ee3011c9a39b59d601374ea61f&quot;,&quot;clientType&quot;:7,&quot;clientVersion&quot;:&quot;1.0.48&quot;,&quot;buildPlatform&quot;:1,&quot;buildID&quot;:null,&quot;buildName&quot;:&quot;null&amp;null&quot;,&quot;fileInfoList&quot;:[&#123;&quot;name&quot;:&quot;buglySymbol&amp;armeabi-v7a&amp;libil2cpp&amp;611f94d5ee0bbee371346d6abe550c7b.zip&quot;,&quot;uuid&quot;:&quot;611f94d5ee0bbee371346d6abe550c7b&quot;,&quot;arch&quot;:&quot;armeabi-v7a&quot;,&quot;type&quot;:101,&quot;moduleName&quot;:&quot;libil2cpp&quot;&#125;],&quot;buildRepo&quot;:null,&quot;buildBranch&quot;:null,&quot;buildCommitID&quot;:null&#125;</span></span><br><span class="line"><span class="comment">##[info]request upload Info Url is https://symbol-v2.bugly.qq.com/trpc.eff_tool.symbol_upload_gateway.SymbolUploadGateway/uploadInfo</span></span><br><span class="line"><span class="comment">##[info]request gitRepoUrl is null</span></span><br><span class="line"><span class="comment">##[info]request gitRepoBranch is null</span></span><br><span class="line"><span class="comment">##[info]request gitRepoHeadCommitId is null</span></span><br><span class="line"><span class="comment">##[info]envtype is null</span></span><br><span class="line"><span class="comment">##[info]getAppModuleList is null</span></span><br><span class="line"><span class="comment">##[info]retCode: 200 response message: &#123;&quot;statusCode&quot;:0,&quot;msg&quot;:&quot;success&quot;,&quot;uploadReqID&quot;:&quot;4107a98858-2015378e-233f-4d3a-84de-798a78374d51&quot;&#125;</span></span><br><span class="line"><span class="comment">##[info]now begin to uploadFileContent</span></span><br><span class="line"><span class="comment">##[info]request uploadFileurl is https://symbol-v2.bugly.qq.com/trpc.eff_tool.symbol_upload_gateway.SymbolUploadGateway/uploadFile</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="成功后结果如图"><a href="#成功后结果如图" class="headerlink" title="成功后结果如图"></a>成功后结果如图</h2><img src="/2023/02/21/sh/symbol-tables.png" class="lazyload placeholder" data-srcset="/2023/02/21/sh/symbol-tables.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-
-      </div>
-      <div class="post-tags-categories">
-        
-      </div>
-      
-        <div class="copyright">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-    <strong>author:  </strong>zhaoqi cao</a>
-    </li>
-    <li class="post-copyright-link">
-    <strong>link:  </strong>
-    <a href="/2023/02/21/sh/" target="_blank" title="Android常用脚本">https://caozhaoqi.github.io/2023/02/21/sh/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>Copyright notice:   </strong>
-      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-      reprint policy. If reproduced, please indicate source!
-    </li>
-  </ul>
-<div>
-      
-    </article>
-    <!-- 上一篇文章和下一篇文章 -->
-    
-      <!-- 文章详情页的上一页和下一页 -->
-<div class="post-nav">
-
-
-
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/02/22/android/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">Integrating Unity as a library into standard Android app</div>
-      </div>
-      
-      <!-- <div class="content">
-        Integrating Unity as a library into standard Android appThis
-      </div> -->
-    </a>
-  </div>
-
-
-
-  
-  <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
-    </div>
-    <a href="/2023/02/21/hello-world/" class="post-nav-link">
-      <div class="title">
-        Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">Hello World</div>
-      </div>
-      <!-- <div class="content">
-        Welcome to Hexo! This is your very first post. Check documen
-      </div> -->
-    </a>
-  </div>
-
-</div>
-
-    
-    
-
-    <!-- 打赏 -->
-    
-      <div id="appDonate" class="post-donate">
-  <div id="donate_board" class="donate_bar center" ref="donate">
-    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
-  </div>
-  <transition name="fade">
-    <div 
-      class="donate-box-mask"
-      v-cloak 
-      v-show="visible"
-      @click="cancelDialogDrawer()"
-    >
-    </div>
-  </transition>
-  <transition name="bounce">
-    <div class="donate-box" v-cloak v-show="visible">
-      <div class="donate-box_close">
-        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
-      </div>
-      <div class="donate-box_title">
-        <h4>
-          你的赏识是我前进的动力
-        </h4>
-      </div>
-      <div class="donate-box_tab">
-        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
-          支付宝
-        </div>
-        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
-          微信
-        </div>
-      </div>
-      <div class="donate-box_img">
-        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
-          <img src="/" class="lazyload placeholder" data-srcset="/" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
-        </div> 
-        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
-          <img src="/" class="lazyload placeholder" data-srcset="/" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
-        </div>
-      </div>
-    </div>
-  </transition>
-</div>
-
-<script>
-  var body = document.body || document.documentElement || window;
-  var vm = new Vue({
-    el: '#appDonate',
-    data: {
-      visible: false,
-      tabActive: 'Alipay',
-      top: 0,
-    },
-    computed: {
-    },
-    mounted() {
-    },
-    methods: {
-      showDialogDrawer() {
-        this.visible = true;
-        // 防止页面滚动，只能让弹框滚动
-        // function getScroll() {
-        //   return {
-        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
-        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
-        //   };
-        // }
-        this.top = $(document).scrollTop() // or getScroll().top
-        // console.log('aa', $('.main-content'));
-        body.style.cssText = 'overflow: hidden;';
-      },
-      cancelDialogDrawer() {
-        this.visible = false;
-        body.removeAttribute('style');
-        $(document).scrollTop(this.top)
-      },
-      changeTabActive(name) {
-        this.tabActive = name;
-      }
-    },
-    created() {}
-  })
-</script>
-    
-
-    <!-- 分享 -->
-    
-      <!-- https://github.com/overtrue/share.js -->
-<!-- 文章详情页的分享 -->
-<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-
-<script src="/js/shareJs/social-share.min.js"></script>
-</script>
-
-<style>
-  .social-share {
-    margin: 20px 0;
+    <span class="title" id="tag-header-desc"></span>
+    <script>
+  function typedFn() {
+    const el = '#tag-header-desc';
+    const type = 'tagDetail';
+    let desc = '愿你如风，被人温柔以待'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
   }
-</style>
-
-
-    
-    
-    <!-- 评论 -->
-    <!-- 评论 -->
-
-  <div id="myComment">
-    
-      
-<section id="comments" style="padding: 1em;"
-	class="animated bounceInUp">
-	<div id="vcomment" class="comment"></div>
-</section>
-<style>
-	#comments {
-		background: rgba(255,255,255,0.9);
-	}
-	#veditor {
-		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
-		background-size: contain;
-		background-repeat: no-repeat;
-		background-position: right;
-		background-color: rgba(255, 255, 255, 0);
-		resize: vertical;
-	}
-	#veditor:focus{
-		background-position-y: 200px;
-		transition: all 0.2s ease-in-out 0s;
-	}
-	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
-		background-color: #42b983;
-	}
-	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
-		color: #42b983;
-		border-color: #42b983;
-	}
-	#vcomment .vcards .vcard .vhead .vsys i {
-		display: none;
-	}
-	/* 底部valine链接 */
-	#vcomment .vpower {
-		display: none;
-	}
-	
-	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
-	/* #vcomment .vheader {
-		display: flex;
-		justify-content: space-around;
-	}
-	
-	#vcomment .vheader .vnick {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	}
-
-	#vcomment .vheader .vmail {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	}
-
-	#vcomment .vheader .vlink {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	} */
-
-	img.vimg {
-		transition: all 1s;
-		/* 头像旋转时间为 1s */
-	}
-
-	img.vimg:hover {
-		transform: rotate(360deg);
-		-webkit-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-	}
-
-	#vcomment .vcards .vcard {
-		padding: 15px 20px 0 20px;
-		border-radius: 10px;
-		margin-bottom: 15px;
-		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
-		transition: all .3s
-	}
-
-	#vcomment .vcards .vcard:hover {
-		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
-	}
-
-	#vcomment .vcards .vcard .vh .vcard {
-		border: none;
-		box-shadow: none;
-	}
-</style>
+  typedFn();
+</script>
     
   </div>
+  <div class="mask-box"></div>
+</div>
 
-<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
 
 
+<div class="tag">
+  <div class="tag-name">
+    <div class="name" style="background-color: #A3E4D7;">blog category</div>
   </div>
+  <!-- 每一篇文章卡片 -->
+  <!-- hash算法 -->
 
-  <!-- 目录 -->
-  
-<aside id='l_side'>
+<section class="posts">
   
     
-      
-        <section class="widget side_blogger">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img src='http://api.btstu.cn/sjtx/api.php?lx=c1&format=images'/>
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-02-22</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/02/22/hexo-blog-createanduse/">使用Hexo框架构建博客并发布</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+    <i class="iconfont icontag"></i>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blog/" rel="tag">blog</a></li></ul>
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/02/22/hexo-blog-createanduse/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            hexo blog desc
+Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。
+
+hexo install
+安装 Node.js在官方网站下载
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/02/22/hexo-blog-createanduse/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2023/02/22/hexo-blog-createanduse/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
-      
+      </div>
+    </article>
+  
     
-    
-      <div class='text'>
-        
-          <h2>浅斟低唱</h2>
-        
-        
-          <p>博客</p>
+    <article class="post reveal" style="   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-02-21</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/02/21/hello-world/">Hello World</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
 
-        
-        
-          <p><span id="jinrishici-sentence">Zhaoqi.Cao static Blog</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
+    <i class="iconfont icontag"></i>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blog/" rel="tag">blog</a></li></ul>
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/02/21/hello-world/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/02/21/hello-world/">
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+          </a>
+        </div>
       </div>
-    
-    
-      <div class="social-wrapper">
-        
-          
-            <a href="/atom.xml"
-              class="social fas fa-rss flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="mailto:1150118968@qq.com"
-              class="social fas fa-envelope flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="https://github.com/caozhaoqi/"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
-              class="social fab fa-qq flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
+      <div class="post-img">
+        <a href="/2023/02/21/hello-world/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
       </div>
-    
-  </div>
+    </article>
+  
 </section>
-
-      
-    
-  
-  
-  
-    
-  
-
-  <div class="layout_sticky">    
-    
-      
-<section class="widget side_toc">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="toc-main">
-      <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-logcat-%E6%97%A5%E5%BF%97%E9%87%87%E9%9B%86%E8%84%9A%E6%9C%AC"><span class="toc-text">1. logcat 日志采集脚本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-bugly-%E7%AC%A6%E5%8F%B7%E8%A1%A8%E4%B8%8A%E4%BC%A0%E8%84%9A%E6%9C%AC"><span class="toc-text">2. bugly 符号表上传脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#result"><span class="toc-text">result</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%90%E5%8A%9F%E5%90%8E%E7%BB%93%E6%9E%9C%E5%A6%82%E5%9B%BE"><span class="toc-text">成功后结果如图</span></a></li></ol></li></ol> -->
-        <div class="toc"></div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- 手机端目录按钮 -->
-<div id="toc-mobile-btn">
-  <i class="fas fa-list-ul" aria-hidden="true"></i>
 </div>
 
-      
-  <section class="widget side_recent_post">
-    
-  <header>
-    
-      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      
-      <!-- hash算法 -->
-      
-      <div class="aside-list">
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/11/28/mdf-file-parser/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">11-28</span>
-                
-              </div>
-              <a class="post-title" href="/2023/11/28/mdf-file-parser/">mdf-file-parser</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/11/06/python-ini-file-config/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">11-06</span>
-                
-              </div>
-              <a class="post-title" href="/2023/11/06/python-ini-file-config/">python_ini_file_config</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/29/spring-cloud-activiti/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-29</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/29/spring-cloud-activiti/">spring-cloud-activiti</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/08/25/https-ssl-cert/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-25</span>
-                
-              </div>
-              <a class="post-title" href="/2023/08/25/https-ssl-cert/">https_ssl_cert</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2023/07/31/python-ftp-server/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">07-31</span>
-                
-              </div>
-              <a class="post-title" href="/2023/07/31/python-ftp-server/">python-ftp-server</a>
-            </div>
-          </div>
-        
-      </div>
-    </div>
-  </section>
-
-    
-  </div>
-</aside>
-
-
-  <!-- 图片放大 Wrap images with fancybox support -->
-  <script src="/js/wrapImage.js"></script>
-</div>
-
-<!-- 文章详情页背景图 -->
-<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
-	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
-	<transition-group tag="ul" :name="names">
-		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
-			<img :src="image" class="bg-swiper-img no-lazy">
-		</li>
-	</transition-group>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#appBgSwiper',
-		data: {
-			names: '' || 'fade' || 'fade', // translate-fade fade
-			mark: 0,
-			img: [],
-			bgColor: '',
-			time: null
-		},
-		methods: {   //添加方法
-			change(i, m) {
-				if (i > m) {
-					// this.names = 'fade';
-				} else if (i < m) {
-					// this.names = 'fade';
-				} else {
-					return;
-				}
-				this.mark = i;
-			},
-			prev() {
-				// this.names = 'fade';
-				this.mark--;
-				if (this.mark === -1) {
-					this.mark = 3;
-					return
-				}
-			},
-			next() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			autoPlay() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			play() {
-				let bgImgDelay = '' || '180000'
-				let delay = parseInt(bgImgDelay) || 180000;
-				this.time = setInterval(this.autoPlay, delay);
-			},
-			enter() {
-				clearInterval(this.time);
-			},
-			leave() {
-				this.play();
-			}
-		},
-		created() {
-			this.play()
-		},
-		beforeDestroy() {
-			clearInterval(this.time);
-		},
-		mounted() {
-			let prop = '' || '';
-			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
-			if (isImg) {
-				let img = prop.split(',');
-				let configRoot = '/'
-				let arrImg = [];
-				img.forEach(el => {
-					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-					var objExp = new RegExp(Expression);
-
-					if (objExp.test(el)) {
-						// http or https
-						arrImg.push(el);
-					} else {
-						// 非http or https开头
-						// 本地文件
-						let firstStr = el.charAt(0);
-						if (firstStr == '/') {
-							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
-						}
-						el = configRoot + el;
-						arrImg.push(el);
-					}
-				})
-				this.img = arrImg;
-			} else {
-				this.bgColor = prop;
-			}
-		}
-	})
-</script>
-
-<style>
-	.bg-swiper-box {
-		position: absolute;
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.bg-swiper-img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
-
-
-  <script>
-  function loadMermaid() {
-    if (document.getElementsByClassName('mermaid').length) {
-      if (window.mermaidJsLoad) mermaid.init()
-      else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
-          window.mermaidJsLoad = true
-          mermaid.initialize({
-            theme: 'default',
-          })
-          if ('true') {
-            mermaid.init();
-          }
-        })
-      }
-    }
-  };
-  document.addEventListener("DOMContentLoaded", function () {
-    loadMermaid();
-  })
-
-  document.addEventListener('pjax:complete', function () {
-    loadMermaid();
-  })
+<div class="w-70">
   
-</script>
-
+</div>
 
       </main>
     </div>
