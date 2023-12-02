@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2023/08/25/https-ssl-cert/
 https://caozhaoqi.github.io/2023/12/01/cpp-project-build-clion/
 https://caozhaoqi.github.io/2023/02/24/kill-process-app/
 https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/
@@ -21,7 +22,6 @@ https://caozhaoqi.github.io/2023/06/20/uvicorn-publish/
 https://caozhaoqi.github.io/2023/05/15/uvicorn-use/
 https://caozhaoqi.github.io/2023/05/09/web-socket-electron/
 https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/
-https://caozhaoqi.github.io/2023/08/25/https-ssl-cert/
 https://caozhaoqi.github.io/about/index.html
 https://caozhaoqi.github.io/gallerygroup/index.html
 https://caozhaoqi.github.io/404.html
@@ -44,3 +44,4 @@ https://caozhaoqi.github.io/tags/blog/
 https://caozhaoqi.github.io/tags/java%E3%80%81zuul/
 https://caozhaoqi.github.io/tags/python/
 https://caozhaoqi.github.io/tags/unbutu/
+https://caozhaoqi.github.io/tags/nginx/

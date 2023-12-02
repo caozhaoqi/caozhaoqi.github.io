@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://caozhaoqi.github.io/2023/08/25/https-ssl-cert/</loc>
+    
+    <lastmod>2023-12-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2023/12/01/cpp-project-build-clion/</loc>
     
     <lastmod>2023-12-02</lastmod>
@@ -209,15 +218,6 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/08/25/https-ssl-cert/</loc>
-    
-    <lastmod>2023-09-01</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/about/index.html</loc>
     
     <lastmod>2023-06-20</lastmod>
@@ -384,6 +384,13 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/unbutu/</loc>
+    <lastmod>2023-12-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/tags/nginx/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
