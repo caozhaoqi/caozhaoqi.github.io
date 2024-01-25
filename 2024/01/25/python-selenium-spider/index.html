@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>页面未找到 | Zhaoqi.Cao static Blog</title>
+  <title>python使用selenium框架动态抓取指定内容 | Zhaoqi.Cao static Blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,17 +589,43 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/378da4d6e6ac67c5bcd1d63d76f65d81_1440w.jpg?source=1940ef5c')">
+  background-position: center center;position: relative;background-image:url('https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        页面未找到
+        python使用selenium框架动态抓取指定内容
       </span>
     </div>
     
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2024-01-25 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 584 |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 2min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
     
   </div>
   
@@ -617,15 +643,52 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p class="p center large">404</p>
-<p class="p center large">很抱歉，您访问的页面不存在</p>
-<p class="p center small">可能是输入地址有误或该地址已被删除</p>
+        <h1 id="技术简介"><a href="#技术简介" class="headerlink" title="技术简介"></a>技术简介</h1><blockquote>
+<p>Selenium是一个用于Web应用程序的自动化测试框架，通过模拟用户在浏览器中的操作，如点击按钮、输入文本等，来执行自动化测试。它支持多种浏览器和操作系统，并且可以通过各种编程语言编写测试脚本。Selenium的主要特点是易于使用、灵活性和稳定性，因此在Web测试领域被广泛使用。</p>
+</blockquote>
+<h1 id="安装使用"><a href="#安装使用" class="headerlink" title="安装使用"></a>安装使用</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>pip<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install selenium</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h2><ul>
+<li>动态获取内容<blockquote>
+<p>demo中的案例通过selenium框架中的 webdriver.Chrome(options&#x3D;options)方法获取google chrome启动后的驱动，通过操作driver.get(url_detail)方法动态获取当前网页内容，通过 time.sleep(search_delta_time)增加延迟以确保内容加载完成。</p>
+</blockquote>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.common <span class="keyword">import</span> NoSuchWindowException</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"></span><br><span class="line"> <span class="comment"># 设置代理服务器</span></span><br><span class="line">    proxy = &#123;</span><br><span class="line">        <span class="string">&quot;proxyType&quot;</span>: <span class="string">&quot;manual&quot;</span>,</span><br><span class="line">        <span class="string">&quot;httpProxy&quot;</span>: <span class="string">&quot;http://&quot;</span> + constants.proxy_server_ip + <span class="string">&quot;:&quot;</span> + <span class="built_in">str</span>(constants.proxy_server_port),  <span class="comment"># 代理服务器地址和端口</span></span><br><span class="line">        <span class="string">&quot;ftpProxy&quot;</span>: <span class="string">&quot;http://&quot;</span> + constants.proxy_server_ip + <span class="string">&quot;:&quot;</span> + <span class="built_in">str</span>(constants.proxy_server_port),</span><br><span class="line">        <span class="string">&quot;sslProxy&quot;</span>: <span class="string">&quot;http://&quot;</span> + constants.proxy_server_ip + <span class="string">&quot;:&quot;</span> + <span class="built_in">str</span>(constants.proxy_server_port),</span><br><span class="line">        <span class="string">&quot;noProxy&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">        <span class="string">&quot;proxyAutoconfigUrl&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建浏览器驱动程序并设置代理参数</span></span><br><span class="line">    options = webdriver.ChromeOptions()</span><br><span class="line">    <span class="keyword">if</span> proxy_flag == <span class="string">&#x27;True&#x27;</span>:</span><br><span class="line">        options.set_capability(<span class="string">&quot;proxy&quot;</span>, proxy)</span><br><span class="line">        logger.info(<span class="string">&quot;current use internal proxy, proxy content: &quot;</span> + <span class="built_in">str</span>(proxy[<span class="string">&#x27;httpProxy&#x27;</span>]))</span><br><span class="line"></span><br><span class="line">    driver = webdriver.Chrome(options=options)</span><br><span class="line">    mode = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    url = <span class="string">&quot;https://&quot;</span> + visit_url + <span class="string">&quot;/tags/&quot;</span> + key_word + <span class="string">&quot;/artworks?&quot;</span> + mode</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        url_detail = url_process_page(url, current_page=cur_page)</span><br><span class="line">        logger.info(<span class="string">&quot;current use url : &quot;</span> + <span class="built_in">str</span>(url_detail))</span><br><span class="line">        driver.get(url_detail)</span><br><span class="line">        <span class="comment"># 等待图片加载完成</span></span><br><span class="line">        time.sleep(search_delta_time)</span><br><span class="line">        logger.debug(<span class="string">&quot;start load href save url to txt.&quot;</span>)</span><br><span class="line">        load_save_flag = load_href_save(driver, key_word)</span><br><span class="line">        <span class="keyword">if</span> load_save_flag:</span><br><span class="line">            <span class="comment"># 使用函数</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                save_img_url(driver, key_word)</span><br><span class="line">                cur_page += <span class="number">1</span></span><br><span class="line">                logger.success(<span class="string">&quot;save img all finish，current page:  &quot;</span> + <span class="built_in">str</span>(cur_page))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> NoSuchWindowException <span class="keyword">as</span> nswe:</span><br><span class="line">                logger.warning(<span class="string">&quot;chrome force exit! detail:&quot;</span> + <span class="built_in">str</span>(nswe))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="comment"># 循环抓取结束 断掉浏览器 重置标志位、</span></span><br><span class="line">    self.success_tips()</span><br><span class="line">    constants.spider_image_flag = <span class="literal">False</span></span><br><span class="line">    logger.warning(<span class="string">&quot;google chrome will exit! &quot;</span>)</span><br><span class="line">    driver.quit()</span><br></pre></td></tr></table></figure></li>
+<li>过滤筛选数据<blockquote>
+<p>下方代码通过driver.find_elements(By.CSS_SELECTOR, “a”)获取指定html元素值，并存储值列表，后期可对列表数据进行筛选，以此完成目标数据的动态抓取</p>
+</blockquote>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">load_href_save</span>(<span class="params">driver, key_word</span>):</span><br><span class="line">    image_urls_list = []</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        image_elements = driver.find_elements(By.CSS_SELECTOR, <span class="string">&quot;a&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> image_element <span class="keyword">in</span> image_elements:</span><br><span class="line">            driver.execute_script(<span class="string">&quot;return arguments[0].href;&quot;</span>, image_element)</span><br><span class="line">            image_urls_list.append(image_url)</span><br><span class="line">            logger.debug(<span class="string">&quot;load href and start save img url: &quot;</span> + image_url)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> un_e:</span><br><span class="line">        logger.error(<span class="string">&quot;Error, unknown error, detail:&quot;</span> + <span class="built_in">str</span>(un_e))</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure></li>
+</ul>
 
-<span class="btn center large"><a class="button" href="/" title="返回首页"><i class="fa fa-home"></i>返回首页</a></span>
       </div>
       <div class="post-tags-categories">
         
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
       </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>zhaoqi.cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2024/01/25/python-selenium-spider/" target="_blank" title="python使用selenium框架动态抓取指定内容">https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
       
     </article>
     <!-- 上一篇文章和下一篇文章 -->
@@ -637,6 +700,27 @@
 
 
 
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/12/29/micro-service-py/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Python多脚本的集成化管理（微服务，Nginx）</div>
+      </div>
+      <!-- <div class="content">
+        基本思想
+通过微服务、或nginx通过某种方式集成管理各个分散python脚本
+
+技术路线Nginx代理转发
+通过配置脚
+      </div> -->
+    </a>
+  </div>
+
 </div>
 
     
@@ -644,8 +728,106 @@
 
     <!-- 打赏 -->
     
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/" class="lazyload placeholder" data-srcset="/" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/" class="lazyload placeholder" data-srcset="/" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
 
     <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
     
     
     <!-- 评论 -->
@@ -842,27 +1024,29 @@
   <div class="layout_sticky">    
     
       
-        
+<section class="widget side_toc">
   
-      
-      
-        
-<section class="widget side_tagcloud">
-    
   <header>
     
-      <a style="color: " href='/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
-    <div class='content'>
-    <a href="/tags/android/" style="font-size: 22.33px; color: #606060">android</a> <a href="/tags/android%E3%80%81unity/" style="font-size: 15.67px; color: #8e8e8e">android、unity</a> <a href="/tags/app/" style="font-size: 14px; color: #999">app</a> <a href="/tags/blog/" style="font-size: 17.33px; color: #828282">blog</a> <a href="/tags/cpp%E3%80%81CLion/" style="font-size: 15.67px; color: #8e8e8e">cpp、CLion</a> <a href="/tags/electron/" style="font-size: 17.33px; color: #828282">electron</a> <a href="/tags/java/" style="font-size: 19px; color: #777">java</a> <a href="/tags/java%E3%80%81zuul/" style="font-size: 15.67px; color: #8e8e8e">java、zuul</a> <a href="/tags/nginx/" style="font-size: 15.67px; color: #8e8e8e">nginx</a> <a href="/tags/python/" style="font-size: 24px; color: #555">python</a> <a href="/tags/unbutu/" style="font-size: 15.67px; color: #8e8e8e">unbutu</a> <a href="/tags/unity/" style="font-size: 20.67px; color: #6c6c6c">unity</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 14px; color: #999">前端</a> <a href="/tags/%E6%8A%80%E6%9C%AF/" style="font-size: 14px; color: #999">技术</a>
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E7%AE%80%E4%BB%8B"><span class="toc-text">技术简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-text">安装使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#demo"><span class="toc-text">demo</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
     </div>
+  </div>
 </section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
 
-  
-      
       
   <section class="widget side_recent_post">
     
@@ -988,136 +1172,6 @@
     </div>
   </section>
 
-      
-  <section class="widget side_archives">
-    
-    <header><a style="color: red" href='/archives/'><i class="fas fa-archive fa-fw" aria-hidden="true"></i><span class='name'>归档</span></a></header><div class="content"><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">一月 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">十二月 2023</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">十一月 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/08/"><span class="card-archive-list-date">八月 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/07/"><span class="card-archive-list-date">七月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">六月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/05/"><span class="card-archive-list-date">五月 2023</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/04/"><span class="card-archive-list-date">四月 2023</span><span class="card-archive-list-count">1</span></a></li></ul></div>
-  </section>
-
-      <section class="widget side_webinfo">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-chart-line fa-fw" aria-hidden="true"></i><span class='name'>站点信息</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="webinfo">
-      
-        <div class="webinfo-item">
-          <div>文章数目：</div>
-          <div>29 篇</div>
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>已运行时间：</div>
-          <div id="webinfo-runtime-count" publish_date="03/24/2020 21:34:09"></div>
-        </div>
-        <script>
-          var BirthDay = new Date(new Date('2023/02/22'));
-          var today = new Date();
-          var timeold = (today.getTime() - BirthDay.getTime());
-          var daysold = Math.floor(timeold / (24 * 60 * 60 * 1000));
-          document.getElementById('webinfo-runtime-count').innerHTML = daysold + ' 天';
-        </script>
-      
-
-
-      
-        <div class="webinfo-item">
-          <div>本站总字数：</div>
-          <div>42.1k 字</div>
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>本站访客数：</div>
-          
-          <div><span id="busuanzi_value_site_uv"><i class="fas fa-fan fa-spin fa-fw" aria-hidden="true"></i></span> 人</div>
-          
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>本站总访问量：</div>
-          
-          <div><span id="busuanzi_value_site_pv"><i class="fas fa-fan fa-spin fa-fw" aria-hidden="true"></i></span> 次</div>
-          
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>最后活动时间：</div>
-          
-            <div id="last-update" style="display: none;">Thu Jan 25 2024 18:09:16 GMT+0800 (中国标准时间)</div>
-            <div id="last-update-show">2024-01-25 日</div>
-          
-        </div>
-        
-        <script>
-          function timeago(dateTimeStamp) {
-              var minute = 1000 * 60; //把分，时，天，周，半个月，一个月用毫秒表示
-              var hour = minute * 60;
-              var day = hour * 24;
-              var week = day * 7;
-              var month = day * 30;
-              var now = new Date().getTime(); //获取当前时间毫秒
-              var diffValue = now - dateTimeStamp; //时间差
-              if (diffValue < 0) {
-                  return;
-              }
-              var minC = diffValue / minute; //计算时间差的分，时，天，周，月
-              var hourC = diffValue / hour;
-              var dayC = diffValue / day;
-              var weekC = diffValue / week;
-              var monthC = diffValue / month;
-              if (monthC >= 1 && monthC <= 3) {
-                  result = " " + parseInt(monthC) + " 月前"
-              } else if (weekC >= 1 && weekC <= 3) {
-                  result = " " + parseInt(weekC) + " 周前"
-              } else if (dayC >= 1 && dayC <= 6) {
-                  result = " " + parseInt(dayC) + " 天前"
-              } else if (hourC >= 1 && hourC <= 23) {
-                  result = " " + parseInt(hourC) + " 小时前"
-              } else if (minC >= 1 && minC <= 59) {
-                  result = " " + parseInt(minC) + " 分钟前"
-              } else if (diffValue >= 0 && diffValue <= minute) {
-                  result = "刚刚"
-              } else {
-                  var datetime = new Date();
-                  datetime.setTime(dateTimeStamp);
-                  var Nyear = datetime.getFullYear();
-                  var Nmonth = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-                  var Ndate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-                  var Nhour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-                  var Nminute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-                  var Nsecond = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-                  result = Nyear + "-" + Nmonth + "-" + Ndate
-              }
-              return result;
-          }
-          var lastUpDate = document.getElementById('last-update').innerHTML;
-          try {
-            document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
-          } catch (error) {
-            document.getElementById('last-update-show').innerHTML = '2024-01-25 日';
-          }
-        </script>
-        
-      
-    </div>
-  </div>
-</section>
-      
-  
-
     
   </div>
 </aside>
@@ -1200,7 +1254,7 @@
 			clearInterval(this.time);
 		},
 		mounted() {
-			let prop = 'https://pic2.zhimg.com/v2-b19815c3780fe949adcee6693721087d_b.jpg' || '';
+			let prop = '' || '';
 			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
 			if (isImg) {
 				let img = prop.split(',');
