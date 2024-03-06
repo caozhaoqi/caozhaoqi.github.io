@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>C#杀死unity中的进程方法 | Zhaoqi.Cao static Blog</title>
+  <title>spider_image_system_introduction | Zhaoqi.Cao static Blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,21 +589,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        C#杀死unity中的进程方法
+        spider_image_system_introduction
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2023-03-02 |
+          <i class="fas fa-calendar"></i> Published in：2024-03-06 |
         </span>
       
 
@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 310 |
+            <i class="fas fa-file-text-o"></i> Words: 831 |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 1min |
+            <i class="fas fa-clock"></i> Reading time: 5min |
           </span>
   
           
@@ -643,28 +643,93 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="unity-退出-app"><a href="#unity-退出-app" class="headerlink" title="unity 退出 app"></a>unity 退出 app</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> exit</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ExitUnity</span>()</span></span><br><span class="line"> &#123;</span><br><span class="line">     Application.Quit();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="unity-暂停退出"><a href="#unity-暂停退出" class="headerlink" title="unity 暂停退出"></a>unity 暂停退出</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> unload</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UnloadUnity</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Application.Unload();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="unity-杀死当前所有进程"><a href="#unity-杀死当前所有进程" class="headerlink" title="unity 杀死当前所有进程"></a>unity 杀死当前所有进程</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 退出方式1 https://blog.csdn.net/sakuya_miku/article/details/109219878</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">OnExitBtnClick</span>(<span class="params"><span class="built_in">string</span> processName</span>)</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment">// https://blog.csdn.net/qq_38721111/article/details/82864423</span></span><br><span class="line">       UnityEngine.Debug.Log(<span class="string">&quot;当前应用：&quot;</span> + System.Diagnostics.Process.GetCurrentProcess().ProcessName + <span class="string">&quot; 进程ID: &quot;</span> + System.Diagnostics.Process.GetCurrentProcess().Id);</span><br><span class="line">       <span class="comment">// ListAllAppliction();</span></span><br><span class="line">       UnityEngine.Debug.Log(<span class="string">&quot;On Exit Btn CLick method executing&quot;</span>);</span><br><span class="line">       <span class="keyword">try</span></span><br><span class="line">       &#123;</span><br><span class="line"></span><br><span class="line">           System.Diagnostics.Process.GetCurrentProcess().Exited += <span class="keyword">new</span> EventHandler(exep_Exited);</span><br><span class="line">           System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();</span><br><span class="line">           System.Diagnostics.Process.GetCurrentProcess().Close();</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">catch</span> (Exception e)</span><br><span class="line">       &#123;</span><br><span class="line">           UnityEngine.Debug.Log(<span class="string">&quot;error : &quot;</span> + e);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">exep_Exited</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">   &#123;</span><br><span class="line">       UnityEngine.Debug.LogError(<span class="string">&quot;CloseMainWindow&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="unity-杀死所有进程"><a href="#unity-杀死所有进程" class="headerlink" title="unity 杀死所有进程"></a>unity 杀死所有进程</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 杀死进程</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;processName&quot;&gt;</span>应用程序名<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">KillProcess</span>(<span class="params"><span class="built_in">string</span> processName</span>)</span></span><br><span class="line">   &#123;</span><br><span class="line">       System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcesses();</span><br><span class="line">       <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; processes.Length; i++)</span><br><span class="line">           processes[i].Kill();</span><br><span class="line">       UnityEngine.Debug.Log(<span class="string">&quot;已杀死进程&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="unity-通过-Pid-杀死指定进程"><a href="#unity-通过-Pid-杀死指定进程" class="headerlink" title="unity 通过 Pid 杀死指定进程"></a>unity 通过 Pid 杀死指定进程</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> kill by pid</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;id&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">KillByPid</span>(<span class="params"><span class="built_in">string</span> id</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    System.Diagnostics.Process p = System.Diagnostics.Process.GetProcessById(<span class="built_in">int</span>.Parse(id));</span><br><span class="line">    p.Kill();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="杀死当前单一进程"><a href="#杀死当前单一进程" class="headerlink" title="杀死当前单一进程"></a>杀死当前单一进程</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> test single kill process</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SingleKillProcess</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    System.Diagnostics.Process.GetCurrentProcess().Kill();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="Spider-Image-System-User-Guide"><a href="#Spider-Image-System-User-Guide" class="headerlink" title="Spider Image System User Guide"></a>Spider Image System User Guide</h1><h2 id="Struct-design"><a href="#Struct-design" class="headerlink" title="Struct design"></a>Struct design</h2><ol>
+<li>Spider pixiv.net img -&gt; search img -&gt; get url.</li>
+<li>Replace domain -&gt; save url to txt.</li>
+<li>According to url download image from txt content.</li>
+<li>Spider gif image generate video.</li>
+<li>Download gofile file.</li>
+</ol>
+<h2 id="Execute-method"><a href="#Execute-method" class="headerlink" title="Execute method"></a>Execute method</h2><ol>
+<li>Run sis_v1.0.x.exe(windows platform).</li>
+<li>Run .&#x2F;src&#x2F;run&#x2F;sh&#x2F;run.bat(windows platform).</li>
+<li>Run .&#x2F;src&#x2F;run&#x2F;sh&#x2F;run.sh(linux platform).</li>
+</ol>
+<h2 id="Position"><a href="#Position" class="headerlink" title="Position"></a>Position</h2><ul>
+<li>If not visit pixiv.net website, could visit sd.2021.host or other url(example: sd.vv50.de) replace.</li>
+<li>Other.</li>
+</ul>
+<h2 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h2><ul>
+<li>Pyqt5 paint main ui.</li>
+</ul>
+<h2 id="Technology-lib"><a href="#Technology-lib" class="headerlink" title="Technology lib"></a>Technology lib</h2><ol>
+<li>selenium.</li>
+<li>loguru.</li>
+<li>requests.</li>
+<li>Other(Read requirements.txt).</li>
+</ol>
+<h2 id="Folder"><a href="#Folder" class="headerlink" title="Folder"></a>Folder</h2><ol>
+<li>.&#x2F;data&#x2F;href_url&#x2F; artwork url folder.</li>
+<li>.&#x2F;data&#x2F;img_url&#x2F; img url txt folder.</li>
+<li>.&#x2F;data&#x2F;*&#x2F;images&#x2F; save img folder.</li>
+<li>.&#x2F;data&#x2F;video generate video folder.</li>
+<li>.&#x2F;data&#x2F;according_pid_download_image pid image download folder.</li>
+<li>.&#x2F;data&#x2F;face_detect_result face detect result folder.</li>
+<li>.&#x2F;data&#x2F;error_images error images folder.</li>
+<li>.&#x2F;log_dir&#x2F; script run log folder.</li>
+<li>Other see .&#x2F;data&#x2F;.</li>
+</ol>
+<h2 id="File"><a href="#File" class="headerlink" title="File"></a>File</h2><ol>
+<li>.&#x2F;data&#x2F;download_final_image.json: final download image info.</li>
+<li>.&#x2F;data&#x2F;download_finished_txt.txt: already download keyword txt.</li>
+<li>.&#x2F;data&#x2F;error_image_txt.txt: download fail image save txt.</li>
+<li>.&#x2F;data&#x2F;spider_finished_keyword.txt: already spider finish keyword txt.</li>
+<li>.&#x2F;data&#x2F;spider_img_keyword_final.json: final spider keyword image json.</li>
+</ol>
+<h2 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h2><ol>
+<li>Self config constant val(Done).</li>
+<li>Play all video(Done).</li>
+<li>Autoplay all image(Done).</li>
+<li>Auto spider image(Done).</li>
+<li>System performance monitor(Done).</li>
+<li>Online show image(Done).</li>
+<li>Gif and image process(Done).</li>
+<li>Face detect from downloaded image folder(Done).</li>
+<li>Other small tools(Done).</li>
+<li>Other…(to be continued…)</li>
+</ol>
+<ul>
+<li><p>bugs 1 : 在类方法中不能使用@logger.catch注解方法，会出现以下错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">File <span class="string">&quot;C:\Users\Administrator\PycharmProjects\calmcar_sf_server\src\test\gui\ui_main.py&quot;</span>, line 130, <span class="keyword">in</span> ui_paint</span></span><br><span class="line">    app.exec_()</span><br><span class="line">    │   └ &lt;built-in method exec_&gt;</span><br><span class="line">    └ &lt;PyQt5.QtWidgets.QApplication object at 0x000002045EF19AF0&gt;</span><br><span class="line"></span><br><span class="line">TypeError: next_img() takes 1 positional argument but 3 were given</span><br></pre></td></tr></table></figure></li>
+<li><p>problem 1 on ubuntu: opencv-python与pyqt5冲突(问题解决)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 uninstall opencv-python</span><br><span class="line">sudo pip3 install opencv-python-headless</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">QObject::moveToThread: Current thread (0x55f29a27e0e0) is not the object&#x27;s thread (0x55f29a946dd0).</span><br><span class="line">Cannot move to target thread (0x55f29a27e0e0)</span><br><span class="line"></span><br><span class="line">qt.qpa.plugin: Could not load the Qt platform plugin &quot;xcb&quot; in &quot;/usr/local/lib/python3.10/dist-packages/cv2/qt/plugins&quot; even though it was found.</span><br><span class="line">This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.</span><br><span class="line"></span><br><span class="line">Available platform plugins are: xcb, eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, webgl.</span><br><span class="line"></span><br><span class="line">Aborted</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>Notice: if cannot start spider image, you need install google chrome explore, detail:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">File &quot;/usr/local/lib/python3.10/dist-packages/selenium/webdriver/chrome/webdriver.py&quot;, line 45, in __init__</span><br><span class="line">    super().__init__(</span><br><span class="line">  File &quot;/usr/local/lib/python3.10/dist-packages/selenium/webdriver/chromium/webdriver.py&quot;, line 49, in __init__</span><br><span class="line">    self.service.path = DriverFinder.get_path(self.service, options)</span><br><span class="line">    │    │       │      │            │        │    │        └ &lt;selenium.webdriver.chrome.options.Options object at 0x7f816cf3da20&gt;</span><br><span class="line">    │    │       │      │            │        │    └ &lt;selenium.webdriver.chrome.service.Service object at 0x7f816cf3da80&gt;</span><br><span class="line">    │    │       │      │            │        └ &lt;unprintable WebDriver object&gt;</span><br><span class="line">    │    │       │      │            └ &lt;staticmethod(&lt;function DriverFinder.get_path at 0x7f816eb9cb80&gt;)&gt;</span><br><span class="line">    │    │       │      └ &lt;class &#x27;selenium.webdriver.common.driver_finder.DriverFinder&#x27;&gt;</span><br><span class="line">    │    │       └ &lt;property object at 0x7f816eb5ebb0&gt;</span><br><span class="line">    │    └ &lt;selenium.webdriver.chrome.service.Service object at 0x7f816cf3da80&gt;</span><br><span class="line">    └ &lt;unprintable WebDriver object&gt;</span><br><span class="line">  File &quot;/usr/local/lib/python3.10/dist-packages/selenium/webdriver/common/driver_finder.py&quot;, line 41, in get_path</span><br><span class="line">    raise NoSuchDriverException(msg) from err</span><br><span class="line">          │                     └ &#x27;Unable to obtain driver for chrome using Selenium Manager.&#x27;</span><br><span class="line">          └ &lt;class &#x27;selenium.common.exceptions.NoSuchDriverException&#x27;&gt;</span><br><span class="line"></span><br><span class="line">selenium.common.exceptions.NoSuchDriverException: Message: Unable to obtain driver for chrome using Selenium Manager.; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location</span><br></pre></td></tr></table></figure>
+<p>~ For solve problem, need install follow package:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">apt install chromium-browser</span><br><span class="line">sudo mkdir -p /home/czq/.local/share/applications</span><br><span class="line">sudo touch /home/czq/.local/share/applications/mimeapps.list</span><br><span class="line">chmod -R 777 /home/czq/</span><br><span class="line">xdg-open https://www.baidu.com</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">re run ./sh/run.sh to solve the problem</span></span><br></pre></td></tr></table></figure></li>
+<li><p>For use face detect, you need run follow command on ubuntu:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install libgtk2.0-dev pkg-config</span><br><span class="line">run ./sh/run_face_detect.sh # (on ubuntu os)</span><br></pre></td></tr></table></figure></li>
+<li><p>Install third-party libraries for project</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">recommend use</span></span><br><span class="line">pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">single lib install <span class="built_in">command</span></span></span><br><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv-contrib-python</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Build project and publish pack</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pyinstaller main_test.spec #使用spec文件打包exe</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>solve not run on HECS(HuaWei ECS) from huawei cloud</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">see</span></span><br><span class="line">https://neucrack.com/p/407</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>wait a moment, code will open to all people, please visit follow url download exe or source code:<br><a target="_blank" rel="noopener" href="https://gitee.com/caozhaoqi/spider_image_system">https://gitee.com/caozhaoqi/spider_image_system</a></p>
+</blockquote>
+</li>
+</ul>
+<h1 id="See"><a href="#See" class="headerlink" title="See"></a>See</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/caozhaoqi">https://gitee.com/caozhaoqi</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/caozhaoqi/spider_image_system">https://gitee.com/caozhaoqi/spider_image_system</a></li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
-        
-        <div class="tags">
-          
-            <a href="/tags/unity/" class="">
-              unity
-            </a>
-          
-        </div>
         
       </div>
       
@@ -675,7 +740,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2023/03/02/csharpkillprocess/" target="_blank" title="C#杀死unity中的进程方法">https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/</a>
+    <a href="/2024/03/06/spider-image-system-introduction/" target="_blank" title="spider_image_system_introduction">https://caozhaoqi.github.io/2024/03/06/spider-image-system-introduction/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -693,41 +758,22 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/03/06/baidumapuse/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">百度地图功能使用</div>
-      </div>
-      
-      <!-- <div class="content">
-        key generate 地图 API 秘钥生成1keytool -printcert -file CERT.RSA
-
-
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/03/02/androidopenapp-md/" class="post-nav-link">
+    <a href="/2024/01/25/python-selenium-spider/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">Android 在Activity中打开某个app</div>
+        <div class="title-text">python使用selenium框架动态抓取指定内容</div>
       </div>
       <!-- <div class="content">
-        在使用前传入 app 包名，具体代码如下：123456789101112131415161718192021222324
+        技术简介
+Selenium是一个用于Web应用程序的自动化测试框架，通过模拟用户在浏览器中的操作，如点击按钮、输入文本等
       </div> -->
     </a>
   </div>
@@ -1047,7 +1093,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#unity-%E9%80%80%E5%87%BA-app"><span class="toc-text">unity 退出 app</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unity-%E6%9A%82%E5%81%9C%E9%80%80%E5%87%BA"><span class="toc-text">unity 暂停退出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unity-%E6%9D%80%E6%AD%BB%E5%BD%93%E5%89%8D%E6%89%80%E6%9C%89%E8%BF%9B%E7%A8%8B"><span class="toc-text">unity 杀死当前所有进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unity-%E6%9D%80%E6%AD%BB%E6%89%80%E6%9C%89%E8%BF%9B%E7%A8%8B"><span class="toc-text">unity 杀死所有进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unity-%E9%80%9A%E8%BF%87-Pid-%E6%9D%80%E6%AD%BB%E6%8C%87%E5%AE%9A%E8%BF%9B%E7%A8%8B"><span class="toc-text">unity 通过 Pid 杀死指定进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%80%E6%AD%BB%E5%BD%93%E5%89%8D%E5%8D%95%E4%B8%80%E8%BF%9B%E7%A8%8B"><span class="toc-text">杀死当前单一进程</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spider-Image-System-User-Guide"><span class="toc-text">Spider Image System User Guide</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Struct-design"><span class="toc-text">Struct design</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Execute-method"><span class="toc-text">Execute method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Position"><span class="toc-text">Position</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GUI"><span class="toc-text">GUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Technology-lib"><span class="toc-text">Technology lib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Folder"><span class="toc-text">Folder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#File"><span class="toc-text">File</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other"><span class="toc-text">Other</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
