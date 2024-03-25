@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2024/03/25/opencv-image-video/
 https://caozhaoqi.github.io/2024/03/22/python-proxy-server/
 https://caozhaoqi.github.io/2024/03/06/spider-image-system-introduction/
 https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/
@@ -50,3 +51,4 @@ https://caozhaoqi.github.io/tags/java%E3%80%81zuul/
 https://caozhaoqi.github.io/tags/python/
 https://caozhaoqi.github.io/tags/unbutu/
 https://caozhaoqi.github.io/tags/nginx/
+https://caozhaoqi.github.io/tags/python%E3%80%81opencv/
