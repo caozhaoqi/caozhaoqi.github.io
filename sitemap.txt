@@ -1,3 +1,5 @@
+https://caozhaoqi.github.io/2024/04/09/pyinstaller-publish-python/
+https://caozhaoqi.github.io/2024/04/09/nuitka-publish-python/
 https://caozhaoqi.github.io/2024/03/25/opencv-image-video/
 https://caozhaoqi.github.io/2024/03/22/python-proxy-server/
 https://caozhaoqi.github.io/2024/03/06/spider-image-system-introduction/
