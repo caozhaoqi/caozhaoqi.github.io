@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://caozhaoqi.github.io/2024/04/10/setup-tools-python/</loc>
+    
+    <lastmod>2024-04-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/</loc>
+    
+    <lastmod>2024-04-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2024/04/09/pyinstaller-publish-python/</loc>
     
     <lastmod>2024-04-10</lastmod>
@@ -41,15 +59,6 @@
     <loc>https://caozhaoqi.github.io/2024/03/06/spider-image-system-introduction/</loc>
     
     <lastmod>2024-03-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/</loc>
-    
-    <lastmod>2024-01-25</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

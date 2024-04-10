@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台) | Zhaoqi.Cao static Blog</title>
+  <title>setuptools_python | Zhaoqi.Cao static Blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,21 +589,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)
+        setuptools_python
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2023-02-22 |
+          <i class="fas fa-calendar"></i> Published in：2024-04-10 |
         </span>
       
 
@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 1.6k |
+            <i class="fas fa-file-text-o"></i> Words: 2k |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 6min |
+            <i class="fas fa-clock"></i> Reading time: 10min |
           </span>
   
           
@@ -643,205 +643,49 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="关于-Unity-不同方式的导出与详细使用的说明-基于-Android-平台"><a href="#关于-Unity-不同方式的导出与详细使用的说明-基于-Android-平台" class="headerlink" title="关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)"></a>关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)</h1><h2 id="导出方式-编译器选择"><a href="#导出方式-编译器选择" class="headerlink" title="导出方式(编译器选择)"></a>导出方式(编译器选择)</h2><ul>
-<li><p>已有方式如下：</p>
-</li>
-<li><p>1.Mono</p>
-<ul>
-<li>Mono 是一个由 Xamarin 公司所主持的自由开放源码项目。<br>Mono 的目标是在尽可能多的平台上使.net 标准的东西能正常运行的一套工具，核心在于”跨平台地让.net 代码能运行起来”。<br>Mono 组成组件：C# 编译器，CLI 虚拟机，以及核心类别程序库。<br>Mono 的编译器负责生成符合公共语言规范的映射代码，即公共中间语言（Common Intermediate Language，CIL），我的理解就是工厂方法实现不同解析。</li>
+        <h1 id="python使用setuptools和nsis工具打包nuitka工程"><a href="#python使用setuptools和nsis工具打包nuitka工程" class="headerlink" title="python使用setuptools和nsis工具打包nuitka工程"></a>python使用setuptools和nsis工具打包nuitka工程</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p>setuptools 是官方提供的一个专业用于包分发的工具，若只从安装的角度来看，它的功能确实简单。它更大的意义是对包的分发很有用，定制化程序非常高，可用它进行版本包的发布。</p>
+</blockquote>
+<blockquote>
+<p>Egg 格式是由 setuptools 在 2004 年引入，而 Wheel 格式是由 PEP427 在 2012 年定义。Wheel 的出现是为了替代 Egg，它的本质是一个zip包，其现在被认为是 Python 的二进制包的标准格式。</p>
+</blockquote>
+<blockquote>
+<p>应用程序发布的时候，具备以下两种方式：</p>
+</blockquote>
+<blockquote>
+<p>静态编译：把相关联的库一并引入可执行程序，虽然发布简单，编译出来只有一个exe文件。（特别注意：编译时，其依赖的库也需要使用静态包）。<br>动态编译：把相关联的库以dll的形式提供（linux下是.so）引入,不被包含进可执行程序，发布不方便，但可执行程序较小。</p>
+</blockquote>
+<h2 id="setuptools方式"><a href="#setuptools方式" class="headerlink" title="setuptools方式"></a>setuptools方式</h2><h3 id="1-使用以下代码"><a href="#1-使用以下代码" class="headerlink" title="1.使用以下代码"></a>1.使用以下代码</h3><ul>
+<li>在项目根目录运行<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span>  setup,find_packages</span><br><span class="line">setup(</span><br><span class="line">    name= <span class="string">&quot;packageName&quot;</span>,   <span class="comment">#你的python项目包名</span></span><br><span class="line">    version = <span class="string">&#x27;1.0.0&#x27;</span>,      </span><br><span class="line">    description=<span class="string">&#x27;No description&#x27;</span>,</span><br><span class="line">    author=<span class="string">&quot;daimashiren&quot;</span>,</span><br><span class="line">    author_email=<span class="string">&#x27;123456@gmail.com&#x27;</span>,</span><br><span class="line">    url=<span class="string">&#x27;xxx.com&#x27;</span>,</span><br><span class="line">    packages = find_packages(),<span class="comment">#find_packages()方法会自动寻找当前目录下名为packageName的包</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
 </ul>
-</li>
-<li><p>2.IL2CPP</p>
-<ul>
-<li><p>IL 的全称是 Intermediate Language，IL 是与 CPU 无关的机器语言，能访问和操作对象类型，并提供了指令来创建和初始化对象、调用对象上的虚方法以及直接操作数组元素。甚至提供了抛出和捕捉异常的指令来实现错误处理。可将 IL 视为一种面向对象的及其语言。很多时候还会看到 CIL（特指在.Net 平台下的 IL 标准）。翻译过来就是中间语言。<br>它是一种属于通用语言架构和.NET 框架的低阶的人类可读的编程语言。<br>CIL 类似一个面向对象的汇编语言，并且它是完全基于堆栈的，它运行在虚拟机上（.Net Framework, Mono VM）的语言。</p>
-<ul>
-<li><p>IL2CPP 分为两个独立的部分：</p>
-</li>
-<li><ol>
-<li>AOT（静态编译）编译器：把 IL 中间语言转换成 CPP 文件</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>运行时库：例如垃圾回收、线程&#x2F;文件获取（独立于平台，与平台无关）、内部调用直接修改托管数据结构的原生代码的服务与抽象</li>
-</ol>
-</li>
+<h3 id="2-运行以下命令："><a href="#2-运行以下命令：" class="headerlink" title="2. 运行以下命令："></a>2. 运行以下命令：</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py install </span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cmd命令行输入以下命令尝试导入你的自定义包，看看能否成功被导入，如果，没有报说明No module named XXX 错误则说明python项目打包成功，否则则需要重新尝试以上步骤，重新打包直到能够导入为止。下图中自定义的&quot;courseHelper_dev&quot;包导入成功而自定义的&quot;packageName&quot;包则导入失败!</span></span><br><span class="line">python</span><br><span class="line">import packageName</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>检查easy_install.pth文件中有没有你的项目包名，pth后缀的文件记录的是python导入包时会检索的路径或包名，</p>
+</blockquote>
+<h2 id="NSIS软件"><a href="#NSIS软件" class="headerlink" title="NSIS软件"></a>NSIS软件</h2><blockquote>
+<p>Nsis其实是使用一种脚本语言了，学习成本肯定是不低的。<br>采用NSIS + QT 制作安装程序实际上就是使用QT制作安装程序，而NSIS仅仅将制作的安装程序打包成一个exe。</p>
+</blockquote>
+<h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><ul>
+<li>下载地址<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://nsis.sourceforge.io/Download</span><br></pre></td></tr></table></figure></li>
 </ul>
-</li>
-</ul>
-</li>
-<li><p>Unity 跨平台原理</p>
-<ul>
-<li><p>Mono 运行时编译器支持将 IL 代码转为对应平台原生码。</p>
-</li>
-<li><p>IL 可以在任何支持 CLI（通用语言环境结构）中运行，IL 的运行是依托于 Mono 运行时。</p>
-</li>
-</ul>
-</li>
-<li><p>总结<br>IL2CPP 比较适合开发和发布项目 ，但是为了提高版本迭代速度，可以在开发期间切换到 Mono 模式（构建应用快）。</p>
-</li>
-<li><p>如图：</p>
-<img src="/2023/02/22/unityexport-to-android-md/publish.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/publish.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-<li><p>在选择编译方式后，可选择编译平台架构（armv7、arm64）以及 C#编译 API 库版本（.net）</p>
-</li>
-</ul>
-<h2 id="推荐开发工具版本"><a href="#推荐开发工具版本" class="headerlink" title="推荐开发工具版本"></a>推荐开发工具版本</h2><ul>
-<li>Android Studio Bumblebee (2021.3.1) or later</li>
-<li>Unity version 2021.3.4a18 or later</li>
-<li>Visual Studio Code 1.75.1 (Code)</li>
-</ul>
-<h2 id="导出步骤"><a href="#导出步骤" class="headerlink" title="导出步骤"></a>导出步骤</h2><h3 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h3><ul>
-<li><ol>
-<li>预配置</li>
-</ol>
-<ul>
-<li><ol>
-<li>填充 unity file 菜单 project settings 中 company name、package name 名称</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>设置导出路径，勾选导出文件</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>复制 Unitylibrary 目录至 Android Studio 工程</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>更改<code>build.gradle</code>文件等</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>启动 Android 程序，跳转至选图后界面</li>
-</ol>
-</li>
-<li><ol start="6">
-<li>启动 unity，预览程序</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><ol start="2">
-<li>导出</li>
-</ol>
-<ul>
-<li><ol>
-<li>export(File-&gt;Build Settings) 页面配置，如图:<img src="/2023/02/22/unityexport-to-android-md/player.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/player.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ol>
-</li>
-<li><ol start="2">
-<li>在 player settings 中设置如下项目，如图：（选中 Android 项目）<img src="/2023/02/22/unityexport-to-android-md/hidebar.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/hidebar.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ol>
-</li>
-<li><ol start="3">
-<li>设置发布配置，如图：<img src="/2023/02/22/unityexport-to-android-md/publish.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/publish.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ol>
-</li>
-<li><ol start="4">
-<li>设置启动页面<img src="/2023/02/22/unityexport-to-android-md/splash.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/splash.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ol>
-</li>
-<li><ol start="5">
-<li>最终，在 Build Settings 页面中点击 export 导出,如图：<img src="/2023/02/22/unityexport-to-android-md/player.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/player.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ol>
-</li>
-</ul>
-</li>
-<li><ol start="3">
-<li>导出前性能优化</li>
-</ol>
-<ul>
-<li>物理模块优化<ul>
-<li>1.如果项目使用 Unity 2017 以上版本，且实际没有使用物理模块，可以将 Project Settings 中 Physics 的 Auto Simulation 和 Auto Sync Transforms 选项关闭（如图）<img src="/2023/02/22/unityexport-to-android-md/exp-physical.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/exp-physical.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="导出性能分析"><a href="#导出性能分析" class="headerlink" title="导出性能分析"></a>导出性能分析</h2><h3 id="在-Android-Studio-Profiler-性能分析中，Unity-占用内存的判断"><a href="#在-Android-Studio-Profiler-性能分析中，Unity-占用内存的判断" class="headerlink" title="在 Android Studio Profiler 性能分析中，Unity 占用内存的判断"></a>在 Android Studio Profiler 性能分析中，Unity 占用内存的判断</h3><ul>
-<li>如图，native 内存即为 Unity 占用内存<img src="/2023/02/22/unityexport-to-android-md/unity_memory.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/unity_memory.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ul>
-<h2 id="Android-Studio-引入-Unity-导出库配置（以官方案例为参考）"><a href="#Android-Studio-引入-Unity-导出库配置（以官方案例为参考）" class="headerlink" title="Android Studio 引入 Unity 导出库配置（以官方案例为参考）"></a>Android Studio 引入 Unity 导出库配置（以官方案例为参考）</h2><ul>
-<li><p>在 Unity 编辑器中打开 UnityProject</p>
-</li>
-<li><p>进入构建设置窗口(菜单&#x2F;文件&#x2F;构建设置)</p>
-</li>
-<li><p>选择并切换到 Android 平台</p>
-</li>
-<li><p>进入播放器设置窗口(点击构建设置左下角的播放器设置按钮，或者使用编辑&#x2F;项目设置菜单，选择左边的播放器选项卡)</p>
-</li>
-<li><p>在”其他设置”—)配置”中选择目标架构</p>
-<img src="/2023/02/22/unityexport-to-android-md/selectArchitectures.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/selectArchitectures.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
+<h3 id="使用-method-1"><a href="#使用-method-1" class="headerlink" title="使用 method 1"></a>使用 method 1</h3><blockquote>
+<p>如图,启动nsis软件<br>    <img src="/2024/04/10/setup-tools-python/start.png" class="lazyload placeholder" data-srcset="/2024/04/10/setup-tools-python/start.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="img"><br>选择打包zip，选择选项点击generate生成安装包<br>    <img src="/2024/04/10/setup-tools-python/generate.png" class="lazyload placeholder" data-srcset="/2024/04/10/setup-tools-python/generate.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class=" lazyload placeholder" title="img"><br>根据提示操作，结果如下：</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">MakeNSIS v3.10 - Copyright 1999-2023 Contributors</span><br><span class="line">See the file COPYING <span class="keyword">for</span> license details.</span><br><span class="line">Credits can be found <span class="keyword">in</span> the Users Manual.</span><br><span class="line"></span><br><span class="line">Processing config: C:\Program Files (x86)\NSIS\nsisconf.nsh</span><br><span class="line">Processing script file: <span class="string">&quot;C:\Users\ADMINI~1\AppData\Local\Temp\zne7EA0.tmp&quot;</span> (UTF16LE)</span><br><span class="line"></span><br><span class="line">Processed 1 file, writing output (x86-unicode):</span><br><span class="line"></span><br><span class="line">Output: <span class="string">&quot;C:\Users\Administrator\PycharmProjects\spider_image_system\src\out\ui_main.dist.exe&quot;</span></span><br><span class="line">Install: 2 pages (128 bytes), 1 section (1 required) (2072 bytes), 181 instructions (5068 bytes), 210 strings (6906 bytes), 1 language table (262 bytes).</span><br><span class="line"></span><br><span class="line">Using lzma compression.</span><br><span class="line"></span><br><span class="line">EXE header size:               51200 / 38400 bytes</span><br><span class="line">Install code:                   2779 / 14900 bytes</span><br><span class="line">Install data:               50727899 / 226716719 bytes</span><br><span class="line">CRC (0xE230FDF8):                  4 / 4 bytes</span><br><span class="line"></span><br><span class="line">Total size:                 50781882 / 226770023 bytes (22.3%)</span><br><span class="line">(<span class="built_in">source</span> ZIP size was 75374073 bytes)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>返回”构建设置”窗口 -选择”导出项目”选项<br>![img](unityexport-to-android-md&#x2F;exportProject.png” width&#x3D;’400px’&gt;<br>导出 UnityProject 到 androidBuild 文件夹，文件夹结构如下所示<img src="/2023/02/22/unityexport-to-android-md/exportedProjectFolder.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/exportedProjectFolder.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
+<h3 id="使用-method-2"><a href="#使用-method-2" class="headerlink" title="使用 method 2"></a>使用 method 2</h3><h4 id="VNISEdit-可视化制作安装包向导使用"><a href="#VNISEdit-可视化制作安装包向导使用" class="headerlink" title="VNISEdit 可视化制作安装包向导使用"></a>VNISEdit 可视化制作安装包向导使用</h4><ul>
+<li>下载地址<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://hmne.sourceforge.net</span><br></pre></td></tr></table></figure></li>
+<li>按照提示操作，生成代码如下：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line">; Script generated by the HM NIS Edit Script Wizard.</span><br><span class="line"></span><br><span class="line">; HM NIS Edit Wizard helper defines</span><br><span class="line">!define PRODUCT_NAME <span class="string">&quot;spider image system&quot;</span></span><br><span class="line">!define PRODUCT_VERSION <span class="string">&quot;1.0&quot;</span></span><br><span class="line">!define PRODUCT_PUBLISHER <span class="string">&quot;zhaoqi.cao&quot;</span></span><br><span class="line">!define PRODUCT_WEB_SITE <span class="string">&quot;http://caozhaoqi.github.io&quot;</span></span><br><span class="line">!define PRODUCT_DIR_REGKEY <span class="string">&quot;Software\Microsoft\Windows\CurrentVersion\App Paths\ui_main.exe&quot;</span></span><br><span class="line">!define PRODUCT_UNINST_KEY <span class="string">&quot;Software\Microsoft\Windows\CurrentVersion\Uninstall\$&#123;PRODUCT_NAME&#125;&quot;</span></span><br><span class="line">!define PRODUCT_UNINST_ROOT_KEY <span class="string">&quot;HKLM&quot;</span></span><br><span class="line">!define PRODUCT_STARTMENU_REGVAL <span class="string">&quot;NSIS:StartMenuDir&quot;</span></span><br><span class="line"></span><br><span class="line">; MUI 1.67 compatible ------</span><br><span class="line">!include <span class="string">&quot;MUI.nsh&quot;</span></span><br><span class="line"></span><br><span class="line">; MUI Settings</span><br><span class="line">!define MUI_ABORTWARNING</span><br><span class="line">!define MUI_ICON <span class="string">&quot;<span class="variable">$&#123;NSISDIR&#125;</span>\Contrib\Graphics\Icons\modern-install.ico&quot;</span></span><br><span class="line">!define MUI_UNICON <span class="string">&quot;<span class="variable">$&#123;NSISDIR&#125;</span>\Contrib\Graphics\Icons\modern-uninstall.ico&quot;</span></span><br><span class="line"></span><br><span class="line">; Welcome page</span><br><span class="line">!insertmacro MUI_PAGE_WELCOME</span><br><span class="line">; License page</span><br><span class="line">!define MUI_LICENSEPAGE_CHECKBOX</span><br><span class="line">!insertmacro MUI_PAGE_LICENSE <span class="string">&quot;C:\Users\Administrator\PycharmProjects\spider_image_system\src\out\ui_main.dist\SISSoftwareLicence.txt&quot;</span></span><br><span class="line">; Directory page</span><br><span class="line">!insertmacro MUI_PAGE_DIRECTORY</span><br><span class="line">; Start menu page</span><br><span class="line">var ICONS_GROUP</span><br><span class="line">!define MUI_STARTMENUPAGE_NODISABLE</span><br><span class="line">!define MUI_STARTMENUPAGE_DEFAULTFOLDER <span class="string">&quot;spider image system&quot;</span></span><br><span class="line">!define MUI_STARTMENUPAGE_REGISTRY_ROOT <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_ROOT_KEY&#125;</span>&quot;</span></span><br><span class="line">!define MUI_STARTMENUPAGE_REGISTRY_KEY <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_KEY&#125;</span>&quot;</span></span><br><span class="line">!define MUI_STARTMENUPAGE_REGISTRY_VALUENAME <span class="string">&quot;<span class="variable">$&#123;PRODUCT_STARTMENU_REGVAL&#125;</span>&quot;</span></span><br><span class="line">!insertmacro MUI_PAGE_STARTMENU Application <span class="variable">$ICONS_GROUP</span></span><br><span class="line">; Instfiles page</span><br><span class="line">!insertmacro MUI_PAGE_INSTFILES</span><br><span class="line">; Finish page</span><br><span class="line">!define MUI_FINISHPAGE_RUN <span class="string">&quot;<span class="variable">$INSTDIR</span>\ui_main.exe&quot;</span></span><br><span class="line">!insertmacro MUI_PAGE_FINISH</span><br><span class="line"></span><br><span class="line">; Uninstaller pages</span><br><span class="line">!insertmacro MUI_UNPAGE_INSTFILES</span><br><span class="line"></span><br><span class="line">; Language files</span><br><span class="line">!insertmacro MUI_LANGUAGE <span class="string">&quot;English&quot;</span></span><br><span class="line"></span><br><span class="line">; MUI end ------</span><br><span class="line"></span><br><span class="line">Name <span class="string">&quot;<span class="variable">$&#123;PRODUCT_NAME&#125;</span> <span class="variable">$&#123;PRODUCT_VERSION&#125;</span>&quot;</span></span><br><span class="line">OutFile <span class="string">&quot;Setup.exe&quot;</span></span><br><span class="line">InstallDir <span class="string">&quot;<span class="variable">$PROGRAMFILES</span>\spider image system&quot;</span></span><br><span class="line">InstallDirRegKey HKLM <span class="string">&quot;<span class="variable">$&#123;PRODUCT_DIR_REGKEY&#125;</span>&quot;</span> <span class="string">&quot;&quot;</span></span><br><span class="line">ShowInstDetails show</span><br><span class="line">ShowUnInstDetails show</span><br><span class="line"></span><br><span class="line">Section <span class="string">&quot;MainSection&quot;</span> SEC01</span><br><span class="line">  SetOutPath <span class="string">&quot;<span class="variable">$INSTDIR</span>&quot;</span></span><br><span class="line">  SetOverwrite ifnewer</span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\vcruntime140_1.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\vcruntime140.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\unicodedata.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\ui_main.exe&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\select.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\qt5widgets.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\qt5svg.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\qt5gui.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\qt5core.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\qt5charts.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\python39.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\python3.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\pyexpat.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\msvcp140_1.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\msvcp140.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\libssl-1_1.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\libffi-7.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\libcrypto-1_1.dll&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_uuid.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_ssl.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_socket.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_queue.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_overlapped.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_lzma.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_hashlib.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_elementtree.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_decimal.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_ctypes.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_cffi_backend.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_bz2.pyd&quot;</span></span><br><span class="line">  File <span class="string">&quot;..\PycharmProjects\spider_image_system\src\out\ui_main.dist\_asyncio.pyd&quot;</span></span><br><span class="line"></span><br><span class="line">; Shortcuts</span><br><span class="line">  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application</span><br><span class="line">  CreateDirectory <span class="string">&quot;<span class="variable">$SMPROGRAMS</span>\$ICONS_GROUP&quot;</span></span><br><span class="line">  CreateShortCut <span class="string">&quot;<span class="variable">$SMPROGRAMS</span>\$ICONS_GROUP\spider image system.lnk&quot;</span> <span class="string">&quot;<span class="variable">$INSTDIR</span>\ui_main.exe&quot;</span></span><br><span class="line">  CreateShortCut <span class="string">&quot;<span class="variable">$DESKTOP</span>\spider image system.lnk&quot;</span> <span class="string">&quot;<span class="variable">$INSTDIR</span>\ui_main.exe&quot;</span></span><br><span class="line">  !insertmacro MUI_STARTMENU_WRITE_END</span><br><span class="line">SectionEnd</span><br><span class="line"></span><br><span class="line">Section <span class="string">&quot;RegComOcx&quot;</span> SEC02</span><br><span class="line"></span><br><span class="line">   SetOutPath <span class="string">&quot;<span class="variable">$INSTDIR</span>&quot;</span></span><br><span class="line"></span><br><span class="line">   RegDLL <span class="string">&quot;<span class="variable">$INSTDIR</span>\laoheitanActiveX.ocx&quot;</span></span><br><span class="line"></span><br><span class="line">SectionEnd</span><br><span class="line"></span><br><span class="line">Section -AdditionalIcons</span><br><span class="line">  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application</span><br><span class="line">  WriteIniStr <span class="string">&quot;<span class="variable">$INSTDIR</span>\$&#123;PRODUCT_NAME&#125;.url&quot;</span> <span class="string">&quot;InternetShortcut&quot;</span> <span class="string">&quot;URL&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_WEB_SITE&#125;</span>&quot;</span></span><br><span class="line">  CreateShortCut <span class="string">&quot;<span class="variable">$SMPROGRAMS</span>\$ICONS_GROUP\Website.lnk&quot;</span> <span class="string">&quot;<span class="variable">$INSTDIR</span>\$&#123;PRODUCT_NAME&#125;.url&quot;</span></span><br><span class="line">  CreateShortCut <span class="string">&quot;<span class="variable">$SMPROGRAMS</span>\$ICONS_GROUP\Uninstall.lnk&quot;</span> <span class="string">&quot;<span class="variable">$INSTDIR</span>\uninst.exe&quot;</span></span><br><span class="line">  !insertmacro MUI_STARTMENU_WRITE_END</span><br><span class="line">SectionEnd</span><br><span class="line"></span><br><span class="line">Section -Post</span><br><span class="line">  WriteUninstaller <span class="string">&quot;<span class="variable">$INSTDIR</span>\uninst.exe&quot;</span></span><br><span class="line">  WriteRegStr HKLM <span class="string">&quot;<span class="variable">$&#123;PRODUCT_DIR_REGKEY&#125;</span>&quot;</span> <span class="string">&quot;&quot;</span> <span class="string">&quot;<span class="variable">$INSTDIR</span>\ui_main.exe&quot;</span></span><br><span class="line">  WriteRegStr <span class="variable">$&#123;PRODUCT_UNINST_ROOT_KEY&#125;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_KEY&#125;</span>&quot;</span> <span class="string">&quot;DisplayName&quot;</span> <span class="string">&quot;<span class="subst">$(^Name)</span>&quot;</span></span><br><span class="line">  WriteRegStr <span class="variable">$&#123;PRODUCT_UNINST_ROOT_KEY&#125;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_KEY&#125;</span>&quot;</span> <span class="string">&quot;UninstallString&quot;</span> <span class="string">&quot;<span class="variable">$INSTDIR</span>\uninst.exe&quot;</span></span><br><span class="line">  WriteRegStr <span class="variable">$&#123;PRODUCT_UNINST_ROOT_KEY&#125;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_KEY&#125;</span>&quot;</span> <span class="string">&quot;DisplayIcon&quot;</span> <span class="string">&quot;<span class="variable">$INSTDIR</span>\ui_main.exe&quot;</span></span><br><span class="line">  WriteRegStr <span class="variable">$&#123;PRODUCT_UNINST_ROOT_KEY&#125;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_KEY&#125;</span>&quot;</span> <span class="string">&quot;DisplayVersion&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_VERSION&#125;</span>&quot;</span></span><br><span class="line">  WriteRegStr <span class="variable">$&#123;PRODUCT_UNINST_ROOT_KEY&#125;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_KEY&#125;</span>&quot;</span> <span class="string">&quot;URLInfoAbout&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_WEB_SITE&#125;</span>&quot;</span></span><br><span class="line">  WriteRegStr <span class="variable">$&#123;PRODUCT_UNINST_ROOT_KEY&#125;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_KEY&#125;</span>&quot;</span> <span class="string">&quot;Publisher&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_PUBLISHER&#125;</span>&quot;</span></span><br><span class="line">SectionEnd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Function un.onUninstSuccess</span><br><span class="line">  HideWindow</span><br><span class="line">  MessageBox MB_ICONINFORMATION|MB_OK <span class="string">&quot;<span class="subst">$(^Name)</span> 已成功地从你的计算机移除。&quot;</span></span><br><span class="line">FunctionEnd</span><br><span class="line"></span><br><span class="line">Function un.onInit</span><br><span class="line">  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 <span class="string">&quot;你确实要完全移除 <span class="subst">$(^Name)</span> ，其及所有的组件？&quot;</span> IDYES +2</span><br><span class="line">  Abort</span><br><span class="line">FunctionEnd</span><br><span class="line"></span><br><span class="line">Section Uninstall</span><br><span class="line">  !insertmacro MUI_STARTMENU_GETFOLDER <span class="string">&quot;Application&quot;</span> <span class="variable">$ICONS_GROUP</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\$&#123;PRODUCT_NAME&#125;.url&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\uninst.exe&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_asyncio.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_bz2.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_cffi_backend.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_ctypes.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_decimal.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_elementtree.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_hashlib.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_lzma.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_overlapped.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_queue.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_socket.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_ssl.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\_uuid.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\libcrypto-1_1.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\libffi-7.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\libssl-1_1.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\msvcp140.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\msvcp140_1.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\pyexpat.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\python3.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\python39.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\qt5charts.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\qt5core.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\qt5gui.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\qt5svg.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\qt5widgets.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\select.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\ui_main.exe&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\unicodedata.pyd&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\vcruntime140.dll&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$INSTDIR</span>\vcruntime140_1.dll&quot;</span></span><br><span class="line"></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$SMPROGRAMS</span>\$ICONS_GROUP\Uninstall.lnk&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$SMPROGRAMS</span>\$ICONS_GROUP\Website.lnk&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$DESKTOP</span>\spider image system.lnk&quot;</span></span><br><span class="line">  Delete <span class="string">&quot;<span class="variable">$SMPROGRAMS</span>\$ICONS_GROUP\spider image system.lnk&quot;</span></span><br><span class="line"></span><br><span class="line">  RMDir <span class="string">&quot;<span class="variable">$SMPROGRAMS</span>\$ICONS_GROUP&quot;</span></span><br><span class="line">  RMDir <span class="string">&quot;<span class="variable">$INSTDIR</span>&quot;</span></span><br><span class="line"></span><br><span class="line">  DeleteRegKey <span class="variable">$&#123;PRODUCT_UNINST_ROOT_KEY&#125;</span> <span class="string">&quot;<span class="variable">$&#123;PRODUCT_UNINST_KEY&#125;</span>&quot;</span></span><br><span class="line">  DeleteRegKey HKLM <span class="string">&quot;<span class="variable">$&#123;PRODUCT_DIR_REGKEY&#125;</span>&quot;</span></span><br><span class="line">  SetAutoClose <span class="literal">true</span></span><br><span class="line">SectionEnd</span><br></pre></td></tr></table></figure></li>
 </ul>
-</li>
-<li><p>3.添加 Unity 库模块到 NativeAndroidApp**</p>
-</li>
-<li><p>在 Android Studio 中将导出的 androidBuild&#x2F;unityLibrary 模块添加到 NativeAndroidApp Gradle 项目中:</p>
-</li>
+<h4 id="编译并运行生成exe"><a href="#编译并运行生成exe" class="headerlink" title="编译并运行生成exe"></a>编译并运行生成exe</h4><ul>
+<li>点击如下  </li>
+<li>生成完成后，在脚本同目录点击setup.exe即可安装</li>
 </ul>
-<p>在 Android Studio 中打开 NativeAndroidApp</p>
-<ul>
-<li><p>打开设置.gradle 文件</p>
-</li>
-<li><p>在主 app 模块之后添加一个指向 unityLibrary 模块的新项目</p>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &#x27;:unityLibrary&#x27;</span><br><span class="line">project(&#x27;:unityLibrary&#x27;).projectDir=new File(&#x27;..\\UnityProject\\androidBuild\\unityLibrary&#x27;)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在”dependencyresoltionmanagement {repositories{block”中添加如下内容</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flatDir &#123;</span><br><span class="line">  dirs &quot;$&#123;project(&#x27;:unityLibrary&#x27;).projectDir&#125;/libs&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<img src="/2023/02/22/unityexport-to-android-md/settingsGradle.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/settingsGradle.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-
-<ul>
-<li><p>开放构建.gradle(模块:NativeAndroidApp.app)文件</p>
-</li>
-<li><p>在 dependencies{block 中添加以下内容</p>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation project(&#x27;:unityLibrary&#x27;)</span><br><span class="line">implementation fileTree(dir: project(&#x27;:unityLibrary&#x27;).getProjectDir().toString() + (&#x27;\\libs&#x27;), include: [&#x27;*.jar&#x27;])</span><br></pre></td></tr></table></figure>
-
-<img src="/2023/02/22/unityexport-to-android-md/buildGradleApp.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/buildGradleApp.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-
-<ul>
-<li>在同一个文件中，看看 android{defaultConfig{ndk{块，并确保 abiFilters 匹配你在 Unity 编辑器中选择的架构，然后再导出项目。过滤器必须与 Unity 编辑器中的架构完全匹配。如果 Unity 只导出 ARMv7 架构，但过滤器包含 ARM64 -v8a，应用程序将在 ARM64 设备上崩溃。在<a target="_blank" rel="noopener" href="https://developer.android.com/ndk/guides/abis#sa">android 官方文档</a>中检查有效的 abiFilters 值。<img src="/2023/02/22/unityexport-to-android-md/buildGradleAppAbiFilters.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/buildGradleAppAbiFilters.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-<ul>
-<li>复制 gradle 的内容。属性文件从导出的 Unity 项目根文件夹到 gradle。属性文件在本机应用程序根文件夹中。注意:如果你更新 Unity 项目并再次重新导出它，请确保 gradle 的内容。导出项目中的属性文件没有更改。如果有，重复这一步。<img src="/2023/02/22/unityexport-to-android-md/exportedASProject.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/exportedASProject.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-<img src="/2023/02/22/unityexport-to-android-md/gradlePropertiesApp.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/gradlePropertiesApp.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-<ul>
-<li>点击 Sync Now 进行项目同步，因为 Gradle 文件已经被修改了<img src="/2023/02/22/unityexport-to-android-md/syncGradle.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/syncGradle.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>如果一切成功，你应该看到 unityLibrary 模块添加到 Android 视图<img src="/2023/02/22/unityexport-to-android-md/unityLibraryModule.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/unityLibraryModule.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ul>
-<h3 id="项目准备就绪"><a href="#项目准备就绪" class="headerlink" title="项目准备就绪"></a>项目准备就绪</h3><p>一切就绪，可以构建、运行和调试:</p>
-<img src="/2023/02/22/unityexport-to-android-md/buildOnDevice.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/buildOnDevice.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-<p>如果一切成功，在这一点上，你应该能够运行 NativeAndroidApp:</p>
-<table>
-<thead>
-<tr>
-<th>Main Activity</th>
-<th>Unity Activity</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="/2023/02/22/unityexport-to-android-md/appNativeSS.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/appNativeSS.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></td>
-<td><img src="/2023/02/22/unityexport-to-android-md/appUnitySS.png" class="lazyload placeholder" data-srcset="/2023/02/22/unityexport-to-android-md/appUnitySS.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></td>
-</tr>
-<tr>
-<td>Main Activity</td>
-<td>Unity 被加载并运行在一个单独的 Activity 中。中间的浅灰色按钮是从 MainUnityActivity 中添加的，在 NativeAndroidApp 中实现</td>
-</tr>
-</tbody></table>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
-<li>Unity 运行在另一个进程 android:process&#x3D;”:Unity” (AndroidManifest.xml 在应用模块)<br>安装完成后，设备上会增加两个图标。要只留下主活动的图标，删除<intent-filter>…</intent-filter> from AndroidManifest.xml 在 unityLibrary</li>
-<li>(可选)我们找到了一些 Android 7。*设备将活动的 frontOfTask 设置为错误状态，导致当完成&#x2F;退出 Unity 活动时，整个任务将进入后台，而不是带回主活动。下一个解决方案保持预期的行为:添加到 MainUnityActivity.java 从 NativeAndroidApp<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onUnityPlayerQuitted</span>()</span> &#123;</span><br><span class="line">    showMainActivity(<span class="string">&quot;&quot;</span>); finish();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li>
+<h2 id="See"><a href="#See" class="headerlink" title="See"></a>See</h2><ul>
+<li>[1].<a target="_blank" rel="noopener" href="https://blog.csdn.net/daimashiren/article/details/115067313">https://blog.csdn.net/daimashiren/article/details/115067313</a></li>
+<li>[2].<a target="_blank" rel="noopener" href="https://www.cnblogs.com/qq21497936/p/14738082.html">https://www.cnblogs.com/qq21497936/p/14738082.html</a></li>
+<li>[3].<a target="_blank" rel="noopener" href="https://blog.csdn.net/technologyleader/article/details/125283717">https://blog.csdn.net/technologyleader/article/details/125283717</a></li>
 </ul>
 
       </div>
@@ -849,8 +693,8 @@
         
         <div class="tags">
           
-            <a href="/tags/unity/" class="">
-              unity
+            <a href="/tags/python/" class="">
+              python
             </a>
           
         </div>
@@ -864,7 +708,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2023/02/22/unityexport-to-android-md/" target="_blank" title="关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)">https://caozhaoqi.github.io/2023/02/22/unityexport-to-android-md/</a>
+    <a href="/2024/04/10/setup-tools-python/" target="_blank" title="setuptools_python">https://caozhaoqi.github.io/2024/04/10/setup-tools-python/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -882,43 +726,24 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/02/22/UnityRotation/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">Unity 中绕某个物体旋转方法</div>
-      </div>
-      
-      <!-- <div class="content">
-        Unity 中绕某个物体旋转方法简介
-旋转主要是用以下方法：
-Transform.Rotate
-Transform.Ro
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/02/22/android-unity-touch-md/" class="post-nav-link">
+    <a href="/2024/04/09/pyinstaller-publish-python/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)</div>
+        <div class="title-text">pyinstaller-publish-python</div>
       </div>
       <!-- <div class="content">
-        关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)处理思路
-1.获取用户触摸的屏幕坐标(touch_
+        使用pyinstaller打包python程序并发布
+简介
+
+PyInstaller 将 Python 应用程序及其所有
       </div> -->
     </a>
   </div>
@@ -1238,7 +1063,7 @@ Transform.Ro
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-Unity-%E4%B8%8D%E5%90%8C%E6%96%B9%E5%BC%8F%E7%9A%84%E5%AF%BC%E5%87%BA%E4%B8%8E%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E7%9A%84%E8%AF%B4%E6%98%8E-%E5%9F%BA%E4%BA%8E-Android-%E5%B9%B3%E5%8F%B0"><span class="toc-text">关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E6%96%B9%E5%BC%8F-%E7%BC%96%E8%AF%91%E5%99%A8%E9%80%89%E6%8B%A9"><span class="toc-text">导出方式(编译器选择)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%89%88%E6%9C%AC"><span class="toc-text">推荐开发工具版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E6%AD%A5%E9%AA%A4"><span class="toc-text">导出步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-text">基础配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="toc-text">导出性能分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-Android-Studio-Profiler-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%AD%EF%BC%8CUnity-%E5%8D%A0%E7%94%A8%E5%86%85%E5%AD%98%E7%9A%84%E5%88%A4%E6%96%AD"><span class="toc-text">在 Android Studio Profiler 性能分析中，Unity 占用内存的判断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-Studio-%E5%BC%95%E5%85%A5-Unity-%E5%AF%BC%E5%87%BA%E5%BA%93%E9%85%8D%E7%BD%AE%EF%BC%88%E4%BB%A5%E5%AE%98%E6%96%B9%E6%A1%88%E4%BE%8B%E4%B8%BA%E5%8F%82%E8%80%83%EF%BC%89"><span class="toc-text">Android Studio 引入 Unity 导出库配置（以官方案例为参考）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%87%86%E5%A4%87%E5%B0%B1%E7%BB%AA"><span class="toc-text">项目准备就绪</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-text">注意</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python%E4%BD%BF%E7%94%A8setuptools%E5%92%8Cnsis%E5%B7%A5%E5%85%B7%E6%89%93%E5%8C%85nuitka%E5%B7%A5%E7%A8%8B"><span class="toc-text">python使用setuptools和nsis工具打包nuitka工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#setuptools%E6%96%B9%E5%BC%8F"><span class="toc-text">setuptools方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BD%BF%E7%94%A8%E4%BB%A5%E4%B8%8B%E4%BB%A3%E7%A0%81"><span class="toc-text">1.使用以下代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BF%90%E8%A1%8C%E4%BB%A5%E4%B8%8B%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="toc-text">2. 运行以下命令：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSIS%E8%BD%AF%E4%BB%B6"><span class="toc-text">NSIS软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85"><span class="toc-text">下载安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-method-1"><span class="toc-text">使用 method 1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-method-2"><span class="toc-text">使用 method 2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VNISEdit-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%B6%E4%BD%9C%E5%AE%89%E8%A3%85%E5%8C%85%E5%90%91%E5%AF%BC%E4%BD%BF%E7%94%A8"><span class="toc-text">VNISEdit 可视化制作安装包向导使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%B9%B6%E8%BF%90%E8%A1%8C%E7%94%9F%E6%88%90exe"><span class="toc-text">编译并运行生成exe</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
