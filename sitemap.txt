@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2024/05/07/self-threading-use/
 https://caozhaoqi.github.io/2024/04/10/setup-tools-python/
 https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/
 https://caozhaoqi.github.io/2024/04/09/pyinstaller-publish-python/
@@ -55,3 +56,4 @@ https://caozhaoqi.github.io/tags/python/
 https://caozhaoqi.github.io/tags/unbutu/
 https://caozhaoqi.github.io/tags/nginx/
 https://caozhaoqi.github.io/tags/python%E3%80%81opencv/
+https://caozhaoqi.github.io/tags/python%E3%80%81thread/
