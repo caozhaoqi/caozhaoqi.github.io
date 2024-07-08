@@ -643,7 +643,9 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="使用nuitka打包python为exe并发布"><a href="#使用nuitka打包python为exe并发布" class="headerlink" title="使用nuitka打包python为exe并发布"></a>使用nuitka打包python为exe并发布</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+        <h1>使用nuitka打包python为exe并发布</h1>
+<h2 id="简介">简介</h2>
+<blockquote>
 <p>Nuitka is the optimizing Python compiler written in Python that creates executables that run without an need for a separate installer. Data files can both be included or put alongside.</p>
 </blockquote>
 <blockquote>
@@ -654,50 +656,76 @@
 <li>隐藏源码。这里的pyinstaller是通过设置key来对源码进行加密的；而nuitka则是将python源码转成C++（这里得到的是二进制的pyd文件，防止了反编译），然后再编译成可执行文件。</li>
 <li>方便移植：跨平台，可多平台使用：win、mac、linux等</li>
 </ul>
-<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<h3 id="优势">优势</h3>
+<ul>
 <li>小体积</li>
 <li>启动快速</li>
 <li>不易逆向解析</li>
 </ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<h3 id="缺点">缺点</h3>
+<ul>
 <li>打包较为缓慢</li>
 <li>仅提供命令行式打包（无配置文件）</li>
 </ul>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
-<li>nuitka主要通过pip命令安装，具体如下：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install Nuitka</span><br><span class="line">pip install ordered-set</span><br><span class="line">pip install zstandard</span><br></pre></td></tr></table></figure></li>
-<li>如果上述命令执行较慢，可使用镜像源安装：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple Nuitka</span><br></pre></td></tr></table></figure></li>
+<h2 id="安装">安装</h2>
+<ul>
+<li>nuitka主要通过pip命令安装，具体如下：</li>
 </ul>
-<h2 id="打包发布"><a href="#打包发布" class="headerlink" title="打包发布"></a>打包发布</h2><ul>
-<li>命令举例如下：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --follow-import-to为需要打包的模块名 </span></span><br><span class="line"><span class="comment"># --output-dir=out 为打包完成后输出的exe地址</span></span><br><span class="line"><span class="comment"># --show-progress 显示打包进度</span></span><br><span class="line"><span class="comment"># ./run/run_py.py 程序入口</span></span><br><span class="line"><span class="comment"># --standalone 跨平台和不同计算机运行exe必选option</span></span><br><span class="line"><span class="comment"># --mingw64  使用mingw64 打包</span></span><br><span class="line">python -m nuitka --mingw64 --standalone --follow-import-to=utils,api,<span class="built_in">log</span>,run --output-dir=out --show-progress ./run/run_py.py</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install Nuitka</span><br><span class="line">pip install ordered-set</span><br><span class="line">pip install zstandard</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果上述命令执行较慢，可使用镜像源安装：</li>
 </ul>
-<h2 id="常见command-option-解析"><a href="#常见command-option-解析" class="headerlink" title="常见command option 解析"></a>常见command option 解析</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">–mingw64 <span class="comment">#默认为已经安装的vs2017去编译，否则就按指定的比如mingw(官方建议)</span></span><br><span class="line">–standalone <span class="comment">#独立环境，这是必须的(否则拷给别人无法使用)</span></span><br><span class="line">–windows-disable-console <span class="comment">#没有CMD控制窗口</span></span><br><span class="line">–output-dir=out <span class="comment">#生成exe到out文件夹下面去</span></span><br><span class="line">–show-progress <span class="comment">#显示编译的进度，很直观</span></span><br><span class="line">–show-memory <span class="comment">#显示内存的占用</span></span><br><span class="line">–enable-plugin=pyside6 <span class="comment">#打包pyside6模块的刚需</span></span><br><span class="line">–plugin-enable=tk-inter <span class="comment">#打包tkinter模块的刚需</span></span><br><span class="line">–plugin-enable=numpy <span class="comment">#打包numpy,pandas,matplotlib模块的刚需</span></span><br><span class="line">–plugin-enable=torch <span class="comment">#打包pytorch的刚需</span></span><br><span class="line">–plugin-enable=tensorflow <span class="comment">#打包tensorflow的刚需</span></span><br><span class="line">–windows-icon-from-ico=你的.ico <span class="comment">#软件的图标</span></span><br><span class="line">–windows-company-name=Windows下软件公司信息</span><br><span class="line">–windows-product-name=Windows下软件名称</span><br><span class="line">–windows-file-version=Windows下软件的信息</span><br><span class="line">–windows-product-version=Windows下软件的产品信息</span><br><span class="line">–windows-file-description=Windows下软件的作用描述</span><br><span class="line">–windows-uac-admin=Windows下用户可以使用管理员权限来安装</span><br><span class="line">–linux-onefile-icon=Linux下的图标位置</span><br><span class="line">–onefile <span class="comment">#像pyinstaller打包成单个exe文件</span></span><br><span class="line">–include-package=复制比如numpy,PyQt5 <span class="comment">#这些带文件夹的叫包或者轮子</span></span><br><span class="line">–include-module=复制比如when.py <span class="comment">#这些以.py结尾的叫模块</span></span><br><span class="line">–-include-package-data=包含给定软件包名称中的数据文件，等号后软件包名称。 <span class="comment">#有的时候Nuitka并不能正确分析出一些Python软件包所需要使用的数据文件，在运行程序时提示FileNotFoundError等错误，此时就需要使用该选项。如：</span></span><br><span class="line">–include-package-data=ultralytics</span><br><span class="line">–-include-data-files= 按文件名包含数据文件， <span class="comment">#等号后的格式为&lt;SRC=DEST&gt;。SRC指的是文件夹的路径，DEST指的是文件夹相对于打包结果的路径，其中DEST只能使用相对路径。如：–include-data-files=/Users/admin/Downloads/yolov5n.pt=./yolov5n.pt</span></span><br><span class="line">-–include-data-dir= 包含文件夹中的数据文件， <span class="comment">#等号后的格式为&lt;SRC=DEST&gt;。使用方法与–include-data-files=相同。</span></span><br><span class="line">–follow-import-to=MODULE/PACKAGE <span class="comment">#如果使用该模块，请遵循该模块；如果是一个包，请遵循整个包。可以多次给定。默认为空。</span></span><br><span class="line"><span class="comment"># 提示：首次打包建议去掉–windows-disable-console，以保留控制台便于排查问题。</span></span><br><span class="line">--enable-plugin	<span class="comment">#指定需要加载的插件，比如说tk-inter、pyqt5等</span></span><br><span class="line">--plugin-list	<span class="comment">#查看支持的插件</span></span><br><span class="line">--remove-output	<span class="comment">#打包结束之后自动清理build文件夹</span></span><br><span class="line">--windows-icon-from-ico	<span class="comment">#指定程序图标（针对Windows系统）</span></span><br><span class="line">--msvc	<span class="comment">#指定使用MSVC的版本，不指定则使用系统默认版本</span></span><br><span class="line">--company-name	<span class="comment">#公司名</span></span><br><span class="line">--product-name	<span class="comment">#产品名</span></span><br><span class="line">--file-version	<span class="comment">#文件版本，最多4个数字序列，例如1.0、1.0.0.0</span></span><br><span class="line">--product-version	<span class="comment">#产品版本，规则与–file-version相同</span></span><br><span class="line">--file-description	<span class="comment">#文件描述</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="mingw64下载缓慢"><a href="#mingw64下载缓慢" class="headerlink" title="mingw64下载缓慢"></a>mingw64下载缓慢</h3><ul>
-<li>在以下目录放置手动下载的mingw安装包<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.mingw-w64.org/downloads/</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple Nuitka</span><br></pre></td></tr></table></figure>
+<h2 id="打包发布">打包发布</h2>
+<ul>
+<li>命令举例如下：</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --follow-import-to为需要打包的模块名 </span></span><br><span class="line"><span class="comment"># --output-dir=out 为打包完成后输出的exe地址</span></span><br><span class="line"><span class="comment"># --show-progress 显示打包进度</span></span><br><span class="line"><span class="comment"># ./run/run_py.py 程序入口</span></span><br><span class="line"><span class="comment"># --standalone 跨平台和不同计算机运行exe必选option</span></span><br><span class="line"><span class="comment"># --mingw64  使用mingw64 打包</span></span><br><span class="line">python -m nuitka --mingw64 --standalone --follow-import-to=utils,api,<span class="built_in">log</span>,run --output-dir=out --show-progress ./run/run_py.py</span><br></pre></td></tr></table></figure>
+<h2 id="常见command-option-解析">常见command option 解析</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">–mingw64 <span class="comment">#默认为已经安装的vs2017去编译，否则就按指定的比如mingw(官方建议)</span></span><br><span class="line">–standalone <span class="comment">#独立环境，这是必须的(否则拷给别人无法使用)</span></span><br><span class="line">–windows-disable-console <span class="comment">#没有CMD控制窗口</span></span><br><span class="line">–output-dir=out <span class="comment">#生成exe到out文件夹下面去</span></span><br><span class="line">–show-progress <span class="comment">#显示编译的进度，很直观</span></span><br><span class="line">–show-memory <span class="comment">#显示内存的占用</span></span><br><span class="line">–enable-plugin=pyside6 <span class="comment">#打包pyside6模块的刚需</span></span><br><span class="line">–plugin-enable=tk-inter <span class="comment">#打包tkinter模块的刚需</span></span><br><span class="line">–plugin-enable=numpy <span class="comment">#打包numpy,pandas,matplotlib模块的刚需</span></span><br><span class="line">–plugin-enable=torch <span class="comment">#打包pytorch的刚需</span></span><br><span class="line">–plugin-enable=tensorflow <span class="comment">#打包tensorflow的刚需</span></span><br><span class="line">–windows-icon-from-ico=你的.ico <span class="comment">#软件的图标</span></span><br><span class="line">–windows-company-name=Windows下软件公司信息</span><br><span class="line">–windows-product-name=Windows下软件名称</span><br><span class="line">–windows-file-version=Windows下软件的信息</span><br><span class="line">–windows-product-version=Windows下软件的产品信息</span><br><span class="line">–windows-file-description=Windows下软件的作用描述</span><br><span class="line">–windows-uac-admin=Windows下用户可以使用管理员权限来安装</span><br><span class="line">–linux-onefile-icon=Linux下的图标位置</span><br><span class="line">–onefile <span class="comment">#像pyinstaller打包成单个exe文件</span></span><br><span class="line">–include-package=复制比如numpy,PyQt5 <span class="comment">#这些带文件夹的叫包或者轮子</span></span><br><span class="line">–include-module=复制比如when.py <span class="comment">#这些以.py结尾的叫模块</span></span><br><span class="line">–-include-package-data=包含给定软件包名称中的数据文件，等号后软件包名称。 <span class="comment">#有的时候Nuitka并不能正确分析出一些Python软件包所需要使用的数据文件，在运行程序时提示FileNotFoundError等错误，此时就需要使用该选项。如：</span></span><br><span class="line">–include-package-data=ultralytics</span><br><span class="line">–-include-data-files= 按文件名包含数据文件， <span class="comment">#等号后的格式为&lt;SRC=DEST&gt;。SRC指的是文件夹的路径，DEST指的是文件夹相对于打包结果的路径，其中DEST只能使用相对路径。如：–include-data-files=/Users/admin/Downloads/yolov5n.pt=./yolov5n.pt</span></span><br><span class="line">-–include-data-dir= 包含文件夹中的数据文件， <span class="comment">#等号后的格式为&lt;SRC=DEST&gt;。使用方法与–include-data-files=相同。</span></span><br><span class="line">–follow-import-to=MODULE/PACKAGE <span class="comment">#如果使用该模块，请遵循该模块；如果是一个包，请遵循整个包。可以多次给定。默认为空。</span></span><br><span class="line"><span class="comment"># 提示：首次打包建议去掉–windows-disable-console，以保留控制台便于排查问题。</span></span><br><span class="line">--enable-plugin	<span class="comment">#指定需要加载的插件，比如说tk-inter、pyqt5等</span></span><br><span class="line">--plugin-list	<span class="comment">#查看支持的插件</span></span><br><span class="line">--remove-output	<span class="comment">#打包结束之后自动清理build文件夹</span></span><br><span class="line">--windows-icon-from-ico	<span class="comment">#指定程序图标（针对Windows系统）</span></span><br><span class="line">--msvc	<span class="comment">#指定使用MSVC的版本，不指定则使用系统默认版本</span></span><br><span class="line">--company-name	<span class="comment">#公司名</span></span><br><span class="line">--product-name	<span class="comment">#产品名</span></span><br><span class="line">--file-version	<span class="comment">#文件版本，最多4个数字序列，例如1.0、1.0.0.0</span></span><br><span class="line">--product-version	<span class="comment">#产品版本，规则与–file-version相同</span></span><br><span class="line">--file-description	<span class="comment">#文件描述</span></span><br></pre></td></tr></table></figure>
+<h3 id="mingw64下载缓慢">mingw64下载缓慢</h3>
+<ul>
+<li>在以下目录放置手动下载的mingw安装包</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.mingw-w64.org/downloads/</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>文件名如下</p>
 </blockquote>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">winlibs-x86_64-posix-seh-gcc-13.2.0-llvm-16.0.6-mingw-w64msvcrt-11.0.1-r1.zip</span><br></pre></td></tr></table></figure></li>
-<li>需要手动移动至以下目录(无法自定义目录，只能使用默认路径)<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator\AppData\Local\Nuitka\Nuitka\Cache\downloads</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">winlibs-x86_64-posix-seh-gcc-13.2.0-llvm-16.0.6-mingw-w64msvcrt-11.0.1-r1.zip</span><br></pre></td></tr></table></figure>
+<ul>
+<li>需要手动移动至以下目录(无法自定义目录，只能使用默认路径)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator\AppData\Local\Nuitka\Nuitka\Cache\downloads</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>放置完成后，重新运行上述命令即可打包成功！<br>当控制台询问是否安装gcc时， 输入yes进行安装</p>
+<p>放置完成后，重新运行上述命令即可打包成功！<br>
+当控制台询问是否安装gcc时， 输入yes进行安装</p>
 </blockquote>
+<h3 id="打包完成后，效果如下：">打包完成后，效果如下：</h3>
+<ul>
+<li>如题  <img src="/2024/04/09/nuitka-publish-python/04/09/nuitka-publish-python/zip_file.png" class="lazyload placeholder" data-srcset="/2024/04/09/nuitka-publish-python/04/09/nuitka-publish-python/zip_file.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
 </li>
 </ul>
-<h3 id="打包完成后，效果如下："><a href="#打包完成后，效果如下：" class="headerlink" title="打包完成后，效果如下："></a>打包完成后，效果如下：</h3><ul>
-<li>如题  <img src="/2024/04/09/nuitka-publish-python/04/09/nuitka-publish-python/zip_file.png" class="lazyload placeholder" data-srcset="/2024/04/09/nuitka-publish-python/04/09/nuitka-publish-python/zip_file.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
+<h2 id="pyinstaller-与-nukia打包结果对比">pyinstaller 与 nukia打包结果对比</h2>
+<h3 id="大小对比">大小对比</h3>
+<ul>
+<li>如图  <img src="/2024/04/09/nuitka-publish-python/04/09/nuitka-publish-python/size_compare.png" class="lazyload placeholder" data-srcset="/2024/04/09/nuitka-publish-python/04/09/nuitka-publish-python/size_compare.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
+</li>
 </ul>
-<h2 id="pyinstaller-与-nukia打包结果对比"><a href="#pyinstaller-与-nukia打包结果对比" class="headerlink" title="pyinstaller 与 nukia打包结果对比"></a>pyinstaller 与 nukia打包结果对比</h2><h3 id="大小对比"><a href="#大小对比" class="headerlink" title="大小对比"></a>大小对比</h3><ul>
-<li>如图  <img src="/2024/04/09/nuitka-publish-python/04/09/nuitka-publish-python/size_compare.png" class="lazyload placeholder" data-srcset="/2024/04/09/nuitka-publish-python/04/09/nuitka-publish-python/size_compare.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-</ul>
-<h3 id="启动速度对比"><a href="#启动速度对比" class="headerlink" title="启动速度对比"></a>启动速度对比</h3><ul>
+<h3 id="启动速度对比">启动速度对比</h3>
+<ul>
 <li>nuitkia比pyinstaller打包exe启动同一程序快66%</li>
 </ul>
-<h3 id="特殊库引入"><a href="#特殊库引入" class="headerlink" title="特殊库引入"></a>特殊库引入</h3><ul>
-<li>举例：pyqt5<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启用pyqt5插件</span></span><br><span class="line">--plugin-enable=pyqt5</span><br><span class="line"><span class="comment"># 禁用控制台窗口</span></span><br><span class="line">--windows-disable-console</span><br><span class="line"><span class="comment"># 启用图标</span></span><br><span class="line">--windows-icon-from-ico=favicon.ico </span><br></pre></td></tr></table></figure></li>
-<li>例如执行以下命令：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nuitka --mingw64 --standalone --show-progress --show-memory --output-dir=out   --plugin-enable=pyqt5 --windows-disable-console  --windows-icon-from-ico=favicon.ico xxx.py</span><br></pre></td></tr></table></figure></li>
+<h3 id="特殊库引入">特殊库引入</h3>
+<ul>
+<li>举例：pyqt5</li>
 </ul>
-<h2 id="See"><a href="#See" class="headerlink" title="See"></a>See</h2><ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启用pyqt5插件</span></span><br><span class="line">--plugin-enable=pyqt5</span><br><span class="line"><span class="comment"># 禁用控制台窗口</span></span><br><span class="line">--windows-disable-console</span><br><span class="line"><span class="comment"># 启用图标</span></span><br><span class="line">--windows-icon-from-ico=favicon.ico </span><br></pre></td></tr></table></figure>
+<ul>
+<li>例如执行以下命令：</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nuitka --mingw64 --standalone --show-progress --show-memory --output-dir=out   --plugin-enable=pyqt5 --windows-disable-console  --windows-icon-from-ico=favicon.ico xxx.py</span><br></pre></td></tr></table></figure>
+<h2 id="See">See</h2>
+<ul>
 <li>[1]. <a target="_blank" rel="noopener" href="https://daobook.github.io/nuitka-doc/zh_CN/developer-manual.html">https://daobook.github.io/nuitka-doc/zh_CN/developer-manual.html</a></li>
 <li>[2]. <a target="_blank" rel="noopener" href="https://nuitka.net/">https://nuitka.net/</a></li>
 <li>[3]. <a target="_blank" rel="noopener" href="https://blog.csdn.net/a1397852386/article/details/134344107">https://blog.csdn.net/a1397852386/article/details/134344107</a></li>
@@ -754,8 +782,10 @@
       </div>
       
       <!-- <div class="content">
-        使用pyinstaller打包python程序并发布简介
-PyInstaller 将 Python 应用程序及其所有依赖
+        使用pyinstaller打包python程序并发布
+简介
+
+PyInstaller 将 Python 应用程序及其所有
       </div> -->
     </a>
   </div>
@@ -774,8 +804,10 @@ PyInstaller 将 Python 应用程序及其所有依赖
         <div class="title-text">基于opencv使用python实现人脸识别与视频生成</div>
       </div>
       <!-- <div class="content">
-        基于opencv使用python实现人脸识别与视频生成概述
-OpenCV是一个基于Apache2.0许可（开源）发行的跨
+        基于opencv使用python实现人脸识别与视频生成
+概述
+
+OpenCV是一个基于Apache2.0许可（开源）发行
       </div> -->
     </a>
   </div>
@@ -1095,7 +1127,7 @@ OpenCV是一个基于Apache2.0许可（开源）发行的跨
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8nuitka%E6%89%93%E5%8C%85python%E4%B8%BAexe%E5%B9%B6%E5%8F%91%E5%B8%83"><span class="toc-text">使用nuitka打包python为exe并发布</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E5%8F%91%E5%B8%83"><span class="toc-text">打包发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81command-option-%E8%A7%A3%E6%9E%90"><span class="toc-text">常见command option 解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mingw64%E4%B8%8B%E8%BD%BD%E7%BC%93%E6%85%A2"><span class="toc-text">mingw64下载缓慢</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E5%AE%8C%E6%88%90%E5%90%8E%EF%BC%8C%E6%95%88%E6%9E%9C%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="toc-text">打包完成后，效果如下：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pyinstaller-%E4%B8%8E-nukia%E6%89%93%E5%8C%85%E7%BB%93%E6%9E%9C%E5%AF%B9%E6%AF%94"><span class="toc-text">pyinstaller 与 nukia打包结果对比</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E5%AF%B9%E6%AF%94"><span class="toc-text">大小对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6%E5%AF%B9%E6%AF%94"><span class="toc-text">启动速度对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%BA%93%E5%BC%95%E5%85%A5"><span class="toc-text">特殊库引入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">使用nuitka打包python为exe并发布</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E5%8F%91%E5%B8%83"><span class="toc-text">打包发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81command-option-%E8%A7%A3%E6%9E%90"><span class="toc-text">常见command option 解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mingw64%E4%B8%8B%E8%BD%BD%E7%BC%93%E6%85%A2"><span class="toc-text">mingw64下载缓慢</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E5%AE%8C%E6%88%90%E5%90%8E%EF%BC%8C%E6%95%88%E6%9E%9C%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="toc-text">打包完成后，效果如下：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pyinstaller-%E4%B8%8E-nukia%E6%89%93%E5%8C%85%E7%BB%93%E6%9E%9C%E5%AF%B9%E6%AF%94"><span class="toc-text">pyinstaller 与 nukia打包结果对比</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E5%AF%B9%E6%AF%94"><span class="toc-text">大小对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6%E5%AF%B9%E6%AF%94"><span class="toc-text">启动速度对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%BA%93%E5%BC%95%E5%85%A5"><span class="toc-text">特殊库引入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>

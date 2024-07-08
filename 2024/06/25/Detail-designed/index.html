@@ -643,39 +643,52 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="详细设计"><a href="#详细设计" class="headerlink" title="详细设计"></a>详细设计</h1><h2 id="总体设计"><a href="#总体设计" class="headerlink" title="总体设计"></a>总体设计</h2><h3 id="需求概述"><a href="#需求概述" class="headerlink" title="需求概述"></a>需求概述</h3><blockquote>
+        <h1>详细设计</h1>
+<h2 id="总体设计">总体设计</h2>
+<h3 id="需求概述">需求概述</h3>
+<blockquote>
 <p>主要包含两方面需求</p>
 </blockquote>
 <ul>
 <li>1.功能需求：</li>
-<li>2.非功能性需求<br>  性能需求：数据准确、响应时间小、兼容性强；<br>  安全需求：数据存储安全、数据完整；<br>  可恢复性：遭遇故障时快速可恢复；</li>
+<li>2.非功能性需求<br>
+性能需求：数据准确、响应时间小、兼容性强；<br>
+安全需求：数据存储安全、数据完整；<br>
+可恢复性：遭遇故障时快速可恢复；</li>
 </ul>
-<h4 id="软件结构"><a href="#软件结构" class="headerlink" title="软件结构"></a>软件结构</h4><blockquote>
+<h4 id="软件结构">软件结构</h4>
+<blockquote>
 <p>绘制软件主要结构（模块）</p>
 </blockquote>
 <img src="/2024/06/25/Detail-designed/06/25/Detail-designed/struct.png" class="lazyload placeholder" data-srcset="/2024/06/25/Detail-designed/06/25/Detail-designed/struct.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-
-<h3 id="模块描述"><a href="#模块描述" class="headerlink" title="模块描述"></a>模块描述</h3><ul>
-<li>模块基本信息<blockquote>
-<p>描述模块基本功能<br>功能点	子功能</p>
-</blockquote>
-</li>
+<h3 id="模块描述">模块描述</h3>
+<ul>
+<li>模块基本信息</li>
 </ul>
-<h3 id="模块功能概述"><a href="#模块功能概述" class="headerlink" title="模块功能概述"></a>模块功能概述</h3><blockquote>
+<blockquote>
+<p>描述模块基本功能<br>
+功能点	子功能</p>
+</blockquote>
+<h3 id="模块功能概述">模块功能概述</h3>
+<blockquote>
 <p>简述模块基本功能</p>
 </blockquote>
-<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="数据加密算法"><a href="#数据加密算法" class="headerlink" title="数据加密算法"></a>数据加密算法</h3><blockquote>
+<h2 id="算法">算法</h2>
+<h3 id="数据加密算法">数据加密算法</h3>
+<blockquote>
 <p>AES算法具体流程如图</p>
 </blockquote>
 <img src="/2024/06/25/Detail-designed/06/25/Detail-designed/decode.png" class="lazyload placeholder" data-srcset="/2024/06/25/Detail-designed/06/25/Detail-designed/decode.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-
-<h4 id="模块处理逻辑"><a href="#模块处理逻辑" class="headerlink" title="模块处理逻辑"></a>模块处理逻辑</h4><blockquote>
+<h4 id="模块处理逻辑">模块处理逻辑</h4>
+<blockquote>
 <p>阐述模块处理基本逻辑与流程，举例：</p>
 </blockquote>
 <img src="/2024/06/25/Detail-designed/06/25/Detail-designed/example.png" class="lazyload placeholder" data-srcset="/2024/06/25/Detail-designed/06/25/Detail-designed/example.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-
-<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>接口如下所示：<br>模块名称	输入信息	界面操作	输出信息</p>
-<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
+<h2 id="接口">接口</h2>
+<p>接口如下所示：<br>
+模块名称	输入信息	界面操作	输出信息</p>
+<h2 id="性能">性能</h2>
+<ul>
 <li>1、数据准确：用户使用软件展现的效果符合基本预期，运行不出错；</li>
 <li>2、响应时间：数据获取、页面请求的响应时间在一定范围内，不让用户等待时间过长；</li>
 <li>3、兼容性：网站兼容多个主流浏览器。</li>
@@ -733,8 +746,9 @@
       
       <!-- <div class="content">
         基础定义
+
 数据结构：特指结构性数据元素的集合；
-逻辑结构：特指数据的逻辑结构在计算机存储空间的存储形式，如：链式存储、哈
+逻辑结构：特指数据的逻辑结构在计算机存储空间的存储形式，如：链式存储、
       </div> -->
     </a>
   </div>
@@ -753,8 +767,10 @@
         <div class="title-text">需求分析说明</div>
       </div>
       <!-- <div class="content">
-        需求描述约定需求层次划分
-软件需求主要划分为以下三个层次：业务需求、用户需求、功能需求。还包括功能性需求、非功能性需求等
+        需求描述约定
+需求层次划分
+
+软件需求主要划分为以下三个层次：业务需求、用户需求、功能需求。还包括功能性需求、非功能性需
       </div> -->
     </a>
   </div>
@@ -1074,7 +1090,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1"><span class="toc-text">详细设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="toc-text">总体设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E6%A6%82%E8%BF%B0"><span class="toc-text">需求概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-text">软件结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E6%8F%8F%E8%BF%B0"><span class="toc-text">模块描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0"><span class="toc-text">模块功能概述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95"><span class="toc-text">算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-text">数据加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91"><span class="toc-text">模块处理逻辑</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3"><span class="toc-text">接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD"><span class="toc-text">性能</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">详细设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="toc-text">总体设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E6%A6%82%E8%BF%B0"><span class="toc-text">需求概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-text">软件结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E6%8F%8F%E8%BF%B0"><span class="toc-text">模块描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0"><span class="toc-text">模块功能概述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95"><span class="toc-text">算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-text">数据加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91"><span class="toc-text">模块处理逻辑</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3"><span class="toc-text">接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD"><span class="toc-text">性能</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>

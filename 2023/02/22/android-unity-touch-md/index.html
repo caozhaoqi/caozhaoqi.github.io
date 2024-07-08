@@ -643,25 +643,34 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="关于-Unity-中触摸屏幕坐标与物体世界坐标的判定方法-以矩形为例"><a href="#关于-Unity-中触摸屏幕坐标与物体世界坐标的判定方法-以矩形为例" class="headerlink" title="关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)"></a>关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)</h1><h2 id="处理思路"><a href="#处理思路" class="headerlink" title="处理思路"></a>处理思路</h2><ul>
+        <h1>关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)</h1>
+<h2 id="处理思路">处理思路</h2>
+<ul>
 <li>1.获取用户触摸的屏幕坐标(touch_vector3)</li>
 <li>2.转换屏幕坐标为世界坐标(Camera.main.ScreenToWorldPoint(touch_vector3))</li>
 <li>3.根据对应算法比较触摸点与目标点差值</li>
 <li>4.差值在预期内，判定为用户选中；否则，未选中</li>
 </ul>
-<h2 id="算法选择"><a href="#算法选择" class="headerlink" title="算法选择"></a>算法选择</h2><h3 id="交点-射线-法"><a href="#交点-射线-法" class="headerlink" title="交点(射线)法"></a>交点(射线)法</h3><ul>
-<li><p>1.基本思路：</p>
+<h2 id="算法选择">算法选择</h2>
+<h3 id="交点-射线-法">交点(射线)法</h3>
+<ul>
+<li>
+<p>1.基本思路：</p>
 </li>
-<li><p>从任意位置画一条到目标点的水平线，计算该水平线进出平面边界的次数，如果是偶数，则点在平面外；如果是奇数，则点在平面内。点正好落在定点或边界时会出现特殊的判断。</p>
+<li>
+<p>从任意位置画一条到目标点的水平线，计算该水平线进出平面边界的次数，如果是偶数，则点在平面外；如果是奇数，则点在平面内。点正好落在定点或边界时会出现特殊的判断。</p>
 </li>
-<li><p>如图：</p>
-<img src="/2023/02/22/android-unity-touch-md/02/22/android-unity-touch-md/point.png" class="lazyload placeholder" data-srcset="/2023/02/22/android-unity-touch-md/02/22/android-unity-touch-md/point.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img"></li>
-<li><p>2.代码实现</p>
+<li>
+<p>如图：</p>
+<img src="/2023/02/22/android-unity-touch-md/02/22/android-unity-touch-md/point.png" class="lazyload placeholder" data-srcset="/2023/02/22/android-unity-touch-md/02/22/android-unity-touch-md/point.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
+</li>
+<li>
+<p>2.代码实现</p>
 </li>
 </ul>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 判断点是否在矩形框内- app</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;APoints&quot;&gt;</span>库位点集合<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;pointBottomCenter&quot;&gt;</span>目标点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">isPolygonContainsPoint</span>(<span class="params">List&lt;Vector3&gt; APoints, Vector3 pointBottomCenter</span>)</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="built_in">int</span> nCross = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; APoints.Count; i++)</span><br><span class="line">       &#123;</span><br><span class="line">           Vector3 p1 = APoints[i];</span><br><span class="line">           Vector3 p2 = APoints[(i + <span class="number">1</span>) % APoints.Count];</span><br><span class="line">           <span class="comment">// 取多边形任意一个边,做点point的水平延长线,求解与当前边的交点个数</span></span><br><span class="line">           <span class="comment">// p1p2是水平线段,要么没有交点,要么有无限个交点</span></span><br><span class="line">           <span class="keyword">if</span> (p1.y == p2.y)</span><br><span class="line">           &#123;</span><br><span class="line">               <span class="built_in">double</span> minX = Math.Min(p1.x, p2.x);</span><br><span class="line">               <span class="built_in">double</span> maxX = Math.Max(p1.x, p2.x);</span><br><span class="line">               <span class="comment">// point在水平线段p1p2上,直接return true</span></span><br><span class="line">               <span class="keyword">if</span> ((pointBottomCenter.z == p1.z) &amp;&amp; (pointBottomCenter.x &gt;= minX &amp;&amp; pointBottomCenter.x &lt;= maxX))</span><br><span class="line">               &#123;</span><br><span class="line">                   <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">continue</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="comment">// point 在p1p2 底部 --&gt; 无交点</span></span><br><span class="line">           <span class="keyword">if</span> (pointBottomCenter.z &lt; Math.Min(p1.z, p2.z))</span><br><span class="line">               <span class="keyword">continue</span>;</span><br><span class="line">           <span class="comment">// point 在p1p2 顶部 --&gt; 无交点</span></span><br><span class="line">           <span class="keyword">if</span> (pointBottomCenter.z &gt;= Math.Max(p1.z, p2.z))</span><br><span class="line">               <span class="keyword">continue</span>;</span><br><span class="line">           <span class="comment">// 求解 point点水平线与当前p1p2边的交点的 X 坐标</span></span><br><span class="line">           <span class="built_in">double</span> x = (pointBottomCenter.z - p1.z) * (p2.x - p1.x) / (p2.z - p1.z) + p1.x;</span><br><span class="line">           <span class="keyword">if</span> (x &gt; pointBottomCenter.x) <span class="comment">// 当x=point.x时,说明point在p1p2线段上</span></span><br><span class="line">               nCross++; <span class="comment">// 只统计单边交点</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// 单边交点为偶数，点在多边形之外 ---</span></span><br><span class="line">       <span class="keyword">return</span> (nCross % <span class="number">2</span> == <span class="number">1</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="面积法"><a href="#面积法" class="headerlink" title="面积法"></a>面积法</h3><ul>
+<h3 id="面积法">面积法</h3>
+<ul>
 <li>1.基本思路</li>
 <li>通过将矩形切割为多个三角形计算面积，与原面积比较差值；若大于 0 则不在，否则在。</li>
 <li>所有边和目标点组成的三角形面积和是否等于总的多边形面积，如果相等，则在内部。反之在外部。</li>
@@ -720,10 +729,11 @@
       </div>
       
       <!-- <div class="content">
-        关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)导出方式(编译器选择)
-已有方式如下：
+        关于 Unity 不同方式的导出与详细使用的说明(基于 Android 平台)
+导出方式(编译器选择)
 
 
+已有方式如下
       </div> -->
     </a>
   </div>
@@ -742,10 +752,14 @@
         <div class="title-text">Android 作为服务器向 UNITY 客户端发送数据</div>
       </div>
       <!-- <div class="content">
-        Android 作为服务器向 UNITY 客户端发送数据简介
+        Android 作为服务器向 UNITY 客户端发送数据
+简介
+
+
 分层对应协议
 
-应用层：TFTP，HTTP，SNMP，FT
+
+应用层：TFTP，HTTP，SNM
       </div> -->
     </a>
   </div>
@@ -1065,7 +1079,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-Unity-%E4%B8%AD%E8%A7%A6%E6%91%B8%E5%B1%8F%E5%B9%95%E5%9D%90%E6%A0%87%E4%B8%8E%E7%89%A9%E4%BD%93%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87%E7%9A%84%E5%88%A4%E5%AE%9A%E6%96%B9%E6%B3%95-%E4%BB%A5%E7%9F%A9%E5%BD%A2%E4%B8%BA%E4%BE%8B"><span class="toc-text">关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF"><span class="toc-text">处理思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9"><span class="toc-text">算法选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E7%82%B9-%E5%B0%84%E7%BA%BF-%E6%B3%95"><span class="toc-text">交点(射线)法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%A2%E7%A7%AF%E6%B3%95"><span class="toc-text">面积法</span></a></li></ol></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">关于 Unity 中触摸屏幕坐标与物体世界坐标的判定方法(以矩形为例)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF"><span class="toc-text">处理思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9"><span class="toc-text">算法选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E7%82%B9-%E5%B0%84%E7%BA%BF-%E6%B3%95"><span class="toc-text">交点(射线)法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%A2%E7%A7%AF%E6%B3%95"><span class="toc-text">面积法</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>

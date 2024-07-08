@@ -643,42 +643,53 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="基础定义"><a href="#基础定义" class="headerlink" title="基础定义"></a>基础定义</h2><ul>
+        <h2 id="基础定义">基础定义</h2>
+<ul>
 <li>数据结构：特指结构性数据元素的集合；</li>
 <li>逻辑结构：特指数据的逻辑结构在计算机存储空间的存储形式，如：链式存储、哈希存储；</li>
 <li>物理结构：特指数据结构中的物理结构，其过程为将概念模型转换为数据库支持的数据模型；</li>
 </ul>
-<h2 id="总体设计"><a href="#总体设计" class="headerlink" title="总体设计"></a>总体设计</h2><h3 id="需求规定"><a href="#需求规定" class="headerlink" title="需求规定"></a>需求规定</h3><p>需满足以下需求：</p>
+<h2 id="总体设计">总体设计</h2>
+<h3 id="需求规定">需求规定</h3>
+<p>需满足以下需求：</p>
 <ul>
 <li>页面响应时间小于5秒；</li>
 <li>数据存储安全、系统可靠性高。</li>
 </ul>
-<h3 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h3><blockquote>
+<h3 id="运行环境">运行环境</h3>
+<blockquote>
 <p>系统运行环境如下所示：</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">操作系统	Android 6.0及以上或IOS 9及以上</span><br><span class="line">CPU	主频2.0GHz</span><br><span class="line">内存	大于2GB</span><br><span class="line">浏览器	Chrome、Edge等</span><br><span class="line">外部存储	剩余空间大于1GB</span><br></pre></td></tr></table></figure>
-<h3 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h3><blockquote>
+<h3 id="处理流程">处理流程</h3>
+<blockquote>
 <p>本系统大致处理流程如图所示</p>
 </blockquote>
  <img src="/2024/06/25/Conceptual-design/06/25/Conceptual-design/lc.png" class="lazyload placeholder" data-srcset="/2024/06/25/Conceptual-design/06/25/Conceptual-design/lc.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-
-<h3 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a>系统结构</h3><p>本系统结构如图所示。</p>
+<h3 id="系统结构">系统结构</h3>
+<p>本系统结构如图所示。</p>
 <p><img src="/2024/06/25/Conceptual-design/struct.png" class="lazyload placeholder" data-srcset="/2024/06/25/Conceptual-design/struct.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h3 id="功能需求与模块划分"><a href="#功能需求与模块划分" class="headerlink" title="功能需求与模块划分"></a>功能需求与模块划分</h3><blockquote>
+<h3 id="功能需求与模块划分">功能需求与模块划分</h3>
+<blockquote>
 <p>模块划分如下所示</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">功能点	子功能	需求编号</span><br><span class="line">物料维护	物料清单	3.2.1.1</span><br></pre></td></tr></table></figure>
-
-<h2 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h2><h3 id="用户接口"><a href="#用户接口" class="headerlink" title="用户接口"></a>用户接口</h3><blockquote>
+<h2 id="接口设计">接口设计</h2>
+<h3 id="用户接口">用户接口</h3>
+<blockquote>
 <p>用户接口如下所示</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">模块名称	输入信息	界面操作	输出信息</span><br><span class="line">物料维护	物流清单	查询/保存/修改/删除	显示操作是否成功信息</span><br></pre></td></tr></table></figure>
-<h3 id="外部接口"><a href="#外部接口" class="headerlink" title="外部接口"></a>外部接口</h3><h3 id="内部接口"><a href="#内部接口" class="headerlink" title="内部接口"></a>内部接口</h3><h2 id="逻辑结构设计"><a href="#逻辑结构设计" class="headerlink" title="逻辑结构设计"></a>逻辑结构设计</h2><h3 id="E-R图"><a href="#E-R图" class="headerlink" title="E-R图"></a>E-R图</h3><blockquote>
+<h3 id="外部接口">外部接口</h3>
+<h3 id="内部接口">内部接口</h3>
+<h2 id="逻辑结构设计">逻辑结构设计</h2>
+<h3 id="E-R图">E-R图</h3>
+<blockquote>
 <p>具体如图所示</p>
 </blockquote>
  <img src="/2024/06/25/Conceptual-design/06/25/Conceptual-design/er.png" class="lazyload placeholder" data-srcset="/2024/06/25/Conceptual-design/06/25/Conceptual-design/er.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" class title="img">
-
-<h2 id="表定义"><a href="#表定义" class="headerlink" title="表定义"></a>表定义</h2><blockquote>
+<h2 id="表定义">表定义</h2>
+<blockquote>
 <p>表结构如下：</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">名称	描述	类型	长度	小数点	非空	主键</span><br><span class="line">id	物料id	varchar	32	0	√	√</span><br><span class="line">name	物料名	varchar	32	0	√	×</span><br><span class="line">category	物料种类	varchar	32	0	×	×</span><br><span class="line">source	原料名	varchar	32	0	×	×</span><br><span class="line">semi-finished_product	半成品名	varchar	32	0	×	×</span><br><span class="line">son-product	子件id	varchar	32	0	√	×</span><br><span class="line">mother-product	母件id	varchar	32	0	√	×</span><br><span class="line">stage	所属阶段	varchar	32	0	×	×</span><br><span class="line">save_time	保存时间	time	1	0	×	×</span><br><span class="line">update_time	修改时间	time 	1	0	×	×</span><br></pre></td></tr></table></figure>
@@ -734,7 +745,8 @@
       
       <!-- <div class="content">
         定义
-测试用例：指对一项特定的软件产品进行测试任务的描述，体现测试方案、方法、技术和策略。其内容包括测试目标、测试环境、
+
+测试用例：指对一项特定的软件产品进行测试任务的描述，体现测试方案、方法、技术和策略。其内容包括测试目标、测试环境
       </div> -->
     </a>
   </div>
@@ -753,12 +765,16 @@
         <div class="title-text">详细设计说明</div>
       </div>
       <!-- <div class="content">
-        详细设计总体设计需求概述
+        详细设计
+总体设计
+需求概述
+
 主要包含两方面需求
 
 
 1.功能需求：
-2.非功能性需求  性能需求：数据准确、响应时间小、兼
+2.非功能性需求
+性能需求：数据准确、响应时间小
       </div> -->
     </a>
   </div>

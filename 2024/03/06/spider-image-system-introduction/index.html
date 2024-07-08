@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 831 |
+            <i class="fas fa-file-text-o"></i> Words: 792 |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 5min |
+            <i class="fas fa-clock"></i> Reading time: 4min |
           </span>
   
           
@@ -643,50 +643,59 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="Spider-Image-System-User-Guide"><a href="#Spider-Image-System-User-Guide" class="headerlink" title="Spider Image System User Guide"></a>Spider Image System User Guide</h1><h2 id="Struct-design"><a href="#Struct-design" class="headerlink" title="Struct design"></a>Struct design</h2><ol>
-<li>Spider pixiv.net img -&gt; search img -&gt; get url.</li>
+        <h1>Spider Image System User Guide</h1>
+<h2 id="Struct-design">Struct design</h2>
+<ol>
+<li>Spider <a target="_blank" rel="noopener" href="http://pixiv.net">pixiv.net</a> img -&gt; search img -&gt; get url.</li>
 <li>Replace domain -&gt; save url to txt.</li>
 <li>According to url download image from txt content.</li>
 <li>Spider gif image generate video.</li>
 <li>Download gofile file.</li>
 </ol>
-<h2 id="Execute-method"><a href="#Execute-method" class="headerlink" title="Execute method"></a>Execute method</h2><ol>
+<h2 id="Execute-method">Execute method</h2>
+<ol>
 <li>Run sis_v1.0.x.exe(windows platform).</li>
-<li>Run .&#x2F;src&#x2F;run&#x2F;sh&#x2F;run.bat(windows platform).</li>
-<li>Run .&#x2F;src&#x2F;run&#x2F;sh&#x2F;run.sh(linux platform).</li>
+<li>Run ./src/run/sh/run.bat(windows platform).</li>
+<li>Run ./src/run/sh/run.sh(linux platform).</li>
 </ol>
-<h2 id="Position"><a href="#Position" class="headerlink" title="Position"></a>Position</h2><ul>
-<li>If not visit pixiv.net website, could visit sd.2021.host or other url(example: sd.vv50.de) replace.</li>
+<h2 id="Position">Position</h2>
+<ul>
+<li>If not visit <a target="_blank" rel="noopener" href="http://pixiv.net">pixiv.net</a> website, could visit sd.2021.host or other url(example: <a target="_blank" rel="noopener" href="http://sd.vv50.de">sd.vv50.de</a>) replace.</li>
 <li>Other.</li>
 </ul>
-<h2 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h2><ul>
+<h2 id="GUI">GUI</h2>
+<ul>
 <li>Pyqt5 paint main ui.</li>
 </ul>
-<h2 id="Technology-lib"><a href="#Technology-lib" class="headerlink" title="Technology lib"></a>Technology lib</h2><ol>
+<h2 id="Technology-lib">Technology lib</h2>
+<ol>
 <li>selenium.</li>
 <li>loguru.</li>
 <li>requests.</li>
 <li>Other(Read requirements.txt).</li>
 </ol>
-<h2 id="Folder"><a href="#Folder" class="headerlink" title="Folder"></a>Folder</h2><ol>
-<li>.&#x2F;data&#x2F;href_url&#x2F; artwork url folder.</li>
-<li>.&#x2F;data&#x2F;img_url&#x2F; img url txt folder.</li>
-<li>.&#x2F;data&#x2F;*&#x2F;images&#x2F; save img folder.</li>
-<li>.&#x2F;data&#x2F;video generate video folder.</li>
-<li>.&#x2F;data&#x2F;according_pid_download_image pid image download folder.</li>
-<li>.&#x2F;data&#x2F;face_detect_result face detect result folder.</li>
-<li>.&#x2F;data&#x2F;error_images error images folder.</li>
-<li>.&#x2F;log_dir&#x2F; script run log folder.</li>
-<li>Other see .&#x2F;data&#x2F;.</li>
+<h2 id="Folder">Folder</h2>
+<ol>
+<li>./data/href_url/ artwork url folder.</li>
+<li>./data/img_url/ img url txt folder.</li>
+<li>./data/*/images/ save img folder.</li>
+<li>./data/video generate video folder.</li>
+<li>./data/according_pid_download_image pid image download folder.</li>
+<li>./data/face_detect_result face detect result folder.</li>
+<li>./data/error_images error images folder.</li>
+<li>./log_dir/ script run log folder.</li>
+<li>Other see ./data/.</li>
 </ol>
-<h2 id="File"><a href="#File" class="headerlink" title="File"></a>File</h2><ol>
-<li>.&#x2F;data&#x2F;download_final_image.json: final download image info.</li>
-<li>.&#x2F;data&#x2F;download_finished_txt.txt: already download keyword txt.</li>
-<li>.&#x2F;data&#x2F;error_image_txt.txt: download fail image save txt.</li>
-<li>.&#x2F;data&#x2F;spider_finished_keyword.txt: already spider finish keyword txt.</li>
-<li>.&#x2F;data&#x2F;spider_img_keyword_final.json: final spider keyword image json.</li>
+<h2 id="File">File</h2>
+<ol>
+<li>./data/download_final_image.json: final download image info.</li>
+<li>./data/download_finished_txt.txt: already download keyword txt.</li>
+<li>./data/error_image_txt.txt: download fail image save txt.</li>
+<li>./data/spider_finished_keyword.txt: already spider finish keyword txt.</li>
+<li>./data/spider_img_keyword_final.json: final spider keyword image json.</li>
 </ol>
-<h2 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h2><ol>
+<h2 id="Other">Other</h2>
+<ol>
 <li>Self config constant val(Done).</li>
 <li>Play all video(Done).</li>
 <li>Autoplay all image(Done).</li>
@@ -699,31 +708,42 @@
 <li>Other…(to be continued…)</li>
 </ol>
 <ul>
-<li><p>bugs 1 : 在类方法中不能使用@logger.catch注解方法，会出现以下错误：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">File <span class="string">&quot;C:\Users\Administrator\PycharmProjects\calmcar_sf_server\src\test\gui\ui_main.py&quot;</span>, line 130, <span class="keyword">in</span> ui_paint</span></span><br><span class="line">    app.exec_()</span><br><span class="line">    │   └ &lt;built-in method exec_&gt;</span><br><span class="line">    └ &lt;PyQt5.QtWidgets.QApplication object at 0x000002045EF19AF0&gt;</span><br><span class="line"></span><br><span class="line">TypeError: next_img() takes 1 positional argument but 3 were given</span><br></pre></td></tr></table></figure></li>
-<li><p>problem 1 on ubuntu: opencv-python与pyqt5冲突(问题解决)</p>
+<li>bugs 1 : 在类方法中不能使用@logger.catch注解方法，会出现以下错误：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">File <span class="string">&quot;C:\Users\Administrator\PycharmProjects\calmcar_sf_server\src\test\gui\ui_main.py&quot;</span>, line 130, <span class="keyword">in</span> ui_paint</span></span><br><span class="line">    app.exec_()</span><br><span class="line">    │   └ &lt;built-in method exec_&gt;</span><br><span class="line">    └ &lt;PyQt5.QtWidgets.QApplication object at 0x000002045EF19AF0&gt;</span><br><span class="line"></span><br><span class="line">TypeError: next_img() takes 1 positional argument but 3 were given</span><br></pre></td></tr></table></figure>
+<ul>
+<li>problem 1 on ubuntu: opencv-python与pyqt5冲突(问题解决)</li>
+</ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 uninstall opencv-python</span><br><span class="line">sudo pip3 install opencv-python-headless</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">QObject::moveToThread: Current thread (0x55f29a27e0e0) is not the object&#x27;s thread (0x55f29a946dd0).</span><br><span class="line">Cannot move to target thread (0x55f29a27e0e0)</span><br><span class="line"></span><br><span class="line">qt.qpa.plugin: Could not load the Qt platform plugin &quot;xcb&quot; in &quot;/usr/local/lib/python3.10/dist-packages/cv2/qt/plugins&quot; even though it was found.</span><br><span class="line">This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.</span><br><span class="line"></span><br><span class="line">Available platform plugins are: xcb, eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, webgl.</span><br><span class="line"></span><br><span class="line">Aborted</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li><p>Notice: if cannot start spider image, you need install google chrome explore, detail:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">QObject::moveToThread: Current thread (0x55f29a27e0e0) is not the object&#x27;s thread (0x55f29a946dd0).</span><br><span class="line">Cannot move to target thread (0x55f29a27e0e0)</span><br><span class="line"></span><br><span class="line">qt.qpa.plugin: Could not load the Qt platform plugin &quot;xcb&quot; in &quot;/usr/local/lib/python3.10/dist-packages/cv2/qt/plugins&quot; even though it was found.</span><br><span class="line">This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.</span><br><span class="line"></span><br><span class="line">Available platform plugins are: xcb, eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, webgl.</span><br><span class="line"></span><br><span class="line">Aborted</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Notice: if cannot start spider image, you need install google chrome explore, detail:</li>
+</ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">File &quot;/usr/local/lib/python3.10/dist-packages/selenium/webdriver/chrome/webdriver.py&quot;, line 45, in __init__</span><br><span class="line">    super().__init__(</span><br><span class="line">  File &quot;/usr/local/lib/python3.10/dist-packages/selenium/webdriver/chromium/webdriver.py&quot;, line 49, in __init__</span><br><span class="line">    self.service.path = DriverFinder.get_path(self.service, options)</span><br><span class="line">    │    │       │      │            │        │    │        └ &lt;selenium.webdriver.chrome.options.Options object at 0x7f816cf3da20&gt;</span><br><span class="line">    │    │       │      │            │        │    └ &lt;selenium.webdriver.chrome.service.Service object at 0x7f816cf3da80&gt;</span><br><span class="line">    │    │       │      │            │        └ &lt;unprintable WebDriver object&gt;</span><br><span class="line">    │    │       │      │            └ &lt;staticmethod(&lt;function DriverFinder.get_path at 0x7f816eb9cb80&gt;)&gt;</span><br><span class="line">    │    │       │      └ &lt;class &#x27;selenium.webdriver.common.driver_finder.DriverFinder&#x27;&gt;</span><br><span class="line">    │    │       └ &lt;property object at 0x7f816eb5ebb0&gt;</span><br><span class="line">    │    └ &lt;selenium.webdriver.chrome.service.Service object at 0x7f816cf3da80&gt;</span><br><span class="line">    └ &lt;unprintable WebDriver object&gt;</span><br><span class="line">  File &quot;/usr/local/lib/python3.10/dist-packages/selenium/webdriver/common/driver_finder.py&quot;, line 41, in get_path</span><br><span class="line">    raise NoSuchDriverException(msg) from err</span><br><span class="line">          │                     └ &#x27;Unable to obtain driver for chrome using Selenium Manager.&#x27;</span><br><span class="line">          └ &lt;class &#x27;selenium.common.exceptions.NoSuchDriverException&#x27;&gt;</span><br><span class="line"></span><br><span class="line">selenium.common.exceptions.NoSuchDriverException: Message: Unable to obtain driver for chrome using Selenium Manager.; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location</span><br></pre></td></tr></table></figure>
 <p>~ For solve problem, need install follow package:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">apt install chromium-browser</span><br><span class="line">sudo mkdir -p /home/czq/.local/share/applications</span><br><span class="line">sudo touch /home/czq/.local/share/applications/mimeapps.list</span><br><span class="line">chmod -R 777 /home/czq/</span><br><span class="line">xdg-open https://www.baidu.com</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">re run ./sh/run.sh to solve the problem</span></span><br></pre></td></tr></table></figure></li>
-<li><p>For use face detect, you need run follow command on ubuntu:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install libgtk2.0-dev pkg-config</span><br><span class="line">run ./sh/run_face_detect.sh # (on ubuntu os)</span><br></pre></td></tr></table></figure></li>
-<li><p>Install third-party libraries for project</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">apt install chromium-browser</span><br><span class="line">sudo mkdir -p /home/czq/.local/share/applications</span><br><span class="line">sudo touch /home/czq/.local/share/applications/mimeapps.list</span><br><span class="line">chmod -R 777 /home/czq/</span><br><span class="line">xdg-open https://www.baidu.com</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">re run ./sh/run.sh to solve the problem</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>For use face detect, you need run follow command on ubuntu:</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install libgtk2.0-dev pkg-config</span><br><span class="line">run ./sh/run_face_detect.sh # (on ubuntu os)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Install third-party libraries for project</li>
+</ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">recommend use</span></span><br><span class="line">pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">single lib install <span class="built_in">command</span></span></span><br><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv-contrib-python</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Build project and publish pack</p>
+<ul>
+<li>Build project and publish pack</li>
+</ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pyinstaller main_test.spec #使用spec文件打包exe</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>solve not run on HECS(HuaWei ECS) from huawei cloud</p>
+<ul>
+<li>solve not run on HECS(HuaWei ECS) from huawei cloud</li>
+</ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">see</span></span><br><span class="line">https://neucrack.com/p/407</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>wait a moment, code will open to all people, please visit follow url download exe or source code:<br><a target="_blank" rel="noopener" href="https://gitee.com/caozhaoqi/spider_image_system">https://gitee.com/caozhaoqi/spider_image_system</a></p>
+<p>wait a moment, code will open to all people, please visit follow url download exe or source code:<br>
+<a target="_blank" rel="noopener" href="https://gitee.com/caozhaoqi/spider_image_system">https://gitee.com/caozhaoqi/spider_image_system</a></p>
 </blockquote>
-</li>
-</ul>
-<h1 id="See"><a href="#See" class="headerlink" title="See"></a>See</h1><ul>
+<h1>See</h1>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://gitee.com/caozhaoqi">https://gitee.com/caozhaoqi</a></li>
 <li><a target="_blank" rel="noopener" href="https://gitee.com/caozhaoqi/spider_image_system">https://gitee.com/caozhaoqi/spider_image_system</a></li>
 </ul>
@@ -779,8 +799,10 @@
       </div>
       
       <!-- <div class="content">
-        使用python创建一个高效、可用的代理池服务代理
-向目标网站或服务器隐藏IP,利用代理我们可以解决目标网站封 IP 的
+        使用python创建一个高效、可用的代理池服务
+代理
+
+向目标网站或服务器隐藏IP,利用代理我们可以解决目标网站封 IP
       </div> -->
     </a>
   </div>
@@ -800,7 +822,8 @@
       </div>
       <!-- <div class="content">
         技术简介
-Selenium是一个用于Web应用程序的自动化测试框架，通过模拟用户在浏览器中的操作，如点击按钮、输入文本等
+
+Selenium是一个用于Web应用程序的自动化测试框架，通过模拟用户在浏览器中的操作，如点击按钮、输入文本
       </div> -->
     </a>
   </div>
@@ -1120,7 +1143,7 @@ Selenium是一个用于Web应用程序的自动化测试框架，通过模拟用
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spider-Image-System-User-Guide"><span class="toc-text">Spider Image System User Guide</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Struct-design"><span class="toc-text">Struct design</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Execute-method"><span class="toc-text">Execute method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Position"><span class="toc-text">Position</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GUI"><span class="toc-text">GUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Technology-lib"><span class="toc-text">Technology lib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Folder"><span class="toc-text">Folder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#File"><span class="toc-text">File</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other"><span class="toc-text">Other</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">Spider Image System User Guide</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Struct-design"><span class="toc-text">Struct design</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Execute-method"><span class="toc-text">Execute method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Position"><span class="toc-text">Position</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GUI"><span class="toc-text">GUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Technology-lib"><span class="toc-text">Technology lib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Folder"><span class="toc-text">Folder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#File"><span class="toc-text">File</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other"><span class="toc-text">Other</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">See</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>

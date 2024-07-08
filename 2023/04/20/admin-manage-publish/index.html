@@ -643,125 +643,128 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="基于-Vue-Spring-Cloud-前后端服务的云部署"><a href="#基于-Vue-Spring-Cloud-前后端服务的云部署" class="headerlink" title="基于 Vue+Spring Cloud 前后端服务的云部署"></a>基于 Vue+Spring Cloud 前后端服务的云部署</h1><h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><ul>
+        <h1>基于 Vue+Spring Cloud 前后端服务的云部署</h1>
+<h2 id="系统环境">系统环境</h2>
+<ul>
 <li>基础环境</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">centos 8 <span class="comment"># 操作系统</span></span><br><span class="line">JDK 1.8 <span class="comment"># java</span></span><br><span class="line">yum -y install java</span><br><span class="line">git</span><br><span class="line">yum install git</span><br></pre></td></tr></table></figure>
-
-<h2 id="前端打包"><a href="#前端打包" class="headerlink" title="前端打包"></a>前端打包</h2><ul>
+<h2 id="前端打包">前端打包</h2>
+<ul>
 <li>1.打包指令</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li><p>2.文件上传</p>
+<li>
+<p>2.文件上传</p>
 </li>
-<li><p>使用 FTP 工具上传<code>dist</code>文件</p>
+<li>
+<p>使用 FTP 工具上传<code>dist</code>文件</p>
 </li>
 </ul>
-<h2 id="后端打包"><a href="#后端打包" class="headerlink" title="后端打包"></a>后端打包</h2><ul>
+<h2 id="后端打包">后端打包</h2>
+<ul>
 <li>1.Maven 打包</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package <span class="comment">#or mvn install 只需在父服务中运行</span></span><br></pre></td></tr></table></figure>
-
 <ul>
-<li><p>2.jar 包上传</p>
+<li>
+<p>2.jar 包上传</p>
 </li>
-<li><p>使用 FTP 上传 jar 包</p>
+<li>
+<p>使用 FTP 上传 jar 包</p>
 </li>
-<li><p>3.jar 包运行</p>
+<li>
+<p>3.jar 包运行</p>
 </li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohub java -jar rs_shop_service.jar &amp; 1 &amp;out.log</span><br></pre></td></tr></table></figure>
-
-<h2 id="云服务器部署"><a href="#云服务器部署" class="headerlink" title="云服务器部署"></a>云服务器部署</h2><ul>
-<li><p>1.基础镜像配置</p>
+<h2 id="云服务器部署">云服务器部署</h2>
+<ul>
+<li>
+<p>1.基础镜像配置</p>
 </li>
-<li><p>镜像源设置</p>
+<li>
+<p>镜像源设置</p>
 </li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /etc/yum.repos.d.bak</span><br><span class="line"><span class="built_in">mv</span> /etc/yum.repos.d/* /etc/yum.repos.d.bak/</span><br><span class="line">ll /etc/yum.repos.d/</span><br><span class="line">ll /etc/yum.repos.d.bak/</span><br><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-8.repo</span><br><span class="line">sed -i -e <span class="string">&#x27;/mirrors.cloud.aliyuncs.com/d&#x27;</span> -e <span class="string">&#x27;/mirrors.aliyuncs.com/d&#x27;</span> /etc/yum.repos.d/CentOS-Base.repo</span><br><span class="line">sed -i <span class="string">&#x27;s/releasever\//releasever-stream\//g&#x27;</span> /etc/yum.repos.d/CentOS-Base.repo</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>缓存清除与元数据重建</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li><p>2.Docker 安装与使用</p>
+<li>
+<p>2.Docker 安装与使用</p>
 </li>
-<li><p>更新 yum 源</p>
+<li>
+<p>更新 yum 源</p>
 </li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>安装</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager \</span><br><span class="line">--add-repo \</span><br><span class="line">https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum install -y docker-ce</span><br><span class="line">systemctl start docker</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li><p>3.基础镜像安装与使用</p>
+<li>
+<p>3.基础镜像安装与使用</p>
 </li>
-<li><p>mysql</p>
+<li>
+<p>mysql</p>
 </li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql <span class="comment"># 镜像拉取</span></span><br><span class="line">docker images <span class="comment"># 查看镜像</span></span><br><span class="line">docker run --name testmysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=smx0920 mysqlimagesname <span class="comment">#运行</span></span><br><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>redis</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker pull redis</span><br><span class="line">docker images</span><br><span class="line">docker run -p 6379:6379 -v <span class="variable">$PWD</span>/data:/data  -d redis redis-server --appendonly <span class="built_in">yes</span></span><br><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>nginx</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx</span><br><span class="line">docker images</span><br><span class="line"><span class="built_in">mkdir</span> -p /data/nginx/conf</span><br><span class="line"><span class="built_in">mkdir</span> -p /data/nginx/conf.d</span><br><span class="line"><span class="built_in">mkdir</span> -p /data/nginx/html</span><br><span class="line"><span class="built_in">mkdir</span> -p /data/nginx/logs</span><br><span class="line">docker run --name mynginx -d -p 80:80 -v /data/nginx/html:/usr/share/nginx/html -v /data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /data/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf -v /data/nginx/logs:/var/log/nginx nginx</span><br><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li><p>4.基础镜像配置</p>
+<li>
+<p>4.基础镜像配置</p>
 </li>
-<li><p>mysql</p>
+<li>
+<p>mysql</p>
 </li>
 </ul>
 <p><code>mysql需做如下配置</code></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mysql bash</span><br><span class="line">mysql -u root -p</span><br><span class="line"><span class="comment"># 输入密码回车</span></span><br><span class="line">```</span><br><span class="line">`对数据库做如下配置`</span><br><span class="line">```sql</span><br><span class="line">alter user <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified with mysql_native_password by <span class="string">&#x27;smx0920&#x27;</span>;</span><br><span class="line">flush privileges;</span><br><span class="line">```</span><br><span class="line">```sh</span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">docker restart mysql</span><br><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li>redis<br><code>运行完后做如下测试：</code></li>
+<li>redis<br>
+<code>运行完后做如下测试：</code></li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L 127.0.0.1:6379</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>nginx</li>
 </ul>
-<h4 id="nginx-conf-配置"><a href="#nginx-conf-配置" class="headerlink" title="nginx.conf 配置"></a>nginx.conf 配置</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">user nginx;</span><br><span class="line">worker_processes 1;</span><br><span class="line"></span><br><span class="line">error_log /var/log/nginx/error.log warn;</span><br><span class="line">pid    /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">  worker_connections 1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">  include    /etc/nginx/mime.types;</span><br><span class="line">  default_type application/octet-stream;</span><br><span class="line"></span><br><span class="line">  log_format main <span class="string">&#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span></span><br><span class="line">    <span class="string">&#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span></span><br><span class="line">    <span class="string">&#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  access_log /var/log/nginx/access.log main;</span><br><span class="line"></span><br><span class="line">  sendfile    on;</span><br><span class="line">  <span class="comment">#tcp_nopush   on;</span></span><br><span class="line"></span><br><span class="line">  keepalive_timeout 65;</span><br><span class="line"></span><br><span class="line">  <span class="comment">#gzip on;</span></span><br><span class="line"></span><br><span class="line">  include /etc/nginx/conf.d/*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="default-conf-配置"><a href="#default-conf-配置" class="headerlink" title="default.conf 配置"></a>default.conf 配置</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen    6666;</span><br><span class="line">  server_name localhost;</span><br><span class="line"></span><br><span class="line">  <span class="comment">#charset koi8-r;</span></span><br><span class="line">  <span class="comment">#access_log /var/log/nginx/host.access.log main;</span></span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    root  /usr/share/nginx/html;</span><br><span class="line">    index 1.html;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">#error_page 404/404.html;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  error_page  500 502 503 504 /50x.html;</span><br><span class="line">  location = /50x.html &#123;</span><br><span class="line">    root  /usr/share/nginx/html;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  location /api/ &#123;</span><br><span class="line">    proxy_pass http://localhost:10000/shop <span class="comment">#端口代理转发</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment"># proxy the PHP scripts to Apache listening on 127.0.0.1:80</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#location ~ .php$ &#123;</span></span><br><span class="line">  <span class="comment">#  proxy_pass  http://127.0.0.1;</span></span><br><span class="line">  <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#location ~ .php$ &#123;</span></span><br><span class="line">  <span class="comment">#  root      html;</span></span><br><span class="line">  <span class="comment">#  fastcgi_pass  127.0.0.1:9000;</span></span><br><span class="line">  <span class="comment">#  fastcgi_index index.php;</span></span><br><span class="line">  <span class="comment">#  fastcgi_param script_FILENAME /scripts$fastcgi_script_name;</span></span><br><span class="line">  <span class="comment">#  include    fastcgi_params;</span></span><br><span class="line">  <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># deny access to .htaccess files, if Apache&#x27;s document root</span></span><br><span class="line">  <span class="comment"># concurs with nginx&#x27;s one</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#location ~ /.ht &#123;</span></span><br><span class="line">  <span class="comment">#  deny all;</span></span><br><span class="line">  <span class="comment">#&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h4 id="nginx-conf-配置">nginx.conf 配置</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">user nginx;</span><br><span class="line">worker_processes 1;</span><br><span class="line"></span><br><span class="line">error_log /var/log/nginx/error.log warn;</span><br><span class="line">pid    /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">  worker_connections 1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">  include    /etc/nginx/mime.types;</span><br><span class="line">  default_type application/octet-stream;</span><br><span class="line"></span><br><span class="line">  log_format main <span class="string">&#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span></span><br><span class="line">    <span class="string">&#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span></span><br><span class="line">    <span class="string">&#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  access_log /var/log/nginx/access.log main;</span><br><span class="line"></span><br><span class="line">  sendfile    on;</span><br><span class="line">  <span class="comment">#tcp_nopush   on;</span></span><br><span class="line"></span><br><span class="line">  keepalive_timeout 65;</span><br><span class="line"></span><br><span class="line">  <span class="comment">#gzip on;</span></span><br><span class="line"></span><br><span class="line">  include /etc/nginx/conf.d/*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="default-conf-配置">default.conf 配置</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen    6666;</span><br><span class="line">  server_name localhost;</span><br><span class="line"></span><br><span class="line">  <span class="comment">#charset koi8-r;</span></span><br><span class="line">  <span class="comment">#access_log /var/log/nginx/host.access.log main;</span></span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    root  /usr/share/nginx/html;</span><br><span class="line">    index 1.html;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">#error_page 404/404.html;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  error_page  500 502 503 504 /50x.html;</span><br><span class="line">  location = /50x.html &#123;</span><br><span class="line">    root  /usr/share/nginx/html;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  location /api/ &#123;</span><br><span class="line">    proxy_pass http://localhost:10000/shop <span class="comment">#端口代理转发</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment"># proxy the PHP scripts to Apache listening on 127.0.0.1:80</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#location ~ .php$ &#123;</span></span><br><span class="line">  <span class="comment">#  proxy_pass  http://127.0.0.1;</span></span><br><span class="line">  <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#location ~ .php$ &#123;</span></span><br><span class="line">  <span class="comment">#  root      html;</span></span><br><span class="line">  <span class="comment">#  fastcgi_pass  127.0.0.1:9000;</span></span><br><span class="line">  <span class="comment">#  fastcgi_index index.php;</span></span><br><span class="line">  <span class="comment">#  fastcgi_param script_FILENAME /scripts$fastcgi_script_name;</span></span><br><span class="line">  <span class="comment">#  include    fastcgi_params;</span></span><br><span class="line">  <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># deny access to .htaccess files, if Apache&#x27;s document root</span></span><br><span class="line">  <span class="comment"># concurs with nginx&#x27;s one</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#location ~ /.ht &#123;</span></span><br><span class="line">  <span class="comment">#  deny all;</span></span><br><span class="line">  <span class="comment">#&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>配置完成后，重启容器</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart containerid</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>或者进入容器重启 nginx 服务</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it nginx  bash</span><br><span class="line">nginx -s reload</span><br><span class="line">nginx -t</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>5.服务搭建与测试</li>
 </ul>
-<h2 id="最终测试"><a href="#最终测试" class="headerlink" title="最终测试"></a>最终测试</h2><ul>
+<h2 id="最终测试">最终测试</h2>
+<ul>
 <li>1.前端页面测试</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L http://localhost:6666</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>2.后端接口测试</li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L http://localhost:10000/api/shop/test</span><br></pre></td></tr></table></figure>
-
 <p><code>上述有结果反馈，即为部署成功！</code></p>
 
       </div>
@@ -815,8 +818,8 @@
       </div>
       
       <!-- <div class="content">
-        1. logcat 日志采集脚本1adb logcat -v time &gt; D:\log1.txt
-
+        1. logcat 日志采集脚本
+1adb logcat -v time &gt; D:\log1.txt
 2. bug
       </div> -->
     </a>
@@ -837,7 +840,8 @@
       </div>
       <!-- <div class="content">
         介绍
- electron-egg 是一个业务框架；就好比 Spring 之于 java，thinkphp 之于 php，
+
+ electron-egg 是一个业务框架；就好比 Spring 之于 java，thinkphp 之于 php
       </div> -->
     </a>
   </div>
@@ -1157,7 +1161,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-Vue-Spring-Cloud-%E5%89%8D%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E7%9A%84%E4%BA%91%E9%83%A8%E7%BD%B2"><span class="toc-text">基于 Vue+Spring Cloud 前后端服务的云部署</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83"><span class="toc-text">系统环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%89%93%E5%8C%85"><span class="toc-text">前端打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%89%93%E5%8C%85"><span class="toc-text">后端打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2"><span class="toc-text">云服务器部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx-conf-%E9%85%8D%E7%BD%AE"><span class="toc-text">nginx.conf 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#default-conf-%E9%85%8D%E7%BD%AE"><span class="toc-text">default.conf 配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E6%B5%8B%E8%AF%95"><span class="toc-text">最终测试</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">基于 Vue+Spring Cloud 前后端服务的云部署</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83"><span class="toc-text">系统环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%89%93%E5%8C%85"><span class="toc-text">前端打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%89%93%E5%8C%85"><span class="toc-text">后端打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2"><span class="toc-text">云服务器部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx-conf-%E9%85%8D%E7%BD%AE"><span class="toc-text">nginx.conf 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#default-conf-%E9%85%8D%E7%BD%AE"><span class="toc-text">default.conf 配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E6%B5%8B%E8%AF%95"><span class="toc-text">最终测试</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>

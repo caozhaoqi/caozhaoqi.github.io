@@ -612,7 +612,7 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 153 |
+            <i class="fas fa-file-text-o"></i> Words: 156 |
           </span>
   
           <span class="min2read">
@@ -643,10 +643,15 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="错误内容"><a href="#错误内容" class="headerlink" title="错误内容"></a>错误内容</h1><h2 id="错误详情"><a href="#错误详情" class="headerlink" title="错误详情"></a>错误详情</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">czq@czq-virtual-machine:~/Desktop/blog/hexo-bamboo-blog$ sudo npm install</span><br><span class="line">npm error code 128</span><br><span class="line">npm error An unknown git error occurred</span><br><span class="line">npm error command git --no-replace-objects ls-remote ssh://git@github.com/CodeFalling/hexo-asset-image.git</span><br><span class="line">npm error git@github.com: Permission denied (publickey).</span><br><span class="line">npm error fatal: Could not read from remote repository.</span><br><span class="line">npm error</span><br><span class="line">npm error Please make sure you have the correct access rights</span><br><span class="line">npm error and the repository exists.</span><br><span class="line"></span><br><span class="line">npm error A complete log of this run can be found in: /root/.npm/_logs/2024-07-05T01_37_00_386Z-debug-0.log</span><br></pre></td></tr></table></figure>
-<h2 id="How-to-fix-the-prolem"><a href="#How-to-fix-the-prolem" class="headerlink" title="How to fix the prolem"></a>How to fix the prolem</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C mail@qq.com</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_res.pub</span><br><span class="line"><span class="comment"># add rsa to github.com </span></span><br></pre></td></tr></table></figure>
-<h2 id="switch-node-version-to-point"><a href="#switch-node-version-to-point" class="headerlink" title="switch node version to point"></a>switch node version to point</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install npm</span><br><span class="line">sudo npm install n -g</span><br><span class="line">sudo n lts</span><br><span class="line">sudo node -v</span><br></pre></td></tr></table></figure>
-<h2 id="switch-mirror-to-tb-mirror"><a href="#switch-mirror-to-tb-mirror" class="headerlink" title="switch mirror to tb mirror"></a>switch mirror to tb mirror</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry http://registry.npm.taobao.org/</span><br><span class="line">npm config get registry</span><br></pre></td></tr></table></figure>
+        <h1>错误内容</h1>
+<h2 id="错误详情">错误详情</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">czq@czq-virtual-machine:~/Desktop/blog/hexo-bamboo-blog$ sudo npm install</span><br><span class="line">npm error code 128</span><br><span class="line">npm error An unknown git error occurred</span><br><span class="line">npm error command git --no-replace-objects ls-remote ssh://git@github.com/CodeFalling/hexo-asset-image.git</span><br><span class="line">npm error git@github.com: Permission denied (publickey).</span><br><span class="line">npm error fatal: Could not read from remote repository.</span><br><span class="line">npm error</span><br><span class="line">npm error Please make sure you have the correct access rights</span><br><span class="line">npm error and the repository exists.</span><br><span class="line"></span><br><span class="line">npm error A complete log of this run can be found in: /root/.npm/_logs/2024-07-05T01_37_00_386Z-debug-0.log</span><br></pre></td></tr></table></figure>
+<h2 id="How-to-fix-the-prolem">How to fix the prolem</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C mail@qq.com</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_res.pub</span><br><span class="line"><span class="comment"># add rsa to github.com </span></span><br></pre></td></tr></table></figure>
+<h2 id="switch-node-version-to-point">switch node version to point</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install npm</span><br><span class="line"><span class="built_in">sudo</span> npm install n -g</span><br><span class="line"><span class="built_in">sudo</span> n lts</span><br><span class="line"><span class="built_in">sudo</span> node -v</span><br></pre></td></tr></table></figure>
+<h2 id="switch-mirror-to-tb-mirror">switch mirror to tb mirror</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry http://registry.npm.taobao.org/</span><br><span class="line">npm config get registry</span><br></pre></td></tr></table></figure>
       </div>
       <div class="post-tags-categories">
         
@@ -718,6 +723,7 @@
       </div>
       <!-- <div class="content">
         Passge follow:
+
 
 
 	
@@ -1046,7 +1052,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%86%85%E5%AE%B9"><span class="toc-text">错误内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E8%AF%A6%E6%83%85"><span class="toc-text">错误详情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-fix-the-prolem"><span class="toc-text">How to fix the prolem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch-node-version-to-point"><span class="toc-text">switch node version to point</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch-mirror-to-tb-mirror"><span class="toc-text">switch mirror to tb mirror</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">错误内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E8%AF%A6%E6%83%85"><span class="toc-text">错误详情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-fix-the-prolem"><span class="toc-text">How to fix the prolem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch-node-version-to-point"><span class="toc-text">switch node version to point</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch-mirror-to-tb-mirror"><span class="toc-text">switch mirror to tb mirror</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
