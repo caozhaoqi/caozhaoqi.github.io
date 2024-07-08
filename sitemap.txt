@@ -9,8 +9,8 @@ https://caozhaoqi.github.io/2023/06/20/uvicorn-publish/
 https://caozhaoqi.github.io/2023/05/15/uvicorn-use/
 https://caozhaoqi.github.io/2024/06/25/test-case/
 https://caozhaoqi.github.io/2023/02/22/unityexport-to-android-md/
-https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/
 https://caozhaoqi.github.io/2024/06/25/test-case-result/
+https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/
 https://caozhaoqi.github.io/2024/03/06/spider-image-system-introduction/
 https://caozhaoqi.github.io/2023/08/29/spring-cloud-activiti/
 https://caozhaoqi.github.io/2023/12/29/smb-py-operation/
@@ -23,8 +23,8 @@ https://caozhaoqi.github.io/2024/03/22/python-proxy-server/
 https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/
 https://caozhaoqi.github.io/2023/11/06/python-ini-file-config/
 https://caozhaoqi.github.io/2023/07/31/python-ftp-server/
-https://caozhaoqi.github.io/2024/03/25/opencv-image-video/
 https://caozhaoqi.github.io/2024/04/09/pyinstaller-publish-python/
+https://caozhaoqi.github.io/2024/03/25/opencv-image-video/
 https://caozhaoqi.github.io/2024/06/05/nsfw-model-use/
 https://caozhaoqi.github.io/2024/04/09/nuitka-publish-python/
 https://caozhaoqi.github.io/2023/12/29/micro-service-py/
