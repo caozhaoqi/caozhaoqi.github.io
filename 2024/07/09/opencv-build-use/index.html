@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>OpenCV buid and install on ubuntu | Zhaoqi.Cao static Blog</title>
+  <title>OpenCV build and install on ubuntu | Zhaoqi.Cao static Blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,14 +589,14 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        OpenCV buid and install on ubuntu
+        OpenCV build and install on ubuntu
       </span>
     </div>
     
@@ -612,7 +612,7 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 245 |
+            <i class="fas fa-file-text-o"></i> Words: 248 |
           </span>
   
           <span class="min2read">
@@ -643,20 +643,27 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="下载所需库"><a href="#下载所需库" class="headerlink" title="下载所需库"></a>下载所需库</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载依赖库</span></span><br><span class="line"><span class="built_in">sudo</span> apt install -y build-essential cmake libopencv-dev git-lfs clang-format</span><br><span class="line"><span class="built_in">sudo</span> apt install g++</span><br><span class="line"><span class="built_in">sudo</span> apt  install make unzip wget </span><br><span class="line">git lfs install</span><br><span class="line"><span class="built_in">sudo</span> apt-get install build-essential libgtk2.0-dev libgtk-3devlibavcodec-dev libavformat-dev libjpeg-dev libswscale-dev libtiff5-dev</span><br><span class="line"><span class="built_in">sudo</span> apt install git</span><br></pre></td></tr></table></figure>
+        <h2 id="下载所需库">下载所需库</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载依赖库</span></span><br><span class="line"><span class="built_in">sudo</span> apt install -y build-essential cmake libopencv-dev git-lfs clang-format</span><br><span class="line"><span class="built_in">sudo</span> apt install g++</span><br><span class="line"><span class="built_in">sudo</span> apt  install make unzip wget </span><br><span class="line">git lfs install</span><br><span class="line"><span class="built_in">sudo</span> apt-get install build-essential libgtk2.0-dev libgtk-3devlibavcodec-dev libavformat-dev libjpeg-dev libswscale-dev libtiff5-dev</span><br><span class="line"><span class="built_in">sudo</span> apt install git</span><br></pre></td></tr></table></figure>
+<h2 id="下载opencv安装包">下载opencv安装包</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> git <span class="built_in">clone</span> https://codeload.github.com/opencv/opencv</span><br><span class="line">unzip opencv-4.10.0</span><br><span class="line"><span class="built_in">mkdir</span> build </span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"><span class="comment"># remove old file</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">rm</span> -rf ./*</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 777 -R ./*</span><br></pre></td></tr></table></figure>
+<h2 id="编译">编译</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake ../opencv-4.10.0 -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local <span class="comment"># new</span></span><br><span class="line"><span class="comment"># cmake ../opencv-version -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local </span></span><br></pre></td></tr></table></figure>
+<h2 id="build-success">build success</h2>
 
-<h2 id="下载opencv安装包"><a href="#下载opencv安装包" class="headerlink" title="下载opencv安装包"></a>下载opencv安装包</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> git <span class="built_in">clone</span> https://codeload.github.com/opencv/opencv</span><br><span class="line">unzip opencv-4.10.0</span><br><span class="line"><span class="built_in">mkdir</span> build </span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"><span class="comment"># remove old file</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">rm</span> -rf ./*</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 777 -R ./*</span><br></pre></td></tr></table></figure>
+<h2 id="安装">安装</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  编译安装</span></span><br><span class="line"><span class="built_in">sudo</span> make install</span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line">make -j</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测opencv是否安装 以及查询对应版本号</span></span><br><span class="line"><span class="comment"># 查看版本,有输出4.5.2就成功</span></span><br><span class="line">pkg-config --modversion opencv4</span><br><span class="line"><span class="comment"># 查看库</span></span><br><span class="line">pkg-config --libs opencv4</span><br></pre></td></tr></table></figure>
+<h2 id="成功效果">成功效果</h2>
 
-<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake ../opencv-4.10.0 -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local <span class="comment"># new</span></span><br><span class="line"><span class="comment"># cmake ../opencv-version -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local </span></span><br></pre></td></tr></table></figure>
-<h2 id="build-success"><a href="#build-success" class="headerlink" title="build success"></a>build success</h2><p><img src="/2024/07/09/opencv-build-use/opencv-build-success.png" class="lazyload placeholder" data-srcset="/2024/07/09/opencv-build-use/opencv-build-success.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  编译安装</span></span><br><span class="line"><span class="built_in">sudo</span> make install</span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line">make -j</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测opencv是否安装 以及查询对应版本号</span></span><br><span class="line"><span class="comment"># 查看版本,有输出4.5.2就成功</span></span><br><span class="line">pkg-config --modversion opencv4</span><br><span class="line"><span class="comment"># 查看库</span></span><br><span class="line">pkg-config --libs opencv4</span><br></pre></td></tr></table></figure>
-
-<h2 id="成功效果"><a href="#成功效果" class="headerlink" title="成功效果"></a>成功效果</h2><p><img src="/2024/07/09/opencv-build-use/opencv-install-success.png" class="lazyload placeholder" data-srcset="/2024/07/09/opencv-build-use/opencv-install-success.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h2 id="other"><a href="#other" class="headerlink" title="other"></a>other</h2><ul>
-<li>Sophus<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> git <span class="built_in">clone</span> https://github.com/strasdat/Sophus.git</span><br><span class="line"><span class="built_in">cd</span> Sophus</span><br><span class="line">git checkout a621ff    <span class="comment">#切换为非模板类的历史版本</span></span><br><span class="line"><span class="built_in">cd</span> Sophus</span><br><span class="line"><span class="built_in">mkdir</span> build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..  </span><br><span class="line">make</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br></pre></td></tr></table></figure></li>
-<li>cmake<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wget https://cmake.org/files/v3.22/cmake-3.22.1.tar.gz</span><br><span class="line"><span class="built_in">sudo</span> apt-get install libssl-dev</span><br><span class="line">tar -xvzf cmake-3.22.1.tar.gz</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 777 ./configure</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br><span class="line"><span class="built_in">sudo</span> update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force</span><br><span class="line">cmake --version</span><br></pre></td></tr></table></figure></li>
+<h2 id="other">other</h2>
+<ul>
+<li>Sophus</li>
 </ul>
-
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> git <span class="built_in">clone</span> https://github.com/strasdat/Sophus.git</span><br><span class="line"><span class="built_in">cd</span> Sophus</span><br><span class="line">git checkout a621ff    <span class="comment">#切换为非模板类的历史版本</span></span><br><span class="line"><span class="built_in">cd</span> Sophus</span><br><span class="line"><span class="built_in">mkdir</span> build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..  </span><br><span class="line">make</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li>cmake</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wget https://cmake.org/files/v3.22/cmake-3.22.1.tar.gz</span><br><span class="line"><span class="built_in">sudo</span> apt-get install libssl-dev</span><br><span class="line">tar -xvzf cmake-3.22.1.tar.gz</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 777 ./configure</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br><span class="line"><span class="built_in">sudo</span> update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force</span><br><span class="line">cmake --version</span><br></pre></td></tr></table></figure>
       </div>
       <div class="post-tags-categories">
         
@@ -677,7 +684,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2024/07/09/opencv-build-use/" target="_blank" title="OpenCV buid and install on ubuntu">https://caozhaoqi.github.io/2024/07/09/opencv-build-use/</a>
+    <a href="/2024/07/09/opencv-build-use/" target="_blank" title="OpenCV build and install on ubuntu">https://caozhaoqi.github.io/2024/07/09/opencv-build-use/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -1066,7 +1073,7 @@
             <div class="post-img-box">
               <a href="/2024/07/09/opencv-build-use/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
@@ -1075,7 +1082,7 @@
                   <span class="post-date">07-09</span>
                 
               </div>
-              <a class="post-title" href="/2024/07/09/opencv-build-use/">OpenCV buid and install on ubuntu</a>
+              <a class="post-title" href="/2024/07/09/opencv-build-use/">OpenCV build and install on ubuntu</a>
             </div>
           </div>
         
@@ -1503,7 +1510,7 @@
       
         
           <div class="footer-copyright">
-            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a> </p>
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a></p>
 
           </div>
         
