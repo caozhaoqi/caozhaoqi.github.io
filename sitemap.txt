@@ -1,3 +1,5 @@
+https://caozhaoqi.github.io/2024/08/21/pyqt5-singal-thread/
+https://caozhaoqi.github.io/2024/06/25/graduate-design/
 https://caozhaoqi.github.io/2024/07/09/opencv-build-use/
 https://caozhaoqi.github.io/2024/08/21/pytesseract-ocr-demo/
 https://caozhaoqi.github.io/2024/05/07/self-threading-use/
@@ -41,7 +43,6 @@ https://caozhaoqi.github.io/2023/12/29/micro-service-py/
 https://caozhaoqi.github.io/2023/11/28/mdf-file-parser/
 https://caozhaoqi.github.io/2023/02/24/kill-process-app/
 https://caozhaoqi.github.io/2023/08/25/https-ssl-cert/
-https://caozhaoqi.github.io/2024/06/25/graduate-design/
 https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/
 https://caozhaoqi.github.io/2023/03/10/eestudy/
 https://caozhaoqi.github.io/2023/03/02/androidopenapp-md/
