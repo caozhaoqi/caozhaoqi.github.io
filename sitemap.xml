@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/</loc>
+    <loc>https://caozhaoqi.github.io/2024/10/25/ohos-pixiv-image/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -11,7 +11,16 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/10/25/ohos-pixiv-image/</loc>
+    <loc>https://caozhaoqi.github.io/2024/07/09/opencv-build-use/</loc>
+    
+    <lastmod>2024-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -273,15 +282,6 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2024/08/19/py-screenshot-demo/</loc>
-    
-    <lastmod>2024-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2024/07/09/opencv-build-use/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
