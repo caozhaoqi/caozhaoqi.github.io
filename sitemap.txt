@@ -1,3 +1,7 @@
+https://caozhaoqi.github.io/2024/10/27/air-station/
+https://caozhaoqi.github.io/2024/10/27/cat-camera/
+https://caozhaoqi.github.io/2024/06/25/Conceptual-design/
+https://caozhaoqi.github.io/2024/06/25/Detail-designed/
 https://caozhaoqi.github.io/2024/10/25/ohos-pixiv-image/
 https://caozhaoqi.github.io/2024/07/09/opencv-build-use/
 https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/
@@ -51,8 +55,6 @@ https://caozhaoqi.github.io/2023/02/22/UnityRotation/
 https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/
 https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/
 https://caozhaoqi.github.io/2024/06/25/LCD-Overview/
-https://caozhaoqi.github.io/2024/06/25/Detail-designed/
-https://caozhaoqi.github.io/2024/06/25/Conceptual-design/
 https://caozhaoqi.github.io/2023/02/22/AndroidSocketToUnity/
 https://caozhaoqi.github.io/404.html
 https://caozhaoqi.github.io/
@@ -76,3 +78,4 @@ https://caozhaoqi.github.io/tags/harmonyos/
 https://caozhaoqi.github.io/tags/opencv/
 https://caozhaoqi.github.io/tags/tesseract/
 https://caozhaoqi.github.io/tags/unbutu/
+https://caozhaoqi.github.io/tags/esp32/
