@@ -1,3 +1,5 @@
+https://caozhaoqi.github.io/2024/10/28/wm8731-record-audio/
+https://caozhaoqi.github.io/2024/08/09/cpp-qt-demo/
 https://caozhaoqi.github.io/2024/10/27/air-station/
 https://caozhaoqi.github.io/2024/10/27/cat-camera/
 https://caozhaoqi.github.io/2024/06/25/Conceptual-design/
@@ -46,7 +48,6 @@ https://caozhaoqi.github.io/2024/07/05/git-respority-error/
 https://caozhaoqi.github.io/2024/06/25/graduate-design/
 https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/
 https://caozhaoqi.github.io/2023/03/10/eestudy/
-https://caozhaoqi.github.io/2024/08/09/cpp-qt-demo/
 https://caozhaoqi.github.io/2023/12/01/cpp-project-build-clion/
 https://caozhaoqi.github.io/2023/03/06/baidumapuse/
 https://caozhaoqi.github.io/2023/03/02/androidopenapp-md/
@@ -79,3 +80,4 @@ https://caozhaoqi.github.io/tags/opencv/
 https://caozhaoqi.github.io/tags/tesseract/
 https://caozhaoqi.github.io/tags/unbutu/
 https://caozhaoqi.github.io/tags/esp32/
+https://caozhaoqi.github.io/tags/fpga/
