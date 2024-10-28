@@ -729,7 +729,7 @@
 <ul>
 <li>举例</li>
 </ul>
-<p><img src="/2024/10/27/air-station/s-c.png" class="lazyload placeholder" data-srcset="/2024/10/27/air-station/s-c.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2024/10/27/air-station/sc.png" class="lazyload placeholder" data-srcset="/2024/10/27/air-station/sc.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
 <h3 id="线路连接"><a href="#线路连接" class="headerlink" title="线路连接"></a>线路连接</h3><blockquote>
 <p>以DI mini为连接起点，用改装的一转六杜邦线连接所有其他设备的GN，我们需拿出一根一转四的杜邦线，杜邦线的其中一头连接D1 mini的5v，另外几头分别连接颗粒物传感器，二氧化碳传感器及串口屏幕的VCC端，保证有足够的电压输入给我们的设备</p>
 </blockquote>
@@ -760,14 +760,14 @@
 <blockquote>
 <p>其中rules的勾选是为了给按键设置切换规则及延迟时间，勾选NTP可以自动达成网络时间同步协议</p>
 </blockquote>
-<p><img src="/2024/10/27/air-station/air-conf.png" class="lazyload placeholder" data-srcset="/2024/10/27/air-station/air-conf.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2024/10/27/air-station/airconf.png" class="lazyload placeholder" data-srcset="/2024/10/27/air-station/airconf.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
 <ul>
 <li>检测值</li>
 </ul>
 <blockquote>
 <p>以二氧化碳传感器为例，在Device处选择好设备型号，Name处填写好设备名称，点击Enabled添加后，一定注意端口的设置与设备连接时对应，由于与D1 mini模块连接时二氧化碳连接5v电压，为保证设备正常运行，需要连接上拉电阻引脚。因此此处 GPIO处选择D3,D4，Sensor处选择二氧化碳Carbon Dioxide，检测刷新时间定为60秒，而后将输出单位设置为PPM。</p>
 </blockquote>
-<p><img src="/2024/10/27/air-station/co2-c.png" class="lazyload placeholder" data-srcset="/2024/10/27/air-station/co2-c.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2024/10/27/air-station/co2c.png" class="lazyload placeholder" data-srcset="/2024/10/27/air-station/co2c.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
 <h3 id="命令配置"><a href="#命令配置" class="headerlink" title="命令配置"></a>命令配置</h3><blockquote>
 <p>当所有设备添加设置完毕后，点击Rules选项，如图所示，设置按钮响应，其中delay指令代表延迟，on Button#Switch&#x3D;1 do 这一行表示，当开关的状态为开时，执行do之后的 if逻辑命令，其中命令SPG表示显示第几界面，具体情况看数据显示，CIR（156，120，119，[Dummy#cc]）命令表示在屏幕中坐标为（156，120）的位置用#cc的颜色画一个半径为180的圆形。BOXF命令可以在屏幕上呈现一个方框，而DS64（98，65，‘[PMS#pm10]’，15）命令表示在（98，65）坐标处用15号颜色显示颗粒物传感器中PM10的数据。</p>
 </blockquote>
@@ -854,13 +854,11 @@ AX516是一款基于FPGA平台的高性能开发板，它使用赛灵
         <div class="title-text">基于ESP32-CAM的智能猫眼实现</div>
       </div>
       <!-- <div class="content">
-        基于ESP32-CAM的智能猫眼实现
-简介
-
+        基于ESP32-CAM的智能猫眼实现简介
 项目简介
 
 
-用python和Tensor Flow进行人脸识别，通过语音
+用python和Tensor Flow进行人脸识别，通过语音识别
       </div> -->
     </a>
   </div>
