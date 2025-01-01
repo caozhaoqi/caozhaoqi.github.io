@@ -236,7 +236,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/friends/index.html</loc>
+    <loc>https://caozhaoqi.github.io/gallerygroup/index.html</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -245,7 +245,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/gallerygroup/index.html</loc>
+    <loc>https://caozhaoqi.github.io/friends/index.html</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -398,7 +398,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/11/06/python-ini-file-config/</loc>
+    <loc>https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -407,7 +407,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/</loc>
+    <loc>https://caozhaoqi.github.io/2023/11/06/python-ini-file-config/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -452,7 +452,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/06/05/nsfw-model-use/</loc>
+    <loc>https://caozhaoqi.github.io/2024/04/09/nuitka-publish-python/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -461,7 +461,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/04/09/nuitka-publish-python/</loc>
+    <loc>https://caozhaoqi.github.io/2024/06/05/nsfw-model-use/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -488,7 +488,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/02/24/kill-process-app/</loc>
+    <loc>https://caozhaoqi.github.io/2024/05/16/loguru-catch-bug-fix/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -497,7 +497,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/05/16/loguru-catch-bug-fix/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/24/kill-process-app/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -596,7 +596,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -605,7 +605,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/</loc>
+    <loc>https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -650,14 +650,14 @@
 
   
   <url>
-    <loc>https://caozhaoqi.github.io/tags/doc/</loc>
+    <loc>https://caozhaoqi.github.io/tags/android/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/tags/android/</loc>
+    <loc>https://caozhaoqi.github.io/tags/doc/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -672,6 +672,13 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/unity/</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/tags/esp32/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -713,14 +720,14 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/tags/electron/</loc>
+    <loc>https://caozhaoqi.github.io/tags/Appium/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/tags/zuul/</loc>
+    <loc>https://caozhaoqi.github.io/tags/Excel/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -748,7 +755,14 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/tags/nginx/</loc>
+    <loc>https://caozhaoqi.github.io/tags/electron/</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/tags/zuul/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -756,6 +770,20 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/blog/</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/tags/nlp/</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/tags/nginx/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -790,35 +818,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/tags/esp32/</loc>
-    <lastmod>2025-01-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/tags/fpga/</loc>
-    <lastmod>2025-01-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/tags/Appium/</loc>
-    <lastmod>2025-01-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/tags/Excel/</loc>
-    <lastmod>2025-01-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/tags/nlp/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
