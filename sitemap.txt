@@ -1,3 +1,5 @@
+https://caozhaoqi.github.io/2024/11/21/excel_parser_pandas/
+https://caozhaoqi.github.io/2025/01/01/split-voice/
 https://caozhaoqi.github.io/2024/12/25/ml-backend-ls/
 https://caozhaoqi.github.io/2024/11/21/nltk-use/
 https://caozhaoqi.github.io/2024/12/17/label-studio-whisper/
@@ -12,7 +14,6 @@ https://caozhaoqi.github.io/2024/10/27/cat-camera/
 https://caozhaoqi.github.io/2024/08/21/pyqt5-singal-thread/
 https://caozhaoqi.github.io/2024/08/21/pytesseract-ocr-demo/
 https://caozhaoqi.github.io/2024/08/19/py-screenshot-demo/
-https://caozhaoqi.github.io/2024/11/21/excel_parser_pandas/
 https://caozhaoqi.github.io/2024/11/21/yolo_user_face_recognized/
 https://caozhaoqi.github.io/2024/10/28/wm8731-record-audio/
 https://caozhaoqi.github.io/2024/07/05/git-respority-error/
