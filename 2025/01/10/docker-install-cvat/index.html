@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>关于我 | Zhaoqi.Cao static blog</title>
+  <title>docker_install_cvat | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,17 +589,43 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        关于我
+        docker_install_cvat
       </span>
     </div>
     
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2025-01-10 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 1.3k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 4min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
     
   </div>
   
@@ -617,36 +643,195 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="个人介绍"><a href="#个人介绍" class="headerlink" title="个人介绍"></a>个人介绍</h1><p>博主: czq | 性别: 男 | 邮箱: <a href="mailto:&#49;&#x31;&#53;&#x30;&#x31;&#49;&#56;&#x39;&#54;&#x38;&#64;&#113;&#x71;&#46;&#99;&#x6f;&#109;">&#49;&#x31;&#53;&#x30;&#x31;&#49;&#56;&#x39;&#54;&#x38;&#64;&#113;&#x71;&#46;&#99;&#x6f;&#109;</a></p>
-<h2 id="我的书籍"><a href="#我的书籍" class="headerlink" title="我的书籍"></a>我的书籍</h2><div class="site-card-group"><a class="site-card" target="_blank" rel="noopener" href="http://www.baidu.com"><div class="img"><img src="https://pic4.zhimg.com/v2-7fcb0d73e1d90788ccf136e22ba7b1bd_r.jpg" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/v2-7fcb0d73e1d90788ccf136e22ba7b1bd_r.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></div><div class="info"><img src="https://pic4.zhimg.com/80/v2-45eb5749949e7f90a5c788f9bc5721ef_1440w.jpg" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-45eb5749949e7f90a5c788f9bc5721ef_1440w.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"><span class="title">马克思主义基本原理</span><span class="desc">马克思主义基本原理</span></div></a>
-<a class="site-card" target="_blank" rel="noopener" href="https://yuang01.gitee.io/"><div class="img"><img src="https://pic4.zhimg.com/80/v2-f549722dac8f777693c090a92498de0f_1440w.jpg" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-f549722dac8f777693c090a92498de0f_1440w.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></div><div class="info"><img src="https://pic3.zhimg.com/80/v2-8bb491487280587026cd576b224ca91e_1440w.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-8bb491487280587026cd576b224ca91e_1440w.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"><span class="title">毛泽东选集</span><span class="desc">毛泽东选集</span></div></a></div>
+        <h1>在ubuntu系统使用docker安装 CVAT</h1>
+<blockquote>
+<p>CVAT 是一个<strong>免费、开源</strong>的 Web 应用程序，用于标注计算机视觉任务的数据集。它由 Intel 开发并维护，旨在为各种计算机视觉应用提供一个高效、强大且协作式的标注平台。</p>
+</blockquote>
+<h2 id="功能">功能</h2>
+<ol>
+<li>
+<p><strong>多模态数据标注：</strong></p>
+<ul>
+<li><strong>图像标注：</strong> 支持各种图像标注类型，包括：
+<ul>
+<li><strong>边界框 (Bounding Boxes):</strong> 用于检测和定位物体。</li>
+<li><strong>多边形 (Polygons):</strong> 用于精确勾勒复杂形状的物体。</li>
+<li><strong>关键点 (Keypoints):</strong> 用于标注物体的关键部位，如人脸关键点。</li>
+<li><strong>线条 (Lines) 和 点 (Points):</strong> 用于简单形状或目标的标注。</li>
+<li><strong>分割掩码 (Segmentation Masks):</strong> 用于像素级别的对象分割（需要与其他工具结合，如半自动标注工具）。</li>
+</ul>
+</li>
+<li><strong>视频标注：</strong>
+<ul>
+<li>支持对视频中的对象进行跟踪和标注，并可以对每帧进行修改，方便动作识别和视频分析。</li>
+</ul>
+</li>
+<li><strong>3D 数据标注：</strong>
+<ul>
+<li>可以标注3D 点云数据，支持点云的 bounding box 和 segmentation。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>强大的用户界面：</strong></p>
+<ul>
+<li><strong>直观易用：</strong> 提供简洁的用户界面，方便用户快速上手。</li>
+<li><strong>自定义快捷键：</strong> 可自定义快捷键，提高标注效率。</li>
+<li><strong>分屏显示：</strong> 可以同时显示多个图像/视频片段，方便对比标注。</li>
+<li><strong>可定制的标注标签：</strong> 允许用户创建自己的标注标签，满足不同任务的需求。</li>
+<li><strong>标注历史记录:</strong> 可以查看和回溯标注操作。</li>
+</ul>
+</li>
+<li>
+<p><strong>协作式标注：</strong></p>
+<ul>
+<li><strong>多用户支持：</strong> 支持多个用户同时协作标注同一个项目，提高标注效率。</li>
+<li><strong>角色权限管理：</strong> 可以为不同的用户设置不同的角色和权限。</li>
+<li><strong>标注任务分配：</strong> 可以将标注任务分配给不同的用户。</li>
+<li><strong>标注审核：</strong> 管理员可以对标注结果进行审核，确保标注质量。</li>
+</ul>
+</li>
+<li>
+<p><strong>自动化和半自动化标注：</strong></p>
+<ul>
+<li><strong>预标注支持：</strong> 支持导入使用其他工具预先标注的结果，作为标注的起点。</li>
+<li><strong>半自动标注工具:</strong> 可以使用一些半自动标注工具，例如智能多边形生成、模型辅助标注等，提高标注速度。</li>
+<li><strong>模型集成：</strong> 可以集成深度学习模型，用于辅助标注。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据管理：</strong></p>
+<ul>
+<li><strong>项目管理：</strong> 可以创建不同的标注项目，组织和管理标注数据。</li>
+<li><strong>数据集导入和导出：</strong> 支持导入各种格式的数据集，并导出为多种标注格式，例如 COCO、PASCAL VOC、YOLO 等。</li>
+<li><strong>数据版本控制：</strong> 可以追踪数据和标注的变更，方便进行版本控制。</li>
+<li><strong>数据统计：</strong> 可以查看标注数据的统计信息，如标注数量、标注类型等。</li>
+<li><strong>可定制化的工作流程：</strong> 支持自定义标注的工作流程，例如预标注，标注，审核等。</li>
+</ul>
+</li>
+<li>
+<p><strong>扩展性和可定制性：</strong></p>
+<ul>
+<li><strong>开放的 API：</strong> 提供 RESTful API，方便与其他系统集成。</li>
+<li><strong>插件支持：</strong> 可以开发自己的插件，扩展 CVAT 的功能。</li>
+<li><strong>Docker 支持：</strong> 可以使用 Docker 快速部署 CVAT。</li>
+</ul>
+</li>
+</ol>
+<p><strong>Ubuntu 系统:</strong> 建议使用 Ubuntu 20.04 或更高版本。</p>
+<ul>
+<li><strong>Docker 和 Docker Compose:</strong> 你需要在你的 Ubuntu 系统上安装 Docker 和 Docker Compose。</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>
+<p><strong>更新系统包列表：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装 Docker：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install docker.io</span><br></pre></td></tr></table></figure>
+<p>验证安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl start docker</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> docker</span><br><span class="line">docker --version</span><br></pre></td></tr></table></figure>
+<p>如果命令输出了Docker版本信息，则说明安装成功。</p>
+</li>
+<li>
+<p><strong>安装 Docker Compose：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install docker-compose</span><br></pre></td></tr></table></figure>
+<p>验证安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+<p>如果命令输出了Docker Compose版本信息，则说明安装成功。</p>
+</li>
+<li>
+<p><strong>下载 CVAT 配置文件：</strong></p>
+<ul>
+<li>
+<p>CVAT 的官方 GitHub 仓库提供了 <code>docker-compose.yml</code> 文件，直接下载使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/opencv/cvat/develop/docker-compose.yml</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>修改 docker-compose.yml 文件：</strong></p>
+<ul>
+<li>找到  <code>services/cvat/volumes:</code> 模块，将其修改为：</li>
+</ul>
+ <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">cvat_data:/home/django/data</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">./data:/home/django/media</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">./logs:/home/django/logs</span></span><br></pre></td></tr></table></figure>
+<p>这样可以方便地将你的数据放到当前目录的data和logs文件夹下，并且避免了默认数据目录在Docker容器内，数据丢失的问题。</p>
+<ul>
+<li>在 <code>version</code> 的下面加上  <code>networks:</code></li>
+</ul>
+ <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.8&quot;</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">    <span class="attr">default:</span></span><br></pre></td></tr></table></figure>
+<p>确保其他容器能够访问到CVAT服务</p>
+</li>
+<li>
+<p><strong>创建数据目录:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> data</span><br><span class="line"><span class="built_in">mkdir</span> logs</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>启动 CVAT：</strong></p>
+<ul>
+<li>
+<p>在 <code>docker-compose.yml</code> 文件所在的目录下，运行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-d</code> 参数表示在后台运行 (detached mode)。</li>
+<li>首次运行会下载所需的 Docker 镜像，这可能需要一些时间。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>等待 CVAT 启动：</strong></p>
+<ul>
+<li>
+<p>可以使用以下命令查看容器是否正常运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose ps</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果所有容器的状态都是 <code>Up</code>，则表示 CVAT 已经启动成功。</p>
+</li>
+<li>
+<p>也可以使用 <code>docker logs -f &lt;cvat_container_id&gt; </code> 来查看cvat 容器的日志。<code>&lt;cvat_container_id&gt;</code> 你可以使用<code>docker ps</code> 命令查看。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>访问 CVAT：</strong></p>
+<ul>
+<li>在你的 Web 浏览器中，打开以下地址：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080</span><br></pre></td></tr></table></figure>
+</li>
+<li>默认的管理员用户名是 <code>admin</code>，密码是 <code>admin</code>。
+<ul>
+<li><strong>首次登录后请立即修改管理员密码！</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>可选：创建新的管理员用户</strong></p>
+<ul>
+<li>你可以在用户管理页面创建新的管理员用户</li>
+</ul>
+</li>
+</ol>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li>
+<p><strong>停止 CVAT：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>重启 CVAT：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose restart</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>查看容器日志：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose logs -f</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 
-<h2 id="我的社交账号"><a href="#我的社交账号" class="headerlink" title="我的社交账号"></a>我的社交账号</h2><div style="display: flex;">
-<span class="btn"><a class="button" href="Github" title="center cool-2"><i class="https://github.com/caozhaoqi fa-brands fa-github-alt"></i>center cool-2</a></span>
-<span style="width:5px;"></span>
-<span class="btn"><a class="button" href="Gitee" title="center cool-2"><i class="https://gitee.com/caozhaoqi fa-brands fa-github-alt"></i>center cool-2</a></span>
-</div>
-
-<h2 id="我的技能"><a href="#我的技能" class="headerlink" title="我的技能"></a>我的技能</h2><div style="display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 30px 30px;
-  grid-column-gap: 20px">
-<div class="progress"><div class="progress-bar-animated progress-bar progress-bar-striped bg-danger" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"><p>Python</p></div></div>
-<div class="progress"><div class="progress-bar-animated progress-bar progress-bar-striped bg-info" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><p>Java</p></div></div>
-<div class="progress"><div class="progress-bar-animated progress-bar progress-bar-striped bg-success" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><p>Android</p></div></div>
-<div class="progress"><div class="progress-bar-animated progress-bar progress-bar-striped bg-warning" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><p>Unity</p></div></div>
-<div class="progress"><div class="progress-bar-animated progress-bar progress-bar-striped bg-primary" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><p>cpp</p></div></div>
-</div>
-
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><div class="link-group"><div class="tagLink"><a class="link-card" title="Spider Image System" target="_blank" rel="noopener" href="http://www.gitee.com/caozhaoqi"><span class="link-card-backdrop" style="background-image: url(https://pica.zhimg.com/80/v2-970dd5538f106dd6be064c4eafc01c36_1440w.webp)"></span><div class="left"><img src="https://pica.zhimg.com/80/v2-970dd5538f106dd6be064c4eafc01c36_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-970dd5538f106dd6be064c4eafc01c36_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></div><div class="right"><p class="text">Spider Image System</p><p class="url">http://www.gitee.com/caozhaoqi</p></div></a></div>
-
-</div>
-
-<h2 id="我的游戏"><a href="#我的游戏" class="headerlink" title="我的游戏"></a>我的游戏</h2><div class="gallery ">
-              <p><img src="https://pic2.zhimg.com/v2-abb2c12e9fbe8dda1993f7cd5d149159_b.jpg" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/v2-abb2c12e9fbe8dda1993f7cd5d149159_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="Genshin Impact"></p>
-            </div>
-
-<h2 id="我的相册"><a href="#我的相册" class="headerlink" title="我的相册"></a>我的相册</h2><div class="tag-plugin post-swiper-container" width="fill"><div class="swiper-wrapper"><div class="swiper-slide"><a class="swiper-slide-href_tag" href="javascript:;"><p class="ani animated swiper-slide-desc_tag" swiper-animate-effect="fadeInDown">我的相册1</p><img no-lazy class="swiper-slide-img" src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp"></a></div><div class="swiper-slide"><a class="swiper-slide-href_tag" href="javascript:;"><p class="ani animated swiper-slide-desc_tag" swiper-animate-effect="fadeInDown">我的相册2</p><img no-lazy class="swiper-slide-img" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp"></a></div><div class="swiper-slide"><a class="swiper-slide-href_tag" href="javascript:;"><p class="ani animated swiper-slide-desc_tag" swiper-animate-effect="fadeInDown">我的相册3</p><img no-lazy class="swiper-slide-img" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp"></a></div><div class="swiper-slide"><a class="swiper-slide-href_tag" href="javascript:;"><p class="ani animated swiper-slide-desc_tag" swiper-animate-effect="fadeInDown">我的相册4</p><img no-lazy class="swiper-slide-img" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp"></a></div></div><div class="swiper-pagination"></div><div class="swiper-button-prev blur"></div><div class="swiper-button-next blur"></div></div>
       </div>
       <div class="post-tags-categories">
         
@@ -659,7 +844,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/about/index.html" target="_blank" title="关于我">https://caozhaoqi.github.io/about/index.html</a>
+    <a href="/2025/01/10/docker-install-cvat/" target="_blank" title="docker_install_cvat">https://caozhaoqi.github.io/2025/01/10/docker-install-cvat/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -677,7 +862,45 @@
 
 
 
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/01/10/easyocr-gpuocr/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">easyocr_gpuocr</div>
+      </div>
+      
+      <!-- <div class="content">
+        基于Easyocr的文字识别
 
+EasyOCR 是一个开源的 OCR (光学字符识别) 工具，能够快速并高效地从图像中提
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/01/01/split-voice/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">借助深度学习模型实现分离人声与背景声</div>
+      </div>
+      <!-- <div class="content">
+        借助深度学习模型实现分离人声与背景声spleeter
+Spleeter 是一个由 Deezer 开发的音频源分离工具，支
+      </div> -->
+    </a>
+  </div>
 
 </div>
 
@@ -982,27 +1205,29 @@
   <div class="layout_sticky">    
     
       
-        
+<section class="widget side_toc">
   
-      
-      
-        
-<section class="widget side_tagcloud">
-    
   <header>
     
-      <a style="color: " href='/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
-    <div class='content'>
-    <a href="/tags/Appium/" style="font-size: 14px; color: #999">Appium</a> <a href="/tags/Excel/" style="font-size: 14px; color: #999">Excel</a> <a href="/tags/LCD/" style="font-size: 14px; color: #999">LCD</a> <a href="/tags/android/" style="font-size: 19px; color: #777">android</a> <a href="/tags/blog/" style="font-size: 14px; color: #999">blog</a> <a href="/tags/clion/" style="font-size: 14px; color: #999">clion</a> <a href="/tags/cpp/" style="font-size: 16.5px; color: #888">cpp</a> <a href="/tags/doc/" style="font-size: 21.5px; color: #666">doc</a> <a href="/tags/electron/" style="font-size: 16.5px; color: #888">electron</a> <a href="/tags/esp32/" style="font-size: 16.5px; color: #888">esp32</a> <a href="/tags/fpga/" style="font-size: 14px; color: #999">fpga</a> <a href="/tags/git/" style="font-size: 14px; color: #999">git</a> <a href="/tags/harmonyos/" style="font-size: 14px; color: #999">harmonyos</a> <a href="/tags/java/" style="font-size: 19px; color: #777">java</a> <a href="/tags/nginx/" style="font-size: 14px; color: #999">nginx</a> <a href="/tags/nlp/" style="font-size: 16.5px; color: #888">nlp</a> <a href="/tags/nodejs/" style="font-size: 14px; color: #999">nodejs</a> <a href="/tags/npm/" style="font-size: 14px; color: #999">npm</a> <a href="/tags/opencv/" style="font-size: 16.5px; color: #888">opencv</a> <a href="/tags/python/" style="font-size: 24px; color: #555">python</a> <a href="/tags/qt/" style="font-size: 14px; color: #999">qt</a> <a href="/tags/tesseract/" style="font-size: 14px; color: #999">tesseract</a> <a href="/tags/unbutu/" style="font-size: 14px; color: #999">unbutu</a> <a href="/tags/unity/" style="font-size: 19px; color: #777">unity</a> <a href="/tags/yolov5/" style="font-size: 14px; color: #999">yolov5</a> <a href="/tags/zuul/" style="font-size: 14px; color: #999">zuul</a>
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">在ubuntu系统使用docker安装 CVAT</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD"><span class="toc-text">功能</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
     </div>
+  </div>
 </section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
 
-  
-      
       
   <section class="widget side_recent_post">
     
@@ -1128,136 +1353,6 @@
     </div>
   </section>
 
-      
-  <section class="widget side_archives">
-    
-    <header><a style="color: red" href='/archives/'><i class="fas fa-archive fa-fw" aria-hidden="true"></i><span class='name'>归档</span></a></header><div class="content"><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/01/"><span class="card-archive-list-date">一月 2025</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/12/"><span class="card-archive-list-date">十二月 2024</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/11/"><span class="card-archive-list-date">十一月 2024</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/10/"><span class="card-archive-list-date">十月 2024</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">八月 2024</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/06/"><span class="card-archive-list-date">六月 2024</span><span class="card-archive-list-count">8</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/05/"><span class="card-archive-list-date">五月 2024</span><span class="card-archive-list-count">2</span></a></li></ul></div>
-  </section>
-
-      <section class="widget side_webinfo">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-chart-line fa-fw" aria-hidden="true"></i><span class='name'>站点信息</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="webinfo">
-      
-        <div class="webinfo-item">
-          <div>文章数目：</div>
-          <div>67 篇</div>
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>已运行时间：</div>
-          <div id="webinfo-runtime-count" publish_date="03/24/2020 21:34:09"></div>
-        </div>
-        <script>
-          var BirthDay = new Date(new Date('2023/02/22'));
-          var today = new Date();
-          var timeold = (today.getTime() - BirthDay.getTime());
-          var daysold = Math.floor(timeold / (24 * 60 * 60 * 1000));
-          document.getElementById('webinfo-runtime-count').innerHTML = daysold + ' 天';
-        </script>
-      
-
-
-      
-        <div class="webinfo-item">
-          <div>本站总字数：</div>
-          <div>114.3k 字</div>
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>本站访客数：</div>
-          
-          <div><span id="busuanzi_value_site_uv"><i class="fas fa-fan fa-spin fa-fw" aria-hidden="true"></i></span> 人</div>
-          
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>本站总访问量：</div>
-          
-          <div><span id="busuanzi_value_site_pv"><i class="fas fa-fan fa-spin fa-fw" aria-hidden="true"></i></span> 次</div>
-          
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>最后活动时间：</div>
-          
-            <div id="last-update" style="display: none;">Sat Jan 11 2025 13:12:00 GMT+0800 (GMT+08:00)</div>
-            <div id="last-update-show">2025-01-11 日</div>
-          
-        </div>
-        
-        <script>
-          function timeago(dateTimeStamp) {
-              var minute = 1000 * 60; //把分，时，天，周，半个月，一个月用毫秒表示
-              var hour = minute * 60;
-              var day = hour * 24;
-              var week = day * 7;
-              var month = day * 30;
-              var now = new Date().getTime(); //获取当前时间毫秒
-              var diffValue = now - dateTimeStamp; //时间差
-              if (diffValue < 0) {
-                  return;
-              }
-              var minC = diffValue / minute; //计算时间差的分，时，天，周，月
-              var hourC = diffValue / hour;
-              var dayC = diffValue / day;
-              var weekC = diffValue / week;
-              var monthC = diffValue / month;
-              if (monthC >= 1 && monthC <= 3) {
-                  result = " " + parseInt(monthC) + " 月前"
-              } else if (weekC >= 1 && weekC <= 3) {
-                  result = " " + parseInt(weekC) + " 周前"
-              } else if (dayC >= 1 && dayC <= 6) {
-                  result = " " + parseInt(dayC) + " 天前"
-              } else if (hourC >= 1 && hourC <= 23) {
-                  result = " " + parseInt(hourC) + " 小时前"
-              } else if (minC >= 1 && minC <= 59) {
-                  result = " " + parseInt(minC) + " 分钟前"
-              } else if (diffValue >= 0 && diffValue <= minute) {
-                  result = "刚刚"
-              } else {
-                  var datetime = new Date();
-                  datetime.setTime(dateTimeStamp);
-                  var Nyear = datetime.getFullYear();
-                  var Nmonth = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-                  var Ndate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-                  var Nhour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-                  var Nminute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-                  var Nsecond = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-                  result = Nyear + "-" + Nmonth + "-" + Ndate
-              }
-              return result;
-          }
-          var lastUpDate = document.getElementById('last-update').innerHTML;
-          try {
-            document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
-          } catch (error) {
-            document.getElementById('last-update-show').innerHTML = '2025-01-11 日';
-          }
-        </script>
-        
-      
-    </div>
-  </div>
-</section>
-      
-  
-
     
   </div>
 </aside>
@@ -1340,7 +1435,7 @@
 			clearInterval(this.time);
 		},
 		mounted() {
-			let prop = 'https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp' || '';
+			let prop = '' || '';
 			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
 			if (isImg) {
 				let img = prop.split(',');
