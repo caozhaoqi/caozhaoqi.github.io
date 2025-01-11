@@ -2,9 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://caozhaoqi.github.io/2024/11/21/appium_adb_app/</loc>
+    
+    <lastmod>2025-01-11</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2024/11/21/npl_scapy/</loc>
+    
+    <lastmod>2025-01-11</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2025/01/10/easyocr-gpuocr/</loc>
     
-    <lastmod>2025-01-10</lastmod>
+    <lastmod>2025-01-11</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -13,7 +31,7 @@
   <url>
     <loc>https://caozhaoqi.github.io/2025/01/10/docker-install-cvat/</loc>
     
-    <lastmod>2025-01-10</lastmod>
+    <lastmod>2025-01-11</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -101,25 +119,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/11/21/npl_scapy/</loc>
-    
-    <lastmod>2024-11-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/2024/10/27/air-station/</loc>
-    
-    <lastmod>2024-11-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2024/11/21/appium_adb_app/</loc>
     
     <lastmod>2024-11-21</lastmod>
     
@@ -335,7 +335,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/06/25/test-case-result/</loc>
+    <loc>https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -344,7 +344,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/05/31/swagger-micro-service/</loc>
+    <loc>https://caozhaoqi.github.io/2024/06/25/test-case-result/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -416,15 +416,6 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/03/22/python-proxy-server/</loc>
-    
-    <lastmod>2024-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/</loc>
     
     <lastmod>2024-10-25</lastmod>
@@ -435,6 +426,15 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2023/11/06/python-ini-file-config/</loc>
+    
+    <lastmod>2024-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2024/03/22/python-proxy-server/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -470,15 +470,6 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/06/05/nsfw-model-use/</loc>
-    
-    <lastmod>2024-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/2024/04/09/nuitka-publish-python/</loc>
     
     <lastmod>2024-10-25</lastmod>
@@ -488,7 +479,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/12/29/micro-service-py/</loc>
+    <loc>https://caozhaoqi.github.io/2024/06/05/nsfw-model-use/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -498,6 +489,15 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2023/11/28/mdf-file-parser/</loc>
+    
+    <lastmod>2024-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2023/12/29/micro-service-py/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -533,15 +533,6 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/06/25/graduate-design/</loc>
-    
-    <lastmod>2024-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/2023/05/31/gateway-auth-control/</loc>
     
     <lastmod>2024-10-25</lastmod>
@@ -551,7 +542,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/03/10/eestudy/</loc>
+    <loc>https://caozhaoqi.github.io/2024/06/25/graduate-design/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -561,6 +552,15 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/</loc>
+    
+    <lastmod>2024-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2023/03/10/eestudy/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
@@ -605,15 +605,6 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/</loc>
-    
-    <lastmod>2024-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/2023/02/22/UnityRotation/</loc>
     
     <lastmod>2024-10-25</lastmod>
@@ -624,6 +615,15 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/</loc>
+    
+    <lastmod>2024-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/</loc>
     
     <lastmod>2024-10-25</lastmod>
     
