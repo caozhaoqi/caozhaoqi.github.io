@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>kill_process_app 通过java代码kill进程 | Zhaoqi.Cao static blog</title>
+  <title>python 可视化打包工具集锦 | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -596,14 +596,14 @@
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        kill_process_app 通过java代码kill进程
+        python 可视化打包工具集锦
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2023-02-24 |
+          <i class="fas fa-calendar"></i> Published in：2025-02-08 |
         </span>
       
 
@@ -612,7 +612,7 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 455 |
+            <i class="fas fa-file-text-o"></i> Words: 533 |
           </span>
   
           <span class="min2read">
@@ -643,39 +643,88 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
-<li>1.杀死指定包名对应进程</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">killService</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">ActivityManager</span> <span class="variable">manager</span> <span class="operator">=</span> (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);</span><br><span class="line">    manager.killBackgroundProcesses(<span class="string">&quot;com.googleplay.service&quot;</span>);</span><br><span class="line">    List&lt;RunningAppProcessInfo&gt; list = manager.getRunningAppProcesses();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">process</span> <span class="operator">=</span> list.get(i).processName;</span><br><span class="line">        <span class="keyword">if</span> (process.equals(<span class="string">&quot;com.google.service&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Runtime.getRuntime().exec(<span class="string">&quot;kill &quot;</span> + list.get(i).pid);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+        <h1>python 可视化打包工具集锦</h1>
+<h2 id="打包">打包</h2>
+<blockquote>
+<p>Python 打包工具用于将代码、依赖和资源文件整理成可分发的格式（如库、可执行文件等）</p>
+</blockquote>
+<h2 id="常用打包工具">常用打包工具</h2>
+<h3 id="pyinstaller">pyinstaller</h3>
 <ul>
-<li>2.获取当前进程</li>
+<li>使用方法</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> context mContext</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> list</span></span><br><span class="line"><span class="comment">     **/</span></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;ProcessInfo&gt; <span class="title function_">getRunningProcesses</span><span class="params">(Context context)</span> &#123;</span><br><span class="line">        <span class="type">ActivityManager</span> <span class="variable">am</span> <span class="operator">=</span> (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);</span><br><span class="line">        List&lt;ActivityManager.RunningAppProcessInfo&gt; runningAppProcesses = am</span><br><span class="line">                .getRunningAppProcesses();<span class="comment">//获取运行中进程集合</span></span><br><span class="line"></span><br><span class="line">        <span class="type">PackageManager</span> <span class="variable">pm</span> <span class="operator">=</span> context.getPackageManager();</span><br><span class="line">        ArrayList&lt;ProcessInfo&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;ProcessInfo&gt;();</span><br><span class="line">        <span class="keyword">for</span> (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : runningAppProcesses) &#123;</span><br><span class="line">            <span class="type">ProcessInfo</span> <span class="variable">info</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProcessInfo</span>();</span><br><span class="line"></span><br><span class="line">            <span class="type">String</span> <span class="variable">packageName</span> <span class="operator">=</span> runningAppProcessInfo.processName; <span class="comment">//包名</span></span><br><span class="line">            info.packageName = packageName;</span><br><span class="line"></span><br><span class="line">            <span class="type">int</span> <span class="variable">pid</span> <span class="operator">=</span> runningAppProcessInfo.pid;</span><br><span class="line">            Debug.MemoryInfo[] processMemoryInfo = am.getProcessMemoryInfo(<span class="keyword">new</span> <span class="title class_">int</span>[]&#123;pid&#125;);<span class="comment">//根据pid返回内存信息</span></span><br><span class="line">            <span class="type">long</span> <span class="variable">memory</span> <span class="operator">=</span> processMemoryInfo[<span class="number">0</span>].getTotalPrivateDirty() * <span class="number">1024</span>;  <span class="comment">//获取当前进程占用内存大小</span></span><br><span class="line">            info.memory = memory;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">ApplicationInfo</span> <span class="variable">applicationInfo</span> <span class="operator">=</span> pm.getApplicationInfo(packageName, <span class="number">0</span>);<span class="comment">//根据包名获取相关应用的信息</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> applicationInfo.loadLabel(pm).toString();</span><br><span class="line">                <span class="type">Drawable</span> <span class="variable">icon</span> <span class="operator">=</span> applicationInfo.loadIcon(pm);</span><br><span class="line"></span><br><span class="line">                info.name = name;</span><br><span class="line">                info.icon = icon;</span><br><span class="line"></span><br><span class="line">                <span class="type">int</span> <span class="variable">flags</span> <span class="operator">=</span> applicationInfo.flags;</span><br><span class="line">                <span class="keyword">if</span> ((flags &amp; ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM) &#123;</span><br><span class="line">                    <span class="comment">//系统进程</span></span><br><span class="line">                    info.isUser = <span class="literal">false</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">//用户进程</span></span><br><span class="line">                    info.isUser = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (PackageManager.NameNotFoundException e) &#123;</span><br><span class="line">                <span class="comment">//某些系统进程没有名称和图标,会走此异常</span></span><br><span class="line">                info.name = packageName;</span><br><span class="line">                info.icon = context.getResources().getDrawable(R.drawable.left_car);</span><br><span class="line">                info.isUser = <span class="literal">false</span>;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            list.add(info);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">Killsu</span><span class="params">(<span class="type">int</span> pn)</span> &#123;</span><br><span class="line">        <span class="type">Process</span> <span class="variable">sh</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">DataOutputStream</span> <span class="variable">os</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            sh = Runtime.getRuntime().exec(<span class="string">&quot;su&quot;</span>);</span><br><span class="line"></span><br><span class="line">            os = <span class="keyword">new</span> <span class="title class_">DataOutputStream</span>(sh.getOutputStream());</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                os.writeBytes(<span class="string">&quot;kill -9 &quot;</span> + pn + <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">                Log.d(TAG, <span class="string">&quot;kill -9&quot;</span>);</span><br><span class="line"></span><br><span class="line">                sleep(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line"></span><br><span class="line">                Log.d(TAG, <span class="string">&quot;kill -9 catch exception&quot;</span>);</span><br><span class="line"></span><br><span class="line">                e.printStackTrace();</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line"></span><br><span class="line">            e.printStackTrace();</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line"></span><br><span class="line">            e.printStackTrace();</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller --onefile main.py</span><br></pre></td></tr></table></figure>
 <ul>
-<li>3.其他方法</li>
+<li>通过spec文件打包</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">android.os.Process.killProcess(android.os.Process.myPid());</span><br><span class="line"></span><br><span class="line">   <span class="type">ActivityManager</span> <span class="variable">activityManager</span> <span class="operator">=</span> (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);</span><br><span class="line">   activityManager.killBackgroundProcesses(<span class="string">&quot;com.zhang.wei&quot;</span>);</span><br><span class="line"></span><br><span class="line">  &lt;uses-permission android:name=<span class="string">&quot;android.permission.KILL_BACKGROUND_PROCESSES&quot;</span>/&gt;</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"># -*- mode: python ; coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">block_cipher = None</span><br><span class="line"></span><br><span class="line">a = Analysis(</span><br><span class="line">    [&#x27;main.py&#x27;],</span><br><span class="line">    pathex=[&#x27;/path/to/my_dash_app&#x27;],</span><br><span class="line">    binaries=[],</span><br><span class="line">    datas=[(&#x27;assets/*&#x27;, &#x27;assets&#x27;)],  # 打包 assets 文件夹</span><br><span class="line">    hiddenimports=[],</span><br><span class="line">    hookspath=[],</span><br><span class="line">    runtime_hooks=[],</span><br><span class="line">    excludes=[],</span><br><span class="line">    win_no_prefer_redirects=False,</span><br><span class="line">    win_private_assemblies=False,</span><br><span class="line">    cipher=block_cipher,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)</span><br><span class="line"></span><br><span class="line">exe = EXE(</span><br><span class="line">    pyz,</span><br><span class="line">    a.scripts,</span><br><span class="line">    [],</span><br><span class="line">    exclude_binaries=True,</span><br><span class="line">    name=&#x27;my_dash_app&#x27;,</span><br><span class="line">    debug=False,</span><br><span class="line">    bootloader_ignore_signals=False,</span><br><span class="line">    strip=False,</span><br><span class="line">    upx=True,</span><br><span class="line">    console=False,  # 隐藏控制台窗口</span><br><span class="line">    icon=&#x27;icon.ico&#x27;,  # 设置图标</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">coll = COLLECT(</span><br><span class="line">    exe,</span><br><span class="line">    a.binaries,</span><br><span class="line">    a.zipfiles,</span><br><span class="line">    a.datas,</span><br><span class="line">    strip=False,</span><br><span class="line">    upx=True,</span><br><span class="line">    upx_exclude=[],</span><br><span class="line">    name=&#x27;my_dash_app&#x27;,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>详细参考如下：<a href="https://caozhaoqi.github.io/2024/04/09/pyinstaller-publish-python/">https://caozhaoqi.github.io/2024/04/09/pyinstaller-publish-python/</a></p>
+</blockquote>
+<h3 id="nuitka">nuitka</h3>
+<blockquote>
+<p>将 Python 代码编译为 C 代码，再生成可执行文件, 性能优于普通打包工具</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nuitka --standalone --onefile your_script.py</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>详细参考如下：<a href="https://caozhaoqi.github.io/2024/04/10/setup-tools-python/">https://caozhaoqi.github.io/2024/04/10/setup-tools-python/</a></p>
+</blockquote>
+<h3 id="cx-Freeze">cx_Freeze</h3>
 <ul>
-<li><ol start="4">
-<li>杀死本进程</li>
-</ol>
-</li>
+<li>publish</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.exit(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cxfreeze your_script.py --target-dir dist</span><br></pre></td></tr></table></figure>
+<h3 id="Briefcase">Briefcase</h3>
+<blockquote>
+<p>打包为桌面应用</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pip install briefcase</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建项目模板</span></span><br><span class="line">briefcase new</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入项目目录</span></span><br><span class="line">cd myapp</span><br></pre></td></tr></table></figure>
+<ul>
+<li>打包</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生成各平台安装包</span></span><br><span class="line">briefcase create          # 创建基础结构</span><br><span class="line">briefcase build           # 构建应用</span><br><span class="line">briefcase run             # 本地运行测试</span><br><span class="line">briefcase package         # 生成安装包（如 .dmg、.msi）</span><br></pre></td></tr></table></figure>
+<h3 id="PyOxidizer">PyOxidizer</h3>
+<blockquote>
+<p>将 Python 应用编译为独立可执行文件，启动速度快。<br>
+支持跨平台。<br>
+生成的文件体积较小。</p>
+</blockquote>
+<ul>
+<li>打包</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装</span></span><br><span class="line">pip install pyoxidizer</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建配置文件</span></span><br><span class="line">pyoxidizer init-config-file</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编辑生成的 `pyoxidizer.bzl` 文件，指定入口脚本和依赖</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生成可执行文件</span></span><br><span class="line">pyoxidizer build</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输出路径：`build/` 目录</span></span><br></pre></td></tr></table></figure>
+<h3 id="Briefcase-2">Briefcase</h3>
+<blockquote>
+<p>跨平台GUI工具 可生成跨平台安装包</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install briefcase</span><br><span class="line">fbs startproject</span><br></pre></td></tr></table></figure>
+<h3 id="fbs">fbs</h3>
+<blockquote>
+<p>用于 pyside pyqt5 打包 局限性较大</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install fbs</span><br></pre></td></tr></table></figure>
+<ul>
+<li>打包</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fbs freeze       # 生成可执行文件</span><br><span class="line">fbs installer    # 创建安装包（如 .exe、.dmg）</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>修改 src/build/settings/base.json 设置应用名称、版本等。</p>
+</blockquote>
+<h2 id="打包后文件转换">打包后文件转换</h2>
+<h3 id="NSIS">NSIS</h3>
+<blockquote>
+<p>打包后文件转换为安装工具 可根据安装工具安装程序</p>
+</blockquote>
+<h3 id="Inno-Setup">Inno Setup</h3>
+<blockquote>
+<p>创建自定义的安装向导</p>
+</blockquote>
+<ul>
+<li>参考链接</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://caozhaoqi.github.io/2024/04/09/nuitka-publish-python/</span><br></pre></td></tr></table></figure>
       </div>
       <div class="post-tags-categories">
-        
-        <div class="tags">
-          
-            <a href="/tags/android/" class="">
-              android
-            </a>
-          
-        </div>
         
       </div>
       
@@ -686,7 +735,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2023/02/24/kill-process-app/" target="_blank" title="kill_process_app 通过java代码kill进程">https://caozhaoqi.github.io/2023/02/24/kill-process-app/</a>
+    <a href="/2025/02/08/python-publish/" target="_blank" title="python 可视化打包工具集锦">https://caozhaoqi.github.io/2025/02/08/python-publish/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -704,40 +753,24 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/03/02/androidopenapp-md/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">Android 在Activity中打开某个app</div>
-      </div>
-      
-      <!-- <div class="content">
-        在使用前传入 app 包名，具体代码如下：123456789101112131415161718192021222324
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/02/22/hexo-blog-createanduse/" class="post-nav-link">
+    <a href="/2025/01/23/ed2k-bit/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">使用Hexo框架构建博客并发布</div>
+        <div class="title-text">磁力链接与ed2k的自动化检测处理</div>
       </div>
       <!-- <div class="content">
-        hexo blog desc
-Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引
+        磁力链接与ed2k的自动化检测处理
+磁力链接与ed2k对比
+
+磁力链接下载速度的影响因素 (BitTorrent 协议)
       </div> -->
     </a>
   </div>
@@ -1057,7 +1090,7 @@ Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（�
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">python 可视化打包工具集锦</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85"><span class="toc-text">打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7"><span class="toc-text">常用打包工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pyinstaller"><span class="toc-text">pyinstaller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nuitka"><span class="toc-text">nuitka</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cx-Freeze"><span class="toc-text">cx_Freeze</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Briefcase"><span class="toc-text">Briefcase</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PyOxidizer"><span class="toc-text">PyOxidizer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Briefcase-2"><span class="toc-text">Briefcase</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fbs"><span class="toc-text">fbs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E5%90%8E%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2"><span class="toc-text">打包后文件转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NSIS"><span class="toc-text">NSIS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Inno-Setup"><span class="toc-text">Inno Setup</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>

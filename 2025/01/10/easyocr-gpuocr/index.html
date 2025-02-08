@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 5.3k |
+            <i class="fas fa-file-text-o"></i> Words: 5.9k |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 20min |
+            <i class="fas fa-clock"></i> Reading time: 22min |
           </span>
   
           
@@ -643,54 +643,203 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1>基于边缘检测算法检测视频中文字</h1>
-<h2 id="思路">思路</h2>
-<p><strong>核心挑战：</strong></p>
+        <h1>基于Easyocr的文字识别</h1>
+<blockquote>
+<p>EasyOCR 是一个开源的 OCR (光学字符识别) 工具，能够快速并高效地从图像中提取文本。与其他OCR工具如 Tesseract 相比，EasyOCR 具有更强的多语言支持，包括对中文、日语、阿拉伯语等复杂文字的支持，并且它的安装和使用非常简便。</p>
+</blockquote>
+<h2 id="主要功能">主要功能</h2>
+<blockquote>
+<p>EasyOCR 是一个 Python 包，用于执行光学字符识别 (OCR)。它旨在易于使用，并支持多种语言的文本识别。其主要特点包括：</p>
+</blockquote>
 <ul>
-<li><strong>动态变化：</strong> 字幕的位置、大小、颜色、字体、背景等都会动态变化。</li>
-<li><strong>复杂背景：</strong> 字幕通常叠加在复杂的视频背景上。</li>
-<li><strong>时间连贯性：</strong> 字幕通常在一段时间内持续出现，并非只出现一帧。</li>
-<li><strong>精度要求：</strong> 要尽可能准确地检测到字幕区域，避免误检或漏检。</li>
-</ul>
-<p><strong>基本思路：</strong></p>
-<ol>
 <li>
-<p><strong>帧预处理：</strong></p>
-<ul>
-<li><strong>灰度化:</strong> 将视频帧转换为灰度图，减少颜色干扰。</li>
-<li><strong>降噪：</strong> 对帧进行降噪处理，提高检测的准确性。</li>
-</ul>
+<p>简单易用</p>
 </li>
 <li>
-<p><strong>字幕区域检测：</strong></p>
-<ul>
-<li><strong>边缘检测:</strong> 使用 Canny 边缘检测算法，提取视频帧中的边缘信息。字幕通常有清晰的边缘。</li>
-<li><strong>文本特征提取：</strong>  通过文本的特征（如纹理、颜色、形状）来识别字幕区域。</li>
-<li><strong>连通域分析:</strong> 通过连通域分析，找到连续的边缘区域，字幕通常会形成连通的区域。</li>
-<li><strong>深度学习：</strong> 使用训练好的文字检测模型，检测字幕区域。</li>
-</ul>
+<p>多语言支持</p>
 </li>
 <li>
-<p><strong>字幕区域验证：</strong></p>
-<ul>
-<li><strong>大小判断:</strong>  字幕通常有一定的大小范围，可以排除过大或过小的区域。</li>
-<li><strong>位置判断:</strong> 字幕通常位于视频的下方或者上方，可以排除在中间或边缘的区域。</li>
-<li><strong>时序分析：</strong> 字幕通常在一段时间内持续出现，分析前后帧的字幕区域，验证是否为真实字幕。</li>
-<li><strong>OCR识别:</strong> 使用OCR识别技术对检测区域进行识别，若能识别出文字，则认为是字幕区域。</li>
-</ul>
+<p>GPU 加速支持</p>
 </li>
 <li>
-<p><strong>提取字幕帧：</strong></p>
+<p>开源</p>
+</li>
+</ul>
+<h2 id="图像处理算法详解">图像处理算法详解</h2>
+<h2 id="1-图像缩放-Image-Resizing">1. 图像缩放 (Image Resizing)</h2>
+<h3 id="原理">原理</h3>
+<p>图像缩放是指改变图像的尺寸，包括放大（upscaling）和缩小（downscaling）两种操作。其基本原理是通过像素插值算法，在新的尺寸下估计图像像素的值。</p>
+<h3 id="技术">技术</h3>
+<p>常用的图像缩放技术包括：</p>
 <ul>
-<li>将检测到字幕的帧单独保存到一个文件夹中。</li>
+<li><strong>最近邻插值 (Nearest Neighbor Interpolation):</strong>
+<ul>
+<li><strong>原理:</strong> 将目标图像的像素值设置为源图像中距离最近的像素值。</li>
+<li><strong>特点:</strong> 简单快速，但可能导致图像边缘出现锯齿状。</li>
 </ul>
 </li>
-</ol>
-<h2 id="技术">技术</h2>
+<li><strong>双线性插值 (Bilinear Interpolation):</strong>
 <ul>
-<li>opencv</li>
-<li>easyocr</li>
+<li><strong>原理:</strong>  使用目标图像像素周围的 2x2 邻域像素值进行双线性插值计算。</li>
+<li><strong>特点:</strong> 图像效果比最近邻插值平滑，计算量适中。</li>
 </ul>
+</li>
+<li><strong>双三次插值 (Bicubic Interpolation):</strong>
+<ul>
+<li><strong>原理:</strong>  使用目标图像像素周围的 4x4 邻域像素值进行双三次插值计算。</li>
+<li><strong>特点:</strong> 图像效果较好，细节保留较多，但计算量较大。</li>
+</ul>
+</li>
+<li><strong>基于深度学习的超分辨率 (Super-Resolution):</strong>
+<ul>
+<li><strong>原理:</strong> 使用深度学习模型 (例如, SRCNN, EDSR, ESRGAN) 从低分辨率图像重建高分辨率图像.</li>
+<li><strong>特点:</strong> 可以生成高质量的图像，但是计算量大，需要大量的训练数据。</li>
+</ul>
+</li>
+</ul>
+<h3 id="用途">用途</h3>
+<ul>
+<li><strong>调整图像大小：</strong>  适应不同的显示设备或应用场景。</li>
+<li><strong>预处理步骤：</strong>  作为其他图像处理算法 (如目标检测, OCR) 的预处理步骤.</li>
+<li><strong>生成不同分辨率的图像：</strong>  用于创建图像金字塔或进行多尺度分析。</li>
+</ul>
+<h2 id="2-图像裁剪-Image-Cropping">2. 图像裁剪 (Image Cropping)</h2>
+<h3 id="原理-2">原理</h3>
+<p>图像裁剪是指从图像中选择一个矩形区域，然后将其提取出来。其基本原理是根据指定的起始坐标和宽高，截取图像对应的像素数据。</p>
+<h3 id="技术-2">技术</h3>
+<ul>
+<li><strong>矩形裁剪:</strong>  指定矩形左上角坐标(x, y) 和矩形的宽度 (w) 和高度 (h)，然后提取这个矩形区域的像素。</li>
+<li><strong>任意形状裁剪:</strong>  使用掩码 (mask) 来指定需要裁剪的区域，mask 可以是任意形状。</li>
+</ul>
+<h3 id="用途-2">用途</h3>
+<ul>
+<li><strong>去除图像中不必要的区域：</strong> 突出感兴趣的目标对象或区域。</li>
+<li><strong>调整图像构图：</strong>  重新构图，使图像更符合需求。</li>
+<li><strong>数据增强：</strong> 作为图像数据增强的一种方法，可以生成不同的图像样本。</li>
+</ul>
+<h2 id="3-图像拼接-Image-Stitching">3. 图像拼接 (Image Stitching)</h2>
+<h3 id="原理-3">原理</h3>
+<p>图像拼接是指将多张具有重叠区域的图像拼接成一张完整的全景图像。其基本原理包括图像配准和图像融合两个步骤。</p>
+<h3 id="技术-3">技术</h3>
+<ul>
+<li><strong>特征检测和匹配 (Feature Detection and Matching):</strong>
+<ul>
+<li><strong>目的:</strong>  提取图像中的特征点 (如 SIFT, SURF, ORB 等) 并进行匹配，找到图像之间的对应关系。</li>
+</ul>
+</li>
+<li><strong>图像配准 (Image Registration):</strong>
+<ul>
+<li><strong>目的:</strong>  根据匹配到的特征点，计算图像之间的变换关系，将图像对齐。</li>
+<li><strong>技术:</strong> 使用如 RANSAC 等算法估计图像的变换矩阵。</li>
+</ul>
+</li>
+<li><strong>图像融合 (Image Blending):</strong>
+<ul>
+<li><strong>目的:</strong> 将对齐的图像拼接成一张完整的图像。</li>
+<li><strong>技术:</strong>  使用如多频带融合或加权平均等方法处理图像重叠区域，避免明显的接缝。</li>
+</ul>
+</li>
+<li><strong>柱面投影:</strong>
+<ul>
+<li>**目的:**将图像映射到柱面坐标系，以便更好地拼接水平方向上视角变化很大的图像。</li>
+</ul>
+</li>
+</ul>
+<h2 id="流程">流程</h2>
+<pre><code>                             +-----------------------+
+                             | 开始 process_video_threaded |
+                             +-----------------------+
+                                        |
+                                        V
+                  +------------------------------------------------+
+                  |  调用 process_video 处理单个视频文件         |
+                  |  获取 CPU, 内存，GPU 使用率信息             |
+                  |  输出视频处理信息和性能信息                      |
+                  +------------------------------------------------+
+                                        |
+                                        V
+       +------------------------------------------------------------+
+       | 根据 move_file, has_subtitle, 移动文件到 output_dir_with_subtitle  |
+       | 或 output_dir_without_subtitle 下的子目录，并记录日志         |
+       | (如未移动，则记录未移动日志)                                  |
+       +------------------------------------------------------------+
+                                        |
+                                        V
+                  +--------------------------------------------+
+                  |      结束 process_video_threaded             |
+                  +--------------------------------------------+
+
+                                          |
+                                         V
+                             +-----------------------+
+                             | 开始 process_video   |
+                             +-----------------------+
+                                        |
+                                        V
+                    +------------------------------------------------+
+                    |  使用 cv2.VideoCapture 打开视频文件              |
+                    |  如果打开失败，记录日志并返回                       |
+                    |  初始化 frame_count, subtitle_frame_count       |
+                    |  设置跳帧参数 frame_skip                         |
+                    +------------------------------------------------+
+                                         |
+                                         V
+                            +------------------------+
+                            |  while 循环读取视频帧        |
+                            |    如果读取失败，退出循环 |
+                            +------------------------+
+                                        |
+                                        V
+              +----------------------------------------------+
+              | 如果是抽帧，则执行字幕区域检测 detect_subtitle_area|
+              |  如果检测失败 返回                               |
+              +----------------------------------------------+
+                                        |
+                                        V
+                         +---------------------------+
+                         | for subtitle_area in subtitle_areas |
+                         |    调用 ocr_check           |
+                         +---------------------------+
+                                         |
+                                         V
+                 +------------------------------------------------------+
+                 |    根据ocr检测结果更新 subtitle_frame_count            |
+                 +------------------------------------------------------+
+                                        |
+                                        V
+            +----------------------------------------------------------+
+            |  根据 subtitle_frame_count 和 min_subtitle_frames       |
+            |  确定视频是否有字幕，并生成 output_file 路径            |
+            |   记录视频处理信息                                      |
+            +----------------------------------------------------------+
+                                       |
+                                       V
+                   +--------------------------+
+                   |  释放视频资源和GPU缓存   |
+                   |     手动内存回收          |
+                   +--------------------------+
+                                        |
+                                        V
+                    +---------------------+
+                    |  结束 process_video   |
+                    +---------------------+
+                                        |
+                                         V
+                           +------------------------+
+                           | 开始 ocr_check      |
+                           +------------------------+
+                                      |
+                                      V
+                           +-----------------------------------+
+                           | 使用 reader.readtext(roi,detail=0)     |
+                           |  如果检测到文字返回 True，否则返回 False |
+                           +-----------------------------------+
+                                      |
+                                      V
+                      +--------------------------+
+                      | 结束 ocr_check       |
+                      +--------------------------+
+</code></pre>
 <h2 id="实现">实现</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _*_ coding: utf-8 _*_</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Time:     2025/1/3 10:37</span></span><br><span class="line"><span class="string">Author:   ZhaoQi Cao(czq)</span></span><br><span class="line"><span class="string">Version:  V 0.1</span></span><br><span class="line"><span class="string">File:     lan_detect_cal_new.py</span></span><br><span class="line"><span class="string">Describe: Write during the python at zgxmt, Github link: https://github.com/caozhaoqi</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> easyocr</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> tempfile</span><br><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"></span><br><span class="line">logging.basicConfig(level=logging.INFO, <span class="built_in">format</span>=<span class="string">&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用GPU 加速</span></span><br><span class="line">reader = easyocr.Reader([<span class="string">&#x27;ch_sim&#x27;</span>,<span class="string">&#x27;en&#x27;</span>], gpu=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">detect_subtitle_area</span>(<span class="params">frame, min_area=<span class="number">100</span>, max_area = <span class="number">1000</span>,threshold1 = <span class="number">100</span>, threshold2 = <span class="number">200</span></span>):</span><br><span class="line">  <span class="string">&quot;&quot;&quot;检测字幕区域&quot;&quot;&quot;</span></span><br><span class="line">  <span class="keyword">try</span>:</span><br><span class="line">      gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line">      blurred = cv2.GaussianBlur(gray, (<span class="number">5</span>, <span class="number">5</span>), <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">      edges = cv2.Canny(blurred, threshold1, threshold2)</span><br><span class="line">      contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">      subtitle_areas = []</span><br><span class="line">      <span class="keyword">for</span> contour <span class="keyword">in</span> contours:</span><br><span class="line">        area = cv2.contourArea(contour)</span><br><span class="line">        x, y, w, h = cv2.boundingRect(contour)</span><br><span class="line">        <span class="keyword">if</span> min_area &lt; area &lt; max_area:</span><br><span class="line">           subtitle_areas.append((x, y, w, h))</span><br><span class="line">      <span class="keyword">return</span> subtitle_areas</span><br><span class="line">  <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    logging.error(<span class="string">f&quot;检测字幕区域失败 <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ocr_check</span>(<span class="params">frame, subtitle_area</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;ocr检测是否有字幕&quot;&quot;&quot;</span></span><br><span class="line">    x,y,w,h = subtitle_area</span><br><span class="line">    roi = frame[y:y+h, x:x+w]</span><br><span class="line">    result = reader.readtext(roi)</span><br><span class="line">    <span class="keyword">if</span> result:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_video</span>(<span class="params">video_path, output_dir, min_area=<span class="number">100</span>, max_area=<span class="number">1000</span>, threshold1=<span class="number">100</span>, threshold2=<span class="number">200</span>, move_file=<span class="literal">False</span>, max_retries = <span class="number">3</span>, retry_delay = <span class="number">5</span>, min_subtitle_frames = <span class="number">5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;处理单个视频&quot;&quot;&quot;</span></span><br><span class="line">    logging.info(<span class="string">f&quot;开始处理视频：<span class="subst">&#123;video_path&#125;</span>&quot;</span>)</span><br><span class="line">    temp_video_path = <span class="literal">None</span> <span class="comment"># 用于临时文件</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      <span class="keyword">if</span> move_file:</span><br><span class="line">          temp_dir = tempfile.mkdtemp()</span><br><span class="line">          temp_video_path = os.path.join(temp_dir, os.path.basename(video_path))</span><br><span class="line">          shutil.copy2(video_path, temp_video_path)  <span class="comment"># 使用copy2 保存元数据，避免移动文件</span></span><br><span class="line">          video_path = temp_video_path</span><br><span class="line">      cap = cv2.VideoCapture(video_path)</span><br><span class="line">      <span class="keyword">if</span> <span class="keyword">not</span> cap.isOpened():</span><br><span class="line">            logging.error(<span class="string">f&quot;无法打开视频文件：<span class="subst">&#123;video_path&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(output_dir):</span><br><span class="line">          os.makedirs(output_dir)</span><br><span class="line">      frame_count = <span class="number">0</span></span><br><span class="line">      subtitle_frame_count = <span class="number">0</span></span><br><span class="line">      <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">          ret, frame = cap.read()</span><br><span class="line">          <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">             <span class="keyword">break</span></span><br><span class="line">          subtitle_areas = detect_subtitle_area(frame, min_area, max_area, threshold1, threshold2)</span><br><span class="line">          <span class="keyword">for</span> subtitle_area <span class="keyword">in</span> subtitle_areas:</span><br><span class="line">            <span class="keyword">if</span> ocr_check(frame, subtitle_area):</span><br><span class="line">                subtitle_frame_count += <span class="number">1</span></span><br><span class="line">          frame_count += <span class="number">1</span></span><br><span class="line">          logging.info(<span class="string">f&quot;正在处理第<span class="subst">&#123;frame_count&#125;</span>帧&quot;</span>)</span><br><span class="line">      logging.info(<span class="string">f&quot;共检测到<span class="subst">&#123;subtitle_frame_count&#125;</span>张字幕图片&quot;</span>)</span><br><span class="line">      cap.release()</span><br><span class="line">      has_subtitle = subtitle_frame_count &gt; min_subtitle_frames <span class="comment"># 至少需要min_subtitle_frames帧包含字幕</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> has_subtitle <span class="keyword">and</span> move_file:</span><br><span class="line">         output_file = os.path.join(output_dir, os.path.basename(video_path))</span><br><span class="line">         <span class="keyword">for</span> attempt <span class="keyword">in</span> <span class="built_in">range</span>(max_retries):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                 shutil.move(video_path, output_file)</span><br><span class="line">                 logging.info(<span class="string">f&quot;移动文件到： <span class="subst">&#123;output_file&#125;</span>&quot;</span>)</span><br><span class="line">                 <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                logging.error(<span class="string">f&quot;移动文件 <span class="subst">&#123;video_path&#125;</span> 失败：<span class="subst">&#123;e&#125;</span>，尝试重新移动 <span class="subst">&#123;attempt+<span class="number">1</span>&#125;</span> 次&quot;</span>)</span><br><span class="line">                time.sleep(retry_delay)</span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">               logging.error(<span class="string">f&quot;尝试多次移动文件 <span class="subst">&#123;video_path&#125;</span> 失败，请检查是否有进程正在使用该文件&quot;</span>)</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">         <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">      <span class="keyword">elif</span> has_subtitle:</span><br><span class="line">            logging.info(<span class="string">f&quot;当前视频有字幕: <span class="subst">&#123;video_path&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">           logging.info(<span class="string">f&quot;当前视频没有字幕: <span class="subst">&#123;video_path&#125;</span>&quot;</span>)</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">       logging.error(<span class="string">f&quot;处理视频过程失败：<span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">       <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">if</span> temp_video_path <span class="keyword">and</span> os.path.exists(temp_video_path):</span><br><span class="line">            shutil.rmtree(os.path.dirname(temp_video_path), ignore_errors = <span class="literal">True</span>)</span><br><span class="line">            logging.info(<span class="string">f&quot;清理临时文件 <span class="subst">&#123;temp_video_path&#125;</span> 完成&quot;</span>)</span><br><span class="line">        logging.info(<span class="string">f&quot;视频处理完成：<span class="subst">&#123;video_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_video_threaded</span>(<span class="params">video_path, output_dir, min_area=<span class="number">100</span>, max_area=<span class="number">1000</span>, threshold1=<span class="number">100</span>, threshold2=<span class="number">200</span>, move_file = <span class="literal">False</span>, max_retries = <span class="number">3</span>, retry_delay = <span class="number">5</span>, min_subtitle_frames = <span class="number">5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;多线程处理视频&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">       start_time = time.time()</span><br><span class="line">       result = process_video(video_path, output_dir, min_area, max_area, threshold1, threshold2, move_file, max_retries, retry_delay, min_subtitle_frames)</span><br><span class="line">       end_time = time.time()</span><br><span class="line">       cpu_percent = psutil.cpu_percent() <span class="comment"># 获取cpu使用率</span></span><br><span class="line">       logging.info(<span class="string">f&quot;视频：<span class="subst">&#123;video_path&#125;</span>, 耗时：<span class="subst">&#123;end_time - start_time:<span class="number">.2</span>f&#125;</span> 秒,  CPU 利用率：<span class="subst">&#123;cpu_percent:<span class="number">.2</span>f&#125;</span>%&quot;</span>)</span><br><span class="line">       <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">      logging.error(<span class="string">f&quot;处理视频 <span class="subst">&#123;video_path&#125;</span> 失败：<span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_directory_multithreaded</span>(<span class="params">input_dir, output_dir, min_area=<span class="number">100</span>, max_area=<span class="number">1000</span>, threshold1=<span class="number">100</span>, threshold2=<span class="number">200</span>, allowed_extensions=(<span class="params"><span class="string">&#x27;.mp4&#x27;</span>, <span class="string">&#x27;.avi&#x27;</span>, <span class="string">&#x27;.mov&#x27;</span>, <span class="string">&#x27;.mkv&#x27;</span></span>), num_threads = <span class="number">4</span>, move_file = <span class="literal">False</span>, max_retries = <span class="number">3</span>, retry_delay = <span class="number">5</span>, min_subtitle_frames = <span class="number">5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;多线程处理指定目录下所有视频&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.isdir(input_dir):</span><br><span class="line">      logging.error(<span class="string">f&quot;错误：输入的不是目录: <span class="subst">&#123;input_dir&#125;</span>&quot;</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    video_files = []</span><br><span class="line">    <span class="keyword">for</span> root, _, files <span class="keyword">in</span> os.walk(input_dir):</span><br><span class="line">      <span class="keyword">for</span> filename <span class="keyword">in</span> files:</span><br><span class="line">        <span class="keyword">if</span> filename.lower().endswith(allowed_extensions):</span><br><span class="line">          video_files.append(os.path.join(root, filename))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tqdm(total=<span class="built_in">len</span>(video_files), desc=<span class="string">&quot;处理视频&quot;</span>, unit=<span class="string">&quot;video&quot;</span>) <span class="keyword">as</span> pbar:</span><br><span class="line">        threads = []</span><br><span class="line">        <span class="keyword">for</span> video_path <span class="keyword">in</span> video_files:</span><br><span class="line">          relative_path = os.path.relpath(video_path, input_dir)</span><br><span class="line">          output_subdir = os.path.join(output_dir, os.path.splitext(relative_path)[<span class="number">0</span>])</span><br><span class="line">          thread = threading.Thread(target=process_video_threaded, args=(video_path, output_subdir, min_area, max_area, threshold1, threshold2, move_file, max_retries, retry_delay, min_subtitle_frames))</span><br><span class="line">          threads.append(thread)</span><br><span class="line">          thread.start()</span><br><span class="line">          <span class="keyword">if</span> <span class="built_in">len</span>(threads) &gt;= num_threads:  <span class="comment"># 控制线程数量</span></span><br><span class="line">            <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</span><br><span class="line">               thread.join()</span><br><span class="line">            threads = []</span><br><span class="line">          pbar.update(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</span><br><span class="line">          thread.join()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    input_dir = <span class="string">r&#x27;E:\测试&#x27;</span>  <span class="comment"># 替换为你的视频文件根目录路径</span></span><br><span class="line">    output_dir = <span class="string">r&quot;E:\测试\subtitle_videos&quot;</span>  <span class="comment"># 替换为你的字幕视频输出路径</span></span><br><span class="line">    min_area = <span class="number">100</span>  <span class="comment"># 可选参数，最小连通域面积</span></span><br><span class="line">    max_area = <span class="number">1000</span>  <span class="comment"># 可选参数，最大连通域面积</span></span><br><span class="line">    threshold1 = <span class="number">100</span>  <span class="comment"># 可选参数， canny边缘检测的阈值</span></span><br><span class="line">    threshold2 = <span class="number">200</span>  <span class="comment"># 可选参数， canny边缘检测的阈值</span></span><br><span class="line">    num_threads = <span class="number">4</span>  <span class="comment"># 可选参数， 线程数</span></span><br><span class="line">    move_file = <span class="literal">True</span> <span class="comment"># 是否移动文件</span></span><br><span class="line">    max_retries = <span class="number">3</span>  <span class="comment"># 最大重试次数</span></span><br><span class="line">    retry_delay = <span class="number">5</span> <span class="comment"># 重试间隔时间</span></span><br><span class="line">    min_subtitle_frames = <span class="number">5</span> <span class="comment"># 最小字幕帧数</span></span><br><span class="line"></span><br><span class="line">    process_directory_multithreaded(input_dir, output_dir, min_area, max_area, threshold1, threshold2, num_threads= num_threads, move_file=move_file, max_retries=max_retries, retry_delay=retry_delay, min_subtitle_frames=min_subtitle_frames)</span><br></pre></td></tr></table></figure>
 <h2 id="tips">tips</h2>
@@ -908,11 +1057,11 @@
 </ul>
 </li>
 </ol>
-<h2 id="图像处理算法详解">图像处理算法详解</h2>
-<h2 id="1-图像缩放-Image-Resizing">1. 图像缩放 (Image Resizing)</h2>
-<h3 id="原理">原理</h3>
+<h2 id="图像处理算法详解-2">图像处理算法详解</h2>
+<h2 id="1-图像缩放-Image-Resizing-2">1. 图像缩放 (Image Resizing)</h2>
+<h3 id="原理-4">原理</h3>
 <p>图像缩放是指改变图像的尺寸，包括放大（upscaling）和缩小（downscaling）两种操作。其基本原理是通过像素插值算法，在新的尺寸下估计图像像素的值。</p>
-<h3 id="技术-2">技术</h3>
+<h3 id="技术-4">技术</h3>
 <p>常用的图像缩放技术包括：</p>
 <ul>
 <li><strong>最近邻插值 (Nearest Neighbor Interpolation):</strong>
@@ -940,30 +1089,30 @@
 </ul>
 </li>
 </ul>
-<h3 id="用途">用途</h3>
+<h3 id="用途-3">用途</h3>
 <ul>
 <li><strong>调整图像大小：</strong>  适应不同的显示设备或应用场景。</li>
 <li><strong>预处理步骤：</strong>  作为其他图像处理算法 (如目标检测, OCR) 的预处理步骤.</li>
 <li><strong>生成不同分辨率的图像：</strong>  用于创建图像金字塔或进行多尺度分析。</li>
 </ul>
-<h2 id="2-图像裁剪-Image-Cropping">2. 图像裁剪 (Image Cropping)</h2>
-<h3 id="原理-2">原理</h3>
+<h2 id="2-图像裁剪-Image-Cropping-2">2. 图像裁剪 (Image Cropping)</h2>
+<h3 id="原理-5">原理</h3>
 <p>图像裁剪是指从图像中选择一个矩形区域，然后将其提取出来。其基本原理是根据指定的起始坐标和宽高，截取图像对应的像素数据。</p>
-<h3 id="技术-3">技术</h3>
+<h3 id="技术-5">技术</h3>
 <ul>
 <li><strong>矩形裁剪:</strong>  指定矩形左上角坐标(x, y) 和矩形的宽度 (w) 和高度 (h)，然后提取这个矩形区域的像素。</li>
 <li><strong>任意形状裁剪:</strong>  使用掩码 (mask) 来指定需要裁剪的区域，mask 可以是任意形状。</li>
 </ul>
-<h3 id="用途-2">用途</h3>
+<h3 id="用途-4">用途</h3>
 <ul>
 <li><strong>去除图像中不必要的区域：</strong> 突出感兴趣的目标对象或区域。</li>
 <li><strong>调整图像构图：</strong>  重新构图，使图像更符合需求。</li>
 <li><strong>数据增强：</strong> 作为图像数据增强的一种方法，可以生成不同的图像样本。</li>
 </ul>
-<h2 id="3-图像拼接-Image-Stitching">3. 图像拼接 (Image Stitching)</h2>
-<h3 id="原理-3">原理</h3>
+<h2 id="3-图像拼接-Image-Stitching-2">3. 图像拼接 (Image Stitching)</h2>
+<h3 id="原理-6">原理</h3>
 <p>图像拼接是指将多张具有重叠区域的图像拼接成一张完整的全景图像。其基本原理包括图像配准和图像融合两个步骤。</p>
-<h3 id="技术-4">技术</h3>
+<h3 id="技术-6">技术</h3>
 <ul>
 <li><strong>特征检测和匹配 (Feature Detection and Matching):</strong>
 <ul>
@@ -988,111 +1137,16 @@
 </ul>
 </li>
 </ul>
-<h2 id="流程">流程</h2>
-<pre><code>                             +-----------------------+
-                             | 开始 process_video_threaded |
-                             +-----------------------+
-                                        |
-                                        V
-                  +------------------------------------------------+
-                  |  调用 process_video 处理单个视频文件         |
-                  |  获取 CPU, 内存，GPU 使用率信息             |
-                  |  输出视频处理信息和性能信息                      |
-                  +------------------------------------------------+
-                                        |
-                                        V
-       +------------------------------------------------------------+
-       | 根据 move_file, has_subtitle, 移动文件到 output_dir_with_subtitle  |
-       | 或 output_dir_without_subtitle 下的子目录，并记录日志         |
-       | (如未移动，则记录未移动日志)                                  |
-       +------------------------------------------------------------+
-                                        |
-                                        V
-                  +--------------------------------------------+
-                  |      结束 process_video_threaded             |
-                  +--------------------------------------------+
-
-                                          |
-                                         V
-                             +-----------------------+
-                             | 开始 process_video   |
-                             +-----------------------+
-                                        |
-                                        V
-                    +------------------------------------------------+
-                    |  使用 cv2.VideoCapture 打开视频文件              |
-                    |  如果打开失败，记录日志并返回                       |
-                    |  初始化 frame_count, subtitle_frame_count       |
-                    |  设置跳帧参数 frame_skip                         |
-                    +------------------------------------------------+
-                                         |
-                                         V
-                            +------------------------+
-                            |  while 循环读取视频帧        |
-                            |    如果读取失败，退出循环 |
-                            +------------------------+
-                                        |
-                                        V
-              +----------------------------------------------+
-              | 如果是抽帧，则执行字幕区域检测 detect_subtitle_area|
-              |  如果检测失败 返回                               |
-              +----------------------------------------------+
-                                        |
-                                        V
-                         +---------------------------+
-                         | for subtitle_area in subtitle_areas |
-                         |    调用 ocr_check           |
-                         +---------------------------+
-                                         |
-                                         V
-                 +------------------------------------------------------+
-                 |    根据ocr检测结果更新 subtitle_frame_count            |
-                 +------------------------------------------------------+
-                                        |
-                                        V
-            +----------------------------------------------------------+
-            |  根据 subtitle_frame_count 和 min_subtitle_frames       |
-            |  确定视频是否有字幕，并生成 output_file 路径            |
-            |   记录视频处理信息                                      |
-            +----------------------------------------------------------+
-                                       |
-                                       V
-                   +--------------------------+
-                   |  释放视频资源和GPU缓存   |
-                   |     手动内存回收          |
-                   +--------------------------+
-                                        |
-                                        V
-                    +---------------------+
-                    |  结束 process_video   |
-                    +---------------------+
-                                        |
-                                         V
-                           +------------------------+
-                           | 开始 ocr_check      |
-                           +------------------------+
-                                      |
-                                      V
-                           +-----------------------------------+
-                           | 使用 reader.readtext(roi,detail=0)     |
-                           |  如果检测到文字返回 True，否则返回 False |
-                           +-----------------------------------+
-                                      |
-                                      V
-                      +--------------------------+
-                      | 结束 ocr_check       |
-                      +--------------------------+
-</code></pre>
-<h3 id="用途-3">用途</h3>
+<h3 id="用途-5">用途</h3>
 <ul>
 <li><strong>生成全景图：</strong>  将多张图片拼接成一张宽视野的全景图像。</li>
 <li><strong>创建高分辨率图像：</strong>  将多张低分辨率图像拼接成一张高分辨率图像。</li>
 <li><strong>创建 3D 模型：</strong>  通过多张图片可以重建 3D 模型。</li>
 </ul>
 <h2 id="4-图像去噪-Image-Denoising">4. 图像去噪 (Image Denoising)</h2>
-<h3 id="原理-4">原理</h3>
+<h3 id="原理-7">原理</h3>
 <p>图像去噪是指减少图像中噪声的技术。噪声是指图像中不希望出现的随机干扰信号。其基本原理是区分图像中的有用信号和噪声信号，然后对噪声信号进行抑制或去除。</p>
-<h3 id="技术-5">技术</h3>
+<h3 id="技术-7">技术</h3>
 <ul>
 <li><strong>空域滤波 (Spatial Filtering):</strong>
 <ul>
@@ -1120,16 +1174,16 @@
 </ul>
 </li>
 </ul>
-<h3 id="用途-4">用途</h3>
+<h3 id="用途-6">用途</h3>
 <ul>
 <li><strong>提高图像质量：</strong>  去除图像中的噪声，使图像更加清晰。</li>
 <li><strong>预处理步骤：</strong> 作为其他图像处理算法的预处理步骤，例如，用于提高目标检测或 OCR 的准确率。</li>
 <li><strong>增强图像可读性：</strong> 降低噪声对图像的干扰，使人眼更容易识别图像内容。</li>
 </ul>
 <h2 id="5-图像修复-Image-Inpainting">5. 图像修复 (Image Inpainting)</h2>
-<h3 id="原理-5">原理</h3>
+<h3 id="原理-8">原理</h3>
 <p>图像修复是指根据图像中已知区域的信息，恢复图像中缺失或损坏区域的技术。其基本原理是分析图像的结构和纹理信息，然后使用插值、纹理合成等方法，填充缺失区域。</p>
-<h3 id="技术-6">技术</h3>
+<h3 id="技术-8">技术</h3>
 <ul>
 <li><strong>基于扩散 (Diffusion) 的方法:</strong>
 <ul>
@@ -1150,7 +1204,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="用途-5">用途</h3>
+<h3 id="用途-7">用途</h3>
 <ul>
 <li><strong>修复损坏的图像：</strong>  例如，修复老照片或损坏的文物图片。</li>
 <li><strong>移除图像中的遮挡物：</strong>  例如，移除图像中的文字、水印、或不想要的对象。</li>
@@ -1552,7 +1606,7 @@ CVAT 是一个免费、开源的 Web 应用程序，用于标注计算机视觉�
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">基于边缘检测算法检测视频中文字</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tips"><span class="toc-text">tips</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="toc-text">图像处理算法详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9B%BE%E5%83%8F%E7%BC%A9%E6%94%BE-Image-Resizing"><span class="toc-text">1. 图像缩放 (Image Resizing)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-2"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9B%BE%E5%83%8F%E8%A3%81%E5%89%AA-Image-Cropping"><span class="toc-text">2. 图像裁剪 (Image Cropping)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-2"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-3"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-2"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9B%BE%E5%83%8F%E6%8B%BC%E6%8E%A5-Image-Stitching"><span class="toc-text">3. 图像拼接 (Image Stitching)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-3"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-4"><span class="toc-text">技术</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-text">流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-3"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9B%BE%E5%83%8F%E5%8E%BB%E5%99%AA-Image-Denoising"><span class="toc-text">4. 图像去噪 (Image Denoising)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-4"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-5"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-4"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%9B%BE%E5%83%8F%E4%BF%AE%E5%A4%8D-Image-Inpainting"><span class="toc-text">5. 图像修复 (Image Inpainting)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-5"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-6"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-5"><span class="toc-text">用途</span></a></li></ol></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">基于Easyocr的文字识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="toc-text">主要功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="toc-text">图像处理算法详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9B%BE%E5%83%8F%E7%BC%A9%E6%94%BE-Image-Resizing"><span class="toc-text">1. 图像缩放 (Image Resizing)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9B%BE%E5%83%8F%E8%A3%81%E5%89%AA-Image-Cropping"><span class="toc-text">2. 图像裁剪 (Image Cropping)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-2"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-2"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-2"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9B%BE%E5%83%8F%E6%8B%BC%E6%8E%A5-Image-Stitching"><span class="toc-text">3. 图像拼接 (Image Stitching)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-3"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-3"><span class="toc-text">技术</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-text">流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tips"><span class="toc-text">tips</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3-2"><span class="toc-text">图像处理算法详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9B%BE%E5%83%8F%E7%BC%A9%E6%94%BE-Image-Resizing-2"><span class="toc-text">1. 图像缩放 (Image Resizing)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-4"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-4"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-3"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9B%BE%E5%83%8F%E8%A3%81%E5%89%AA-Image-Cropping-2"><span class="toc-text">2. 图像裁剪 (Image Cropping)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-5"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-5"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-4"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9B%BE%E5%83%8F%E6%8B%BC%E6%8E%A5-Image-Stitching-2"><span class="toc-text">3. 图像拼接 (Image Stitching)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-6"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-6"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-5"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9B%BE%E5%83%8F%E5%8E%BB%E5%99%AA-Image-Denoising"><span class="toc-text">4. 图像去噪 (Image Denoising)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-7"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-7"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-6"><span class="toc-text">用途</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%9B%BE%E5%83%8F%E4%BF%AE%E5%A4%8D-Image-Inpainting"><span class="toc-text">5. 图像修复 (Image Inpainting)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-8"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF-8"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%94-7"><span class="toc-text">用途</span></a></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -1578,6 +1632,27 @@ CVAT 是一个免费、开源的 Web 应用程序，用于标注计算机视觉�
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/02/08/python-publish/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">02-08</span>
+                
+              </div>
+              <a class="post-title" href="/2025/02/08/python-publish/">python 可视化打包工具集锦</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -1660,27 +1735,6 @@ CVAT 是一个免费、开源的 Web 应用程序，用于标注计算机视觉�
                 
               </div>
               <a class="post-title" href="/2025/01/10/docker-install-cvat/">在ubuntu系统使用docker安装 CVAT</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/01/01/split-voice/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">01-01</span>
-                
-              </div>
-              <a class="post-title" href="/2025/01/01/split-voice/">借助深度学习模型实现分离人声与背景声</a>
             </div>
           </div>
         
