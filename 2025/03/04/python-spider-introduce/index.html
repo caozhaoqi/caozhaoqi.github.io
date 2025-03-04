@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>使用pyinstaller打包python程序并发布 | Zhaoqi.Cao static blog</title>
+  <title>python_spider_introduce | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,21 +589,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        使用pyinstaller打包python程序并发布
+        python_spider_introduce
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2024-04-09 |
+          <i class="fas fa-calendar"></i> Published in：2025-03-04 |
         </span>
       
 
@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 2.2k |
+            <i class="fas fa-file-text-o"></i> Words: 1.3k |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 9min |
+            <i class="fas fa-clock"></i> Reading time: 4min |
           </span>
   
           
@@ -643,86 +643,140 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1>使用pyinstaller打包python程序并发布</h1>
-<h2 id="简介">简介</h2>
-<blockquote>
-<p>PyInstaller 将 Python 应用程序及其所有依赖项捆绑到单个软件包中。用户无需安装 Python 解释器或任何模块，即可运行打包后的应用程序。PyInstaller 支持 Python 3.8 及其更新版本，并能正确捆绑 numpy、matplotlib、PyQt、wxPython 等许多主流 Python 包。</p>
-</blockquote>
-<blockquote>
-<p>PyInstaller 已经过 Windows、MacOS X 和 Linux 测试。不过，它并不是一个交叉编译器；要制作 Windows 应用程序就需要在 Windows 上运行 PyInstaller，要制作 Linux 应用程序就需要在 Linux 上运行它，依此类推。PyInstaller 已经成功地在 AIX、Solaris、FreeBSD 和 OpenBSD 上使用，但针对这些平台的测试并不是我们持续集成测试的一部分，开发团队也不能保证（这些平台的所有代码都来自外部贡献）PyInstaller 将能够在这些平台上运行，或得到持续支持。</p>
-</blockquote>
+        <h1>Python 数据采集技术及应用场景</h1>
+<p><strong>概要：</strong></p>
+<p>常用 Python 数据采集技术及应用场景的总结。</p>
+<p><strong>常用爬虫编程语言和技术框架：</strong></p>
 <ul>
-<li>upx</li>
+<li><strong>Python:</strong> Scrapy, Beautiful Soup, Requests, Selenium</li>
+<li><strong>Java:</strong> Jsoup, HttpClient, WebMagic</li>
+<li><strong>Node.js:</strong> Cheerio, Puppeteer, Axios</li>
 </ul>
-<blockquote>
-<p>UPX 是一款用于压缩可执行文件和库的免费工具。它适用于大多数操作系统，可用压缩大量可执行文件格式。</p>
-</blockquote>
-<blockquote>
-<p>当 UPX 可用时，PyInstaller 会用它来单独压缩每个收集的二进制文件（可执行文件、共享库或 Python 扩展）以减小冻结应用程序（单文件夹捆绑的目录或单文件可执行文件）的整体大小。冻结应用程序的可执行文件本身并没有经过 UPX 压缩（不管是单文件夹模式还是单文件模式），因为其文件大小中的大部分都已经是由包含单独压缩文件的嵌入式压缩包构成。</p>
-</blockquote>
-<blockquote>
-<p>PyInstaller 会在标准可执行路径（由 PATH 环境变量定义）或通过 --upx-dir 命令行选项指定的路径中查找 UPX。如果找到，就会自动使用。使用 --noupx 命令行选项可用完全禁用 UPX。</p>
-</blockquote>
-<h2 id="安装">安装</h2>
+<p><strong>常用技术：</strong></p>
 <ul>
-<li>使用以下命令安装</li>
+<li><strong>网络请求:</strong> requests, urllib</li>
+<li><strong>HTML/XML 解析:</strong> Beautiful Soup, lxml, Scrapy</li>
+<li><strong>动态网页爬取:</strong> Selenium, Playwright</li>
+<li><strong>API 接口调用:</strong> requests, 各类 API 客户端库</li>
+<li><strong>数据库操作:</strong> sqlite3, pymysql, psycopg2, mongoengine 等</li>
+<li><strong>多媒体处理:</strong> PIL/Pillow (图片), Librosa (音频), OpenCV (图片/视频), moviepy (视频)</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyinstaller</span><br></pre></td></tr></table></figure>
+<h2 id="1-文字数据采集">1. 文字数据采集</h2>
+<p><strong>网页爬虫:</strong></p>
 <ul>
-<li>版本升级</li>
+<li><strong>requests + Beautiful Soup / lxml:</strong> 经典组合，适用于静态网页抓取。</li>
+<li><strong>Scrapy:</strong> 高级爬虫框架，适用于大规模、结构化的网页数据采集。</li>
+<li><strong>Selenium / Playwright:</strong> 模拟浏览器行为，处理 JavaScript 动态加载内容。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade pyinstaller</span><br></pre></td></tr></table></figure>
+<p><strong>API 接口调用:</strong></p>
 <ul>
-<li>常用command  option</li>
+<li><strong>requests:</strong> 发送 HTTP 请求，获取 JSON 或 XML 格式的文本数据。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">参数	说明</span><br><span class="line">-F	<span class="comment"># 产生单个的可执行文件</span></span><br><span class="line">-D	<span class="comment"># 产生一个目录（包含多个文件）作为可执行程序</span></span><br><span class="line">-a	<span class="comment"># 不包含 Unicode 字符集支持</span></span><br><span class="line">-d	<span class="comment"># debug 版本的可执行文件</span></span><br><span class="line">-w	<span class="comment"># 指定程序运行时不显示命令行窗口（仅对 Windows 有效）</span></span><br><span class="line">-c	<span class="comment"># 指定使用命令行窗口运行程序（仅对 Windows 有效）</span></span><br><span class="line">-o	<span class="comment"># 指定 spec 文件的生成目录。如果没有指定，则默认使用当前目录来生成 spec 文件</span></span><br><span class="line">-p	<span class="comment"># 设置 Python 导入模块的路径（和设置 PYTHONPATH 环境变量的作用相似）。也可使用路径分隔符（Windows 使用分号，Linux 使用冒号）来分隔多个路径</span></span><br><span class="line">-n	<span class="comment"># 指定项目（产生的 spec）名字。如果省略该选项，那么第一个脚本的主文件名将作为 spec 的名字</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="发布">发布</h2>
-<h3 id="举例-1">举例 1</h3>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller -F -w -i favicon.ico test.py</span><br></pre></td></tr></table></figure>
-<h3 id="举例-2-利用spec配置文件打包">举例 2(利用spec配置文件打包)</h3>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: python ; coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># test.spec</span></span><br><span class="line"></span><br><span class="line">block_cipher = None</span><br><span class="line"></span><br><span class="line">a = Analysis([<span class="string">&#x27;test.py&#x27;</span>],</span><br><span class="line">             pathex=[<span class="string">&#x27;F:\\PythonCool\\pyinstaller&#x27;</span>],</span><br><span class="line">             binaries=[],</span><br><span class="line">             datas=[], <span class="comment"># 这里带上资源文件地址</span></span><br><span class="line">            <span class="comment">#  datas=[(&#x27;C:\\Users\\Gdc\\anaconda3\\envs\\env_test\\Lib\\site-packages\\data\\data&#x27;,&#x27;data&#x27;)], # 这里带上资源文件地址</span></span><br><span class="line">             hiddenimports=[], <span class="comment"># 动态引入的库或模块</span></span><br><span class="line">            <span class="comment">#  hiddenimports=[&#x27;palettable&#x27;], # 动态引入的库或模块</span></span><br><span class="line">             hookspath=[],</span><br><span class="line">             runtime_hooks=[],</span><br><span class="line">             excludes=[],</span><br><span class="line">             win_no_prefer_redirects=False,</span><br><span class="line">             win_private_assemblies=False,</span><br><span class="line">             cipher=block_cipher,</span><br><span class="line">             noarchive=False)</span><br><span class="line">pyz = PYZ(a.pure, a.zipped_data,</span><br><span class="line">             cipher=block_cipher)</span><br><span class="line">exe = EXE(pyz,</span><br><span class="line">          a.scripts,</span><br><span class="line">          a.binaries,</span><br><span class="line">          a.zipfiles,</span><br><span class="line">          a.datas,</span><br><span class="line">          [],</span><br><span class="line">          name=<span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">          debug=False,</span><br><span class="line">          bootloader_ignore_signals=False,</span><br><span class="line">          strip=False,</span><br><span class="line">          upx=True,</span><br><span class="line">          upx_exclude=[],</span><br><span class="line">          runtime_tmpdir=None,</span><br><span class="line">          console=True , icon=<span class="string">&#x27;icon.ico&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>文件读取:</strong></p>
 <ul>
-<li>编写上述配置文件后，命名为test.spec,使用以下命令打包：</li>
+<li>Python 内置文件操作函数 (open(), read(), readlines(), csv, json 模块等)。</li>
+<li><strong>pandas 库:</strong> 高效处理 CSV, Excel 等表格数据。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller -D test.spec  </span><br></pre></td></tr></table></figure>
-<h2 id="应用">应用</h2>
-<h3 id="demo举例">demo举例</h3>
+<p><strong>数据库操作:</strong></p>
 <ul>
-<li>spec文件举例</li>
+<li><strong>sqlite3:</strong> (SQLite 数据库)。</li>
+<li><strong>pymysql, psycopg2:</strong> (MySQL, PostgreSQL 数据库)。</li>
+<li><strong>mongoengine, pymongo:</strong> (MongoDB 数据库)。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: python ; coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">block_cipher = None</span><br><span class="line"></span><br><span class="line">a = Analysis(</span><br><span class="line">    [<span class="string">&#x27;ui_main.py&#x27;</span>],</span><br><span class="line">    pathex=[],</span><br><span class="line">    binaries=[],</span><br><span class="line">    datas=[</span><br><span class="line">    (<span class="string">&#x27;C:\\Users\\ad\\PycharmProjects\\pro\\src\\file&#x27;</span>,<span class="string">&#x27;file&#x27;</span>)</span><br><span class="line">    ],</span><br><span class="line">    hiddenimports=[],</span><br><span class="line">    hookspath=[],</span><br><span class="line">    hooksconfig=&#123;&#125;,</span><br><span class="line">    runtime_hooks=[],</span><br><span class="line">    excludes=[],</span><br><span class="line">    win_no_prefer_redirects=False,</span><br><span class="line">    win_private_assemblies=False,</span><br><span class="line">    cipher=block_cipher,</span><br><span class="line">    noarchive=False,</span><br><span class="line">)</span><br><span class="line">pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)</span><br><span class="line"></span><br><span class="line">exe = EXE(</span><br><span class="line">    pyz,</span><br><span class="line">    a.scripts,</span><br><span class="line">    a.binaries,</span><br><span class="line">    a.zipfiles,</span><br><span class="line">    a.datas,</span><br><span class="line">    [],</span><br><span class="line">    name=<span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">    debug=False,</span><br><span class="line">    bootloader_ignore_signals=False,</span><br><span class="line">    strip=False,</span><br><span class="line">    upx=True,</span><br><span class="line">    upx_exclude=[],</span><br><span class="line">    runtime_tmpdir=None,</span><br><span class="line">    console=True,</span><br><span class="line">    disable_windowed_traceback=False,</span><br><span class="line">    argv_emulation=False,</span><br><span class="line">    target_arch=None,</span><br><span class="line">    codesign_identity=None,</span><br><span class="line">    entitlements_file=None,</span><br><span class="line">    icon=<span class="string">&#x27;test.ico&#x27;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h3 id="扩展">扩展</h3>
+<p><strong>OCR:</strong></p>
 <ul>
-<li>可通过bat或sh脚本执行打包，举例如下:</li>
+<li><strong>pytesseract:</strong> (封装 Tesseract OCR 引擎)。</li>
+<li><strong>云端 OCR API:</strong> (如百度 OCR, 腾讯云 OCR 等)。</li>
 </ul>
-<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">setlocal</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">REM 删除dist和build目录</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">exist</span> &quot;dist&quot; (</span><br><span class="line">    <span class="built_in">rmdir</span> /s /q &quot;dist&quot;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">exist</span> &quot;build&quot; (</span><br><span class="line">    <span class="built_in">rmdir</span> /s /q &quot;build&quot;</span><br><span class="line">)</span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">REM 运行pyinstaller main_sis.spec进行打包</span></span><br><span class="line">pyinstaller main_sis.spec</span><br><span class="line"></span><br><span class="line"><span class="built_in">endlocal</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-图片数据采集">2. 图片数据采集</h2>
+<p><strong>技术:</strong></p>
 <ul>
-<li>sh</li>
+<li><strong>requests + Beautiful Soup:</strong> 适用于静态网页的图片链接抓取。<code>requests</code> 用于发起 HTTP 请求，<code>Beautiful Soup</code> 用于解析 HTML，提取图片 URL。</li>
+<li><strong>Scrapy:</strong> 更强大的爬虫框架，适用于大规模图片采集，支持异步处理、自定义中间件等。</li>
+<li><strong>Selenium:</strong> 模拟浏览器行为，适用于动态加载的网页（如 JavaScript 渲染的图片）。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller main_sis.spec</span><br></pre></td></tr></table></figure>
-<h2 id="spec解析">spec解析</h2>
-<h3 id="详细如下">详细如下</h3>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: python ; coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># script： 写所有的py文件</span></span><br><span class="line"><span class="comment"># pathex：写项目的地址，以及自定义库的地址</span></span><br><span class="line"><span class="comment"># datas：静态文件数据的地址</span></span><br><span class="line"><span class="comment"># binaries：二进制文件地址，如果有报错，或者，需要用的时候再添加</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">block_cipher = None</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这一部分负责收集你的脚本需要的所有模块和文件。的；hiddenimports 参数可以指定一些 PyInstaller 无法自动检测到的模块。</span></span><br><span class="line">a = Analysis(</span><br><span class="line">    [<span class="string">&#x27;hello.py&#x27;</span>],       <span class="comment"># 指定要打包的 Python 脚本的路径（可以是相对路径）</span></span><br><span class="line">    pathex=[],          <span class="comment"># 用来指定模块搜索路径</span></span><br><span class="line">    binaries=[],        <span class="comment"># 包含了动态链接库或共享对象文件，会在运行之后自动更新，加入依赖的二进制文件</span></span><br><span class="line">    datas=[],           <span class="comment"># 列表，用于指定需要包含的额外文件。每个元素都是一个元组：（文件的源路径, 在打包文件中的路径)</span></span><br><span class="line">    hiddenimports=[],   <span class="comment"># 用于指定一些 PyInstaller 无法自动检测到的模块</span></span><br><span class="line">    hookspath=[],       <span class="comment"># 指定查找 PyInstaller 钩子的路径</span></span><br><span class="line">    hooksconfig=&#123;&#125;,     <span class="comment"># 自定义 hook 配置，这是一个字典，一行注释写不下，此处先不讲</span></span><br><span class="line">    runtime_hooks=[],   <span class="comment"># 指定运行时 hook，本质是一个 Python 脚本，hook 会在你的脚本运行前运行，可用于准备环境</span></span><br><span class="line">    excludes=[],        <span class="comment"># 用于指定需要排除的模块</span></span><br><span class="line">    win_no_prefer_redirects=False,</span><br><span class="line">    win_private_assemblies=False,</span><br><span class="line">    cipher=block_cipher,</span><br><span class="line">    noarchive=False,</span><br><span class="line">)</span><br><span class="line"><span class="comment"># 除此之外，a 还有一些没有列出的属性：</span></span><br><span class="line"><span class="comment">#   pure 是一个列表，包含了所有纯 Python 模块的信息，每个元素是一个元组，包含了：模块名, pyc路径, py 路径，这些模块会被打包到一个 .pyz 文件中。</span></span><br><span class="line"><span class="comment">#   scripts 是一个列表，包含了你的 Python 脚本的信息。每个元素是一个元组，其中包含了脚本的内部名，脚本的源路径，以及一些元数据。这些脚本会被打包到一个可执行文件中。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pyz 是指生成的可执行文件的名称。它是由 PyInstaller 用来打包 Python 程序和依赖项的主要文件。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 pyz 文件，它在运行时会被解压缩到临时目录中，然后被加载和执行。它会被打包进 exe 文件</span></span><br><span class="line">pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 exe 文件</span></span><br><span class="line">exe = EXE(</span><br><span class="line">    pyz,            <span class="comment"># 包含了所有纯 Python 模块</span></span><br><span class="line">    a.scripts,      <span class="comment"># 包含了主脚本及其依赖</span></span><br><span class="line">    [],             <span class="comment"># 所有需要打包到 exe 文件内的二进制文件</span></span><br><span class="line">    exclude_binaries=True,  <span class="comment"># 若为 True，所有的二进制文件将被排除在 exe 之外，转而被 COLLECT 函数收集</span></span><br><span class="line">    name=<span class="string">&#x27;hello&#x27;</span>,   <span class="comment"># 生成的 exe 文件的名字。</span></span><br><span class="line">    debug=False,    <span class="comment"># 打包过程中是否打印调试信息？</span></span><br><span class="line">    bootloader_ignore_signals=False,</span><br><span class="line">    strip=False,    <span class="comment"># 是否移除所有的符号信息，使打包出的 exe 文件更小</span></span><br><span class="line">    upx=True,       <span class="comment"># 是否用 upx 压缩 exe 文件</span></span><br><span class="line">    console=True,   <span class="comment"># 若为 True 则在控制台窗口中运行，否则作为后台进程运行</span></span><br><span class="line">    disable_windowed_traceback=False,</span><br><span class="line">    argv_emulation=False,</span><br><span class="line">    target_arch=None,</span><br><span class="line">    codesign_identity=None,</span><br><span class="line">    entitlements_file=None,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这个对象包含了所有需要分发的文件</span></span><br><span class="line"><span class="comment"># 包括 EXE 函数创建的 exe 文件、所有的二进制文件、zip 文件（如果有的话）和数据文件</span></span><br><span class="line">coll = COLLECT(</span><br><span class="line">    exe,</span><br><span class="line">    a.binaries,</span><br><span class="line">    a.zipfiles,</span><br><span class="line">    a.datas,</span><br><span class="line">    strip=False,</span><br><span class="line">    upx=True,</span><br><span class="line">    upx_exclude=[],</span><br><span class="line">    name=<span class="string">&#x27;hello&#x27;</span>,   <span class="comment"># 生成的文件夹的名字</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h3 id="问题">问题</h3>
-<h4 id="1-pyinstaller-打包后无法通过反射访问py文件">1.pyinstaller 打包后无法通过反射访问py文件</h4>
+<p><strong>API 接口:</strong></p>
 <ul>
-<li>解决方法</li>
+<li>许多网站和平台提供 API 接口，可以直接获取图片数据，如 Google Images API, Flickr API, Instagram API 等。使用 <code>requests</code> 库或其他 HTTP 客户端库调用 API。</li>
 </ul>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> crawlers.base <span class="keyword">import</span> BaseCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.daili66 <span class="keyword">import</span> Daili66Crawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.data5u <span class="keyword">import</span> Data5UCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.docip <span class="keyword">import</span> DocipCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.fatezero <span class="keyword">import</span> FatezeroCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.geonodedaili <span class="keyword">import</span> GeonodeCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.goubanjia <span class="keyword">import</span> GoubanjiaCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.ihuan <span class="keyword">import</span> IhuanCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.ip3366 <span class="keyword">import</span> IP3366Crawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.iphai <span class="keyword">import</span> IPHaiCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.jiangxianli <span class="keyword">import</span> JiangxianliCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.kuaidaili <span class="keyword">import</span> KuaidailiCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.seofangfa <span class="keyword">import</span> SeoFangFaCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.taiyangdaili <span class="keyword">import</span> TaiyangdailiCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.uqidata <span class="keyword">import</span> UqidataCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.xiaoshudaili <span class="keyword">import</span> XiaoShuCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.xicidaili <span class="keyword">import</span> XicidailiCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.xiladaili <span class="keyword">import</span> XiladailiCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.yqie <span class="keyword">import</span> YqIeCrawler</span><br><span class="line"><span class="keyword">from</span> crawlers.public.zhandaye <span class="keyword">import</span> ZhandayeCrawler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取模块中所有的类</span></span><br><span class="line">crawlers_cls = [</span><br><span class="line">    base,</span><br><span class="line">    Ip89Crawler,</span><br><span class="line">    Daili66Crawler,</span><br><span class="line">    Data5UCrawler,</span><br><span class="line">    DocipCrawler,</span><br><span class="line">    FatezeroCrawler,</span><br><span class="line">    GeonodeCrawler,</span><br><span class="line">    GoubanjiaCrawler,</span><br><span class="line">    IhuanCrawler,</span><br><span class="line">    IP3366Crawler,</span><br><span class="line">    IPHaiCrawler,</span><br><span class="line">    JiangxianliCrawler,</span><br><span class="line">    KuaidailiCrawler,</span><br><span class="line">    SeoFangFaCrawler,</span><br><span class="line">    TaiyangdailiCrawler,</span><br><span class="line">    UqidataCrawler,</span><br><span class="line">    XiaoShuCrawler,</span><br><span class="line">    XicidailiCrawler,</span><br><span class="line">    XiladailiCrawler,</span><br><span class="line">    YqIeCrawler,</span><br><span class="line">    ZhandayeCrawler</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">crawlers_cls = [cls <span class="keyword">for</span> cls <span class="keyword">in</span> crawlers_cls</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(cls, <span class="built_in">type</span>) <span class="keyword">and</span> <span class="built_in">issubclass</span>(cls, BaseCrawler) <span class="keyword">and</span> cls <span class="keyword">is</span> <span class="keyword">not</span> BaseCrawler</span><br><span class="line">    <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">getattr</span>(cls, <span class="string">&#x27;ignore&#x27;</span>, <span class="literal">False</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用</span></span><br><span class="line"><span class="variable language_">self</span>.crawlers = [crawler_cls() <span class="keyword">for</span> crawler_cls <span class="keyword">in</span> <span class="variable language_">self</span>.crawlers_cls]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="2-打包后无法访问指定数据">2.打包后无法访问指定数据</h4>
+<p><strong>图像处理库:</strong></p>
 <ul>
-<li>解决办法</li>
+<li><strong>PIL (Pillow):</strong> 用于打开、操作和保存各种图像文件格式。可以用于图片预处理、格式转换等。</li>
+<li><strong>OpenCV:</strong> 更强大的计算机视觉库，用于图像分析、特征提取、目标检测等。</li>
 </ul>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_data_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    获取数据文件的路径，无论是直接运行还是通过 PyInstaller 打包 抑或nuitka打包</span></span><br><span class="line"><span class="string">    :param filename</span></span><br><span class="line"><span class="string">    :return</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># pyinstaller 打包</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">getattr</span>(sys, <span class="string">&#x27;frozen&#x27;</span>, <span class="literal">False</span>):</span><br><span class="line">        <span class="comment"># 如果程序是“冷冻的”，即打包后的 exe</span></span><br><span class="line">        <span class="comment"># nuitka 打包</span></span><br><span class="line">        <span class="keyword">if</span> run.__compiled__:</span><br><span class="line">            basedir = os.getcwd()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            basedir = sys._MEIPASS</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 如果程序是直接运行的，即没有打包</span></span><br><span class="line">        basedir = os.path.dirname(__file__)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> os.path.join(basedir, filename)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="See">See</h2>
+<p><strong>OCR（光学字符识别）:</strong></p>
 <ul>
-<li>[1].<a target="_blank" rel="noopener" href="https://www.cnblogs.com/haujet/p/PyInstaller-Perfect-Build.html">https://www.cnblogs.com/haujet/p/PyInstaller-Perfect-Build.html</a></li>
-<li>[2].<a target="_blank" rel="noopener" href="https://www.cnblogs.com/bbiu/p/13209612.html">https://www.cnblogs.com/bbiu/p/13209612.html</a></li>
+<li><strong>Tesseract:</strong> 开源 OCR 引擎，可以将图片中的文字转换为文本。</li>
+<li><strong>pytesseract:</strong> Python 封装的 Tesseract 库，方便使用。</li>
 </ul>
+<p><strong>应用场景:</strong></p>
+<ul>
+<li><strong>电商网站商品图片采集:</strong> 抓取商品图片，用于建立商品图库、比价、数据分析等。</li>
+<li><strong>社交媒体图片采集:</strong> 抓取用户头像、照片墙等，用于用户行为分析、内容推荐等。</li>
+<li><strong>新闻网站图片采集:</strong> 抓取新闻配图，用于新闻聚合、内容分析等。</li>
+<li><strong>搜索引擎图片索引:</strong> 抓取网页图片，建立图片索引，提供图片搜索服务。</li>
+<li><strong>医学影像分析:</strong> 采集医学影像数据（如 X 光片、CT 扫描等），用于疾病诊断、辅助治疗等。</li>
+<li><strong>遥感图像分析:</strong> 采集卫星遥感图像，用于土地利用分析、环境监测、灾害评估等。</li>
+<li><strong>艺术品图像采集:</strong> 采集艺术品图片，用于建立数字博物馆、艺术品鉴定等。</li>
+<li><strong>文档数字化:</strong> 将纸质文档扫描或拍照，通过 OCR 技术转换为电子文本。</li>
+<li><strong>验证码识别:</strong> 采集网站验证码图片，使用 OCR 或深度学习模型进行识别。</li>
+</ul>
+<h2 id="3-音频数据采集">3. 音频数据采集</h2>
+<p><strong>技术:</strong></p>
+<p><strong>麦克风录音:</strong></p>
+<ul>
+<li><strong>PyAudio:</strong> Python 库，用于从麦克风或其他音频输入设备录制音频。</li>
+<li><strong>sounddevice:</strong> 跨平台音频 I/O 库，支持录音和播放。</li>
+</ul>
+<p><strong>网络音频流:</strong></p>
+<ul>
+<li><strong>requests:</strong> 可以用于下载在线音频文件（如 MP3、WAV 等）。</li>
+<li><strong>youtube-dl:</strong> 命令行工具，可以下载 YouTube 等视频网站的音频。</li>
+<li><strong>流媒体协议库:</strong> 如 <code>rtsp-lib</code>，用于处理实时流媒体协议（如 RTSP）的音频流。</li>
+</ul>
+<p><strong>API 接口:</strong></p>
+<ul>
+<li>一些音频平台（如 Spotify、SoundCloud）提供 API，可以获取音频数据。</li>
+</ul>
+<p><strong>音频处理库:</strong></p>
+<ul>
+<li><strong>Librosa:</strong> 用于音频和音乐分析的 Python 库，提供特征提取、节奏分析等功能。</li>
+<li><strong>pydub:</strong> 用于音频处理，如剪辑、合并、格式转换等。</li>
+</ul>
+<p><strong>应用场景:</strong></p>
+<ul>
+<li><strong>语音识别:</strong> 采集语音数据，用于语音识别系统训练、语音助手开发等。</li>
+<li><strong>音乐信息检索:</strong> 采集音乐数据，用于音乐识别、音乐推荐、音乐分类等。</li>
+<li><strong>环境声音监测:</strong> 采集环境声音数据，用于噪声污染监测、安全监控等。</li>
+</ul>
+<h2 id="4-视频数据采集">4. 视频数据采集</h2>
+<p><strong>技术:</strong></p>
+<p><strong>网络视频下载:</strong></p>
+<ul>
+<li><strong>requests:</strong> 可以用于下载静态视频文件。</li>
+<li><strong>youtube-dl:</strong> 可以下载 YouTube 等视频网站的视频。</li>
+<li><strong>you-get:</strong> 另一个流行的视频下载工具，支持多个视频网站。</li>
+<li><strong>流媒体协议库:</strong> 如 <code>rtsp-lib</code>，用于处理实时流媒体协议（如 RTSP）的视频流。</li>
+</ul>
+<p><strong>API 接口:</strong></p>
+<ul>
+<li>一些视频平台（如 YouTube、Vimeo）提供 API，可以获取视频数据。</li>
+</ul>
+<p><strong>视频处理库:</strong></p>
+<ul>
+<li><strong>OpenCV:</strong> 用于视频分析、处理、目标跟踪、行为识别等。</li>
+<li><strong>MoviePy:</strong> 用于视频编辑、剪辑、合成等。</li>
+</ul>
+<h2 id="参考：">参考：</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/Pierian-Data/Beautiful-Soup-and-Requests">https://github.com/Pierian-Data/Beautiful-Soup-and-Requests</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/aditya-sengupta/Web-Scraping-with-Python">https://github.com/aditya-sengupta/Web-Scraping-with-Python</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Jack-Cherish/Python-Crawler-Tutorial">https://github.com/Jack-Cherish/Python-Crawler-Tutorial</a></li>
+</ol>
 <h2 id="about-me-个人微信">about me 个人微信</h2>
-<p><img src="/2024/04/09/pyinstaller-publish-python/me.jpeg" class="lazyload placeholder" data-srcset="/2024/04/09/pyinstaller-publish-python/me.jpeg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2025/03/04/python-spider-introduce/me.jpeg" class="lazyload placeholder" data-srcset="/2025/03/04/python-spider-introduce/me.jpeg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
 <h2 id="wechat-offical-微信公众号">wechat offical 微信公众号</h2>
-<p><img src="/2024/04/09/pyinstaller-publish-python/wechat.jpg" class="lazyload placeholder" data-srcset="/2024/04/09/pyinstaller-publish-python/wechat.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2025/03/04/python-spider-introduce/wechat.jpg" class="lazyload placeholder" data-srcset="/2025/03/04/python-spider-introduce/wechat.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
 
       </div>
       <div class="post-tags-categories">
@@ -744,7 +798,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2024/04/09/pyinstaller-publish-python/" target="_blank" title="使用pyinstaller打包python程序并发布">https://caozhaoqi.github.io/2024/04/09/pyinstaller-publish-python/</a>
+    <a href="/2025/03/04/python-spider-introduce/" target="_blank" title="python_spider_introduce">https://caozhaoqi.github.io/2025/03/04/python-spider-introduce/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -762,45 +816,28 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2024/04/10/setup-tools-python/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">python使用setuptools和nsis工具打包nuitka工程</div>
-      </div>
-      
-      <!-- <div class="content">
-        python使用setuptools和nsis工具打包nuitka工程
-简介
-
-setuptools 是官方提供的一个专
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2024/04/09/nuitka-publish-python/" class="post-nav-link">
+    <a href="/2025/02/28/py-gen-excel/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">使用nuitka打包python为exe并发布</div>
+        <div class="title-text">python批量写入图片到excel中</div>
       </div>
       <!-- <div class="content">
-        使用nuitka打包python为exe并发布
-简介
+        python批量写入图片到excel中
+技术
+1. pandas
 
-Nuitka is the optimizing Python 
+
+用途：
+
+数据分析和处理的核心库，特别是处理表格型
       </div> -->
     </a>
   </div>
@@ -1120,7 +1157,7 @@ Nuitka is the optimizing Python
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">使用pyinstaller打包python程序并发布</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E5%B8%83"><span class="toc-text">发布</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B-1"><span class="toc-text">举例 1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B-2-%E5%88%A9%E7%94%A8spec%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%89%93%E5%8C%85"><span class="toc-text">举例 2(利用spec配置文件打包)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-text">应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#demo%E4%B8%BE%E4%BE%8B"><span class="toc-text">demo举例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%B1%95"><span class="toc-text">扩展</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spec%E8%A7%A3%E6%9E%90"><span class="toc-text">spec解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E5%A6%82%E4%B8%8B"><span class="toc-text">详细如下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-pyinstaller-%E6%89%93%E5%8C%85%E5%90%8E%E6%97%A0%E6%B3%95%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E8%AE%BF%E9%97%AEpy%E6%96%87%E4%BB%B6"><span class="toc-text">1.pyinstaller 打包后无法通过反射访问py文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%89%93%E5%8C%85%E5%90%8E%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E6%8C%87%E5%AE%9A%E6%95%B0%E6%8D%AE"><span class="toc-text">2.打包后无法访问指定数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">Python 数据采集技术及应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E5%AD%97%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86"><span class="toc-text">1. 文字数据采集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9B%BE%E7%89%87%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86"><span class="toc-text">2. 图片数据采集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%9F%B3%E9%A2%91%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86"><span class="toc-text">3. 音频数据采集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%A7%86%E9%A2%91%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86"><span class="toc-text">4. 视频数据采集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A"><span class="toc-text">参考：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
