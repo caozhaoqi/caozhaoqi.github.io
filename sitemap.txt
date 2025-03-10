@@ -1,3 +1,5 @@
+https://caozhaoqi.github.io/2025/03/10/smb-elk-log/
+https://caozhaoqi.github.io/2024/12/15/easy-ocr-gpu/
 https://caozhaoqi.github.io/2024/11/21/yolo_user_face_recognized/
 https://caozhaoqi.github.io/2024/10/28/wm8731-record-audio/
 https://caozhaoqi.github.io/2024/11/16/wechat-log-upload/
@@ -47,7 +49,6 @@ https://caozhaoqi.github.io/2024/07/05/git-respority-error/
 https://caozhaoqi.github.io/2024/06/25/Detail-designed/
 https://caozhaoqi.github.io/2023/02/22/hexo-blog-createanduse/
 https://caozhaoqi.github.io/2024/11/21/excel_parser_pandas/
-https://caozhaoqi.github.io/2024/12/15/easy-ocr-gpu/
 https://caozhaoqi.github.io/2023/02/22/AndroidSocketToUnity/
 https://caozhaoqi.github.io/2023/02/24/kill-process-app/
 https://caozhaoqi.github.io/2024/12/15/centos-docker-install/
