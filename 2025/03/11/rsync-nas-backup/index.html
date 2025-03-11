@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>轻量快速的 Python ASGI uvicorn 框架使用 | Zhaoqi.Cao static blog</title>
+  <title>rsync_nas_backup | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,21 +589,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        轻量快速的 Python ASGI uvicorn 框架使用
+        rsync_nas_backup
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2023-05-15 |
+          <i class="fas fa-calendar"></i> Published in：2025-03-11 |
         </span>
       
 
@@ -612,7 +612,7 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 1.2k |
+            <i class="fas fa-file-text-o"></i> Words: 1.6k |
           </span>
   
           <span class="min2read">
@@ -643,64 +643,133 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1>轻量快速的 Python ASGI uvicorn 框架使用</h1>
-<h2 id="下载使用">下载使用</h2>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install fastapi</span><br><span class="line">pip install uvicorn</span><br></pre></td></tr></table></figure>
-<h2 id="优点">优点</h2>
-<blockquote>
-<p>Python 仍缺乏异步的网关协议接口，ASGI 的出现填补了这一空白，现在开始，我们能够使用共同的标准为所有的异步框架来实现一些工具，ASGI 帮助 Python 在 Web 框架上和 Node.JS 及 Golang 相竟争，目标是获得高性能的 IO 密集型任务，ASGI 支持 HTTP2 和 WebSockets，WSGI 是不支持的。</p>
-</blockquote>
-<blockquote>
-<p>Uvicorn 目前支持 HTTP1.1 和 WebSocket，计划支持 HTTP2</p>
-</blockquote>
-<h2 id="框架使用">框架使用</h2>
-<h3 id="启动">启动</h3>
+        <h1>使用rsync同步备份NAS中的文件到其他NSA服务器</h1>
+<h2 id="rsync简介">rsync简介</h2>
+<p><code>rsync</code> 是一个快速、通用且极其强大的文件复制工具，主要用于 Unix-like 系统（包括 Linux、macOS）。它也可以在 Windows 上通过 Cygwin、WSL 或本地移植版本使用。 <code>rsync</code> 不仅可以进行本地复制，还可以通过网络（通常使用 SSH）进行远程复制。</p>
+<p><strong>rsync 的主要优点：</strong></p>
 <ul>
-<li>1.脚本式</li>
+<li><strong>增量传输（Delta Transfer）：</strong> <code>rsync</code> 最显著的特点是它的增量传输算法。它只复制源文件和目标文件之间不同的部分，而不是复制整个文件。这使得 <code>rsync</code> 在同步大型文件或目录时非常高效，尤其是在网络带宽有限的情况下。</li>
+<li><strong>速度快：</strong> 由于只传输差异部分，<code>rsync</code> 通常比其他复制工具（如 <code>scp</code>）快得多，尤其是在进行重复同步时。</li>
+<li><strong>灵活：</strong> <code>rsync</code> 提供了大量的选项，可以对复制过程进行精细控制。例如，你可以：
+<ul>
+<li>保留文件权限、所有者、组、时间戳等属性。</li>
+<li>排除/包含特定文件或目录。</li>
+<li>限制带宽使用。</li>
+<li>删除目标目录中存在但源目录中不存在的文件（同步删除）。</li>
+<li>创建备份（保留已删除或修改文件的旧版本）。</li>
+<li>使用 SSH 进行加密传输。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvicorn example:app</span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>可靠：</strong> <code>rsync</code> 经过了广泛的测试，非常稳定。它还支持断点续传，可以在传输中断后继续。</li>
+<li><strong>用途广泛：</strong> <code>rsync</code> 不仅可以用于备份，还可以用于：
 <ul>
-<li>2.代码式</li>
+<li>网站镜像。</li>
+<li>文件同步。</li>
+<li>软件部署。</li>
+<li>系统迁移。</li>
 </ul>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">app</span>(<span class="params">scope, receive, send</span>):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    uvicorn.run(<span class="string">&quot;example:app&quot;</span>, host=<span class="string">&quot;127.0.0.1&quot;</span>, port=<span class="number">5000</span>, log_level=<span class="string">&quot;info&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>3.整合 FastAPI</li>
+</li>
 </ul>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">root</span>():</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello World&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 路由注解 参数注解</span></span><br><span class="line"><span class="meta">@router.get(<span class="params"><span class="string">&quot;/log/log&quot;</span>, summary=<span class="string">&#x27;summary&#x27;</span>, description=<span class="string">&#x27;desc&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_item</span>(<span class="params">item_id: <span class="type">Union</span>[<span class="built_in">str</span>, <span class="literal">None</span>] = Query(<span class="params">default=<span class="literal">None</span>, alias=<span class="string">&quot;log_id&quot;</span></span>)</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    获取报告生成进度</span></span><br><span class="line"><span class="string">    @:parameter item_id log id</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> null;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    uvicorn.run(app=app)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="功能引入">功能引入</h3>
+<p><strong>rsync 的基本语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync [options] <span class="built_in">source</span> destination</span><br></pre></td></tr></table></figure>
 <ul>
-<li>1.全局 log</li>
+<li><strong><code>options</code>：</strong>  <code>rsync</code> 的选项（例如 <code>-a</code>、<code>-v</code>、<code>-z</code>、<code>--delete</code> 等）。</li>
+<li><strong><code>source</code>：</strong>  源文件或目录。</li>
+<li><strong><code>destination</code>：</strong> 目标文件或目录。</li>
 </ul>
-<h4 id="启动文件配置">启动文件配置</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_app</span>():</span><br><span class="line">    app = FastAPI(title=<span class="string">&quot;&quot;</span>, version=<span class="string">&quot;0.0.1&quot;</span>,</span><br><span class="line">                  description=<span class="string">&quot;&quot;</span>, debug=<span class="literal">True</span>)</span><br><span class="line">    app.include_router(router=api_router, prefix=<span class="string">&quot;/api/v1&quot;</span>)</span><br><span class="line">    logging.getLogger().handlers = [InterceptHandler()]</span><br><span class="line">    logger.configure(</span><br><span class="line">        handlers=[&#123;<span class="string">&quot;sink&quot;</span>: sys.stdout, <span class="string">&quot;level&quot;</span>: logging.DEBUG, <span class="string">&quot;format&quot;</span>: format_record&#125;])</span><br><span class="line">    logger.add(LOG_DIR, encoding=<span class="string">&#x27;utf-8&#x27;</span>, rotation=<span class="string">&quot;9:46&quot;</span>)</span><br><span class="line">    logger.debug(<span class="string">&#x27;日志系统已加载&#x27;</span>)</span><br><span class="line">    logging.getLogger(<span class="string">&quot;uvicorn.access&quot;</span>).handlers = [InterceptHandler()]</span><br><span class="line">    <span class="keyword">return</span> app</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app = init_app()</span><br></pre></td></tr></table></figure>
-<h4 id="log-基础配置">log 基础配置</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> pprint <span class="keyword">import</span> pformat</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> http_server.log.log_base <span class="keyword">import</span> LOG_FORMAT</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"><span class="comment"># from ..config import config</span></span><br><span class="line"><span class="keyword">from</span> loguru._defaults <span class="keyword">import</span> LOGURU_FORMAT</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">InterceptHandler</span>(logging.Handler):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">emit</span>(<span class="params">self, record</span>):</span><br><span class="line">        <span class="comment"># Get corresponding Loguru level if it exists</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            level = logger.level(record.levelname).name</span><br><span class="line">        <span class="keyword">except</span> ValueError:</span><br><span class="line">            level = record.levelno</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Find caller from where originated the logged message</span></span><br><span class="line">        frame, depth = logging.currentframe(), <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> frame.f_code.co_filename == logging.__file__:</span><br><span class="line">            frame = frame.f_back</span><br><span class="line">            depth += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        logger.opt(depth=depth, exception=record.exc_info).log(</span><br><span class="line">            level, record.getMessage()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">format_record</span>(<span class="params">record: <span class="built_in">dict</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    format_string = LOG_FORMAT</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> record[<span class="string">&quot;extra&quot;</span>].get(<span class="string">&quot;payload&quot;</span>) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        record[<span class="string">&quot;extra&quot;</span>][<span class="string">&quot;payload&quot;</span>] = pformat(</span><br><span class="line">            record[<span class="string">&quot;extra&quot;</span>][<span class="string">&quot;payload&quot;</span>], indent=<span class="number">4</span>, compact=<span class="literal">True</span>, width=<span class="number">88</span></span><br><span class="line">        )</span><br><span class="line">        format_string += <span class="string">&quot;\n&lt;level&gt;&#123;extra[payload]&#125;&lt;/level&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">    format_string += <span class="string">&quot;&#123;exception&#125;\n&quot;</span></span><br><span class="line">    <span class="keyword">return</span> format_string</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基础变量配置</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># -----------------------系统调试------------------------------------</span></span><br><span class="line">DEBUG = <span class="literal">True</span></span><br><span class="line"><span class="comment"># -----------------------日志-----------------------------------------</span></span><br><span class="line">LOG_DIR = os.path.join(os.getcwd(), <span class="string">f&#x27;log_dir\\<span class="subst">&#123;time.strftime(<span class="string">&quot;%Y-%m-%d&quot;</span>)&#125;</span>.log&#x27;</span>)</span><br><span class="line">LOG_FORMAT = <span class="string">&#x27;&lt;level&gt;&#123;level: &lt;8&#125;&lt;/level&gt;  &lt;green&gt;&#123;time:YYYY-MM-DD HH:mm:ss.SSS&#125;&lt;/green&gt; - &lt;cyan&gt;&#123;name&#125;&lt;/cyan&gt;:&lt;cyan&gt;&#123;&#x27;</span> \</span><br><span class="line">             <span class="string">&#x27;function&#125;&lt;/cyan&gt; - &lt;level&gt;&#123;message&#125;&lt;/level&gt; &#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>常用选项：</strong></p>
 <ul>
-<li>2.全局异常处理</li>
+<li><code>-a</code>：归档模式，等效于 <code>-rlptgoD</code>，保留文件的各种属性。</li>
+<li><code>-v</code>：详细模式，显示传输的文件名。</li>
+<li><code>-z</code>：压缩传输的数据。</li>
+<li><code>-h</code>：以人类可读的格式显示数字（例如，1K、234M、2G）。</li>
+<li><code>--progress</code>：显示传输进度。</li>
+<li><code>--delete</code>：删除目标目录中存在但源目录中不存在的文件（谨慎使用！）。</li>
+<li><code>-e ssh</code>：使用 SSH 进行加密传输。</li>
+<li><code>--exclude=PATTERN</code>：排除匹配 <code>PATTERN</code> 的文件或目录。</li>
+<li><code>--include=PATTERN</code>：包含匹配 <code>PATTERN</code> 的文件或目录（通常与 <code>--exclude='*'</code> 一起使用）。</li>
+<li><code>--bwlimit=RATE</code>：限制带宽使用（速率单位为 KB/s）。</li>
+<li><code>--partial</code> : 保留部分传输文件, 用于断点续传。</li>
+<li><code>--dry-run</code> 或 <code>-n</code>：模拟运行，不实际传输文件。</li>
 </ul>
-<h4 id="异常类定义">异常类定义</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># from rest_framework.exceptions import APIException</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class Success(APIException):</span></span><br><span class="line"><span class="comment">#     code = 201</span></span><br><span class="line"><span class="comment">#     msg = &#x27;ok&#x27;</span></span><br><span class="line"><span class="comment">#     error_code = 0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class DeleteSuccess(APIException):</span></span><br><span class="line"><span class="comment">#     code = 202</span></span><br><span class="line"><span class="comment">#     msg = &#x27;delete ok&#x27;</span></span><br><span class="line"><span class="comment">#     error_code = 1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class UpdateSuccess(APIException):</span></span><br><span class="line"><span class="comment">#     code = 200</span></span><br><span class="line"><span class="comment">#     msg = &#x27;update ok&#x27;</span></span><br><span class="line"><span class="comment">#     error_code = 2</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class ServerError(APIException):</span></span><br><span class="line"><span class="comment">#     code = 500</span></span><br><span class="line"><span class="comment">#     msg = &#x27;sorry, we made a mistake!&#x27;</span></span><br><span class="line"><span class="comment">#     error_code = 999</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class ParameterException(APIException):</span></span><br><span class="line"><span class="comment">#     code = 400</span></span><br><span class="line"><span class="comment">#     msg = &#x27;invalid parameter&#x27;</span></span><br><span class="line"><span class="comment">#     error_code = 1000</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class NotFound(APIException):</span></span><br><span class="line"><span class="comment">#     code = 404</span></span><br><span class="line"><span class="comment">#     msg = &#x27;the resource are not found&#x27;</span></span><br><span class="line"><span class="comment">#     error_code = 1001</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class AuthFailed(APIException):</span></span><br><span class="line"><span class="comment">#     code = 401</span></span><br><span class="line"><span class="comment">#     msg = &#x27;authorization failed&#x27;</span></span><br><span class="line"><span class="comment">#     error_code = 1005</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class Forbidden(APIException):</span></span><br><span class="line"><span class="comment">#     code = 403</span></span><br><span class="line"><span class="comment">#     error_code = 1004</span></span><br><span class="line"><span class="comment">#     msg = &#x27;forbidden, not in scope&#x27;</span></span><br><span class="line"><span class="keyword">from</span> docutils.nodes <span class="keyword">import</span> status</span><br><span class="line"><span class="keyword">from</span> fastapi.encoders <span class="keyword">import</span> jsonable_encoder</span><br><span class="line"><span class="keyword">from</span> fastapi.exceptions <span class="keyword">import</span> RequestValidationError</span><br><span class="line"><span class="keyword">from</span> requests <span class="keyword">import</span> Request</span><br><span class="line"><span class="keyword">from</span> starlette.responses <span class="keyword">import</span> JSONResponse, PlainTextResponse</span><br><span class="line"><span class="keyword">from</span> starlette.exceptions <span class="keyword">import</span> HTTPException <span class="keyword">as</span> StarletteHTTPException</span><br><span class="line"><span class="keyword">from</span> http_server.router <span class="keyword">import</span> router</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">自定义异常</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UnicornException</span>(<span class="title class_ inherited__">Exception</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@router.api_router.exception_handler(<span class="params">RequestValidationError</span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">validation_exception_handler</span>(<span class="params">request: Request, exc: RequestValidationError</span>):</span><br><span class="line">    <span class="keyword">return</span> JSONResponse(</span><br><span class="line">        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,</span><br><span class="line">        content=jsonable_encoder(&#123;<span class="string">&quot;detail&quot;</span>: exc.errors(), <span class="string">&quot;body&quot;</span>: exc.body&#125;),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@router.api_router.exception_handler(<span class="params">StarletteHTTPException</span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">http_exception_handler</span>(<span class="params">request, exc</span>):</span><br><span class="line">    <span class="keyword">return</span> PlainTextResponse(<span class="built_in">str</span>(exc.detail), status_code=exc.status_code)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@router.api_router.exception_handler(<span class="params">UnicornException</span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">unicorn_exception_handler</span>(<span class="params">request: Request, exc: UnicornException</span>):</span><br><span class="line">    <span class="keyword">return</span> JSONResponse(</span><br><span class="line">        status_code=<span class="number">418</span>,</span><br><span class="line">        content=&#123;<span class="string">&quot;message&quot;</span>: <span class="string">f&quot;Oops! <span class="subst">&#123;exc.name&#125;</span> did something. There goes a rainbow...&quot;</span>&#125;,</span><br><span class="line">    )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="使用">使用</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@router.get(<span class="params"><span class="string">&quot;/&#123;id&#125;&quot;</span>, summary=<span class="string">&#x27;测试接口&#x27;</span>, description=<span class="string">&#x27;测试接口&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_root</span>(<span class="params"><span class="built_in">id</span>: <span class="built_in">int</span> = Path(<span class="params">title=<span class="string">&quot;id not null&quot;</span></span>)</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    测试接口</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">id</span> == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(<span class="number">404</span>, <span class="string">&quot;no data&quot;</span>)</span><br><span class="line">    datas = &#123;</span><br><span class="line">        <span class="string">&quot;hello &quot;</span>: <span class="string">&quot;wprils&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> JsonResponse.success(datas)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>本地复制示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -avzh --progress /path/to/source/ /path/to/destination/</span><br></pre></td></tr></table></figure>
+<p><strong>远程复制示例 (使用 SSH)：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz --progress -e ssh user@remote_host:/path/to/source/ /path/to/destination/</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">rsync -avz --progress -e ssh /path/to/source/ user@remote_host:/path/to/destination/</span><br></pre></td></tr></table></figure>
+<h3 id="2-使用-rsync-备份数据到另一-NAS-服务器实现步骤">2. 使用 rsync 备份数据到另一 NAS 服务器实现步骤</h3>
+<p><strong>假设：</strong></p>
 <ul>
-<li>3.路由定义</li>
+<li>源 NAS 的 IP 地址是 <code>192.168.1.10</code>，用户名是 <code>admin</code>。</li>
+<li>目标 NAS 的 IP 地址是 <code>192.168.1.20</code>，用户名是 <code>backupuser</code>。</li>
+<li>要备份的源目录是 <code>/volume1/data</code>。</li>
+<li>目标目录是 <code>/volume1/backups/data_backup</code>。</li>
+<li>你已经在源 NAS 或目标 NAS 上（或任何可以访问这两个 NAS 的机器上）安装了 <code>rsync</code>。</li>
+<li>你已经配置好了 SSH 免密登录.</li>
 </ul>
-<h4 id="启动文件配置-2">启动文件配置</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.include_router(router=api_router, prefix=<span class="string">&quot;/api/v1&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="路由文件配置">路由文件配置</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> APIRouter</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> http_server.response.JsonResponse <span class="keyword">import</span> JsonResponse</span><br><span class="line"><span class="keyword">from</span> http_server.view <span class="keyword">import</span> log_process</span><br><span class="line"></span><br><span class="line">api_router = APIRouter()</span><br><span class="line">api_router.include_router(log_process.router, prefix=<span class="string">&quot;/shell&quot;</span>, tags=[<span class="string">&#x27;脚本操作&#x27;</span>])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="接口定义">接口定义</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> APIRouter</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> http_server.response.JsonResponse <span class="keyword">import</span> JsonResponse</span><br><span class="line"><span class="keyword">from</span> http_server.request.http_request <span class="keyword">import</span> data_process, get_csv_data</span><br><span class="line"><span class="keyword">from</span> http_server.tools.file_process <span class="keyword">import</span> download_csv_data</span><br><span class="line"><span class="keyword">from</span> run.application_main <span class="keyword">import</span> run_process_thread</span><br><span class="line"></span><br><span class="line">router = APIRouter()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@router.get(<span class="params"><span class="string">&quot;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_root</span>():</span><br><span class="line">    datas = &#123;</span><br><span class="line">        <span class="string">&quot;hello &quot;</span>: <span class="string">&quot;wprils&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> JsonResponse.success(datas)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>
+<p><strong>（强烈建议）设置 SSH 免密码登录：</strong></p>
+<p>为了避免每次运行 <code>rsync</code> 都需要输入密码，建议设置 SSH 密钥认证。这样可以实现自动化备份，而无需人工干预。</p>
 <ul>
-<li>4.统一返回值</li>
+<li><strong>在要运行 <code>rsync</code> 命令的机器上（例如，你的源 NAS）生成 SSH 密钥对：</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096  <span class="comment"># 生成 4096 位 RSA 密钥对</span></span><br><span class="line"><span class="comment"># 一路回车，使用默认设置即可。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>将公钥复制到目标 NAS：</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id backupuser@192.168.1.20</span><br><span class="line"><span class="comment"># 输入目标 NAS 上 backupuser 的密码</span></span><br></pre></td></tr></table></figure>
+如果<code>ssh-copy-id</code>命令不存在, 可以手动复制</li>
 </ul>
-<h4 id="定义">定义</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">JsonResponse</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    统一的json返回格式</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, data, code, msg</span>):</span><br><span class="line">        <span class="variable language_">self</span>.data = data</span><br><span class="line">        <span class="variable language_">self</span>.code = code</span><br><span class="line">        <span class="variable language_">self</span>.msg = msg</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">success</span>(<span class="params">cls, data=<span class="literal">None</span>, code=<span class="number">0</span>, msg=<span class="string">&#x27;success&#x27;</span></span>):</span><br><span class="line">        <span class="keyword">return</span> cls(data, code, msg)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">error</span>(<span class="params">cls, data=<span class="literal">None</span>, code=-<span class="number">1</span>, msg=<span class="string">&#x27;error&#x27;</span></span>):</span><br><span class="line">        <span class="keyword">return</span> cls(data, code, msg)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">to_dict</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;code&quot;</span>: <span class="variable language_">self</span>.code,</span><br><span class="line">            <span class="string">&quot;msg&quot;</span>: <span class="variable language_">self</span>.msg,</span><br><span class="line">            <span class="string">&quot;data&quot;</span>: <span class="variable language_">self</span>.data</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<h4 id="使用-2">使用</h4>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@router.get(<span class="params"><span class="string">&quot;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_root</span>():</span><br><span class="line">    datas = &#123;</span><br><span class="line">        <span class="string">&quot;hello &quot;</span>: <span class="string">&quot;wprils&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> JsonResponse.success(datas)</span><br></pre></td></tr></table></figure>
-<h2 id="参考链接">参考链接</h2>
+   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa.pub | ssh backupuser@192.168.1.20 <span class="string">&#x27;mkdir -p ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys&#x27;</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>[1].<a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/zh/tutorial/path-params-numeric-validations/">https://fastapi.tiangolo.com/zh/tutorial/path-params-numeric-validations/</a></li>
+<li><strong>测试免密码登录：</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh backupuser@192.168.1.20</span><br></pre></td></tr></table></figure>
+如果能直接登录到目标 NAS，而无需输入密码，则说明配置成功。</li>
+</ul>
+</li>
+<li>
+<p><strong>测试 <code>rsync</code> 命令 (使用 <code>--dry-run</code>):</strong></p>
+<p>在实际运行 <code>rsync</code> 之前，强烈建议使用 <code>--dry-run</code>（或 <code>-n</code>）选项进行测试，以确保命令按预期工作，并且不会意外删除文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rsync -avzhn --progress -e ssh \</span><br><span class="line">    admin@192.168.1.10:/volume1/data/ \</span><br><span class="line">    backupuser@192.168.1.20:/volume1/backups/data_backup/</span><br></pre></td></tr></table></figure>
+<p>仔细检查输出，看看哪些文件将被传输（或删除，如果你使用了 <code>--delete</code>）。</p>
+</li>
+<li>
+<p><strong>运行 <code>rsync</code> 命令 (进行实际备份):</strong></p>
+<p>一旦你确信 <code>--dry-run</code> 的输出是正确的，就可以去掉 <code>-n</code> 选项，进行实际的备份：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz --progress -e ssh \</span><br><span class="line">    admin@192.168.1.10:/volume1/data/ \</span><br><span class="line">    backupuser@192.168.1.20:/volume1/backups/data_backup/</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>或者, 保留删除的文件 (推荐)<br>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz --progress --delete -e ssh \</span><br><span class="line">  admin@192.168.1.10:/volume1/data/ \</span><br><span class="line">  backupuser@192.168.1.20:/volume1/backups/data_backup/</span><br></pre></td></tr></table></figure></p>
+<ol start="4">
+<li><strong>检查备份</strong><br>
+在目标NAS检查备份文件是否存在, 数据是否完整</li>
+</ol>
+<h3 id="3-编写备份脚本">3. 编写备份脚本</h3>
+<p>为了方便起见，可以将 <code>rsync</code> 命令放入一个脚本中，并使用 <code>cron</code> 定时运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- Configuration ---</span></span><br><span class="line"><span class="built_in">timeout</span>=60</span><br><span class="line">source_user=<span class="string">&quot;nas&quot;</span></span><br><span class="line">source_ip=<span class="string">&quot;192.168.10.96&quot;</span></span><br><span class="line">source_dir=<span class="string">&quot;/volume1/shared/&quot;</span></span><br><span class="line">dest_user=<span class="string">&quot;nas&quot;</span></span><br><span class="line">dest_ip=<span class="string">&quot;192.168.10.97&quot;</span></span><br><span class="line">dest_dir=<span class="string">&quot;/volume1/shared/backup/&quot;</span></span><br><span class="line"><span class="comment"># ---  DO NOT STORE PASSWORDS LIKE THIS! ---</span></span><br><span class="line">source_password=<span class="string">&quot;111&quot;</span>  <span class="comment"># TERRIBLE!  DO NOT DO THIS!</span></span><br><span class="line">dest_password=<span class="string">&quot;111&quot;</span>    <span class="comment"># TERRIBLE!  DO NOT DO THIS!</span></span><br><span class="line"><span class="comment"># ---  ----------------------------------------</span></span><br><span class="line">log_file=<span class="string">&quot;/var/log/rsync_backup.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- Functions ---</span></span><br><span class="line"><span class="function"><span class="title">log_message</span></span>() &#123;</span><br><span class="line">    now=$(<span class="built_in">date</span> +<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$now</span> - <span class="variable">$1</span>&quot;</span> &gt;&gt; <span class="string">&quot;<span class="variable">$log_file</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- The rsync command ---</span></span><br><span class="line">rsync_cmd=<span class="string">&quot;rsync -avz --progress --delete -e ssh&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- Main Script ---</span></span><br><span class="line">log_message <span class="string">&quot;Backup started.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Run rsync with sshpass, using passwords on the command line.  VERY INSECURE!</span></span><br><span class="line"><span class="keyword">if</span> ! sshpass -p <span class="string">&quot;<span class="variable">$source_password</span>&quot;</span> sh -c <span class="string">&#x27;sshpass -p &quot;&#x27;</span><span class="string">&quot;<span class="variable">$dest_password</span>&quot;</span><span class="string">&#x27;&quot; &#x27;</span><span class="string">&quot;<span class="variable">$rsync_cmd</span>&quot;</span><span class="string">&#x27; &#x27;</span><span class="string">&quot;<span class="variable">$source_user</span>@<span class="variable">$source_ip</span>:<span class="variable">$source_dir</span>&quot;</span><span class="string">&#x27; &#x27;</span><span class="string">&quot;<span class="variable">$dest_user</span>@<span class="variable">$dest_ip</span>:<span class="variable">$dest_dir</span>&quot;</span> 2&gt;&amp;1 | <span class="built_in">tee</span> -a <span class="string">&quot;<span class="variable">$log_file</span>&quot;</span> ; <span class="keyword">then</span></span><br><span class="line">    log_message <span class="string">&quot;Backup failed (ssh or rsync error)!&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">log_message <span class="string">&quot;Backup successful.&quot;</span>  <span class="comment"># Only reached if the previous command succeeds</span></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+<p><strong>使用脚本：</strong></p>
+<ol>
+<li><strong>保存脚本:</strong>  将上述脚本保存为一个文件，例如 <code>backup.sh</code>。</li>
+<li><strong>赋予执行权限:</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x backup.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>测试脚本:</strong>  手动运行脚本，确保它能正常工作：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./backup.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>设置定时任务 (使用 <code>cron</code>):</strong>
+<ul>
+<li>运行 <code>crontab -e</code> 命令来编辑 <code>crontab</code> 文件。</li>
+<li>添加一行来指定何时运行你的脚本。 例如，每天凌晨 2 点运行：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 2 * * * /path/to/your/backup.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li>保存并关闭 <code>crontab</code> 文件。</li>
+</ul>
+</li>
+</ol>
+<h2 id="安装第三方库">安装第三方库</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install expect</span><br></pre></td></tr></table></figure>
+<h2 id="其他">其他</h2>
+<ul>
+<li>rdiff-backup：</li>
+<li>Bacula：</li>
+<li>Amanda：</li>
+<li>Duplicity：</li>
+<li>BorgBackup (Borg)：</li>
+<li>Restic:</li>
 </ul>
 <h2 id="about-me-个人微信">about me 个人微信</h2>
 <p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
@@ -712,8 +781,8 @@
         
         <div class="tags">
           
-            <a href="/tags/python/" class="">
-              python
+            <a href="/tags/rsync/" class="">
+              rsync
             </a>
           
         </div>
@@ -727,7 +796,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2023/05/15/uvicorn-use/" target="_blank" title="轻量快速的 Python ASGI uvicorn 框架使用">https://caozhaoqi.github.io/2023/05/15/uvicorn-use/</a>
+    <a href="/2025/03/11/rsync-nas-backup/" target="_blank" title="rsync_nas_backup">https://caozhaoqi.github.io/2025/03/11/rsync-nas-backup/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -745,44 +814,23 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/05/31/swagger-micro-service/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">Swagger + Zuul 整合微服务接口文档</div>
-      </div>
-      
-      <!-- <div class="content">
-        Swagger + Zuul 整合微服务接口文档
-简介
-Swagger
-
-Swagger 是一款 RESTFUL 接口的
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/05/09/web-socket-electron/" class="post-nav-link">
+    <a href="/2025/03/10/smb-elk-log/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">使用 Electron 框架中 http 请求与 Java 后端 websocket 服务端通信</div>
+        <div class="title-text">Samba (Linux) + Syslog + Logstash + Elasticsearch 转发smb日志</div>
       </div>
       <!-- <div class="content">
-        使用 Electron 框架中 http 请求与 Java 后端 websocket 服务端通信
-Electron 框架
+        方案简介
+
+Elasticsearch 集群部署: 为了高可用性和可扩展性，可以将 Elasticsearch 部署为集
       </div> -->
     </a>
   </div>
@@ -1102,7 +1150,7 @@ Electron 框架
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">轻量快速的 Python ASGI uvicorn 框架使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E4%BD%BF%E7%94%A8"><span class="toc-text">下载使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8"><span class="toc-text">框架使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E5%BC%95%E5%85%A5"><span class="toc-text">功能引入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-text">启动文件配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#log-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-text">log 基础配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%AE%9A%E4%B9%89"><span class="toc-text">异常类定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE-2"><span class="toc-text">启动文件配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-text">路由文件配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89"><span class="toc-text">接口定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-2"><span class="toc-text">使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">使用rsync同步备份NAS中的文件到其他NSA服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#rsync%E7%AE%80%E4%BB%8B"><span class="toc-text">rsync简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8-rsync-%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%88%B0%E5%8F%A6%E4%B8%80-NAS-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-text">2. 使用 rsync 备份数据到另一 NAS 服务器实现步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E5%86%99%E5%A4%87%E4%BB%BD%E8%84%9A%E6%9C%AC"><span class="toc-text">3. 编写备份脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93"><span class="toc-text">安装第三方库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
