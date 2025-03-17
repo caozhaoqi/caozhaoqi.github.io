@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2025/03/17/vpn-ee-build/
 https://caozhaoqi.github.io/2025/03/11/rsync-nas-backup/
 https://caozhaoqi.github.io/2025/01/10/easyocr-gpuocr/
 https://caozhaoqi.github.io/2025/03/10/smb-elk-log/

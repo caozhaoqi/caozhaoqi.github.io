@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>在ubuntu系统使用docker安装 CVAT | Zhaoqi.Cao static blog</title>
+  <title>企业级VPN搭建方案对比与指导 | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,21 +589,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        在ubuntu系统使用docker安装 CVAT
+        企业级VPN搭建方案对比与指导
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2025-01-10 |
+          <i class="fas fa-calendar"></i> Published in：2025-03-17 |
         </span>
       
 
@@ -616,7 +616,7 @@
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 4min |
+            <i class="fas fa-clock"></i> Reading time: 5min |
           </span>
   
           
@@ -643,209 +643,149 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1>在ubuntu系统使用docker安装 CVAT</h1>
-<blockquote>
-<p>CVAT 是一个<strong>免费、开源</strong>的 Web 应用程序，用于标注计算机视觉任务的数据集。它由 Intel 开发并维护，旨在为各种计算机视觉应用提供一个高效、强大且协作式的标注平台。</p>
-</blockquote>
-<h2 id="功能">功能</h2>
-<ol>
+        <h2 id="技术选型">技术选型</h2>
+<ul>
 <li>
-<p><strong>多模态数据标注：</strong></p>
+<p><strong>SoftEther VPN:</strong></p>
 <ul>
-<li><strong>图像标注：</strong> 支持各种图像标注类型，包括：
-<ul>
-<li><strong>边界框 (Bounding Boxes):</strong> 用于检测和定位物体。</li>
-<li><strong>多边形 (Polygons):</strong> 用于精确勾勒复杂形状的物体。</li>
-<li><strong>关键点 (Keypoints):</strong> 用于标注物体的关键部位，如人脸关键点。</li>
-<li><strong>线条 (Lines) 和 点 (Points):</strong> 用于简单形状或目标的标注。</li>
-<li><strong>分割掩码 (Segmentation Masks):</strong> 用于像素级别的对象分割（需要与其他工具结合，如半自动标注工具）。</li>
-</ul>
-</li>
-<li><strong>视频标注：</strong>
-<ul>
-<li>支持对视频中的对象进行跟踪和标注，并可以对每帧进行修改，方便动作识别和视频分析。</li>
-</ul>
-</li>
-<li><strong>3D 数据标注：</strong>
-<ul>
-<li>可以标注3D 点云数据，支持点云的 bounding box 和 segmentation。</li>
-</ul>
-</li>
+<li><strong>服务端:</strong> SoftEther VPN Server</li>
+<li><strong>客户端:</strong> SoftEther VPN Client (官方提供，跨平台), 或者其他兼容的 VPN 客户端 (如 OpenVPN 客户端, 系统内置的 L2TP/IPsec 客户端等)</li>
 </ul>
 </li>
 <li>
-<p><strong>强大的用户界面：</strong></p>
+<p><strong>OpenVPN Access Server:</strong></p>
 <ul>
-<li><strong>直观易用：</strong> 提供简洁的用户界面，方便用户快速上手。</li>
-<li><strong>自定义快捷键：</strong> 可自定义快捷键，提高标注效率。</li>
-<li><strong>分屏显示：</strong> 可以同时显示多个图像/视频片段，方便对比标注。</li>
-<li><strong>可定制的标注标签：</strong> 允许用户创建自己的标注标签，满足不同任务的需求。</li>
-<li><strong>标注历史记录:</strong> 可以查看和回溯标注操作。</li>
+<li><strong>服务端:</strong> OpenVPN Access Server</li>
+<li><strong>客户端:</strong> OpenVPN Connect (官方提供，跨平台), 或者其他兼容的 OpenVPN 客户端</li>
 </ul>
 </li>
 <li>
-<p><strong>协作式标注：</strong></p>
+<p><strong>WireGuard (通过 Algo 或 wg-easy):</strong></p>
 <ul>
-<li><strong>多用户支持：</strong> 支持多个用户同时协作标注同一个项目，提高标注效率。</li>
-<li><strong>角色权限管理：</strong> 可以为不同的用户设置不同的角色和权限。</li>
-<li><strong>标注任务分配：</strong> 可以将标注任务分配给不同的用户。</li>
-<li><strong>标注审核：</strong> 管理员可以对标注结果进行审核，确保标注质量。</li>
+<li><strong>服务端:</strong> Algo 或 wg-easy 部署的 WireGuard 服务</li>
+<li><strong>客户端:</strong> WireGuard 官方客户端 (跨平台)</li>
 </ul>
 </li>
 <li>
-<p><strong>自动化和半自动化标注：</strong></p>
+<p><strong>Pritunl:</strong></p>
 <ul>
-<li><strong>预标注支持：</strong> 支持导入使用其他工具预先标注的结果，作为标注的起点。</li>
-<li><strong>半自动标注工具:</strong> 可以使用一些半自动标注工具，例如智能多边形生成、模型辅助标注等，提高标注速度。</li>
-<li><strong>模型集成：</strong> 可以集成深度学习模型，用于辅助标注。</li>
+<li><strong>服务端:</strong> Pritunl Server</li>
+<li><strong>客户端:</strong> Pritunl Client (官方提供，跨平台), 或者其他兼容的 OpenVPN 客户端.</li>
 </ul>
 </li>
-<li>
-<p><strong>数据管理：</strong></p>
+</ul>
+<h2 id="方案选择">方案选择</h2>
+<p>选择 wg-easy + WireGuard？**</p>
 <ul>
-<li><strong>项目管理：</strong> 可以创建不同的标注项目，组织和管理标注数据。</li>
-<li><strong>数据集导入和导出：</strong> 支持导入各种格式的数据集，并导出为多种标注格式，例如 COCO、PASCAL VOC、YOLO 等。</li>
-<li><strong>数据版本控制：</strong> 可以追踪数据和标注的变更，方便进行版本控制。</li>
-<li><strong>数据统计：</strong> 可以查看标注数据的统计信息，如标注数量、标注类型等。</li>
-<li><strong>可定制化的工作流程：</strong> 支持自定义标注的工作流程，例如预标注，标注，审核等。</li>
+<li><strong>简单性:</strong> WireGuard 的配置非常简洁，而 wg-easy 进一步简化了部署和管理过程，提供了图形化界面。</li>
+<li><strong>速度:</strong> WireGuard 以其卓越的性能而闻名，比 OpenVPN 和 IPsec 更快。</li>
+<li><strong>安全性:</strong> WireGuard 使用最先进的加密技术，并且代码库非常小，易于审计。</li>
+<li><strong>未来趋势:</strong> WireGuard 正在迅速成为 VPN 协议的新标准，许多大型公司和项目都在采用它。</li>
+<li><strong>Docker部署:</strong> 方便部署、更新和迁移。</li>
+</ul>
+<p><strong>详细搭建步骤：</strong></p>
+<p><strong>1. 准备工作</strong></p>
+<ul>
+<li><strong>服务器：</strong>
+<ul>
+<li>一台具有公网 IP 地址的服务器（VPS 或 独立服务器）。</li>
+<li>操作系统：推荐使用 Linux 发行版（如 Ubuntu Server、Debian、CentOS）。</li>
+<li>服务器需要开放 UDP 51820 端口 (WireGuard 默认端口) 和 TCP 51821 端口 (wg-easy Web UI 端口).  如果你使用云服务商, 需要在安全组/防火墙规则中放行这两个端口.</li>
 </ul>
 </li>
-<li>
-<p><strong>扩展性和可定制性：</strong></p>
+<li><strong>域名 (可选，强烈推荐)：</strong>
 <ul>
-<li><strong>开放的 API：</strong> 提供 RESTful API，方便与其他系统集成。</li>
-<li><strong>插件支持：</strong> 可以开发自己的插件，扩展 CVAT 的功能。</li>
-<li><strong>Docker 支持：</strong> 可以使用 Docker 快速部署 CVAT。</li>
+<li>一个域名，例如 <code>vpn.yourcompany.com</code>。</li>
+<li>将域名解析到您的服务器公网 IP 地址。</li>
 </ul>
 </li>
-</ol>
-<p><strong>Ubuntu 系统:</strong> 建议使用 Ubuntu 20.04 或更高版本。</p>
+<li><strong>本地环境：</strong>
 <ul>
-<li><strong>Docker 和 Docker Compose:</strong> 你需要在你的 Ubuntu 系统上安装 Docker 和 Docker Compose。</li>
-</ul>
-<p><strong>步骤：</strong></p>
-<ol>
-<li>
-<p><strong>更新系统包列表：</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>安装 Docker：</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install docker.io</span><br></pre></td></tr></table></figure>
-<p>验证安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl start docker</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> docker</span><br><span class="line">docker --version</span><br></pre></td></tr></table></figure>
-<p>如果命令输出了Docker版本信息，则说明安装成功。</p>
-</li>
-<li>
-<p><strong>安装 Docker Compose：</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install docker-compose</span><br></pre></td></tr></table></figure>
-<p>验证安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
-<p>如果命令输出了Docker Compose版本信息，则说明安装成功。</p>
-</li>
-<li>
-<p><strong>下载 CVAT 配置文件：</strong></p>
-<ul>
-<li>
-<p>CVAT 的官方 GitHub 仓库提供了 <code>docker-compose.yml</code> 文件，直接下载使用：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/opencv/cvat/develop/docker-compose.yml</span><br></pre></td></tr></table></figure>
-</li>
+<li>安装了 Docker 和 Docker Compose 的电脑（用于管理服务器上的 wg-easy 容器）。</li>
 </ul>
 </li>
+</ul>
+<p><strong>2. 服务器端部署 (使用 wg-easy)</strong></p>
+<ul>
 <li>
-<p><strong>修改 docker-compose.yml 文件：</strong></p>
-<ul>
-<li>找到  <code>services/cvat/volumes:</code> 模块，将其修改为：</li>
-</ul>
- <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">cvat_data:/home/django/data</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">./data:/home/django/media</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">./logs:/home/django/logs</span></span><br></pre></td></tr></table></figure>
-<p>这样可以方便地将你的数据放到当前目录的data和logs文件夹下，并且避免了默认数据目录在Docker容器内，数据丢失的问题。</p>
-<ul>
-<li>在 <code>version</code> 的下面加上  <code>networks:</code></li>
-</ul>
- <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.8&quot;</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">    <span class="attr">default:</span></span><br></pre></td></tr></table></figure>
-<p>确保其他容器能够访问到CVAT服务</p>
+<p><strong>SSH 连接到您的服务器。</strong></p>
 </li>
 <li>
-<p><strong>创建数据目录:</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> data</span><br><span class="line"><span class="built_in">mkdir</span> logs</span><br></pre></td></tr></table></figure>
+<p><strong>安装 Docker 和 Docker Compose：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ubuntu/Debian</span></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install docker.io docker-compose -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS</span></span><br><span class="line"><span class="built_in">sudo</span> yum install -y yum-utils</span><br><span class="line"><span class="built_in">sudo</span> yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line"><span class="built_in">sudo</span> yum install docker-ce docker-ce-cli containerd.io -y</span><br><span class="line"><span class="built_in">sudo</span> systemctl start docker</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> docker</span><br><span class="line"><span class="built_in">sudo</span> curl -L <span class="string">&quot;https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-<span class="subst">$(uname -s)</span>-<span class="subst">$(uname -m)</span>&quot;</span> -o /usr/local/bin/docker-compose  <span class="comment">#注意, 这个版本号可能会过时, 请去 https://github.com/docker/compose/releases/ 确认最新版本.</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
 </li>
 <li>
-<p><strong>启动 CVAT：</strong></p>
-<ul>
+<p><strong>创建 <code>docker-compose.yml</code> 文件：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano docker-compose.yml</span><br></pre></td></tr></table></figure>
+<p>将以下内容复制到文件中，并根据您的实际情况修改：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.8&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">wg-easy:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">weejewel/wg-easy</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">wg-easy</span></span><br><span class="line">    <span class="attr">cap_add:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">NET_ADMIN</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">SYS_MODULE</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">WG_HOST=your_server_public_ip_or_domain</span>  <span class="comment"># 替换为你的服务器公网 IP 或域名</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">PASSWORD=your_web_ui_password</span>  <span class="comment"># 替换为 Web UI 的密码，务必设置强密码！</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">WG_DEFAULT_ADDRESS=10.8.0.x</span>  <span class="comment"># VPN 客户端的 IP 地址段，不要与内网 IP 冲突</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">WG_DEFAULT_DNS=1.1.1.1</span>  <span class="comment"># 默认 DNS 服务器，可以改为内网 DNS 或其他公共 DNS</span></span><br><span class="line">      <span class="comment"># 其他可选环境变量（可选）：</span></span><br><span class="line">      <span class="comment"># - WG_PORT=51820  # WireGuard 监听端口，默认为 51820</span></span><br><span class="line">      <span class="comment"># - WG_ALLOWED_IPS=0.0.0.0/0  # 允许连接的客户端 IP 范围，默认为所有 IP</span></span><br><span class="line">      <span class="comment"># - WG_MTU=1420  # MTU 值，通常不需要修改</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./wg-data:/etc/wireguard</span>  <span class="comment"># 将 WireGuard 配置持久化到宿主机的 ./wg-data 目录</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;51820:51820/udp&quot;</span>  <span class="comment"># WireGuard 端口</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;51821:51821/tcp&quot;</span>  <span class="comment"># wg-easy Web UI 端口</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line">    <span class="attr">sysctls:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">net.ipv4.ip_forward=1</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">net.ipv4.conf.all.src_valid_mark=1</span></span><br></pre></td></tr></table></figure>
+</li>
 <li>
-<p>在 <code>docker-compose.yml</code> 文件所在的目录下，运行以下命令：</p>
+<p><strong>启动 wg-easy 容器：</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>确认容器正在运行：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+<p>应该能看到名为 <code>wg-easy</code> 的容器正在运行。</p>
+</li>
+</ul>
+<p><strong>3. 配置 wg-easy Web UI</strong></p>
 <ul>
-<li><code>-d</code> 参数表示在后台运行 (detached mode)。</li>
-<li>首次运行会下载所需的 Docker 镜像，这可能需要一些时间。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>等待 CVAT 启动：</strong></p>
+<li><strong>在浏览器中访问 <code>http://your_server_ip:51821</code> 或 <code>http://your_domain:51821</code>。</strong></li>
+<li><strong>使用您在 <code>docker-compose.yml</code> 文件中设置的密码登录。</strong></li>
+<li><strong>在 Web UI 中创建客户端配置：</strong>
 <ul>
-<li>
-<p>可以使用以下命令查看容器是否正常运行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose ps</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>如果所有容器的状态都是 <code>Up</code>，则表示 CVAT 已经启动成功。</p>
-</li>
-<li>
-<p>也可以使用 <code>docker logs -f &lt;cvat_container_id&gt; </code> 来查看cvat 容器的日志。<code>&lt;cvat_container_id&gt;</code> 你可以使用<code>docker ps</code> 命令查看。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>访问 CVAT：</strong></p>
-<ul>
-<li>在你的 Web 浏览器中，打开以下地址：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080</span><br></pre></td></tr></table></figure>
-</li>
-<li>默认的管理员用户名是 <code>admin</code>，密码是 <code>admin</code>。
-<ul>
-<li><strong>首次登录后请立即修改管理员密码！</strong></li>
+<li>点击 “New” 按钮。</li>
+<li>输入客户端名称（例如 “user1”）。</li>
+<li>点击 “Create” 按钮。</li>
+<li>点击新创建的客户端旁边的下载按钮，下载 <code>.conf</code> 配置文件。  或者点击二维码图标, 用手机客户端扫描二维码.</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>
-<p><strong>可选：创建新的管理员用户</strong></p>
-<ul>
-<li>你可以在用户管理页面创建新的管理员用户</li>
-</ul>
-</li>
-</ol>
-<p><strong>常用命令：</strong></p>
+<p><strong>4. 客户端配置</strong></p>
 <ul>
 <li>
-<p><strong>停止 CVAT：</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>重启 CVAT：</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose restart</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>查看容器日志：</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose logs -f</span><br></pre></td></tr></table></figure>
+<p><strong>下载并安装 WireGuard 客户端：</strong></p>
+<ul>
+<li><strong>Windows、macOS、Android、iOS：</strong> 从 WireGuard 官网下载并安装相应的客户端：<a target="_blank" rel="noopener" href="https://www.wireguard.com/install/">https://www.wireguard.com/install/</a></li>
+<li><strong>Linux:</strong> 使用包管理器安装：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ubuntu/Debian</span></span><br><span class="line"><span class="built_in">sudo</span> apt install wireguard</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS</span></span><br><span class="line"><span class="built_in">sudo</span> yum install epel-release</span><br><span class="line"><span class="built_in">sudo</span> yum install wireguard-tools</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="about-me-个人微信">about me 个人微信</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h2 id="wechat-offical-微信公众号">wechat offical 微信公众号</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+</li>
+<li>
+<p><strong>导入客户端配置文件：</strong></p>
+<ul>
+<li><strong>Windows、macOS、Android、iOS：</strong> 打开 WireGuard 客户端，点击 “Import tunnel(s) from file”，选择您从 wg-easy Web UI 下载的 <code>.conf</code> 文件。</li>
+<li><strong>Linux:</strong> 将 <code>.conf</code> 文件复制到 <code>/etc/wireguard/</code> 目录，并重命名为 <code>wg0.conf</code> (或其他您喜欢的名称, 例如<code>client1.conf</code>)：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> user1.conf /etc/wireguard/wg0.conf</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>连接 VPN：</strong></p>
+<ul>
+<li><strong>Windows、macOS、Android、iOS：</strong> 在 WireGuard 客户端中，点击您导入的配置文件的 “Activate” 或 “Connect” 按钮。</li>
+<li><strong>Linux:</strong> 使用 <code>wg-quick</code> 命令启动 VPN 连接：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> wg-quick up wg0  <span class="comment"># wg0 是您的配置文件名（不带 .conf）</span></span><br><span class="line"><span class="comment"># 断开连接：</span></span><br><span class="line"><span class="built_in">sudo</span> wg-quick down wg0</span><br><span class="line"> <span class="comment">#设置开机自启</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> wg-quick@wg0</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>5. 测试连接</strong></p>
+<ul>
+<li>连接 VPN 后，访问一个可以显示您 IP 地址的网站（例如 <a target="_blank" rel="noopener" href="https://www.whatismyip.com/">https://www.whatismyip.com/</a>），确认您的 IP 地址已变为服务器的公网 IP 地址。</li>
+<li>尝试访问您内网的资源，确认可以正常访问。</li>
+</ul>
+<p><strong>后续维护：</strong></p>
+<ul>
+<li><strong>添加新用户：</strong> 在 wg-easy Web UI 中创建新的客户端配置即可。</li>
+<li><strong>撤销用户：</strong> 在 wg-easy Web UI 中删除相应的客户端配置。</li>
+<li><strong>更新 wg-easy：</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose pull</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>查看 WireGuard 状态:</strong> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> wg show</span><br></pre></td></tr></table></figure></li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
-        
-        <div class="tags">
-          
-            <a href="/tags/python/" class="">
-              python
-            </a>
-          
-        </div>
         
       </div>
       
@@ -856,7 +796,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2025/01/10/docker-install-cvat/" target="_blank" title="在ubuntu系统使用docker安装 CVAT">https://caozhaoqi.github.io/2025/01/10/docker-install-cvat/</a>
+    <a href="/2025/03/17/vpn-ee-build/" target="_blank" title="企业级VPN搭建方案对比与指导">https://caozhaoqi.github.io/2025/03/17/vpn-ee-build/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -874,44 +814,23 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2025/01/10/easyocr-gpuocr/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">基于边缘检测算法检测视频中文字</div>
-      </div>
-      
-      <!-- <div class="content">
-        基于Easyocr的文字识别
-
-EasyOCR 是一个开源的 OCR (光学字符识别) 工具，能够快速并高效地从图像中提
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2025/01/01/split-voice/" class="post-nav-link">
+    <a href="/2025/03/11/rsync-nas-backup/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">借助深度学习模型实现分离人声与背景声</div>
+        <div class="title-text">rsync_nas_backup</div>
       </div>
       <!-- <div class="content">
-        借助深度学习模型实现分离人声与背景声
-spleeter
-
-Spleeter 是一个由 Deezer 开发的音频源分离工具
+        使用rsync同步备份NAS中的文件到其他NSA服务器
+rsync简介
+rsync 是一个快速、通用且极其强大的文件复制
       </div> -->
     </a>
   </div>
@@ -1231,7 +1150,7 @@ Spleeter 是一个由 Deezer 开发的音频源分离工具
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">在ubuntu系统使用docker安装 CVAT</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD"><span class="toc-text">功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="toc-text">技术选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E9%80%89%E6%8B%A9"><span class="toc-text">方案选择</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
