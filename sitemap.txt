@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2025/03/26/mail-server-Postfix/
 https://caozhaoqi.github.io/2025/03/18/smb-git-svn/
 https://caozhaoqi.github.io/2025/03/17/vpn-ee-build/
 https://caozhaoqi.github.io/2025/03/11/rsync-nas-backup/
@@ -110,3 +111,4 @@ https://caozhaoqi.github.io/tags/unbutu/
 https://caozhaoqi.github.io/tags/fpga/
 https://caozhaoqi.github.io/tags/yolov5/
 https://caozhaoqi.github.io/tags/rsync/
+https://caozhaoqi.github.io/tags/ubuntu/
