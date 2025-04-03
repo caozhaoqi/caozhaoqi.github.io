@@ -1,3 +1,10 @@
+https://caozhaoqi.github.io/2025/04/03/video-secene-detect/
+https://caozhaoqi.github.io/2024/12/25/ml-backend-ls/
+https://caozhaoqi.github.io/2024/12/17/label-studio-whisper/
+https://caozhaoqi.github.io/2025/01/10/docker-install-cvat/
+https://caozhaoqi.github.io/2025/01/23/ed2k-bit/
+https://caozhaoqi.github.io/2025/02/25/ntfs-macos-mounty/
+https://caozhaoqi.github.io/2025/02/28/py-gen-excel/
 https://caozhaoqi.github.io/2025/03/26/mail-server-Postfix/
 https://caozhaoqi.github.io/2025/03/18/smb-git-svn/
 https://caozhaoqi.github.io/2025/03/17/vpn-ee-build/
@@ -29,7 +36,6 @@ https://caozhaoqi.github.io/2024/11/21/nltk-use/
 https://caozhaoqi.github.io/2025/03/04/python-spider-introduce/
 https://caozhaoqi.github.io/2024/08/21/pytesseract-ocr-demo/
 https://caozhaoqi.github.io/2024/03/25/opencv-image-video/
-https://caozhaoqi.github.io/2024/12/25/ml-backend-ls/
 https://caozhaoqi.github.io/2025/02/08/python-publish/
 https://caozhaoqi.github.io/2023/05/09/rest-framework-user/
 https://caozhaoqi.github.io/2024/07/09/opencv-build-use/
@@ -42,12 +48,10 @@ https://caozhaoqi.github.io/2025/01/01/split-voice/
 https://caozhaoqi.github.io/2024/03/22/python-proxy-server/
 https://caozhaoqi.github.io/2024/11/21/npl_scapy/
 https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/
-https://caozhaoqi.github.io/2025/02/28/py-gen-excel/
 https://caozhaoqi.github.io/2024/06/05/nsfw-model-use/
 https://caozhaoqi.github.io/2023/12/29/micro-service-py/
 https://caozhaoqi.github.io/2023/11/28/mdf-file-parser/
 https://caozhaoqi.github.io/2023/05/01/sh/
-https://caozhaoqi.github.io/2025/02/25/ntfs-macos-mounty/
 https://caozhaoqi.github.io/2024/05/16/loguru-catch-bug-fix/
 https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/
 https://caozhaoqi.github.io/2024/07/05/git-respority-error/
@@ -65,12 +69,9 @@ https://caozhaoqi.github.io/2024/11/21/appium_adb_app/
 https://caozhaoqi.github.io/2023/03/02/androidopenapp-md/
 https://caozhaoqi.github.io/2023/05/31/gateway-auth-control/
 https://caozhaoqi.github.io/2024/08/09/cpp-qt-demo/
-https://caozhaoqi.github.io/2024/12/17/label-studio-whisper/
-https://caozhaoqi.github.io/2025/01/10/docker-install-cvat/
 https://caozhaoqi.github.io/2023/03/10/eestudy/
 https://caozhaoqi.github.io/2023/03/06/baidumapuse/
 https://caozhaoqi.github.io/2024/10/27/cat-camera/
-https://caozhaoqi.github.io/2025/01/23/ed2k-bit/
 https://caozhaoqi.github.io/2023/02/22/android/
 https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/
 https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/
