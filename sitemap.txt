@@ -1,3 +1,7 @@
+https://caozhaoqi.github.io/2025/03/10/smb-elk-log/
+https://caozhaoqi.github.io/2025/03/11/rsync-nas-backup/
+https://caozhaoqi.github.io/2025/04/07/ffmpeg-problem-video/
+https://caozhaoqi.github.io/2025/02/08/python-publish/
 https://caozhaoqi.github.io/2025/04/03/video-secene-detect/
 https://caozhaoqi.github.io/2024/12/25/ml-backend-ls/
 https://caozhaoqi.github.io/2024/12/17/label-studio-whisper/
@@ -8,9 +12,7 @@ https://caozhaoqi.github.io/2025/02/28/py-gen-excel/
 https://caozhaoqi.github.io/2025/03/26/mail-server-Postfix/
 https://caozhaoqi.github.io/2025/03/18/smb-git-svn/
 https://caozhaoqi.github.io/2025/03/17/vpn-ee-build/
-https://caozhaoqi.github.io/2025/03/11/rsync-nas-backup/
 https://caozhaoqi.github.io/2025/01/10/easyocr-gpuocr/
-https://caozhaoqi.github.io/2025/03/10/smb-elk-log/
 https://caozhaoqi.github.io/2024/12/15/easy-ocr-gpu/
 https://caozhaoqi.github.io/2024/11/21/yolo_user_face_recognized/
 https://caozhaoqi.github.io/2024/10/28/wm8731-record-audio/
@@ -36,7 +38,6 @@ https://caozhaoqi.github.io/2024/11/21/nltk-use/
 https://caozhaoqi.github.io/2025/03/04/python-spider-introduce/
 https://caozhaoqi.github.io/2024/08/21/pytesseract-ocr-demo/
 https://caozhaoqi.github.io/2024/03/25/opencv-image-video/
-https://caozhaoqi.github.io/2025/02/08/python-publish/
 https://caozhaoqi.github.io/2023/05/09/rest-framework-user/
 https://caozhaoqi.github.io/2024/07/09/opencv-build-use/
 https://caozhaoqi.github.io/2024/08/21/pyqt5-singal-thread/
