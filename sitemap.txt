@@ -1,3 +1,5 @@
+https://caozhaoqi.github.io/2025/04/09/yolov8-train-model/
+https://caozhaoqi.github.io/2025/04/07/nuclio-build-use/
 https://caozhaoqi.github.io/2025/03/10/smb-elk-log/
 https://caozhaoqi.github.io/2025/03/11/rsync-nas-backup/
 https://caozhaoqi.github.io/2025/04/07/ffmpeg-problem-video/
