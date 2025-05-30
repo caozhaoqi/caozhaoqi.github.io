@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 7.4k |
+            <i class="fas fa-file-text-o"></i> Words: 7.3k |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 33min |
+            <i class="fas fa-clock"></i> Reading time: 32min |
           </span>
   
           
@@ -651,17 +651,17 @@
 <h3 id="2-1-定义关键性能指标-KPIs">2.1. 定义关键性能指标 (KPIs)</h3>
 <p>在开始测试前，明确需要衡量的性能指标：</p>
 <ul>
-<li><strong>总处理时间 (End-to-End Time)</strong>：衡量单个视频从场景检测开始到结束的总耗时。</li>
-<li><strong>场景检测函数耗时</strong>：<code>detect_scenes</code> 函数的精确执行时间。</li>
-<li><strong>CPU 使用率</strong>：场景检测过程中的平均和峰值 CPU 使用率。</li>
-<li><strong>内存使用量</strong>：场景检测过程中的峰值和平均内存消耗。</li>
-<li><strong>GPU 使用率</strong> (若启用)：GPU 计算单元和显存的使用率。</li>
-<li><strong>检测到的场景数</strong>：作为检测结果的一个基本衡量。</li>
-<li><strong>检测时使用的帧率</strong>：记录 <code>detect_scenes</code> 内部实际使用的视频帧率。</li>
+<li>总处理时间 (End-to-End Time)*衡量单个视频从场景检测开始到结束的总耗时。</li>
+<li>场景检测函数耗时<code>detect_scenes</code> 函数的精确执行时间。</li>
+<li>CPU 使用率场景检测过程中的平均和峰值 CPU 使用率。</li>
+<li>内存使用量 场景检测过程中的峰值和平均内存消耗。</li>
+<li>GPU 使用率 (若启用)：GPU 计算单元和显存的使用率。</li>
+<li>检测到的场景数作为检测结果的一个基本衡量。</li>
+<li>检测时使用的帧率记录 <code>detect_scenes</code> 内部实际使用的视频帧率。</li>
 </ul>
 <h3 id="2-2-选择测试数据集">2.2. 选择测试数据集</h3>
 <ul>
-<li><strong>多样性</strong>：准备一组包含不同特征的视频文件：
+<li>多样性 准备一组包含不同特征的视频文件：
 <ul>
 <li>不同分辨率 (例如：720p, 1080p, 4K)。</li>
 <li>不同编码格式 (例如：H.264, HEVC)。</li>
@@ -669,20 +669,20 @@
 <li>不同场景复杂度 (例如：场景切换频繁的预告片，场景切换较少的讲座视频)。</li>
 </ul>
 </li>
-<li><strong>代表性</strong>：测试视频应能代表项目实际应用中常见的视频类型。</li>
-<li><strong>可重复性</strong>：使用固定的视频集进行所有测试，以便比较不同优化版本的效果。</li>
+<li>代表性 测试视频应能代表项目实际应用中常见的视频类型。</li>
+<li>可重复性 使用固定的视频集进行所有测试，以便比较不同优化版本的效果。</li>
 </ul>
 <h3 id="2-3-搭建测试环境">2.3. 搭建测试环境</h3>
 <ul>
-<li><strong>硬件一致性</strong>：所有基准测试应在同一台机器上进行，以消除硬件差异。记录测试机器的 CPU、内存、GPU型号、磁盘类型等规格。</li>
-<li><strong>软件环境一致性</strong>：确保 Python 版本、操作系统以及所有相关依赖库 (如 PySceneDetect, OpenCV, FFmpeg) 的版本在测试期间保持不变。可以从<br>
+<li>硬件一致性 所有基准测试应在同一台机器上进行，以消除硬件差异。记录测试机器的 CPU、内存、GPU型号、磁盘类型等规格。</li>
+<li>软件环境一致性 确保 Python 版本、操作系统以及所有相关依赖库 (如 PySceneDetect, OpenCV, FFmpeg) 的版本在测试期间保持不变。可以从<br>
 <code>requirements.txt</code> 文件中获取依赖列表。</li>
-<li><strong>环境隔离</strong>：测试时，尽量关闭其他不必要的应用程序，以减少对测试结果的干扰。</li>
+<li>环境隔离 测试时，尽量关闭其他不必要的应用程序，以减少对测试结果的干扰。</li>
 </ul>
 <h3 id="2-4-配置测试参数">2.4. 配置测试参数</h3>
 <ul>
-<li><strong><code>config.ini</code></strong>：基准测试脚本会加载此文件。确保其中的路径配置 (如 <code>ffmpeg_path</code>, <code>ffprobe_path</code>) 和默认的检测器参数是你想要测试的基础配置。</li>
-<li><strong>测试脚本内配置</strong>：<code>benchmark_scene_detector.py</code> 脚本允许定义多种测试配置 ( <code>configurations_to_test</code> 列表)，例如：
+<li><code>config.ini</code> 基准测试脚本会加载此文件。确保其中的路径配置 (如 <code>ffmpeg_path</code>, <code>ffprobe_path</code>) 和默认的检测器参数是你想要测试的基础配置。</li>
+<li>测试脚本内配置 <code>benchmark_scene_detector.py</code> 脚本允许定义多种测试配置 ( <code>configurations_to_test</code> 列表)，例如：
 <ul>
 <li>CPU vs GPU 解码。</li>
 <li>使用不同的检测器组合 (例如，仅 <code>ContentDetector</code> vs <code>MultiDetector</code> 全启用)。</li>
@@ -692,8 +692,6 @@
 </ul>
 <h2 id="3-测试执行">3. 测试执行</h2>
 <h3 id="3-1-测试脚本：benchmark-scene-detector-py">3.1. 测试脚本：<code>benchmark_scene_detector.py</code></h3>
-<pre><code>(请确保从正确的项目路径运行，以便脚本能找到配置文件和模块。)
-</code></pre>
 <ul>
 <li>基础库安装</li>
 </ul>
@@ -714,10 +712,10 @@
 </ul>
 <h3 id="3-3-资源监控">3.3. 资源监控</h3>
 <ul>
-<li><strong>手动监控</strong>：在测试脚本运行时，使用操作系统自带的工具（如 Windows 的任务管理器，Linux 的 <code>top</code>/<code>htop</code>，macOS 的活动监视器）观察<br>
+<li>手动监控 在测试脚本运行时，使用操作系统自带的工具（如 Windows 的任务管理器，Linux 的 <code>top</code>/<code>htop</code>，macOS 的活动监视器）观察<br>
 CPU 和内存的实时使用情况。</li>
-<li><strong>GPU 监控</strong>：如果测试 GPU 加速，使用特定于 GPU 厂商的工具（如 NVIDIA 的 <code>nvidia-smi</code>）监控 GPU 利用率和显存使用。</li>
-<li><strong>脚本内监控 (可选)</strong>：可以修改 <code>benchmark_scene_detector.py</code>，使用 <code>psutil</code> 库在调用 <code>detect_scenes</code> 前后记录进程的 CPU<br>
+<li>GPU 监控 如果测试 GPU 加速，使用特定于 GPU 厂商的工具（如 NVIDIA 的 <code>nvidia-smi</code>）监控 GPU 利用率和显存使用。</li>
+<li>脚本内监控 (可选) 可以修改 <code>benchmark_scene_detector.py</code>，使用 <code>psutil</code> 库在调用 <code>detect_scenes</code> 前后记录进程的 CPU<br>
 和内存快照，以获得更精确的数据。</li>
 </ul>
 <h3 id="3-4-比较耗时：">3.4 比较耗时：</h3>
@@ -727,36 +725,24 @@ Config_Default_GPU) 将处理时间从约 15.1 秒降低到了约 8.6 秒，有�
 <li>对比不同检测器组合或参数下的耗时。例如，Config_ContentDetectorOnly_CPU (仅使用 ContentDetector) 的耗时约为 5.4 秒，远快于使用<br>
 MultiDetector 的 Config_Default_CPU (15.1 秒)，但检测到的场景数也从 12 个减少到了 9 个。这需要在速度和检测全面性之间进行权衡。</li>
 <li>观察不同特性视频（如时长、分辨率）对处理时间的影响（需要更多测试视频样本来分析此项）。4.2. 分析性能剖析 (.prof) 文件使用<br>
-Python 的 pstats 模块或 snakeviz 工具来分析 .prof 文件。•使用 pstats (命令行)：</li>
+Python 的 pstats 模块或 snakeviz 工具来分析 .prof 文件。使用 pstats (命令行)：</li>
 </ul>
 <h2 id="4-结果分析">4. 结果分析</h2>
 <h3 id="4-1-分析基准测试日志">4.1. 分析基准测试日志</h3>
+<blockquote>
 <p>脚本执行完毕后，会打印一个总结报告，显示每个视频在不同配置下的处理时长和检测到的场景数。</p>
-<p><strong>示例输出:</strong><br>
-此脚本专注于隔离和测试 <code>detect_scenes</code> 函数的性能。</p>
-<ul>
-<li><strong>功能</strong>：
-<ul>
-<li>加载 <code>config.ini</code> 配置。</li>
-<li>遍历预定义的测试视频列表。</li>
-<li>针对每个视频，应用预定义的多种测试配置。</li>
-<li>记录每次执行 <code>detect_scenes</code> 的耗时、检测到的场景数和帧率。</li>
-<li>可选地使用 <code>cProfile</code> 进行性能剖析，并将结果保存到 <code>.prof</code> 文件。</li>
-</ul>
-</li>
-</ul>
+</blockquote>
 <h4 id="在-pstats-交互式-shell-中，常用命令：">在 pstats 交互式 shell 中，常用命令：</h4>
 <ul>
-<li></li>
-<li>•sort cumulative: 按累计耗时排序。</li>
-<li>•stats 20: 显示耗时最多的前 20 个函数。</li>
-<li>•callers function_name: 查看哪些函数调用了 function_name。</li>
-<li>•callees function_name: 查看 function_name 调用了哪些函数。</li>
+<li>sort cumulative: 按累计耗时排序。</li>
+<li>stats 20: 显示耗时最多的前 20 个函数。</li>
+<li>callers function_name: 查看哪些函数调用了 function_name。</li>
+<li>callees function_name: 查看 function_name 调用了哪些函数。</li>
 </ul>
-<p>####•使用 snakeviz (Web 界面，推荐)：</p>
+<h4 id="使用-snakeviz-Web-界面，推荐-：">使用 snakeviz (Web 界面，推荐)：</h4>
 <ul>
 <li>
-<p><strong>比较耗时</strong>：</p>
+<p>比较耗时</p>
 <ul>
 <li>对比 CPU 和 GPU 配置下的耗时，评估 GPU 加速的实际效果。从示例输出来看，对于“建筑家园-02.mp4”，使用 GPU (<br>
 <code>Config_Default_GPU</code>) 将处理时间从约 15.1 秒降低到了约 8.6 秒，有显著提升。</li>
@@ -767,27 +753,27 @@ Python 的 pstats 模块或 snakeviz 工具来分析 .prof 文件。•使用 ps
 </ul>
 </li>
 <li>
-<p><strong>比较耗时 (Updated Interpretation based on new logs)</strong>：</p>
+<p>比较耗时 (Updated Interpretation based on new logs)</p>
 <ul>
 <li>对比 CPU 和 GPU 配置下的耗时，评估 GPU 加速的实际效果。从最新的示例输出来看，对于“建筑家园-02.mp4” (一个60fps的视频):
 <ul>
-<li><code>Config_Default_CPU</code> (MultiDetector, CPU decode): <strong>433.73 秒</strong></li>
-<li><code>Config_Default_GPU</code> (MultiDetector, GPU decode requested): <strong>411.56 秒</strong></li>
-<li><strong>观察</strong>: 在这个特定的测试中 (macOS, <code>VideoStreamCv2</code> 被用作回退)，请求 GPU 解码相比纯 CPU 解码略有性能提升 (约<br>
+<li><code>Config_Default_CPU</code> (MultiDetector, CPU decode): 433.73 秒</li>
+<li><code>Config_Default_GPU</code> (MultiDetector, GPU decode requested): 411.56 秒</li>
+<li>观察: 在这个特定的测试中 (macOS, <code>VideoStreamCv2</code> 被用作回退)，请求 GPU 解码相比纯 CPU 解码略有性能提升 (约<br>
 22 秒，或 5% 的提升)。这表明在 macOS 上，即使 PySceneDetect 回退到 <code>VideoStreamCv2</code>，底层的 OpenCV 和<br>
 AVFoundation/VideoToolbox 可能仍然利用了一些硬件加速。然而，这与之前日志中在非 macOS 环境下使用<br>
-<code>VideoStreamCv2Cuda</code> 可能带来的更显著提升有所不同。<strong>文档中应指出，GPU 加速的效果高度依赖于操作系统、OpenCV<br>
-的编译选项、PySceneDetect 的后端选择以及具体的 GPU 硬件。</strong></li>
+<code>VideoStreamCv2Cuda</code> 可能带来的更显著提升有所不同。文档中应指出，GPU 加速的效果高度依赖于操作系统、OpenCV<br>
+的编译选项、PySceneDetect 的后端选择以及具体的 GPU 硬件。</li>
 </ul>
 </li>
 <li>对比不同检测器组合或参数下的耗时。例如:
 <ul>
-<li><code>Config_ContentDetectorOnly_CPU</code> (仅使用 ContentDetector, CPU decode): <strong>400.30 秒</strong></li>
-<li><strong>观察</strong>: 仅使用 <code>ContentDetector</code> 仍然是最快的配置，比使用 <code>MultiDetector</code> 的 CPU 配置快了约 33 秒。但检测到的场景数从<br>
+<li><code>Config_ContentDetectorOnly_CPU</code> (仅使用 ContentDetector, CPU decode): 400.30 秒</li>
+<li>观察: 仅使用 <code>ContentDetector</code> 仍然是最快的配置，比使用 <code>MultiDetector</code> 的 CPU 配置快了约 33 秒。但检测到的场景数从<br>
 214 个减少到了 164 个。这再次强调了在速度和检测全面性/准确性之间的权衡。</li>
 </ul>
 </li>
-<li><strong>重要提示</strong>:
+<li>重要提示:
 <ul>
 <li>日志中出现 <code>Backend None not available. Trying another backend: opencv</code>，并且在请求 GPU 解码时，最终仍然是<br>
 <code>opened with VideoStreamCv2</code>。这表明在当前的 macOS 测试环境下，<code>VideoStreamCv2Cuda</code> (如果期望使用的话)<br>
@@ -801,29 +787,29 @@ PySceneDetect 和 OpenCV (包括 CUDA 支持) 的安装，尤其是在非 macOS 
 </ul>
 </li>
 </ul>
-<p><strong>macOS性能测试结果解释:</strong></p>
+<p>macOS性能测试结果解释:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">/Users/zg/PycharmProjects/scene_detect_split/.venv/bin/python /Users/zg/PycharmProjects/scene_detect_split/src/tests/benchmark_scene_detector.py </span><br><span class="line">2025-05-30 10:46:40.555 | INFO     | config.config:initialize_settings:147 - Configuration successfully loaded from: /Users/zg/PycharmProjects/scene_detect_split/src/run/config.ini</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:&lt;module&gt;:118 - Configuration loaded from: /Users/zg/PycharmProjects/scene_detect_split/src/run/config.ini</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:&lt;module&gt;:210 - </span><br><span class="line">===== Processing Video: /Volumes/shared/样例/CG渲染样例/建筑家园/建筑家园-02.mp4 =====</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_Default_CPU ---</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: MultiDetector</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: False</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 10:46:40.720 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 10:46:40.720 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: MultiDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 10:46:40.721 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">min_delta_hsv is deprecated, use min_content_val instead.</span><br><span class="line">2025-05-30 10:53:54.141 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 214 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 10:53:54.143 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 214 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 10:53:54.296 | INFO     | __main__:run_detection_benchmark:76 - Profiling data saved to: profiling_results/profile_建筑家园_02_Config_Default_CPU.prof</span><br><span class="line">2025-05-30 10:53:54.297 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 10:53:54.297 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 214</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 433.7327 seconds</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_Default_GPU ---</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: MultiDetector</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: True</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">2025-05-30 10:53:54.299 | INFO     | video.scene_detector:detect_scenes:95 - [MainThread] GPU decode (AVFoundation/VideoToolbox likely) on macOS for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 10:53:54.381 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 10:53:54.381 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: MultiDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 10:53:54.381 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">min_delta_hsv is deprecated, use min_content_val instead.</span><br><span class="line">2025-05-30 11:00:45.457 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 214 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 11:00:45.458 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 214 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:76 - Profiling data saved to: profiling_results/profile_建筑家园_02_Config_Default_GPU.prof</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 214</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 411.5587 seconds</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_ContentDetectorOnly_CPU ---</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: ContentDetector</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: False</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 11:00:45.939 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 11:00:45.939 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: ContentDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 11:00:45.939 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 11:07:26.007 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 164 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 11:07:26.011 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 164 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 164</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 400.2969 seconds</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:236 - </span><br><span class="line"></span><br><span class="line">===== Benchmark Summary =====</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:238 - </span><br><span class="line">Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_Default_CPU             | Duration: 433.7327s | Scenes: 214</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_Default_GPU             | Duration: 411.5587s | Scenes: 214</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_ContentDetectorOnly_CPU | Duration: 400.2969s | Scenes: 164</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:242 - </span><br><span class="line">To analyze .prof files, use a tool like &#x27;snakeviz&#x27; or Python&#x27;s pstats module.</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:243 - Example: python -m pstats profiling_results/your_profile_file.prof</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:244 - Then in pstats shell: sort cumulative, stats 20</span><br><span class="line"></span><br><span class="line">进程已结束，退出代码为 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
-<li><strong>macOS 上的 GPU 解码</strong>:
+<li>macOS 上的 GPU 解码:
 <ul>
 <li>在 “GPU 监控” 或 “比较耗时” 部分，可以特别说明在 macOS 上，即使没有明确的 <code>VideoStreamCv2Cuda</code>，PySceneDetect 通过<br>
 <code>VideoStreamCv2</code> 也可能间接利用 VideoToolbox/AVFoundation 进行硬件加速解码，但效果可能与专用 CUDA 后端不同。</li>
 </ul>
 </li>
-<li><strong>PySceneDetect 后端回退</strong>:
+<li>PySceneDetect 后端回退:
 <ul>
 <li>在 “结果分析” 或 “故障排查” (如果添加此章节) 部分，解释<br>
 <code>Backend None not available. Trying another backend: opencv</code> 日志的含义，即 PySceneDetect<br>
 尝试了默认后端（可能是用户指定的或库的优选）但失败，然后回退到 OpenCV。这对于理解实际使用的解码路径很重要。</li>
 </ul>
 </li>
-<li><strong>依赖库版本的重要性</strong>:
+<li>依赖库版本的重要性:
 <ul>
 <li>再次强调在 “软件环境一致性” 部分，PySceneDetect、OpenCV (及其 CUDA/OpenCL 支持的编译方式)、FFmpeg<br>
 的版本都会显著影响性能和功能，包括硬件加速的可用性。</li>
 </ul>
 </li>
-<li><strong><code>min_delta_hsv</code> 废弃警告</strong>:
+<li><code>min_delta_hsv</code> 废弃警告:
 <ul>
 <li>在 “配置测试参数” 或 “结果分析” 部分，提示用户注意 PySceneDetect 的废弃警告，并及时更新其配置文件或代码以使用推荐的新参数。</li>
 </ul>
@@ -833,56 +819,52 @@ PySceneDetect 和 OpenCV (包括 CUDA 支持) 的安装，尤其是在非 macOS 
 <h3 id="4-2-分析性能剖析-prof-文件">4.2. 分析性能剖析 (<code>.prof</code>) 文件</h3>
 <p>使用 Python 的 <code>pstats</code> 模块或 <code>snakeviz</code> 工具来分析 <code>.prof</code> 文件。</p>
 <ul>
-<li>**使用 <code>pstats</code> (命令行)</li>
-<li></li>
-<li>*：snakeviz 会在浏览器中打开一个交互式的火焰图或旭日图，直观地展示函数调用栈和各部分耗时。</li>
+<li>使用 <code>pstats</code> (命令行)</li>
+<li>snakeviz 会在浏览器中打开一个交互式的火焰图或旭日图，直观地展示函数调用栈和各部分耗时。</li>
 <li>关注点：</li>
-<li>•耗时最多的函数：这些是首要的优化目标。通常会是 PySceneDetect 库中与视频解码、帧处理以及各检测器核心算法相关的函数。</li>
-<li>•PySceneDetect 内部函数：如果瓶颈在 PySceneDetect 库内部（如特定检测器的 process_frame<br>
+<li>耗时最多的函数：这些是首要的优化目标。通常会是 PySceneDetect 库中与视频解码、帧处理以及各检测器核心算法相关的函数。</li>
+<li>PySceneDetect 内部函数：如果瓶颈在 PySceneDetect 库内部（如特定检测器的 process_frame<br>
 方法，视频解码函数），优化方向可能包括调整检测器参数、选择更快的检测器、或优化视频解码方式（如验证 GPU 解码效果，尝试帧降采样）。</li>
-<li>•自定义逻辑：如果 detect_scenes 函数中自定义的逻辑部分（例如，在 scene_detector.py 中添加检测器、调整场景列表的循环）耗时较长，需要针对性优化。</li>
+<li>自定义逻辑：如果 detect_scenes 函数中自定义的逻辑部分（例如，在 scene_detector.py 中添加检测器、调整场景列表的循环）耗时较长，需要针对性优化。</li>
 </ul>
 <h3 id="4-3-分析资源监控数据">4.3. 分析资源监控数据</h3>
 <h4 id="CPU-瓶颈：">CPU 瓶颈：</h4>
 <ul>
 <li>如果 CPU 单核或多核长时间处于高负载状态，表明计算是瓶颈。</li>
-<li>•检查是否存在某个核心远高于其他核心的情况（可能表示并行度不足或某些操作无法有效并行，尽管 detect_scenes 本身是单线程的，但其调用的<br>
+<li>检查是否存在某个核心远高于其他核心的情况（可能表示并行度不足或某些操作无法有效并行，尽管 detect_scenes 本身是单线程的，但其调用的<br>
 OpenCV 或 FFmpeg 后端可能利用多核）。</li>
-<li></li>
 </ul>
-<h4 id="•内存瓶颈：">•内存瓶颈：</h4>
+<h4 id="内存瓶颈：">内存瓶颈：</h4>
 <ul>
 <li>如果内存使用持续增长或达到系统上限，可能存在内存泄漏或处理大数据时内存管理不当。</li>
-<li>•PySceneDetect 通常是流式处理，但某些配置或长视频仍可能消耗较多内存。确保 video_api_obj.reset() 被正确调用。</li>
-<li></li>
+<li>PySceneDetect 通常是流式处理，但某些配置或长视频仍可能消耗较多内存。确保 video_api_obj.reset() 被正确调用。</li>
 </ul>
-<h4 id="•GPU-瓶颈：">•GPU 瓶颈：</h4>
+<h4 id="GPU-瓶颈：">GPU 瓶颈：</h4>
 <ul>
-<li>•如果启用了 GPU 加速，但 GPU 利用率低，检查驱动、CUDA/OpenCV 配置，以及数据传输到 GPU 的开销。示例输出显示 GPU 配置 (<br>
+<li>如果启用了 GPU 加速，但 GPU 利用率低，检查驱动、CUDA/OpenCV 配置，以及数据传输到 GPU 的开销。示例输出显示 GPU 配置 (<br>
 Config_Default_GPU) 速度更快，表明 GPU 在此场景下可能得到了有效利用。</li>
-<li>•如果 GPU 利用率高，但性能提升不明显，可能瓶颈在其他部分（如 Python 代码本身、磁盘 I/O）。</li>
+<li>如果 GPU 利用率高，但性能提升不明显，可能瓶颈在其他部分（如 Python 代码本身、磁盘 I/O）。</li>
 </ul>
 <h2 id="5-根据分析结果改进代码-优化方向示例">5.根据分析结果改进代码 (优化方向示例)</h2>
 <blockquote>
 <p>基于上述分析，可以针对性地对 scene_detector.py 及相关模块进行优化：</p>
 </blockquote>
-<h4 id="•场景检测策略优化：">•场景检测策略优化：</h4>
+<h4 id="场景检测策略优化：">场景检测策略优化：</h4>
 <ul>
-<li>•调整检测器：根据性能和准确度需求，在 config.ini 中启用或禁用特定的检测器，或调整其参数（如 threshold,<br>
+<li>调整检测器：根据性能和准确度需求，在 config.ini 中启用或禁用特定的检测器，或调整其参数（如 threshold,<br>
 min_scene_len_frames）。从示例输出看，仅使用 ContentDetector 速度最快，但场景数略少。需要根据业务需求决定是否值得牺牲一些检测场景换取速度。</li>
-<li>•帧降采样：对于长视频，在 scene_detector.py 中为 SceneManager 设置 frame_skip 或通过<br>
-video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大幅提升速度。将其作为可配置项。•视频解码优化：</li>
-<li>•基于测试结果，确定 CPU 解码或 GPU 解码 (VideoStreamCv2Cuda) 在何种情况下更优，并相应调整配置。示例中 GPU 解码效果明显。</li>
+<li>帧降采样：对于长视频，在 scene_detector.py 中为 SceneManager 设置 frame_skip 或通过<br>
+video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大幅提升速度。将其作为可配置项。视频解码优化：</li>
+<li>基于测试结果，确定 CPU 解码或 GPU 解码 (VideoStreamCv2Cuda) 在何种情况下更优，并相应调整配置。示例中 GPU 解码效果明显。</li>
 </ul>
-<h4 id="•代码逻辑优化：">•代码逻辑优化：</h4>
+<h4 id="代码逻辑优化：">代码逻辑优化：</h4>
 <ul>
-<li>•检查 detect_scenes 内部是否有可优化的循环或数据处理。•确保资源（如 video_api_obj）得到正确和及时的释放。</li>
+<li>检查 detect_scenes 内部是否有可优化的循环或数据处理。确保资源（如 video_api_obj）得到正确和及时的释放。</li>
 </ul>
-<h4 id="•长视频特定优化：">•长视频特定优化：</h4>
+<h4 id="长视频特定优化：">长视频特定优化：</h4>
 <ul>
-<li></li>
-<li>•考虑更细粒度的检查点机制（如果 detect_scenes 本身耗时过长）。</li>
-<li>•探索分块处理长视频的策略。</li>
+<li>考虑更细粒度的检查点机制（如果 detect_scenes 本身耗时过长）。</li>
+<li>探索分块处理长视频的策略。</li>
 </ul>
 <h2 id="6-迭代与验证">6. 迭代与验证</h2>
 <blockquote>
@@ -893,8 +875,8 @@ video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大
 </blockquote>
 <h2 id="总结">总结</h2>
 <h3 id="macOS-场景检测性能测试总结">macOS 场景检测性能测试总结</h3>
-<p><strong>测试视频</strong>: <code>建筑家园-02.mp4</code> (60fps)<br>
-<strong>测试日期</strong>: 2025-05-30</p>
+<p>测试视频: <code>建筑家园-02.mp4</code> (60fps)<br>
+测试日期: 2025-05-30</p>
 <h4 id="关键测试数据">关键测试数据</h4>
 <table>
 <thead>
@@ -937,29 +919,29 @@ video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大
 <h4 id="主要结论">主要结论</h4>
 <ol>
 <li>
-<p><strong>GPU 加速在 macOS 上的表现</strong>:</p>
+<p>GPU 加速在 macOS 上的表现:</p>
 <ul>
-<li>当请求 GPU 解码时 (<code>Config_Default_GPU</code>)，即使 PySceneDetect 日志显示回退到标准的 <code>VideoStreamCv2</code> 后端 (而非 <code>VideoStreamCv2Cuda</code>)，处理速度相比纯 CPU 解码 (<code>Config_Default_CPU</code>) 仍有约 <strong>5% 的提升</strong> (从 433.73 秒降至 411.56 秒)。</li>
+<li>当请求 GPU 解码时 (<code>Config_Default_GPU</code>)，即使 PySceneDetect 日志显示回退到标准的 <code>VideoStreamCv2</code> 后端 (而非 <code>VideoStreamCv2Cuda</code>)，处理速度相比纯 CPU 解码 (<code>Config_Default_CPU</code>) 仍有约 5% 的提升 (从 433.73 秒降至 411.56 秒)。</li>
 <li>这表明在 macOS 上，<code>VideoStreamCv2</code> 可能间接利用了系统级的硬件加速框架 (如 AVFoundation/VideoToolbox) 进行视频解码。</li>
 <li>需要注意的是，这种提升幅度可能不如在具有专用 NVIDIA GPU 和正确配置 CUDA 的环境中使用 <code>VideoStreamCv2Cuda</code> 时显著。</li>
 </ul>
 </li>
 <li>
-<p><strong>检测器选择对性能和结果的显著影响</strong>:</p>
+<p>检测器选择对性能和结果的显著影响:</p>
 <ul>
-<li>仅使用 <code>ContentDetector</code> (<code>Config_ContentDetectorOnly_CPU</code>) 的配置速度最快，处理时长为 <strong>400.30 秒</strong>。</li>
-<li>与使用 <code>MultiDetector</code> 的 CPU 配置 (<code>Config_Default_CPU</code>) 相比，速度提升了约 <strong>7.7%</strong> (快了约 33 秒)。</li>
+<li>仅使用 <code>ContentDetector</code> (<code>Config_ContentDetectorOnly_CPU</code>) 的配置速度最快，处理时长为 400.30 秒。</li>
+<li>与使用 <code>MultiDetector</code> 的 CPU 配置 (<code>Config_Default_CPU</code>) 相比，速度提升了约 7.7% (快了约 33 秒)。</li>
 <li>然而，仅使用 <code>ContentDetector</code> 时，检测到的场景数从 214 个减少到 164 个，表明牺牲了一定的检测全面性。这需要在处理效率和检测结果的完整性之间进行权衡。</li>
 </ul>
 </li>
 <li>
-<p><strong>PySceneDetect 后端行为</strong>:</p>
+<p>PySceneDetect 后端行为:</p>
 <ul>
 <li>测试日志中出现 <code>Backend None not available. Trying another backend: opencv</code>，表明 PySceneDetect 在尝试使用一个（可能是用户配置的或库优选的）后端失败后，成功回退到了 OpenCV 后端 (<code>VideoStreamCv2</code>)。这对于理解实际的解码路径和排查配置问题非常重要。</li>
 </ul>
 </li>
 <li>
-<p><strong>库的兼容性提示</strong>:</p>
+<p>库的兼容性提示:</p>
 <ul>
 <li>日志中 <code>AdaptiveDetector</code> 相关的警告 <code>min_delta_hsv is deprecated, use min_content_val instead.</code> 提示需要更新配置文件中的参数，以确保与 PySceneDetect 库的持续兼容性和最佳实践。</li>
 </ul>
@@ -967,10 +949,10 @@ video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大
 </ol>
 <h3 id="windows-测试结果">windows 测试结果</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">D:\pythonProject\venv1\Scripts\python.exe D:\pythonProject\scene-detect-split1\src\tests\benchmark_scene_detector.py </span><br><span class="line">2025-05-30 14:11:57.528 | INFO     | config.config:initialize_settings:147 - Configuration successfully loaded from: D:\pythonProject\scene-detect-split1\src\run\config.ini</span><br><span class="line">2025-05-30 14:11:57.529 | INFO     | __main__:&lt;module&gt;:118 - Configuration loaded from: D:\pythonProject\scene-detect-split1\src\run\config.ini</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:&lt;module&gt;:210 - </span><br><span class="line">===== Processing Video: Z:\样例\CG渲染样例\建筑家园\建筑家园-02.mp4 =====</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_Default_CPU ---</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: ContentDetector</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: False</span><br><span class="line">2025-05-30 14:11:57.870 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 14:11:58.075 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 14:11:58.075 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: ContentDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:11:58.075 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:16:45.990 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 159 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:16:45.990 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 159 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:76 - Profiling data saved to: profiling_results\profile_建筑家园_02_Config_Default_CPU.prof</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 159</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 288.2435 seconds</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_Default_GPU ---</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: ContentDetector</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: True</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">2025-05-30 14:16:46.147 | WARNING  | video.scene_detector:detect_scenes:93 - [MainThread] VideoStreamCv2Cuda not available. Using CPU for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 14:16:46.242 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 14:16:46.243 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: ContentDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:16:46.243 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:20:35.982 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 159 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:20:35.982 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 159 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 14:20:36.101 | INFO     | __main__:run_detection_benchmark:76 - Profiling data saved to: profiling_results\profile_建筑家园_02_Config_Default_GPU.prof</span><br><span class="line">2025-05-30 14:20:36.101 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 159</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 229.9882 seconds</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_ContentDetectorOnly_CPU ---</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: ContentDetector</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: False</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 14:20:36.194 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 14:20:36.194 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: ContentDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:20:36.194 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:24:23.153 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 159 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:24:23.153 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 159 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 159</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 227.1770 seconds</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:&lt;module&gt;:236 - </span><br><span class="line"></span><br><span class="line">===== Benchmark Summary =====</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:238 - </span><br><span class="line">Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_Default_CPU             | Duration: 288.2435s | Scenes: 159</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_Default_GPU             | Duration: 229.9882s | Scenes: 159</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_ContentDetectorOnly_CPU | Duration: 227.1770s | Scenes: 159</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:242 - </span><br><span class="line">To analyze .prof files, use a tool like &#x27;snakeviz&#x27; or Python&#x27;s pstats module.</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:243 - Example: python -m pstats profiling_results/your_profile_file.prof</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:244 - Then in pstats shell: sort cumulative, stats 20</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="Windows-平台场景检测性能测试总结"># Windows 平台场景检测性能测试总结</h4>
-<p><strong>测试视频</strong>: <code>建筑家园-02.mp4</code> (60fps)<br>
-<strong>测试日期</strong>: 2025-05-30<br>
-<strong>测试平台</strong>: Windows</p>
+<h4 id="Windows-平台场景检测性能测试总结">Windows 平台场景检测性能测试总结</h4>
+<p>测试视频: <code>建筑家园-02.mp4</code> (60fps)<br>
+测试日期: 2025-05-30<br>
+测试平台: Windows</p>
 <h5 id="关键测试数据-2">关键测试数据</h5>
 <table>
 <thead>
@@ -1006,32 +988,34 @@ video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大
 </tr>
 </tbody>
 </table>
-<p>* <strong>重要</strong>: 日志显示所有配置（包括 <code>Config_Default_CPU</code> 和 <code>Config_Default_GPU</code>）的 <code>Detector Setup</code> 均为 <code>ContentDetector</code>。这表明 <code>benchmark_scene_detector.py</code> 中的这些 “Default” 配置可能错误地仅指定了 <code>ContentDetector</code>，而不是 <code>config.ini</code> 中定义的 <code>MultiDetector</code>。<strong>因此，以下分析基于所有测试实际上都只使用了 <code>ContentDetector</code>。</strong></p>
+<ul>
+<li>重要: 日志显示所有配置（包括 <code>Config_Default_CPU</code> 和 <code>Config_Default_GPU</code>）的 <code>Detector Setup</code> 均为 <code>ContentDetector</code>。这表明 <code>benchmark_scene_detector.py</code> 中的这些 “Default” 配置可能错误地仅指定了 <code>ContentDetector</code>，而不是 <code>config.ini</code> 中定义的 <code>MultiDetector</code>。因此，以下分析基于所有测试实际上都只使用了 <code>ContentDetector</code>。</li>
+</ul>
 <h5 id="主要结论-2">主要结论</h5>
 <ol>
 <li>
-<p><strong>GPU 加速请求在 Windows 上的表现 (当 CUDA 后端不可用时)</strong>:</p>
+<p>GPU 加速请求在 Windows 上的表现 (当 CUDA 后端不可用时):</p>
 <ul>
 <li>当请求 GPU 解码时 (<code>Config_Default_GPU</code>)，日志明确指出 <code>VideoStreamCv2Cuda not available. Using CPU...</code>。最终视频流通过标准的 <code>VideoStreamCv2</code> 后端由 CPU 完成解码。</li>
-<li>尽管如此，<code>Config_Default_GPU</code> (229.99 秒) 仍然比 <code>Config_Default_CPU</code> (288.24 秒) <strong>快了约 58.25 秒，性能提升约 20.2%</strong>。</li>
+<li>尽管如此，<code>Config_Default_GPU</code> (229.99 秒) 仍然比 <code>Config_Default_CPU</code> (288.24 秒) 快了约 58.25 秒，性能提升约 20.2%。</li>
 <li>这可能归因于 Windows 平台上 OpenCV 的 CPU 解码后端（如 Media Foundation 或 DirectShow）在特定路径或针对某些视频格式时，相比纯粹的 CPU 路径有更优化的表现，或者系统资源调度差异。</li>
 </ul>
 </li>
 <li>
-<p><strong><code>ContentDetectorOnly_CPU</code> 作为最快配置</strong>:</p>
+<p><code>ContentDetectorOnly_CPU</code> 作为最快配置:</p>
 <ul>
 <li><code>Config_ContentDetectorOnly_CPU</code> (227.18 秒) 是所有配置中最快的，符合预期。</li>
 <li>它与 <code>Config_Default_GPU</code> (实际也是 ContentDetector + CPU 解码) 的性能差异较小 (约 2.8 秒)，可能在测量误差范围内。</li>
 </ul>
 </li>
 <li>
-<p><strong>PySceneDetect 后端回退</strong>:</p>
+<p>PySceneDetect 后端回退:</p>
 <ul>
 <li>日志清晰展示了当优选后端（如 CUDA）不可用时，PySceneDetect 回退到标准 OpenCV (<code>VideoStreamCv2</code>) 的行为。</li>
 </ul>
 </li>
 <li>
-<p><strong>与 macOS 测试的对比 (针对同一视频，但检测器配置可能不同)</strong>:</p>
+<p>与 macOS 测试的对比 (针对同一视频，但检测器配置可能不同):</p>
 <ul>
 <li>在 Windows 上仅使用 <code>ContentDetector</code> (CPU) 处理此视频 (约 227-288 秒) 比之前在 macOS 上使用 <code>MultiDetector</code> (CPU) (约 433 秒) 要快。如果 macOS 也仅用 <code>ContentDetector</code> (约 400 秒)，Windows 仍然更快。这可能反映了操作系统底层视频处理框架的效率差异。</li>
 <li>在“请求GPU但回退到CPU”的情况下，Windows 平台显示出相对更大的性能提升 (约 20.2%)，而 macOS 平台 (针对 <code>MultiDetector</code>) 约为 5%。</li>
@@ -1041,37 +1025,37 @@ video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大
 <h5 id="关键问题点与后续行动建议">关键问题点与后续行动建议</h5>
 <ol>
 <li>
-<p><strong>核实并修正 <code>benchmark_scene_detector.py</code> 中的测试配置</strong>:</p>
+<p>核实并修正 <code>benchmark_scene_detector.py</code> 中的测试配置:</p>
 <ul>
-<li><strong>首要任务</strong>: 确保 <code>Config_Default_CPU</code> 和 <code>Config_Default_GPU</code> 配置正确地使用了您期望的 <code>MultiDetector</code> 设置（从 <code>config.ini</code> 的 <code>[SceneDetectorSetup]</code> 加载）。如果当前它们被错误地指向了仅 <code>ContentDetector</code>，那么对 <code>MultiDetector</code> 的性能评估是不准确的。</li>
+<li>首要任务: 确保 <code>Config_Default_CPU</code> 和 <code>Config_Default_GPU</code> 配置正确地使用了您期望的 <code>MultiDetector</code> 设置（从 <code>config.ini</code> 的 <code>[SceneDetectorSetup]</code> 加载）。如果当前它们被错误地指向了仅 <code>ContentDetector</code>，那么对 <code>MultiDetector</code> 的性能评估是不准确的。</li>
 </ul>
 </li>
 <li>
-<p><strong>彻底排查 <code>VideoStreamCv2Cuda not available</code> 问题</strong>:</p>
+<p>彻底排查 <code>VideoStreamCv2Cuda not available</code> 问题:</p>
 <ul>
-<li>检查 <strong>OpenCV-Python 版本</strong> (确保是为 Windows 编译的、包含 CUDA 支持的版本)。</li>
-<li>检查 <strong>CUDA Toolkit 和 cuDNN</strong> 的安装与兼容性。</li>
-<li>检查 <strong>系统环境变量</strong> (如 <code>PATH</code>, <code>CUDA_PATH</code>)。</li>
-<li>检查 <strong>NVIDIA 驱动程序</strong>版本。</li>
+<li>检查 OpenCV-Python 版本 (确保是为 Windows 编译的、包含 CUDA 支持的版本)。</li>
+<li>检查 CUDA Toolkit 和 cuDNN 的安装与兼容性。</li>
+<li>检查 系统环境变量 (如 <code>PATH</code>, <code>CUDA_PATH</code>)。</li>
+<li>检查 NVIDIA 驱动程序版本。</li>
 <li>运行项目中的 <code>cuda_available_verify.py</code> 脚本获取直接反馈。</li>
 </ul>
 </li>
 <li>
-<p><strong>在 CUDA 成功启用后重新进行基准测试</strong>:</p>
+<p>在 CUDA 成功启用后重新进行基准测试:</p>
 <ul>
 <li>只有当 <code>VideoStreamCv2Cuda</code> 能够成功加载和使用时，才能真正评估 GPU 对视频解码的加速效果。</li>
 <li>届时，重点对比 <code>MultiDetector</code> 配置下 CPU 与 GPU (CUDA) 的性能。</li>
 </ul>
 </li>
 <li>
-<p><strong>分析 <code>.prof</code> 文件</strong>:</p>
+<p>分析 <code>.prof</code> 文件:</p>
 <ul>
 <li>对于修正配置后的 <code>MultiDetector</code> 测试，使用 <code>snakeviz</code> 分析 <code>.prof</code> 文件。</li>
 <li>关注视频 I/O (<code>cv2.VideoCapture</code> 的 <code>retrieve</code> 和 <code>grab</code> 方法) 和各个子检测器在 CPU 与 GPU 配置下的耗时。</li>
 </ul>
 </li>
 <li>
-<p><strong>继续测试帧降采样</strong>:</p>
+<p>继续测试帧降采样:</p>
 <ul>
 <li>无论 CUDA 是否成功启用，如果视频 I/O 依然是主要瓶颈，帧降采样 (<code>frame_skip</code> 和 <code>downscale_factor</code>) 都是至关重要的优化策略。</li>
 </ul>
@@ -1079,13 +1063,13 @@ video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大
 </ol>
 <h2 id="后续分析建议">后续分析建议</h2>
 <ul>
-<li><strong>深入剖析 <code>.prof</code> 文件</strong>: 使用 <code>snakeviz</code> 或 <code>pstats</code> 分析 <code>MultiDetector</code> 配置下各具体检测器的耗时，以精确定位性能瓶颈。</li>
-<li><strong>测试帧降采样</strong>: 鉴于当前处理时间较长，强烈建议测试帧降采样 (<code>frame_skip</code> 或 <code>downscale_factor</code>) 对长视频处理效率的影响。</li>
-<li><strong>参数调优</strong>: 针对 <code>MultiDetector</code> 中的各个检测器，细致调整其参数，寻找性能与准确度的最佳平衡点。</li>
-<li><strong>多样化测试</strong>: 使用更多不同类型和长度的视频进行测试，以验证当前结论的普适性。</li>
+<li>深入剖析 <code>.prof</code> 文件: 使用 <code>snakeviz</code> 或 <code>pstats</code> 分析 <code>MultiDetector</code> 配置下各具体检测器的耗时，以精确定位性能瓶颈。</li>
+<li>测试帧降采样: 鉴于当前处理时间较长，强烈建议测试帧降采样 (<code>frame_skip</code> 或 <code>downscale_factor</code>) 对长视频处理效率的影响。</li>
+<li>参数调优: 针对 <code>MultiDetector</code> 中的各个检测器，细致调整其参数，寻找性能与准确度的最佳平衡点。</li>
+<li>多样化测试: 使用更多不同类型和长度的视频进行测试，以验证当前结论的普适性。</li>
 </ul>
 <h4 id="测试结果如图">测试结果如图</h4>
-<h5 id="macOS">macOS</h5>
+<h5 id="macOS平台测试结果图示">macOS平台测试结果图示</h5>
 <ul>
 <li>cpu</li>
 </ul>
@@ -1096,7 +1080,7 @@ video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大
 </ul>
 <p><img src="/2025/05/30/scene-detect-benchmark/gpu_prof.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/gpu_prof.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
 <p><img src="/2025/05/30/scene-detect-benchmark/gpu_prof_1.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/gpu_prof_1.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h5 id="window">window</h5>
+<h5 id="window平台测试结果图示">window平台测试结果图示</h5>
 <ul>
 <li>cpu</li>
 </ul>
@@ -1482,7 +1466,7 @@ video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">场景检测性能优化方向与测试方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1. 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-text">2. 准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%9A%E4%B9%89%E5%85%B3%E9%94%AE%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87-KPIs"><span class="toc-text">2.1. 定义关键性能指标 (KPIs)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%80%89%E6%8B%A9%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">2.2. 选择测试数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%90%AD%E5%BB%BA%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="toc-text">2.3. 搭建测试环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E9%85%8D%E7%BD%AE%E6%B5%8B%E8%AF%95%E5%8F%82%E6%95%B0"><span class="toc-text">2.4. 配置测试参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B5%8B%E8%AF%95%E6%89%A7%E8%A1%8C"><span class="toc-text">3. 测试执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC%EF%BC%9Abenchmark-scene-detector-py"><span class="toc-text">3.1. 测试脚本：benchmark_scene_detector.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%80%A7%E8%83%BD%E5%89%96%E6%9E%90-Profiling"><span class="toc-text">3.2. 性能剖析 (Profiling)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7"><span class="toc-text">3.3. 资源监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%AF%94%E8%BE%83%E8%80%97%E6%97%B6%EF%BC%9A"><span class="toc-text">3.4 比较耗时：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="toc-text">4. 结果分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%88%86%E6%9E%90%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95%E6%97%A5%E5%BF%97"><span class="toc-text">4.1. 分析基准测试日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8-pstats-%E4%BA%A4%E4%BA%92%E5%BC%8F-shell-%E4%B8%AD%EF%BC%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="toc-text">在 pstats 交互式 shell 中，常用命令：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%88%86%E6%9E%90%E6%80%A7%E8%83%BD%E5%89%96%E6%9E%90-prof-%E6%96%87%E4%BB%B6"><span class="toc-text">4.2. 分析性能剖析 (.prof) 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%88%86%E6%9E%90%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E6%95%B0%E6%8D%AE"><span class="toc-text">4.3. 分析资源监控数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU-%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">CPU 瓶颈：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%A2%E5%86%85%E5%AD%98%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">•内存瓶颈：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%A2GPU-%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">•GPU 瓶颈：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%A0%B9%E6%8D%AE%E5%88%86%E6%9E%90%E7%BB%93%E6%9E%9C%E6%94%B9%E8%BF%9B%E4%BB%A3%E7%A0%81-%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91%E7%A4%BA%E4%BE%8B"><span class="toc-text">5.根据分析结果改进代码 (优化方向示例)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%A2%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E7%AD%96%E7%95%A5%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">•场景检测策略优化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%A2%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">•代码逻辑优化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%A2%E9%95%BF%E8%A7%86%E9%A2%91%E7%89%B9%E5%AE%9A%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">•长视频特定优化：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%BF%AD%E4%BB%A3%E4%B8%8E%E9%AA%8C%E8%AF%81"><span class="toc-text">6. 迭代与验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#macOS-%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%80%BB%E7%BB%93"><span class="toc-text">macOS 场景检测性能测试总结</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE"><span class="toc-text">关键测试数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%93%E8%AE%BA"><span class="toc-text">主要结论</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#windows-%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="toc-text">windows 测试结果</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Windows-%E5%B9%B3%E5%8F%B0%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%80%BB%E7%BB%93"><span class="toc-text"># Windows 平台场景检测性能测试总结</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE-2"><span class="toc-text">关键测试数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%93%E8%AE%BA-2"><span class="toc-text">主要结论</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E7%82%B9%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE"><span class="toc-text">关键问题点与后续行动建议</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E5%BB%BA%E8%AE%AE"><span class="toc-text">后续分析建议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%A6%82%E5%9B%BE"><span class="toc-text">测试结果如图</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#macOS"><span class="toc-text">macOS</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#window"><span class="toc-text">window</span></a></li></ol></li></ol></li></ol></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">场景检测性能优化方向与测试方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1. 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-text">2. 准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%9A%E4%B9%89%E5%85%B3%E9%94%AE%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87-KPIs"><span class="toc-text">2.1. 定义关键性能指标 (KPIs)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%80%89%E6%8B%A9%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">2.2. 选择测试数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%90%AD%E5%BB%BA%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="toc-text">2.3. 搭建测试环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E9%85%8D%E7%BD%AE%E6%B5%8B%E8%AF%95%E5%8F%82%E6%95%B0"><span class="toc-text">2.4. 配置测试参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B5%8B%E8%AF%95%E6%89%A7%E8%A1%8C"><span class="toc-text">3. 测试执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC%EF%BC%9Abenchmark-scene-detector-py"><span class="toc-text">3.1. 测试脚本：benchmark_scene_detector.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%80%A7%E8%83%BD%E5%89%96%E6%9E%90-Profiling"><span class="toc-text">3.2. 性能剖析 (Profiling)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7"><span class="toc-text">3.3. 资源监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%AF%94%E8%BE%83%E8%80%97%E6%97%B6%EF%BC%9A"><span class="toc-text">3.4 比较耗时：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="toc-text">4. 结果分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%88%86%E6%9E%90%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95%E6%97%A5%E5%BF%97"><span class="toc-text">4.1. 分析基准测试日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8-pstats-%E4%BA%A4%E4%BA%92%E5%BC%8F-shell-%E4%B8%AD%EF%BC%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="toc-text">在 pstats 交互式 shell 中，常用命令：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-snakeviz-Web-%E7%95%8C%E9%9D%A2%EF%BC%8C%E6%8E%A8%E8%8D%90-%EF%BC%9A"><span class="toc-text">使用 snakeviz (Web 界面，推荐)：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%88%86%E6%9E%90%E6%80%A7%E8%83%BD%E5%89%96%E6%9E%90-prof-%E6%96%87%E4%BB%B6"><span class="toc-text">4.2. 分析性能剖析 (.prof) 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%88%86%E6%9E%90%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E6%95%B0%E6%8D%AE"><span class="toc-text">4.3. 分析资源监控数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU-%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">CPU 瓶颈：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">内存瓶颈：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GPU-%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">GPU 瓶颈：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%A0%B9%E6%8D%AE%E5%88%86%E6%9E%90%E7%BB%93%E6%9E%9C%E6%94%B9%E8%BF%9B%E4%BB%A3%E7%A0%81-%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91%E7%A4%BA%E4%BE%8B"><span class="toc-text">5.根据分析结果改进代码 (优化方向示例)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E7%AD%96%E7%95%A5%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">场景检测策略优化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">代码逻辑优化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%95%BF%E8%A7%86%E9%A2%91%E7%89%B9%E5%AE%9A%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">长视频特定优化：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%BF%AD%E4%BB%A3%E4%B8%8E%E9%AA%8C%E8%AF%81"><span class="toc-text">6. 迭代与验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#macOS-%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%80%BB%E7%BB%93"><span class="toc-text">macOS 场景检测性能测试总结</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE"><span class="toc-text">关键测试数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%93%E8%AE%BA"><span class="toc-text">主要结论</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#windows-%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="toc-text">windows 测试结果</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Windows-%E5%B9%B3%E5%8F%B0%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%80%BB%E7%BB%93"><span class="toc-text">Windows 平台场景检测性能测试总结</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE-2"><span class="toc-text">关键测试数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%93%E8%AE%BA-2"><span class="toc-text">主要结论</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E7%82%B9%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE"><span class="toc-text">关键问题点与后续行动建议</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E5%BB%BA%E8%AE%AE"><span class="toc-text">后续分析建议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%A6%82%E5%9B%BE"><span class="toc-text">测试结果如图</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#macOS%E5%B9%B3%E5%8F%B0%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%9B%BE%E7%A4%BA"><span class="toc-text">macOS平台测试结果图示</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#window%E5%B9%B3%E5%8F%B0%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%9B%BE%E7%A4%BA"><span class="toc-text">window平台测试结果图示</span></a></li></ol></li></ol></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
