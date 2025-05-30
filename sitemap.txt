@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2025/05/30/scene-detect-benchmark/
 https://caozhaoqi.github.io/2025/05/15/scene-detect-method/
 https://caozhaoqi.github.io/2025/04/09/yolov8-train-model/
 https://caozhaoqi.github.io/2025/04/07/nuclio-build-use/
