@@ -643,13 +643,13 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="TransNet-V2-模型介绍">TransNet V2 模型介绍**</h2>
+        <h2 id="TransNet-V2-模型介绍">TransNet V2 模型介绍</h2>
 <ol>
-<li><strong>目标：</strong><br>
-TransNet V2 的目标是创建一个<strong>快速且准确</strong>的镜头边界检测（Shot Boundary Detection, SBD）模型。它能够识别视频中的两种主要类型的镜头切换：
+<li>目标：<br>
+TransNet V2 的目标是创建一个快速且准确的镜头边界检测（Shot Boundary Detection, SBD）模型。它能够识别视频中的两种主要类型的镜头切换：
 <ul>
-<li><strong>硬切 (Hard Cuts):</strong> 两个镜头之间的突变。</li>
-<li><strong>渐变转场 (Gradual Transitions):</strong> 如溶解 (dissolves)、淡入淡出 (fades)、划像 (wipes) 等，这些转场会持续数帧。</li>
+<li>硬切 (Hard Cuts): 两个镜头之间的突变。</li>
+<li>渐变转场 (Gradual Transitions): 如溶解 (dissolves)、淡入淡出 (fades)、划像 (wipes) 等，这些转场会持续数帧。</li>
 </ul>
 </li>
 </ol>
@@ -659,36 +659,36 @@ TransNet V2 的目标是创建一个<strong>快速且准确</strong>的镜头边
 <p><img src="/2025/06/09/TransNetV2-model-use/transnetv2_struct.png" class="lazyload placeholder" data-srcset="/2025/06/09/TransNetV2-model-use/transnetv2_struct.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
 <ol start="2">
 <li>
-<p><strong>核心思想：</strong><br>
-TransNet V2 是一个深度神经网络。它直接处理一系列连续的、<strong>低分辨率的 RGB 视频帧</strong>，来预测每一帧发生镜头转换的概率，并能区分转场类型。</p>
+<p>核心思想：<br>
+TransNet V2 是一个深度神经网络。它直接处理一系列连续的、低分辨率的 RGB 视频帧，来预测每一帧发生镜头转换的概率，并能区分转场类型。</p>
 </li>
 <li>
-<p><strong>关键架构特点：</strong></p>
+<p>关键架构特点：</p>
 <ul>
-<li><strong>输入 (Input)：</strong>
+<li>输入 (Input)：
 <ul>
 <li>模型接收 <code>N</code> 个连续的、低分辨率 RGB 视频帧作为输入（例如，论文中常使用 <code>N=100</code> 帧，每帧分辨率缩小到 <code>48x27</code> 像素）。</li>
 <li>直接使用原始的、降采样后的 RGB 帧（而不是预先计算的特征，如帧差或光流）使得网络可以端到端地学习最优的视觉特征。</li>
 </ul>
 </li>
-<li><strong>帧编码 (Frame Encoding)：</strong>
+<li>帧编码 (Frame Encoding)：
 <ul>
 <li>输入的每一帧首先会经过两个 2D 卷积层和最大池化层，用于提取空间特征。</li>
 <li>这些特征图随后被展平 (flatten) 并按时间顺序堆叠起来，形成一个特征序列。</li>
 </ul>
 </li>
-<li><strong>时间建模 (Temporal Modeling) - 核心部分：</strong>
+<li>时间建模 (Temporal Modeling) - 核心部分：
 <ul>
-<li>TransNet V2 的核心是一堆<strong>一维扩张卷积 (1D Dilated Convolutions) 块</strong>，它们作用于帧特征序列。</li>
-<li><strong>一维卷积：</strong> 非常适合处理序列数据，计算效率高。</li>
-<li><strong>扩张卷积 (Dilated Convolutions)：</strong> 允许网络在不显著增加参数数量或计算成本（通过避免过多的池化层）的情况下，拥有非常大的感受野（即能看到很长的时间上下文）。这对于检测跨越多帧的渐变转场至关重要。每个扩张卷积块通常包含一个扩张一维卷积层、批量归一化 (Batch Normalization)、ReLU 激活函数和 Dropout。</li>
+<li>TransNet V2 的核心是一堆一维扩张卷积 (1D Dilated Convolutions) 块，它们作用于帧特征序列。</li>
+<li>一维卷积： 非常适合处理序列数据，计算效率高。</li>
+<li>扩张卷积 (Dilated Convolutions)： 允许网络在不显著增加参数数量或计算成本（通过避免过多的池化层）的情况下，拥有非常大的感受野（即能看到很长的时间上下文）。这对于检测跨越多帧的渐变转场至关重要。每个扩张卷积块通常包含一个扩张一维卷积层、批量归一化 (Batch Normalization)、ReLU 激活函数和 Dropout。</li>
 </ul>
 </li>
-<li><strong>双预测头 (Dual Prediction Heads)：</strong><br>
+<li>双预测头 (Dual Prediction Heads)：<br>
 网络从最后一个扩张卷积层的输出特征中引出两个分支（预测头）：
 <ol>
-<li><strong>转场概率预测 (Transition Probability Prediction)：</strong> 一个核大小为 1 的一维卷积层，后接 Sigmoid 激活函数。对输入序列中的每一帧输出一个概率值（0 到 1），表示该帧是镜头边界（硬切或渐变转场的中心）的可能性。使用二元交叉熵 (BCE) 损失进行训练。</li>
-<li><strong>转场类型预测 (Transition Type Prediction - One-Hot)：</strong> 另一个核大小为 1 的一维卷积层，有 3 个输出通道，每个通道后接 Sigmoid。它们分别预测每一帧属于以下类别的概率：
+<li>转场概率预测 (Transition Probability Prediction)： 一个核大小为 1 的一维卷积层，后接 Sigmoid 激活函数。对输入序列中的每一帧输出一个概率值（0 到 1），表示该帧是镜头边界（硬切或渐变转场的中心）的可能性。使用二元交叉熵 (BCE) 损失进行训练。</li>
+<li>转场类型预测 (Transition Type Prediction - One-Hot)： 另一个核大小为 1 的一维卷积层，有 3 个输出通道，每个通道后接 Sigmoid。它们分别预测每一帧属于以下类别的概率：
 <ul>
 <li>无镜头转场</li>
 <li>硬切</li>
@@ -698,47 +698,47 @@ TransNet V2 是一个深度神经网络。它直接处理一系列连续的、<s
 </li>
 </ol>
 </li>
-<li><strong>组合损失 (Combined Loss)：</strong><br>
+<li>组合损失 (Combined Loss)：<br>
 总损失是两个预测头 BCE 损失的加权和。</li>
 </ul>
 </li>
 <li>
-<p><strong>模型优势：</strong></p>
+<p>模型优势：</p>
 <ul>
-<li><strong>高准确性：</strong> 在多个标准 SBD 数据集（如 ClipShots, TRECVID IACC.3, RAI, BBC Planet Earth）上取得了业界领先 (SOTA) 的结果。</li>
-<li><strong>高速度：</strong> 为效率而设计，在现代 GPU 上能够实现远超实时的处理速度（例如，在 NVIDIA V100 上网络推理部分约 150 FPS，不包括视频解码）。</li>
-<li><strong>鲁棒性强：</strong> 能够有效处理硬切和各种复杂的渐变转场。</li>
-<li><strong>端到端学习：</strong> 直接从低分辨率 RGB 帧中学习特征，无需复杂的手动特征工程。</li>
+<li>高准确性： 在多个标准 SBD 数据集（如 ClipShots, TRECVID IACC.3, RAI, BBC Planet Earth）上取得了业界领先 (SOTA) 的结果。</li>
+<li>高速度： 为效率而设计，在现代 GPU 上能够实现远超实时的处理速度（例如，在 NVIDIA V100 上网络推理部分约 150 FPS，不包括视频解码）。</li>
+<li>鲁棒性强： 能够有效处理硬切和各种复杂的渐变转场。</li>
+<li>端到端学习： 直接从低分辨率 RGB 帧中学习特征，无需复杂的手动特征工程。</li>
 </ul>
 </li>
 </ol>
-<h2 id="TransNet-V2-使用方法-推理与后处理">TransNet V2 使用方法 (推理与后处理)**</h2>
+<h2 id="TransNet-V2-使用方法-推理与后处理">TransNet V2 使用方法 (推理与后处理)</h2>
 <ol>
 <li>
-<p><strong>输入视频处理：</strong></p>
+<p>输入视频处理：</p>
 <ul>
 <li>将视频解码成单独的帧。</li>
 <li>将每一帧的大小调整到网络所需的输入分辨率（例如 <code>48x27</code> 像素）。</li>
 </ul>
 </li>
 <li>
-<p><strong>滑动窗口推理：</strong></p>
+<p>滑动窗口推理：</p>
 <ul>
 <li>视频以 <code>N</code> 帧（如 100 帧）的重叠窗口进行处理。</li>
 <li>对于每个窗口，网络从主要的转场概率预测头输出 <code>N</code> 个概率值（对应窗口中的每一帧）。</li>
-<li>由于窗口是重叠的，视频中的同一帧可能会获得多个预测。通常会对这些预测进行<strong>平均</strong>，以获得该帧更稳定的概率。</li>
+<li>由于窗口是重叠的，视频中的同一帧可能会获得多个预测。通常会对这些预测进行平均，以获得该帧更稳定的概率。</li>
 </ul>
 </li>
 <li>
-<p><strong>预测结果后处理：</strong></p>
+<p>预测结果后处理：</p>
 <ul>
-<li><strong>阈值化 (Thresholding)：</strong>
+<li>阈值化 (Thresholding)：
 <ul>
 <li>将（平均后的）逐帧概率与一个预定义的阈值 <code>P_thresh</code> 进行比较。概率超过此阈值的帧被认为是候选的镜头边界。</li>
 <li>论文建议 <code>P_thresh = 0.5</code> 是一个不错的默认值，但可以根据实际情况调整。</li>
 </ul>
 </li>
-<li><strong>最小镜头长度 (Minimum Shot Length - <code>L_min</code>)：</strong>
+<li>最小镜头长度 (Minimum Shot Length - <code>L_min</code>)：
 <ul>
 <li>为了避免产生许多非常短的、可能是误报的镜头，会施加一个约束：任何会导致镜头长度小于 <code>L_min</code> 帧的检测边界都会被丢弃。</li>
 <li>这通常通过遍历候选边界并确保其与前一个已接受边界的距离至少为 <code>L_min</code> 来实现。</li>
@@ -748,9 +748,9 @@ TransNet V2 是一个深度神经网络。它直接处理一系列连续的、<s
 </ul>
 </li>
 <li>
-<p><strong>输出：</strong></p>
+<p>输出：</p>
 <ul>
-<li>最终输出是一个列表，包含检测到的镜头边界所在的<strong>帧索引号</strong>。</li>
+<li>最终输出是一个列表，包含检测到的镜头边界所在的帧索引号。</li>
 <li>可选地，可以使用转场类型预测头的输出来对检测到的边界进行分类，但通常主要关注的是边界的检测本<br>
 身。</li>
 </ul>
@@ -1162,7 +1162,7 @@ TransNet V2 是一个深度神经网络。它直接处理一系列连续的、<s
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TransNet-V2-%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D"><span class="toc-text">TransNet V2 模型介绍**</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TransNet-V2-%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%8E%A8%E7%90%86%E4%B8%8E%E5%90%8E%E5%A4%84%E7%90%86"><span class="toc-text">TransNet V2 使用方法 (推理与后处理)**</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86"><span class="toc-text">模型推理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%8E%A8%E7%90%86%E8%84%9A%E6%9C%AC%E5%A4%84%E7%90%86%E8%A7%86%E9%A2%91"><span class="toc-text">调用推理脚本处理视频</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TransNet-V2-%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D"><span class="toc-text">TransNet V2 模型介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TransNet-V2-%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%8E%A8%E7%90%86%E4%B8%8E%E5%90%8E%E5%A4%84%E7%90%86"><span class="toc-text">TransNet V2 使用方法 (推理与后处理)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86"><span class="toc-text">模型推理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%8E%A8%E7%90%86%E8%84%9A%E6%9C%AC%E5%A4%84%E7%90%86%E8%A7%86%E9%A2%91"><span class="toc-text">调用推理脚本处理视频</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
