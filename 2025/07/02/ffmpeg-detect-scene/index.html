@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>Samba (Linux) + Syslog + Logstash + Elasticsearch 转发smb日志 | Zhaoqi.Cao static blog</title>
+  <title>f基于 FFmpeg 的视频场景（镜头边界）检测 | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,21 +589,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        Samba (Linux) + Syslog + Logstash + Elasticsearch 转发smb日志
+        f基于 FFmpeg 的视频场景（镜头边界）检测
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2025-03-10 |
+          <i class="fas fa-calendar"></i> Published in：2025-07-02 |
         </span>
       
 
@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 1.8k |
+            <i class="fas fa-file-text-o"></i> Words: 4.3k |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 9min |
+            <i class="fas fa-clock"></i> Reading time: 18min |
           </span>
   
           
@@ -643,149 +643,227 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="方案简介">方案简介</h2>
-<blockquote>
-<p>Elasticsearch 集群部署: 为了高可用性和可扩展性，可以将 Elasticsearch 部署为集群。</p>
+        <blockquote>
+<p>在视频处理领域，场景检测（Scene Detection）或称镜头分割（Shot Boundary Detection）是一项基础且关键的任务，广泛应用于视频索引、自动剪辑、内容摘要等场景。</p>
 </blockquote>
-<blockquote>
-<p>Logstash 管道优化: 根据日志量和复杂度，调整 Logstash 的 worker 数量、批处理大小等参数。</p>
-</blockquote>
-<blockquote>
-<p>索引生命周期管理 (ILM): 使用 ILM 策略自动管理 Elasticsearch 索引（例如，定期滚动、删除旧索引）。</p>
-</blockquote>
-<blockquote>
-<p>安全性: 启用 Elasticsearch 和 Kibana 的安全认证（用户名/密码、TLS/SSL）。<br>
-监控: 监控 ELK Stack 的性能和健康状态. 可以使用 Elastic Stack Monitoring 功能, 或者 Prometheus + Grafana.</p>
-</blockquote>
-<h2 id="安装使用">安装使用</h2>
+<h2 id="1-技术可行性分析-Feasibility-Analysis"><strong>1. 技术可行性分析 (Feasibility Analysis)</strong></h2>
+<p>将 FFmpeg 用于场景检测不仅可行，而且是一种非常成熟和高效的方案。其可行性主要基于以下几点：</p>
 <ul>
-<li>
-<p><strong>安装 Docker 和 Docker Compose:</strong></p>
-<ul>
-<li>
-<p><strong>Ubuntu:</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install apt-transport-https ca-certificates curl software-properties-common</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | <span class="built_in">sudo</span> gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [arch=<span class="subst">$(dpkg --print-architecture)</span> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu <span class="subst">$(lsb_release -cs)</span> stable&quot;</span> | <span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>CentOS/RHEL:</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> yum install -y yum-utils</span><br><span class="line"><span class="built_in">sudo</span> yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line"><span class="built_in">sudo</span> yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>验证安装:</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker --version</span><br><span class="line">docker compose version</span><br></pre></td></tr></table></figure>
-</li>
+<li><strong>内置的专业滤镜</strong>: FFmpeg 内置了专门为媒体分析设计的强大滤镜（filters），如 <code>scdet</code> 和 <code>select</code>，它们可以直接访问视频帧的底层数据，并进行快速的数学运算。</li>
+<li><strong>像素级差异计算</strong>: 场景检测的核心原理是计算连续视频帧之间的视觉差异。当差异超过某个阈值时，即认为发生了场景切换。FFmpeg 的滤镜能够高效地执行这种像素级的直方图或帧差计算，并将结果量化为一个“场景变化分数”（scene score）。</li>
+<li><strong>跨平台与标准化</strong>: FFmpeg 是一个跨平台的命令行工具，在 Windows, macOS, Linux 上表现一致，无需依赖复杂的图形界面或特定操作系统API。这使其成为自动化、服务器端处理流程的理想选择。</li>
+<li><strong>轻量级与零依赖</strong>: 与需要安装庞大依赖库的专业软件或Python库相比，FFmpeg 只有一个可执行文件，部署简单，资源占用极低。</li>
 </ul>
-</li>
-<li>
-<p>** 增加 Docker 用户到 <code>docker</code> 组:**  避免每次都使用 <code>sudo</code>.</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> usermod -aG docker <span class="variable">$USER</span></span><br><span class="line">newgrp docker <span class="comment"># 或者注销并重新登录</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>创建工作目录:</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> elk-smb</span><br><span class="line"><span class="built_in">cd</span> elk-smb</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>2. 创建 Docker Compose 文件 (docker-compose.yml):</strong></p>
-<p>在 <code>elk-smb</code> 目录下创建 <code>docker-compose.yml</code> 文件，内容如下：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">elasticsearch:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/elasticsearch/elasticsearch:8.10.4</span>  <span class="comment"># 使用指定版本</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">elasticsearch</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">discovery.type=single-node</span>  <span class="comment"># 单节点模式</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ES_JAVA_OPTS=-Xms1g</span> <span class="string">-Xmx1g</span>  <span class="comment"># 设置 JVM 内存 (根据需要调整)</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">xpack.security.enabled=false</span> <span class="comment">#禁用xpack</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">esdata:/usr/share/elasticsearch/data</span>  <span class="comment"># 数据持久化</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;9200:9200&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;9300:9300&quot;</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">elk</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">logstash:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/logstash/logstash:8.10.4</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">logstash</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./logstash/pipeline/:/usr/share/logstash/pipeline/</span>  <span class="comment"># 挂载 Logstash 管道配置</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5044:5044&quot;</span>  <span class="comment"># Beats input</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;514:514/udp&quot;</span>  <span class="comment"># Syslog input (UDP)</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;514:514/tcp&quot;</span> <span class="comment"># Syslog input (TCP)</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">LS_JAVA_OPTS:</span> <span class="string">&quot;-Xmx256m -Xms256m&quot;</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">elk</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">elasticsearch</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">kibana:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/kibana/kibana:8.10.4</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">kibana</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5601:5601&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">ELASTICSEARCH_URL:</span> <span class="string">&quot;http://elasticsearch:9200&quot;</span> <span class="comment"># 通过服务名访问 Elasticsearch</span></span><br><span class="line">      <span class="comment">#ELASTICSEARCH_HOSTS: &quot;http://elasticsearch:9200&quot; #8.x 之后使用 ELASTICSEARCH_URL</span></span><br><span class="line">      <span class="comment"># 如果启用了 Elasticsearch 安全特性，需要配置用户名和密码</span></span><br><span class="line">      <span class="comment">#ELASTICSEARCH_USERNAME: &quot;elastic&quot;</span></span><br><span class="line">      <span class="comment">#ELASTICSEARCH_PASSWORD: &quot;changeme&quot;</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">elk</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">elasticsearch</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">esdata:</span>  <span class="comment"># 定义 Elasticsearch 数据卷</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">elk:</span>  <span class="comment"># 定义网络</span></span><br></pre></td></tr></table></figure>
-<p><strong>3. 创建 Logstash 管道配置:</strong></p>
-<p>在 <code>elk-smb</code> 目录下创建 <code>logstash/pipeline</code> 目录，并在其中创建 Logstash 管道配置文件 <code>smb-pipeline.conf</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"># logstash/pipeline/smb-pipeline.conf</span><br><span class="line"></span><br><span class="line">input &#123;</span><br><span class="line">  # 从 Beats 接收数据 (例如 Winlogbeat)</span><br><span class="line">  beats &#123;</span><br><span class="line">    port =&gt; 5044</span><br><span class="line">    type =&gt; &quot;windows-eventlog&quot;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  # 从 Syslog 接收数据 (例如 Samba)</span><br><span class="line">  syslog &#123;</span><br><span class="line">    port =&gt; 514</span><br><span class="line">    type =&gt; &quot;samba-syslog&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">  # Windows 事件日志处理 (示例)</span><br><span class="line">  if [type] == &quot;windows-eventlog&quot; &#123;</span><br><span class="line">        if [event][code] == 5140 &#123;</span><br><span class="line">             xml &#123;</span><br><span class="line">                source =&gt; &quot;[event][provider_data][data]&quot;</span><br><span class="line">                target =&gt; &quot;event_data&quot;</span><br><span class="line">                xpath =&gt; [</span><br><span class="line">                    &quot;/Event/EventData/Data[@Name=&#x27;SubjectUserSid&#x27;]/text()&quot;, &quot;SubjectUserSid&quot;,</span><br><span class="line">                    &quot;/Event/EventData/Data[@Name=&#x27;SubjectUserName&#x27;]/text()&quot;, &quot;SubjectUserName&quot;,</span><br><span class="line">                    &quot;/Event/EventData/Data[@Name=&#x27;SubjectDomainName&#x27;]/text()&quot;, &quot;SubjectDomainName&quot;,</span><br><span class="line">                    &quot;/Event/EventData/Data[@Name=&#x27;SubjectLogonId&#x27;]/text()&quot;, &quot;SubjectLogonId&quot;,</span><br><span class="line">                     &quot;/Event/EventData/Data[@Name=&#x27;ShareName&#x27;]/text()&quot;, &quot;ShareName&quot;,</span><br><span class="line">                    &quot;/Event/EventData/Data[@Name=&#x27;ShareLocalPath&#x27;]/text()&quot;, &quot;ShareLocalPath&quot;,</span><br><span class="line">                    &quot;/Event/EventData/Data[@Name=&#x27;ClientAddress&#x27;]/text()&quot;, &quot;[client][ip]&quot;,  # 客户端 IP</span><br><span class="line">                    &quot;/Event/EventData/Data[@Name=&#x27;ClientName&#x27;]/text()&quot;,&quot;ClientName&quot;</span><br><span class="line">                   ]</span><br><span class="line">                remove_field =&gt; [&quot;[event][provider_data][data]&quot;]</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              # 提取客户端 IP</span><br><span class="line">                mutate &#123;</span><br><span class="line">                  rename =&gt; &#123; &quot;[event_data][ClientAddress]&quot; =&gt; &quot;[client][ip]&quot; &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">    # ... 其他 Windows 事件日志处理 ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  # Samba 日志处理 (示例)</span><br><span class="line">  if [type] == &quot;samba-syslog&quot; &#123;</span><br><span class="line">        grok &#123;</span><br><span class="line">        match =&gt; &#123; &quot;message&quot; =&gt; [</span><br><span class="line">          # 匹配常见的 Samba 日志格式 (根据实际情况调整)</span><br><span class="line">          &quot;%&#123;SYSLOGTIMESTAMP:syslog_timestamp&#125; %&#123;SYSLOGHOST:syslog_hostname&#125; smbd\[%&#123;POSINT:pid&#125;\]: \[%&#123;YEAR:year&#125;/%&#123;MONTHNUM:month&#125;/%&#123;MONTHDAY:day&#125; %&#123;TIME:time&#125;\] %&#123;WORD:smb_client&#125; \(%&#123;IPORHOST:client_ip&#125;\) %&#123;WORD:smb_action&#125; %&#123;GREEDYDATA:smb_path&#125;&quot;,</span><br><span class="line">          # 另一种常见的格式</span><br><span class="line">          &quot;%&#123;SYSLOGTIMESTAMP:syslog_timestamp&#125; %&#123;SYSLOGHOST:syslog_hostname&#125; smbd_audit: %&#123;USER:username&#125;\|%&#123;IP:client_ip&#125;\|%&#123;HOSTNAME:client_hostname&#125;\|%&#123;GREEDYDATA:share_name&#125;\|%&#123;WORD:operation&#125;\|%&#123;GREEDYDATA:file_path&#125;&quot;,</span><br><span class="line">          # 更多匹配规则...</span><br><span class="line">          &quot;%&#123;GREEDYDATA:message&#125;&quot; # 最后的匹配规则捕获所有内容</span><br><span class="line">         ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">       mutate &#123;</span><br><span class="line">         add_field =&gt; &#123; &quot;[client][ip]&quot; =&gt; &quot;%&#123;client_ip&#125;&quot; &#125;</span><br><span class="line">         remove_field =&gt; [ &quot;client_ip&quot; ]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      date &#123;</span><br><span class="line">        match =&gt; [ &quot;syslog_timestamp&quot;, &quot;MMM  d HH:mm:ss&quot;, &quot;MMM dd HH:mm:ss&quot;, &quot;ISO8601&quot; ]</span><br><span class="line">        target =&gt; &quot;@timestamp&quot;</span><br><span class="line">        remove_field =&gt; [&quot;syslog_timestamp&quot;]</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; [&quot;http://elasticsearch:9200&quot;] # 使用服务名访问 Elasticsearch</span><br><span class="line">    index =&gt; &quot;smb-audit-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">     #user =&gt; &quot;elastic&quot;  # 如果启用了安全认证</span><br><span class="line">     #password =&gt; &quot;changeme&quot;</span><br><span class="line">  &#125;</span><br><span class="line">  stdout &#123; codec =&gt; rubydebug &#125; # 用于调试</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>说明:</strong></p>
-<ul>
-<li>这个配置文件同时处理来自 Beats (Windows Event Log) 和 Syslog (Samba) 的输入.</li>
-<li>Windows 部分, 使用 <code>xml</code> 插件解析事件日志的 XML 数据.</li>
-<li>Samba 部分, 使用 <code>grok</code> 插件解析日志.  你需要根据实际的 Samba 日志格式调整 <code>grok</code> 表达式.</li>
-<li><code>mutate</code> 用于重命名字段, 添加字段等.</li>
-<li><code>date</code> 用于解析时间戳.</li>
-</ul>
-<ul>
-<li>代理服务器查询</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">systemctl show --property=Environment docker</span><br><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl restart docker</span><br><span class="line"><span class="comment"># docker config 文件目录</span></span><br><span class="line">/etc/systemd/system/docker.service.d/</span><br><span class="line">/etc/default/docker</span><br><span class="line">/etc/sysconfig/docker</span><br></pre></td></tr></table></figure>
-<p><strong>4. 启动 ELK Stack:</strong></p>
-<p>在 <code>elk-smb</code> 目录下，运行以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker compose up -d</span></span><br><span class="line"><span class="built_in">sudo</span> docker-compose up -d </span><br></pre></td></tr></table></figure>
-<p>这将启动 Elasticsearch、Logstash 和 Kibana 容器。<code>-d</code> 选项表示在后台运行。</p>
-<p><strong>5. 验证安装:</strong></p>
-<ul>
-<li>
-<p><strong>Elasticsearch:</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:9200</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li>返回结果</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span> : <span class="string">&quot;800c9626c439&quot;</span>,</span><br><span class="line">  <span class="string">&quot;cluster_name&quot;</span> : <span class="string">&quot;docker-cluster&quot;</span>,</span><br><span class="line">  <span class="string">&quot;cluster_uuid&quot;</span> : <span class="string">&quot;2MXalfBNSGGwktsjV8R-eQ&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span> : &#123;</span><br><span class="line">    <span class="string">&quot;number&quot;</span> : <span class="string">&quot;8.10.4&quot;</span>,</span><br><span class="line">    <span class="string">&quot;build_flavor&quot;</span> : <span class="string">&quot;default&quot;</span>,</span><br><span class="line">    <span class="string">&quot;build_type&quot;</span> : <span class="string">&quot;docker&quot;</span>,</span><br><span class="line">    <span class="string">&quot;build_hash&quot;</span> : <span class="string">&quot;b4a62ac808e886ff032700c391f45f1408b2538c&quot;</span>,</span><br><span class="line">    <span class="string">&quot;build_date&quot;</span> : <span class="string">&quot;2023-10-11T22:04:35.506990650Z&quot;</span>,</span><br><span class="line">    <span class="string">&quot;build_snapshot&quot;</span> : <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&quot;lucene_version&quot;</span> : <span class="string">&quot;9.7.0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;minimum_wire_compatibility_version&quot;</span> : <span class="string">&quot;7.17.0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;minimum_index_compatibility_version&quot;</span> : <span class="string">&quot;7.0.0&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;tagline&quot;</span> : <span class="string">&quot;You Know, for Search&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<pre><code>应该会看到 JSON 响应，表明 Elasticsearch 正在运行。
-</code></pre>
-<ul>
-<li>
-<p><strong>Kibana:</strong></p>
-<p>在浏览器中访问 <code>http://localhost:5601</code>，应该能看到 Kibana 的界面。</p>
-</li>
-<li>
-<p><strong>Logstash:</strong><br>
-Logstash 启动后会监听 5044 (Beats) 和 514 (Syslog) 端口. 可以通过查看 Logstash 的日志来确认:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs logstash</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>6. 配置数据源 (Samba 和 Windows):</strong></p>
-<ul>
-<li>
-<p><strong>Samba (Linux):</strong></p>
+<p><strong>结论</strong>: FFmpeg 提供了实现场景检测所需的核心功能，其性能和标准化特性使其成为一个高度可行的技术选型。</p>
+<h2 id="2-实现方法-Implementation"><strong>2. 实现方法 (Implementation)</strong></h2>
+<p>实现 FFmpeg 场景检测的最佳实践是结合 <code>select</code> 和 <code>showinfo</code> 两个滤镜。这种方法比单独使用老旧的 <code>scdet</code> 滤镜输出更干净、更可靠。</p>
+<p><strong>核心命令</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i <span class="string">&quot;input.mp4&quot;</span> -vf <span class="string">&quot;select=&#x27;gt(scene,THRESHOLD)&#x27;,showinfo&quot;</span> -f null -</span><br></pre></td></tr></table></figure>
+<p><strong>命令解析</strong>:</p>
 <ol>
-<li>配置 Samba (<code>/etc/samba/smb.conf</code>) 以将日志发送到 Syslog（如前所述）：<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span></span><br><span class="line">   log <span class="attr">level</span> = <span class="number">3</span></span><br><span class="line">   syslog <span class="attr">only</span> = <span class="literal">yes</span></span><br><span class="line">   <span class="attr">syslog</span> = <span class="number">3</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>配置 rsyslog 或 syslog-ng 将 Samba 的日志转发到 Logstash 容器的 IP 地址和端口 514。 (如果 Logstash 和 Samba 在同一台机器, 可以用 <code>127.0.0.1</code>, 否则用 Logstash 所在机器的 IP).  rsyslog 配置示例 (<code>/etc/rsyslog.conf</code> 或 <code>/etc/rsyslog.d/50-default.conf</code>):<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local7.* @&lt;Logstash 容器 IP&gt;:514  # UDP</span><br></pre></td></tr></table></figure>
-</li>
-<li>重启 Samba 和 rsyslog：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart smbd</span><br><span class="line"><span class="built_in">sudo</span> systemctl restart rsyslog</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-<li>
-<p><strong>Windows Server:</strong></p>
-<ol>
-<li>配置 Windows 审核策略（如前所述）。</li>
-<li>安装和配置 Winlogbeat（如前所述），将 <code>output.logstash.hosts</code> 设置为 Logstash 容器的 IP 地址和端口 5044。  Winlogbeat 配置示例 (<code>winlogbeat.yml</code>):</li>
-</ol>
-   <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">output.logstash:</span></span><br><span class="line">  <span class="attr">hosts:</span> [<span class="string">&quot;&lt;Logstash 容器 IP&gt;:5044&quot;</span>]</span><br></pre></td></tr></table></figure>
+<li><code>ffmpeg -i &quot;input.mp4&quot;</code>: 指定输入视频文件。</li>
+<li><code>-vf &quot;...&quot;</code>: <code>-vf</code> 是 <code>-filter:v</code> 的缩写，用于指定视频滤镜链。</li>
+<li><code>select='gt(scene,THRESHOLD)'</code>: 这是核心的<strong>选择滤镜</strong>。
 <ul>
-<li>获取 Logstash 容器的 IP: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect -f &#x27;&#123;&#123;range.NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#x27; logstash</span><br></pre></td></tr></table></figure>
-</li>
+<li><code>scene</code>: FFmpeg 内置的一个变量，代表当前帧与前一帧的场景变化分数（范围 0.0 到 1.0）。</li>
+<li><code>gt(a, b)</code>: “Greater Than” 函数，当 <code>a &gt; b</code> 时返回真。</li>
+<li><code>THRESHOLD</code>: 这是一个<strong>可调阈值</strong>（例如 <code>0.4</code>）。值越低，检测越灵敏。该滤镜会筛选出所有场景变化分数大于阈值的视频帧。</li>
 </ul>
-<ol start="3">
-<li>启动 Winlogbeat 服务。</li>
+</li>
+<li><code>,showinfo</code>: 这是<strong>信息打印滤镜</strong>。它会接收由 <code>select</code> 滤镜筛选出的帧，并在标准错误流（stderr）中打印出这些帧的详细信息，格式高度统一。</li>
+<li><code>-f null -</code>: 指示 FFmpeg 不生成任何输出文件，仅执行滤镜分析，并将结果输出到标准输出/错误流。</li>
 </ol>
-</li>
-</ul>
-<p><strong>7. 在 Kibana 中查看日志:</strong></p>
+<p><strong>Python 脚本实现</strong>:</p>
+<p>在实际应用中，我们通常使用 Python 的 <code>subprocess</code> 模块来调用此命令并解析其输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">detect_scenes_with_ffmpeg</span>(<span class="params">video_path, threshold=<span class="number">0.4</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用 FFmpeg 检测视频场景切换点。&quot;&quot;&quot;</span></span><br><span class="line">    command = [</span><br><span class="line">        <span class="string">&quot;ffmpeg&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-i&quot;</span>, video_path,</span><br><span class="line">        <span class="string">&quot;-vf&quot;</span>, <span class="string">f&quot;select=&#x27;gt(scene,<span class="subst">&#123;threshold&#125;</span>)&#x27;,showinfo&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;null&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-&quot;</span></span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    process = subprocess.Popen(command, stderr=subprocess.PIPE, text=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    timestamps = []</span><br><span class="line">    <span class="comment"># 正则表达式专门匹配 showinfo 输出的 pts_time</span></span><br><span class="line">    regex = <span class="string">r&quot;\[Parsed_showinfo.*\] .* pts_time:([0-9]+\.?[0-9]*)&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> process.stderr:</span><br><span class="line">        <span class="keyword">match</span> = re.search(regex, line)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">match</span>:</span><br><span class="line">            timestamps.append(<span class="built_in">float</span>(<span class="keyword">match</span>.group(<span class="number">1</span>)))</span><br><span class="line">            </span><br><span class="line">    process.wait()</span><br><span class="line">    <span class="keyword">if</span> process.returncode != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">&quot;FFmpeg command failed.&quot;</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> timestamps</span><br></pre></td></tr></table></figure>
+<h2 id="3-测试与验证方法-Testing-Validation"><strong>3. 测试与验证方法 (Testing &amp; Validation)</strong></h2>
+<p>要验证 FFmpeg 场景检测的准确性，需要系统性的测试方法。</p>
 <ol>
 <li>
-<p>在 Kibana 中创建 Index Pattern (索引模式)：</p>
+<p><strong>构建测试集 (Test Dataset Construction)</strong>:</p>
 <ul>
-<li>首次访问 Kibana 时，它会提示您创建 Index Pattern。</li>
-<li>在 Management -&gt; Stack Management -&gt; Index Patterns 中创建。</li>
-<li>Index Pattern 名称：<code>smb-audit-*</code> (与 Logstash 配置中的 <code>index</code> 匹配)。</li>
-<li>时间筛选字段：<code>@timestamp</code></li>
+<li><strong>正样本</strong>: 包含多种类型场景切换的视频。
+<ul>
+<li><strong>硬切 (Hard Cuts)</strong>: 瞬间切换，FFmpeg 检测效果最好。</li>
+<li><strong>淡入淡出 (Fades)</strong>: 逐渐变黑或从黑屏出现。</li>
+<li><strong>叠化 (Dissolves)</strong>: 两个场景平滑过渡。</li>
+<li><strong>快速运动/闪光</strong>: 容易产生误报的场景，如爆炸、相机快速摇晃、闪光灯。</li>
+</ul>
+</li>
+<li><strong>负样本</strong>: 长镜头、无明显切换的视频，用于测试是否会产生误报。</li>
 </ul>
 </li>
 <li>
-<p>在 Discover 中查看日志：</p>
+<p><strong>人工标注 (Ground Truth Annotation)</strong>:</p>
 <ul>
-<li>选择 <code>smb-audit-*</code> 索引模式。</li>
-<li>设置时间范围。</li>
-<li>您应该能看到来自 Samba 和 Windows 的 SMB 访问日志。</li>
+<li>使用视频编辑软件（如 Adobe Premiere, Final Cut Pro）手动记录测试集中所有场景切换的精确时间戳，作为“黄金标准”或“基准真相”（Ground Truth）。</li>
+</ul>
+</li>
+<li>
+<p><strong>量化评估指标 (Quantitative Metrics)</strong>:</p>
+<ul>
+<li>将 FFmpeg 检测出的时间戳与人工标注的时间戳进行比对（允许一个小的容忍窗口，如 ±0.5秒）。</li>
+<li>计算以下指标：
+<ul>
+<li><strong>精确率 (Precision)</strong>: <code>TP / (TP + FP)</code>，检测出的转场中有多少是正确的。</li>
+<li><strong>召回率 (Recall)</strong>: <code>TP / (TP + FN)</code>，所有真实转场中，有多少被成功检测出来了。</li>
+<li><strong>F1-Score</strong>: <code>2 * (Precision * Recall) / (Precision + Recall)</code>，精确率和召回率的调和平均值，是综合评估性能的常用指标。</li>
+<li><code>TP</code> (True Positives): 正确检测到的转场。</li>
+<li><code>FP</code> (False Positives): 误报的转场。</li>
+<li><code>FN</code> (False Negatives): 漏掉的转场。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>阈值调优</strong>:</p>
+<ul>
+<li>通过在测试集上运行不同阈值（例如从 0.2 到 0.7），绘制 Precision-Recall 曲线，找到在特定应用场景下 F1-Score 最高的最佳阈值。</li>
 </ul>
 </li>
 </ol>
-<p><strong>8. 停止和删除容器:</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose down</span><br></pre></td></tr></table></figure>
-<h2 id="about-me-个人微信">about me 个人微信</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h2 id="wechat-offical-微信公众号">wechat offical 微信公众号</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<h2 id="4-优缺点分析-Pros-and-Cons"><strong>4. 优缺点分析 (Pros and Cons)</strong></h2>
+<p><strong>优点 (Pros)</strong>:</p>
+<ul>
+<li><strong>性能卓越</strong>: 作为C语言编写的高度优化的程序，FFmpeg 的处理速度极快，远超许多高级语言实现的库。</li>
+<li><strong>资源占用低</strong>: 内存和CPU占用都很小，非常适合在资源受限的环境或大规模服务器集群上运行。</li>
+<li><strong>部署简单</strong>: 无需复杂的依赖安装，一个可执行文件即可搞定。</li>
+<li><strong>高度可定制与集成</strong>: 可以通过调整阈值来控制灵敏度，并且能与 FFmpeg 其他上百种滤镜和功能（如切片、转码、截图）在同一个命令中无缝集成，形成强大的处理流水线。</li>
+<li><strong>免费与开源</strong>: 无任何商业成本，社区活跃，文档丰富。</li>
+</ul>
+<p><strong>缺点 (Cons)</strong>:</p>
+<ul>
+<li><strong>仅基于像素，不理解内容</strong>: 这是其核心局限。FFmpeg 无法理解视频的语义。
+<ul>
+<li><strong>对渐变转场不敏感</strong>: 对于淡入淡出、叠化等缓慢变化的转场，由于连续帧差异小，很容易被漏检 (False Negatives)。</li>
+<li><strong>对剧烈运动敏感</strong>: 快速的镜头移动、爆炸、闪光灯等非场景切换的剧烈视觉变化，很容易被误报 (False Positives)。</li>
+<li><strong>无法识别转场类型</strong>: 它只能告诉你“这里发生了变化”，但无法区分是硬切还是其他特效。</li>
+</ul>
+</li>
+<li><strong>阈值依赖性强</strong>: 效果好坏严重依赖于阈值的设定，而“最佳阈值”对于不同类型（如动画、电影、Vlog）的视频可能完全不同，需要经验或实验来确定。</li>
+<li><strong>需要外部调用与解析</strong>: 它不是一个原生库，在 Python 等语言中使用时，必须通过子进程调用，并编写正则表达式等代码来解析其文本输出，增加了集成的复杂性。</li>
+</ul>
+<h2 id="5-效率评估-Efficiency-Evaluation"><strong>5. 效率评估 (Efficiency Evaluation)</strong></h2>
+<p>FFmpeg 的效率是其最显著的优势之一。</p>
+<ul>
+<li><strong>处理速度</strong>: 在现代多核 CPU 上，处理一个 1080p 的视频文件，其速度通常可以达到实时速度的数倍甚至数十倍（例如，处理1小时的视频可能只需要几分钟）。由于其主要进行数学计算，性能瓶颈通常在于磁盘 I/O 或 CPU 单核性能。</li>
+<li><strong>与 PySceneDetect 的对比</strong>:
+<ul>
+<li><code>PySceneDetect</code> (使用 OpenCV 后端) 同样高效，但通常会比 FFmpeg 稍慢，因为它有 Python 层的开销。</li>
+<li>当 <code>PySceneDetect</code> 使用更复杂的检测器（如 <code>ThresholdDetector</code>，检测黑场/白场）时，其开销会进一步增加。</li>
+<li>FFmpeg 的优势在于其纯 C 实现和极简的计算逻辑，使其在原始速度上通常保持领先。</li>
+</ul>
+</li>
+<li><strong>内存使用</strong>: FFmpeg 采用流式处理（streaming），一次只在内存中保留少量帧进行计算，因此内存占用非常稳定且低下，即便是处理数小时的长视频也不会耗尽内存。</li>
+</ul>
+<p><strong>优化建议</strong>: 虽然 FFmpeg 已经很快，但对于超高分辨率视频（如 4K, 8K），可以通过在滤镜链中加入 <code>scale</code> 滤镜进行<strong>降采样</strong>来进一步提速，例如 <code>scale=640:-1</code>，这通常不会影响硬切检测的准确性。</p>
+<h2 id="6-案例">6. 案例</h2>
+<ul>
+<li>code</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Dict</span>, <span class="type">Any</span>, <span class="type">Tuple</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 1. Setup Logging ---</span></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">setup_logging</span>(<span class="params">log_file: <span class="built_in">str</span> = <span class="string">&quot;analysis.log&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Configures logging to file and console.&quot;&quot;&quot;</span></span><br><span class="line">    logging.basicConfig(</span><br><span class="line">        level=logging.INFO,</span><br><span class="line">        <span class="built_in">format</span>=<span class="string">&quot;%(asctime)s [%(levelname)s] - %(message)s&quot;</span>,</span><br><span class="line">        handlers=[</span><br><span class="line">            logging.FileHandler(log_file, mode=<span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>),</span><br><span class="line">            logging.StreamHandler()  <span class="comment"># Also print to console</span></span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">analyze_video_transitions</span>(<span class="params"></span></span><br><span class="line"><span class="params">        video_path: <span class="built_in">str</span>,</span></span><br><span class="line"><span class="params">        ffmpeg_path: <span class="built_in">str</span> = <span class="string">&quot;ffmpeg&quot;</span>,</span></span><br><span class="line"><span class="params">        threshold: <span class="built_in">float</span> = <span class="number">0.4</span></span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="type">Tuple</span>[<span class="type">List</span>[<span class="built_in">float</span>], <span class="built_in">str</span>]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Analyzes a video file for scene transitions using ffmpeg.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This function uses the &#x27;select&#x27; and &#x27;showinfo&#x27; filters in ffmpeg, which is a</span></span><br><span class="line"><span class="string">    more robust method than parsing the output of &#x27;scdet&#x27; alone. It identifies</span></span><br><span class="line"><span class="string">    frames where the scene change score exceeds a given threshold.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        video_path: The absolute or relative path to the video file.</span></span><br><span class="line"><span class="string">        ffmpeg_path: The path to the ffmpeg executable. Defaults to &#x27;ffmpeg&#x27;.</span></span><br><span class="line"><span class="string">        threshold: The sensitivity for scene detection, from 0.0 to 1.0.</span></span><br><span class="line"><span class="string">                   Lower values detect more transitions. A common default is 0.4.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        A tuple containing:</span></span><br><span class="line"><span class="string">        - A sorted list of timestamps (in seconds) where transitions were detected.</span></span><br><span class="line"><span class="string">        - The complete, raw stderr output from the ffmpeg command for debugging.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Raises:</span></span><br><span class="line"><span class="string">        FileNotFoundError: If the ffmpeg executable is not found at ffmpeg_path.</span></span><br><span class="line"><span class="string">        FFmpegError: If ffmpeg returns a non-zero exit code, indicating an error</span></span><br><span class="line"><span class="string">                     (e.g., invalid video file, incorrect parameters).</span></span><br><span class="line"><span class="string">        ValueError: If the provided video_path does not exist.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># It&#x27;s good practice to check for file existence early</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(video_path):</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;Video file not found at: <span class="subst">&#123;video_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># This command is more robust:</span></span><br><span class="line">    <span class="comment"># - `select=&#x27;gt(scene,&#123;threshold&#125;)&#x27;`: Selects frames where the scene change</span></span><br><span class="line">    <span class="comment">#   score is greater than the threshold.</span></span><br><span class="line">    <span class="comment"># - `showinfo`: Prints information about the selected frames to stderr.</span></span><br><span class="line">    <span class="comment"># The output is structured and easy to parse.</span></span><br><span class="line">    command = [</span><br><span class="line">        ffmpeg_path,</span><br><span class="line">        <span class="string">&quot;-i&quot;</span>, video_path,</span><br><span class="line">        <span class="string">&quot;-vf&quot;</span>, <span class="string">f&quot;select=&#x27;gt(scene,<span class="subst">&#123;threshold&#125;</span>)&#x27;,showinfo&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;null&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-&quot;</span></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        process = subprocess.Popen(</span><br><span class="line">            command,</span><br><span class="line">            stdout=subprocess.PIPE,</span><br><span class="line">            stderr=subprocess.PIPE,</span><br><span class="line">            text=<span class="literal">True</span>,</span><br><span class="line">            encoding=<span class="string">&#x27;utf-8&#x27;</span>,</span><br><span class="line">            errors=<span class="string">&#x27;replace&#x27;</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">        <span class="keyword">raise</span> FileNotFoundError(</span><br><span class="line">            <span class="string">f&quot;ffmpeg executable not found at &#x27;<span class="subst">&#123;ffmpeg_path&#125;</span>&#x27;. &quot;</span></span><br><span class="line">            <span class="string">&quot;Please install ffmpeg or provide the correct path.&quot;</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Process stderr line-by-line for memory efficiency</span></span><br><span class="line">    timestamps = []</span><br><span class="line">    <span class="comment"># The regex now specifically looks for &#x27;pts_time&#x27; from the showinfo filter</span></span><br><span class="line">    regex = <span class="string">r&quot;\[Parsed_showinfo.*\] .* pts_time:([0-9]+\.?[0-9]*)&quot;</span></span><br><span class="line"></span><br><span class="line">    stderr_lines = []</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> process.stderr:</span><br><span class="line">        stderr_lines.append(line)</span><br><span class="line">        <span class="keyword">match</span> = re.search(regex, line)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">match</span>:</span><br><span class="line">            time_str = <span class="keyword">match</span>.group(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">if</span> time_str:</span><br><span class="line">                timestamps.append(<span class="built_in">float</span>(time_str))</span><br><span class="line"></span><br><span class="line">    process.wait()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Check for ffmpeg errors after processing is complete</span></span><br><span class="line">    <span class="keyword">if</span> process.returncode != <span class="number">0</span>:</span><br><span class="line">        full_stderr = <span class="string">&quot;&quot;</span>.join(stderr_lines)</span><br><span class="line">        <span class="comment"># raise FFmpegError(</span></span><br><span class="line">        <span class="comment">#     f&quot;ffmpeg failed with exit code &#123;process.returncode&#125;.\n&quot;</span></span><br><span class="line">        <span class="comment">#     f&quot;Command: &#123;&#x27; &#x27;.join(command)&#125;\n&quot;</span></span><br><span class="line">        <span class="comment">#     f&quot;Stderr:\n&#123;full_stderr&#125;&quot;</span></span><br><span class="line">        <span class="comment"># )</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Timestamps from showinfo should already be in order, but sorting is safe</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">sorted</span>(timestamps), <span class="string">&quot;&quot;</span>.join(stderr_lines)</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Main function to run the analysis script.&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- Configuration ---</span></span><br><span class="line">    <span class="comment"># 1. Setup logging first</span></span><br><span class="line">    log_file = <span class="string">&quot;./logs/transition_analysis.log&quot;</span></span><br><span class="line">    os.makedirs(log_file, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    setup_logging(log_file)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. Get user input for video directory</span></span><br><span class="line">    video_directory = <span class="string">&quot;/Volumes/share/新建文件夹/7，1数据&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. Output JSON file path</span></span><br><span class="line">    output_json_path = <span class="string">&quot;./data/transition_analysis_results.json&quot;</span></span><br><span class="line"></span><br><span class="line">    os.makedirs(<span class="string">&quot;./data&quot;</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4. (Optional) FFmpeg executable path</span></span><br><span class="line">    ffmpeg_executable = <span class="string">&quot;ffmpeg&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5. Supported video file extensions</span></span><br><span class="line">    supported_extensions = &#123;<span class="string">&quot;.mp4&quot;</span>, <span class="string">&quot;.mkv&quot;</span>, <span class="string">&quot;.mov&quot;</span>, <span class="string">&quot;.avi&quot;</span>, <span class="string">&quot;.webm&quot;</span>, <span class="string">&quot;.flv&quot;</span>&#125;</span><br><span class="line">    <span class="comment"># --- End of Configuration ---</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.isdir(video_directory):</span><br><span class="line">        logging.error(<span class="string">f&quot;Directory not found at &#x27;<span class="subst">&#123;video_directory&#125;</span>&#x27;. Aborting.&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    all_results: <span class="type">Dict</span>[<span class="built_in">str</span>, <span class="type">Any</span>] = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    logging.info(<span class="string">&quot;Starting video transition analysis...&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- 2. Find all video files first to set up the progress bar ---</span></span><br><span class="line">    video_files_to_process = []</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(video_directory):</span><br><span class="line">        file_path = os.path.join(video_directory, filename)</span><br><span class="line">        <span class="keyword">if</span> os.path.isfile(file_path) <span class="keyword">and</span> Path(filename).suffix.lower() <span class="keyword">in</span> supported_extensions:</span><br><span class="line">            video_files_to_process.append(file_path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> video_files_to_process:</span><br><span class="line">        logging.warning(<span class="string">&quot;No video files found in the specified directory.&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- 3. Process files with a tqdm progress bar ---</span></span><br><span class="line">    <span class="keyword">with</span> tqdm(total=<span class="built_in">len</span>(video_files_to_process), desc=<span class="string">&quot;Analyzing Videos&quot;</span>) <span class="keyword">as</span> pbar:</span><br><span class="line">        <span class="keyword">for</span> video_path <span class="keyword">in</span> video_files_to_process:</span><br><span class="line">            filename = os.path.basename(video_path)</span><br><span class="line">            pbar.set_description(<span class="string">f&quot;Processing <span class="subst">&#123;filename[:<span class="number">20</span>]&#125;</span>...&quot;</span>)  <span class="comment"># Update progress bar description</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                transition_times, ffmpeg_log = analyze_video_transitions(video_path, ffmpeg_executable)</span><br><span class="line"></span><br><span class="line">                logging.info(<span class="string">f&quot;Successfully analyzed &#x27;<span class="subst">&#123;filename&#125;</span>&#x27;. Found <span class="subst">&#123;<span class="built_in">len</span>(transition_times)&#125;</span> transitions.&quot;</span>)</span><br><span class="line">                all_results[filename] = &#123;</span><br><span class="line">                    <span class="string">&quot;file_path&quot;</span>: video_path,</span><br><span class="line">                    <span class="string">&quot;transitions&quot;</span>: transition_times,</span><br><span class="line">                    <span class="string">&quot;transition_count&quot;</span>: <span class="built_in">len</span>(transition_times)</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                logging.error(<span class="string">f&quot;Failed to analyze &#x27;<span class="subst">&#123;filename&#125;</span>&#x27;: <span class="subst">&#123;e&#125;</span>&quot;</span>, exc_info=<span class="literal">True</span>)</span><br><span class="line">                <span class="comment"># Also log the full ffmpeg output for debugging</span></span><br><span class="line">                logging.debug(<span class="string">f&quot;FFmpeg stderr for failed file &#x27;<span class="subst">&#123;filename&#125;</span>&#x27;:\n<span class="subst">&#123;ffmpeg_log&#125;</span>&quot;</span>)</span><br><span class="line">                all_results[filename] = &#123;</span><br><span class="line">                    <span class="string">&quot;error&quot;</span>: <span class="built_in">str</span>(e)</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            pbar.update(<span class="number">1</span>)  <span class="comment"># Move progress bar forward by one step</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Save the results to a JSON file</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(output_json_path, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            json.dump(all_results, f, indent=<span class="number">4</span>, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">        logging.info(<span class="string">f&quot;Analysis complete. Results saved to &#x27;<span class="subst">&#123;output_json_path&#125;</span>&#x27;&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logging.error(<span class="string">f&quot;Error saving results to JSON file: <span class="subst">&#123;e&#125;</span>&quot;</span>, exc_info=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>output</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span> </span><br><span class="line">    <span class="attr">&quot;6月27日 (1)-71.mp4&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;file_path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/Volumes/share/新建文件夹/7，1数据/6月27日 (1)-71.mp4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;transitions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="number">4.0</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">7.666667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">11.766667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">16.566667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">22.866667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">27.066667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">29.266667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">34.766667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">36.966667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">49.566667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">57.066667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">61.766667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">63.5</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">69.866667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">74.8</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">79.466667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">81.266667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">84.066667</span><span class="punctuation">,</span></span><br><span class="line">            <span class="number">88.266667</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;transition_count&quot;</span><span class="punctuation">:</span> <span class="number">19</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>log</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2025-07-02 17:50:43,359 [INFO] - Successfully analyzed &#x27;._6月27日 (1)-36.mp4&#x27;. Found 0 transitions.</span><br><span class="line">2025-07-02 17:50:55,619 [INFO] - Successfully analyzed &#x27;6月27日 (1)-71.mp4&#x27;. Found 19 transitions.</span><br><span class="line">2025-07-02 17:50:55,620 [INFO] - Analysis complete. Results saved to &#x27;transition_analysis_results.json&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="结论"><strong>结论</strong></h2>
+<h3 id="检出效果对比">检出效果对比</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">对比项</th>
+<th style="text-align:left"><strong>方法一: PySceneDetect (pyscenedetect_analysis.py)</strong></th>
+<th style="text-align:left"><strong>方法二: FFmpeg (transition_analysis.py)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>核心技术</strong></td>
+<td style="text-align:left">使用专业的Python场景检测库 <code>scenedetect</code>。通过 <code>ContentDetector</code> 算法，比较连续帧在亮度（luma）和色度（chroma）上的变化来识别场景切换。</td>
+<td style="text-align:left">调用外部命令行工具 FFmpeg，并使用其内置的 <code>select</code> 和 <code>showinfo</code> 滤镜组合。该方法基于一个简单的“场景变化分数”（scene score）进行阈值判断。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>检测灵敏度与准确性</strong></td>
+<td style="text-align:left"><strong>高</strong>。此方法非常灵敏，能稳定地识别出大量的有效场景切换点。其算法对硬切（Hard Cuts）的识别准确率很高。</td>
+<td style="text-align:left"><strong>依赖阈值，默认较低</strong>。在 <code>threshold=0.4</code> 的设置下，灵敏度可能不足，导致大量明显的镜头切换被漏检。需要针对视频内容进行细致的阈值调优才能达到理想效果。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>结果对比 (示例)</strong></td>
+<td style="text-align:left"><code>6月27日 (1)-47.mp4</code>: 检出 <strong>46</strong> 个<br><code>6月27日 (1)-49.mp4</code>: 检出 <strong>43</strong> 个<br><code>6.27(1)-64.mp4</code>: 检出 <strong>17</strong> 个</td>
+<td style="text-align:left"><code>6月27日 (1)-47.mp4</code>: 检出 <strong>0</strong> 个<br><code>6月27日 (1)-49.mp4</code>: 检出 <strong>33</strong> 个<br><code>6.27(1)-64.mp4</code>: 检出 <strong>4</strong> 个</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>文件处理健壮性</strong></td>
+<td style="text-align:left"><strong>高</strong>。脚本中加入了明确的逻辑，能自动识别并跳过 macOS 系统产生的无效元数据文件（如 <code>._filename.mp4</code>），避免了因处理无效文件而导致的程序崩溃或错误。</td>
+<td style="text-align:left"><strong>中等</strong>。脚本会尝试处理 <code>._</code> 开头的无效文件。虽然 FFmpeg 本身通常不会因此崩溃（会报告错误并退出），但这浪费了处理时间，并在日志和结果文件中留下了无效条目。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>性能与效率</strong></td>
+<td style="text-align:left"><strong>中等</strong>。单个文件处理速度相对较慢，因其在Python层有一定开销。但通过自动降采样（downscaling）高分辨率视频，性能已得到显著优化，最终以可接受的速度换取高质量的检测结果。</td>
+<td style="text-align:left"><strong>非常高</strong>。作为C语言编写的底层工具，单个文件处理速度极快。但这种速度优势建立在算法相对简单的基础上，牺牲了部分准确性和对复杂转场的识别能力。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>易用性与集成</strong></td>
+<td style="text-align:left"><strong>高</strong>。作为原生Python库，集成方便，无需处理外部进程和解析文本输出。API友好，返回直接可用的Python数据结构（如列表）。</td>
+<td style="text-align:left"><strong>中等</strong>。需要通过 <code>subprocess</code> 模块调用，并编写正则表达式来解析 <code>stderr</code> 输出，集成相对复杂，且容易因FFmpeg版本更新导致解析逻辑失效。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>依赖与部署</strong></td>
+<td style="text-align:left"><strong>中等</strong>。需要通过 <code>pip</code> 安装 <code>scenedetect</code> 及其依赖（如 <code>opencv-python</code>），环境配置相对复杂。</td>
+<td style="text-align:left"><strong>简单</strong>。仅依赖于一个单一的 FFmpeg 可执行文件，部署和分发非常方便。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>推荐场景</strong></td>
+<td style="text-align:left">适用于对<strong>检测准确性要求高</strong>、需要稳定可靠结果的应用。是构建专业视频分析工具和服务的首选。</td>
+<td style="text-align:left">适用于对<strong>处理速度要求极高</strong>、资源受限，且主要任务是检测硬切（Hard Cuts）的批量自动化流程。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="检出数目对比">检出数目对比</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">检测方法</th>
+<th style="text-align:left">分析的视频总数</th>
+<th style="text-align:left">成功检出转场的视频数</th>
+<th style="text-align:left">检出率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">方法一: PySceneDetect</td>
+<td style="text-align:left">48</td>
+<td style="text-align:left">37</td>
+<td style="text-align:left">77.1%</td>
+</tr>
+<tr>
+<td style="text-align:left">方法二: FFmpeg</td>
+<td style="text-align:left">48</td>
+<td style="text-align:left">19</td>
+<td style="text-align:left">39.6%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="总结">总结</h3>
+<ul>
+<li>
+<p>PySceneDetect 效果远胜 FFmpeg：PySceneDetect 成功在 37 个视频中找到了转场，而 FFmpeg 只在其中的 19 个视频中找到了转场。PySceneDetect 的“命中率”几乎是 FFmpeg 的两倍。</p>
+</li>
+<li>
+<p>FFmpeg 漏检严重：从数据可以看出，FFmpeg 的方法漏掉了大量有转场的视频。例如，在 PySceneDetect 检出 80 个转场的 6月27日 (1)-7.mp4 视频中，FFmpeg 的结果为 0。这种巨大的差异表明 FFmpeg 的 scdet 滤镜在当前参数下过于迟钝，不适合用于精确的场景切分。</p>
+</li>
+</ul>
+<blockquote>
+<p>FFmpeg 是一种用于视频场景检测的“快、准（对硬切而言）、狠”的工具**。它非常适合于需要<strong>大规模、自动化、快速处理</strong>视频，且主要目标是检测<strong>硬切</strong>的场景。它的高性能、低资源占用和强大的集成能力使其在后端服务和数据预处理流程中具有不可替代的价值。</p>
+</blockquote>
+<h2 id="See">See</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ffmpeg.org/ffmpeg-bitstream-filters.html">https://ffmpeg.org/ffmpeg-bitstream-filters.html</a></li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
@@ -807,7 +885,7 @@ Logstash 启动后会监听 5044 (Beats) 和 514 (Syslog) 端口. 可以通过�
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2025/03/10/smb-elk-log/" target="_blank" title="Samba (Linux) + Syslog + Logstash + Elasticsearch 转发smb日志">https://caozhaoqi.github.io/2025/03/10/smb-elk-log/</a>
+    <a href="/2025/07/02/ffmpeg-detect-scene/" target="_blank" title="f基于 FFmpeg 的视频场景（镜头边界）检测">https://caozhaoqi.github.io/2025/07/02/ffmpeg-detect-scene/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -825,44 +903,24 @@ Logstash 启动后会监听 5044 (Beats) 和 514 (Syslog) 端口. 可以通过�
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2025/03/11/rsync-nas-backup/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">使用rsync同步备份NAS中的文件到其他NSA服务器</div>
-      </div>
-      
-      <!-- <div class="content">
-        使用rsync同步备份NAS中的文件到其他NSA服务器
-rsync简介
-rsync 是一个快速、通用且极其强大的文件复制
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2025/03/04/python-spider-introduce/" class="post-nav-link">
+    <a href="/2025/06/09/TransNetV2-model-use/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">python_spider_introduce</div>
+        <div class="title-text">TransNetV2模型用于视频复杂转场检测</div>
       </div>
       <!-- <div class="content">
-        Python 数据采集技术及应用场景
-概要：
-常用 Python 数据采集技术及应用场景的总结。
-常用爬虫编程语言和技术
+        TransNet V2 模型介绍
+
+目标：
+TransNet V2 的目标是创建一个快速且准确的镜头边界检测（Shot 
       </div> -->
     </a>
   </div>
@@ -1182,7 +1240,7 @@ rsync 是一个快速、通用且极其强大的文件复制
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E7%AE%80%E4%BB%8B"><span class="toc-text">方案简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-text">安装使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8A%80%E6%9C%AF%E5%8F%AF%E8%A1%8C%E6%80%A7%E5%88%86%E6%9E%90-Feasibility-Analysis"><span class="toc-text">1. 技术可行性分析 (Feasibility Analysis)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95-Implementation"><span class="toc-text">2. 实现方法 (Implementation)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%E6%96%B9%E6%B3%95-Testing-Validation"><span class="toc-text">3. 测试与验证方法 (Testing &amp; Validation)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BC%98%E7%BC%BA%E7%82%B9%E5%88%86%E6%9E%90-Pros-and-Cons"><span class="toc-text">4. 优缺点分析 (Pros and Cons)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%95%88%E7%8E%87%E8%AF%84%E4%BC%B0-Efficiency-Evaluation"><span class="toc-text">5. 效率评估 (Efficiency Evaluation)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%A1%88%E4%BE%8B"><span class="toc-text">6. 案例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E5%87%BA%E6%95%88%E6%9E%9C%E5%AF%B9%E6%AF%94"><span class="toc-text">检出效果对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E5%87%BA%E6%95%B0%E7%9B%AE%E5%AF%B9%E6%AF%94"><span class="toc-text">检出数目对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
