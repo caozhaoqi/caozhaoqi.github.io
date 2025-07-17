@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2025/07/17/tailscale-docker-build/
 https://caozhaoqi.github.io/2025/07/16/minio-nas-build/
 https://caozhaoqi.github.io/2024/12/15/centos-docker-install/
 https://caozhaoqi.github.io/2025/04/07/ffmpeg-problem-video/
