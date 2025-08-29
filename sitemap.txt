@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2025/08/29/ss-build-doc/
 https://caozhaoqi.github.io/2025/08/14/pyav-use-video/
 https://caozhaoqi.github.io/2025/07/22/watermark-gen-valid/
 https://caozhaoqi.github.io/2025/07/17/tailscale-docker-build/
