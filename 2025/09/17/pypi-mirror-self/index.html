@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>毕业设计预览 | Zhaoqi.Cao static blog</title>
+  <title>使用Devpi与Nginx构建高可用PyPI镜像源 | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -589,21 +589,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        毕业设计预览
+        使用Devpi与Nginx构建高可用PyPI镜像源
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2024-06-25 |
+          <i class="fas fa-calendar"></i> Published in：2025-09-17 |
         </span>
       
 
@@ -612,11 +612,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 28 |
+            <i class="fas fa-file-text-o"></i> Words: 2k |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 1min |
+            <i class="fas fa-clock"></i> Reading time: 8min |
           </span>
   
           
@@ -643,31 +643,131 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="原文如下">原文如下:</h2>
-<br>
-<!-- 
-
-	<div class="row">
-    <embed src="https://caozhaoqi.github.io/2024/06/25/graduate-design/gd_final.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
- -->
-暂时失效，停止访问！！！<br>
----2024/08/21---
-<br>
-<h2 id="about-me-个人微信">about me 个人微信</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h2 id="wechat-offical-微信公众号">wechat offical 微信公众号</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+        <h2 id="使用Devpi与Nginx构建高可用PyPI镜像源">使用Devpi与Nginx构建高可用PyPI镜像源</h2>
+<h3 id="前言：为什么你的pip-install又超时了？">前言：为什么你的<code>pip install</code>又超时了？</h3>
+<p>对于每一位Python开发者来说，<code>pip install</code> 无疑是最常用的命令之一。然而，团队开发中，我们常常会遇到这些痛点：</p>
+<ul>
+<li><strong>速度瓶颈</strong>：团队几十号人，CI/CD流水线上百个任务，全都从国外的官方PyPI源拉取包，下载速度慢得令人抓狂，严重影响开发和部署效率。</li>
+<li><strong>单点故障</strong>：官方PyPI偶尔会抖动，或者公司出口网络出现问题，导致所有依赖安装失败，研发流程瞬间停摆。</li>
+<li><strong>安全与合规</strong>：无法对团队使用的第三方包进行统一管理和安全审计。</li>
+<li><strong>私有包托管</strong>：团队内部开发的公共库无处安放，只能通过Git仓库等原始方式共享。</li>
+</ul>
+<p>为了彻底解决这些问题，我们需要一个<strong>私有的、高速的、且永不宕机</strong>的Python包仓库。今天，我将手把手带你使用业界最强大的开源工具 <strong><code>devpi</code></strong> 和 <strong><code>Nginx</code></strong>，构建一个具备自动故障转移能力的高可用PyPI镜像源。</p>
+<p><strong>最终目标</strong>：无论清华源、阿里源还是其他任何一个镜像挂了，我们的 <code>pip install</code> 依然能丝滑流畅地运行，对开发者完全透明！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">+-----------+     +-------------------+     +-------------------------+     +--------------------------+</span><br><span class="line">|           |     |                   |     |                         |     |   Tsinghua Mirror       |</span><br><span class="line">|  开发者   | --&gt; |  devpi 服务器      | --&gt; |  Nginx 反向代理          | --&gt; |  (Upstream 1)            |</span><br><span class="line">| (pip)     |     | (缓存/私有包)      |     | (处理上游故障转移)       |     +--------------------------+</span><br><span class="line">|           |     |                   |     |                         |     |  Aliyun Mirror         |</span><br><span class="line">+-----------+     +-------------------+     +-------------------------+ --&gt; |  (Upstream 2)            |</span><br><span class="line">                                                                            +--------------------------+</span><br><span class="line">                                                                            |  USTC Mirror             |</span><br><span class="line">                                                                          -&gt;|  (Upstream 3)            |</span><br><span class="line">                                                                            +--------------------------+</span><br><span class="line">                                                                            |  ... and so on           |</span><br><span class="line">                                                                            +--------------------------+</span><br></pre></td></tr></table></figure>
+<h3 id="第一章：核心武器介绍-Devpi-与-Nginx">第一章：核心武器介绍 - Devpi 与 Nginx</h3>
+<p>在开始之前，我们先了解一下两位主角：</p>
+<ol>
+<li>
+<p><strong>Devpi</strong>: 一个功能完备的Python包服务器。它不仅仅是 <code>pypi.org</code> 的一个缓存代理，更是一个强大的私有包仓库和版本发布管理工具。我们将主要利用它的<strong>缓存镜像</strong>功能。</p>
+</li>
+<li>
+<p><strong>Nginx</strong>: 一款高性能的HTTP和反向代理服务器。在这里，它将扮演我们镜像源的“智能调度员”和“故障哨兵”，负责监测上游镜像源的健康状况，并在某个源出现问题时，自动将流量切换到健康的备用源上。</p>
+</li>
+</ol>
+<h3 id="第二章：基础建设-搭建Devpi缓存服务器">第二章：基础建设 - 搭建Devpi缓存服务器</h3>
+<p>首先，我们需要一个能稳定运行的<code>devpi</code>服务。</p>
+<h4 id="步骤-1-准备服务器与安装Devpi">步骤 1: 准备服务器与安装Devpi</h4>
+<p>在一台Linux服务器（本教程以Ubuntu为例）上，确保已安装Python和pip。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新并安装依赖</span></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install -y python3 python3-pip</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 devpi-server</span></span><br><span class="line">pip3 install devpi-server</span><br><span class="line"></span><br><span class="line">devpi-init</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="步骤-2-初始化Devpi">步骤 2: 初始化Devpi</h4>
+<p>这个一次性操作会为你创建数据目录和 <code>root</code> 超级管理员。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">devpi-init</span><br></pre></td></tr></table></figure>
+<p>在提示中，为 <code>root</code> 用户设置一个安全的密码，并牢牢记住它。</p>
+<h4 id="步骤-3-让Devpi在后台稳定运行">步骤 3: 让Devpi在后台稳定运行</h4>
+<p>为了生产环境的稳定，我们将 <code>devpi</code> 配置成一个 <code>systemd</code> 系统服务，实现开机自启和后台运行。</p>
+<ol>
+<li>
+<p><strong>创建服务文件</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> nano /etc/systemd/system/devpi.service</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>粘贴以下配置</strong> (注意修改 <code>User</code> 和 <code>ExecStart</code> 中的路径为你自己的):</p>
+</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(venv) czq2@czq2:~/clip-video$ sudo cat /etc/systemd/system/devpi.service</span><br><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=devpi-server daemon</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">User</span>=czq2</span><br><span class="line"><span class="attr">Group</span>=czq2</span><br><span class="line"><span class="attr">ExecStart</span>=/home/czq2/clip-video/venv/bin/devpi-server --host=<span class="number">0.0</span>.<span class="number">0.0</span> --port=<span class="number">3141</span></span><br><span class="line"><span class="attr">Restart</span>=<span class="literal">on</span>-failure</span><br><span class="line"><span class="attr">RestartSec</span>=<span class="number">5</span>s</span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>--host=0.0.0.0</code> 确保局域网内的其他机器可以访问。</li>
+</ul>
+<ol start="3">
+<li><strong>启动并验证服务</strong>:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> devpi  <span class="comment"># 开机自启</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl start devpi   <span class="comment"># 启动</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl status devpi  <span class="comment"># 检查状态</span></span><br></pre></td></tr></table></figure>
+看到绿色的 <code>active (running)</code>，恭喜你，基础的 <code>devpi</code> 镜像服务已经成功运行在 <code>http://&lt;你的服务器IP&gt;:3141</code> 上了！</li>
+</ol>
+<ul>
+<li>成功输出</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">(venv) czq2@czq2:~/clip-video$ <span class="built_in">sudo</span> systemctl start devpi</span><br><span class="line">(venv) czq2@czq2:~/clip-video$ <span class="built_in">sudo</span> systemctl status devpi</span><br><span class="line">● devpi.service - devpi-server daemon</span><br><span class="line">     Loaded: loaded (/etc/systemd/system/devpi.service; enabled; preset: enabled)</span><br><span class="line">     Active: active (running) since Wed 2025-09-17 07:19:23 UTC; 3s ago</span><br><span class="line">   Main PID: 1619813 (devpi-server)</span><br><span class="line">      Tasks: 54 (<span class="built_in">limit</span>: 309293)</span><br><span class="line">     Memory: 41.4M (peak: 553.5M)</span><br><span class="line">        CPU: 15.733s</span><br><span class="line">     CGroup: /system.slice/devpi.service</span><br><span class="line">             └─1619813 /home/czq2/clip-video/venv/bin/python3 /home/czq2/clip-video/venv/bin/devpi-server --host=0.0.0.0 --p&gt;</span><br><span class="line"></span><br><span class="line">Sep 17 07:19:23 czq2 devpi-server[1619813]: 2025-09-17 07:19:23,634 WARNI NOCTX No secret file provided, creating a new rand&gt;</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,757 INFO  [ASYN] Starting asyncio event loop</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,777 INFO  NOCTX devpi-server version: 6.17.0</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,777 INFO  NOCTX serverdir: /home/czq2/.devpi/server</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,777 INFO  NOCTX uuid: 0c7aa3d0d1874fd596c8936cd007d305</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,777 INFO  NOCTX serving at url: http://0.0.0.0:3141 (might b&gt;</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,777 INFO  NOCTX using 50 threads</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,777 INFO  NOCTX bug tracker: https://github.com/devpi/devpi/&gt;</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,777 INFO  NOCTX Hit Ctrl-C to quit.</span><br><span class="line">Sep 17 07:19:25 czq2 devpi-server[1619813]: 2025-09-17 07:19:25,785 INFO  Serving on http://0.0.0.0:3141</span><br></pre></td></tr></table></figure>
+<ul>
+<li>错误分析</li>
+</ul>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> journalctl -u devpi.service -n 50 --no-pager</span><br></pre></td></tr></table></figure>
+<h3 id="第三章：构建护城河-Nginx高可用反向代理">第三章：构建护城河 - Nginx高可用反向代理</h3>
+<p>现在，我们要为 <code>devpi</code> 构建一个坚固的前哨站，让它不再直接依赖任何单一的上游源。</p>
+<h4 id="步骤-1-安装-Nginx">步骤 1: 安装 Nginx</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install -y nginx</span><br></pre></td></tr></table></figure>
+<h4 id="步骤-2-编写Nginx高可用配置">步骤 2: 编写Nginx高可用配置</h4>
+<p>这是实现自动故障转移的<strong>核心</strong>。</p>
+<ol>
+<li>
+<p><strong>创建Nginx配置文件</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> nano /etc/nginx/sites-available/pypi-proxy</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>粘贴以下魔法配置</strong>:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/nginx/sites-available/pypi-proxy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个上游服务器组，这次全部使用 HTTPS</span></span><br><span class="line"><span class="section">upstream</span> pypi_mirrors_https &#123;</span><br><span class="line">    <span class="comment"># 【核心修改】直接指向 HTTPS 域名，端口 443 是默认的，可以不写</span></span><br><span class="line">    <span class="attribute">server</span> pypi.tuna.tsinghua.edu.cn:<span class="number">443</span>;</span><br><span class="line">    <span class="attribute">server</span> mirrors.aliyun.com:<span class="number">443</span>;</span><br><span class="line">    <span class="attribute">server</span> pypi.mirrors.ustc.edu.cn:<span class="number">443</span>;</span><br><span class="line">    <span class="attribute">server</span> mirrors.cloud.tencent.com:<span class="number">443</span>;</span><br><span class="line">    <span class="attribute">server</span> repo.huaweicloud.com:<span class="number">443</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8888</span>;</span><br><span class="line">    <span class="attribute">server_name</span> localhost;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="comment"># 【核心修改】将请求代理到我们新的 HTTPS 服务器组</span></span><br><span class="line">        <span class="attribute">proxy_pass</span> https://pypi_mirrors_https;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 故障转移的配置保持不变</span></span><br><span class="line">        <span class="attribute">proxy_next_upstream</span> <span class="literal">error</span> timeout http_500 http_502 http_503 http_504;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_connect_timeout</span> <span class="number">10s</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 【重要】当代理到 HTTPS 上游时，必须正确设置 Host 头</span></span><br><span class="line">        <span class="comment"># 这里的 $host 会是上游服务器组的名称，为了正确性，我们应该传递原始请求的Host</span></span><br><span class="line">        <span class="comment"># 或者直接硬编码为 pypi.tuna.tsinghua.edu.cn 等，但传递原始Host更灵活</span></span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$proxy_host</span>; <span class="comment"># 使用 $proxy_host 变量</span></span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># （可选，但推荐）增加 SSL 相关的代理设置</span></span><br><span class="line">        <span class="attribute">proxy_ssl_server_name</span> <span class="literal">on</span>; <span class="comment"># 这会让Nginx在TLS握手中发送正确的服务器名称(SNI)</span></span><br><span class="line">        <span class="attribute">proxy_ssl_session_reuse</span> <span class="literal">on</span>; <span class="comment"># 启用SSL会话复用以提高性能</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>启用配置并重启Nginx</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">ln</span> -s /etc/nginx/sites-available/pypi-proxy /etc/nginx/sites-enabled/</span><br><span class="line"><span class="built_in">sudo</span> nginx -t          <span class="comment"># 测试配置语法</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl restart nginx <span class="comment"># 重启Nginx</span></span><br></pre></td></tr></table></figure>
+<p>现在，一个强大的、能自动切换源的反向代理已经在 <code>http://192.168.10.158:8088</code> 上为你待命。</p>
+</li>
+</ol>
+<hr>
+<h3 id="第四章：合体！将Devpi接入Nginx代理">第四章：合体！将Devpi接入Nginx代理</h3>
+<p>万事俱备，只差最后一步：让 <code>devpi</code> 通过我们的 Nginx “护城河”去访问世界。</p>
+<ol>
+<li>
+<p><strong>停止Devpi服务</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl stop devpi</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>修改Devpi的启动参数</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> nano /etc/systemd/system/devpi.service</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在 <code>ExecStart</code> 行的末尾，添加 <code>--mirror-url</code> 参数，指向我们的Nginx代理：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="attr">ExecStart</span>=/home/your_username/.local/bin/devpi-server --host=<span class="number">0.0</span>.<span class="number">0.0</span> --port=<span class="number">3141</span> --mirror-url http://<span class="number">192.168</span>.<span class="number">10.158</span>:<span class="number">8088</span>/pypi</span><br><span class="line"><span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>重新加载并启动Devpi</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl start devpi</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h3 id="第五章：享受成果-配置客户端">第五章：享受成果 - 配置客户端</h3>
+<p>现在，让团队的所有开发者和CI/CD服务器都享受到这个稳定高速的镜像源吧！</p>
+<p>在每一台客户端机器上，创建或修改 <code>~/.pip/pip.conf</code> (macOS/Linux) 或 <code>%APPDATA%\pip\pip.ini</code> (Windows) 文件：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span></span><br><span class="line"><span class="attr">index-url</span> = http://<span class="number">192.168</span>.<span class="number">10.158</span>:<span class="number">3141</span>/root/pypi/</span><br><span class="line"><span class="attr">trusted-host</span> = <span class="number">192.168</span>.<span class="number">10.158</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>index-url</code> 指向我们搭建的 <code>devpi</code> 服务。</li>
+<li><code>trusted-host</code> 告诉 <code>pip</code> 这是一个可信任的HTTP源。</li>
+</ul>
+<h2 id="See">See</h2>
+<ul>
+<li>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/devpi/devpi">https://github.com/devpi/devpi</a></li>
+</ol>
+</li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
         
         <div class="tags">
           
-            <a href="/tags/doc/" class="">
-              doc
+            <a href="/tags/python/" class="">
+              python
             </a>
           
         </div>
@@ -681,7 +781,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2024/06/25/graduate-design/" target="_blank" title="毕业设计预览">https://caozhaoqi.github.io/2024/06/25/graduate-design/</a>
+    <a href="/2025/09/17/pypi-mirror-self/" target="_blank" title="使用Devpi与Nginx构建高可用PyPI镜像源">https://caozhaoqi.github.io/2025/09/17/pypi-mirror-self/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -699,45 +799,24 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-83ea273b88e119d9615aed0d89aad4ab_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2024/07/05/git-respority-error/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">npm安装时出现拉取git仓库错误问题修复措施研究</div>
-      </div>
-      
-      <!-- <div class="content">
-        错误内容
-错误详情
-1234567891011czq@czq-virtual-machine:~/Desktop/blo
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2024/06/25/test-case-result/" class="post-nav-link">
+    <a href="/2025/08/29/ss-build-doc/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">软件测试报告</div>
+        <div class="title-text">使用 Docker Compose 快速部署 Shadowsocks 代理服务教程</div>
       </div>
       <!-- <div class="content">
-        用户
-本文档用于测试、开发人员填写测试过程结果。
-定义
-
-软件测试：在规定的条件下对程序进行操作，以发现程序错误，衡量软
+        基础环境
+1.1 更新系统软件包列表
+首先，连接到您的服务器，然后运行以下命令来更新系统的软件包索引：
+1sudo ap
       </div> -->
     </a>
   </div>
@@ -1057,7 +1136,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E6%96%87%E5%A6%82%E4%B8%8B"><span class="toc-text">原文如下:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Devpi%E4%B8%8ENginx%E6%9E%84%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8PyPI%E9%95%9C%E5%83%8F%E6%BA%90"><span class="toc-text">使用Devpi与Nginx构建高可用PyPI镜像源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84pip-install%E5%8F%88%E8%B6%85%E6%97%B6%E4%BA%86%EF%BC%9F"><span class="toc-text">前言：为什么你的pip install又超时了？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%AD%A6%E5%99%A8%E4%BB%8B%E7%BB%8D-Devpi-%E4%B8%8E-Nginx"><span class="toc-text">第一章：核心武器介绍 - Devpi 与 Nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BB%BA%E8%AE%BE-%E6%90%AD%E5%BB%BADevpi%E7%BC%93%E5%AD%98%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">第二章：基础建设 - 搭建Devpi缓存服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-1-%E5%87%86%E5%A4%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8E%E5%AE%89%E8%A3%85Devpi"><span class="toc-text">步骤 1: 准备服务器与安装Devpi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-2-%E5%88%9D%E5%A7%8B%E5%8C%96Devpi"><span class="toc-text">步骤 2: 初始化Devpi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-3-%E8%AE%A9Devpi%E5%9C%A8%E5%90%8E%E5%8F%B0%E7%A8%B3%E5%AE%9A%E8%BF%90%E8%A1%8C"><span class="toc-text">步骤 3: 让Devpi在后台稳定运行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%9E%84%E5%BB%BA%E6%8A%A4%E5%9F%8E%E6%B2%B3-Nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-text">第三章：构建护城河 - Nginx高可用反向代理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-1-%E5%AE%89%E8%A3%85-Nginx"><span class="toc-text">步骤 1: 安装 Nginx</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-2-%E7%BC%96%E5%86%99Nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="toc-text">步骤 2: 编写Nginx高可用配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A%E5%90%88%E4%BD%93%EF%BC%81%E5%B0%86Devpi%E6%8E%A5%E5%85%A5Nginx%E4%BB%A3%E7%90%86"><span class="toc-text">第四章：合体！将Devpi接入Nginx代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9A%E4%BA%AB%E5%8F%97%E6%88%90%E6%9E%9C-%E9%85%8D%E7%BD%AE%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">第五章：享受成果 - 配置客户端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#See"><span class="toc-text">See</span></a></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
