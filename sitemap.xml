@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://caozhaoqi.github.io/404.html</loc>
+    
+    <lastmod>2025-09-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/about/index.html</loc>
+    
+    <lastmod>2025-09-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2025/09/17/pypi-mirror-self/</loc>
     
     <lastmod>2025-09-22</lastmod>
@@ -830,15 +848,6 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/about/index.html</loc>
-    
-    <lastmod>2025-02-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/categories/index.html</loc>
     
     <lastmod>2025-02-25</lastmod>
@@ -867,15 +876,6 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/friends/index.html</loc>
-    
-    <lastmod>2025-02-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/404.html</loc>
     
     <lastmod>2025-02-25</lastmod>
     

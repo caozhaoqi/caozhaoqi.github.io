@@ -1,3 +1,5 @@
+https://caozhaoqi.github.io/404.html
+https://caozhaoqi.github.io/about/index.html
 https://caozhaoqi.github.io/2025/09/17/pypi-mirror-self/
 https://caozhaoqi.github.io/2025/08/29/ss-build-doc/
 https://caozhaoqi.github.io/2025/08/14/pyav-use-video/
@@ -90,12 +92,10 @@ https://caozhaoqi.github.io/2023/02/22/android-unity-touch-md/
 https://caozhaoqi.github.io/2023/04/20/admin-manage-publish/
 https://caozhaoqi.github.io/2024/10/27/air-station/
 https://caozhaoqi.github.io/2024/03/06/spider-image-system-introduction/
-https://caozhaoqi.github.io/about/index.html
 https://caozhaoqi.github.io/categories/index.html
 https://caozhaoqi.github.io/tags/index.html
 https://caozhaoqi.github.io/gallerygroup/index.html
 https://caozhaoqi.github.io/friends/index.html
-https://caozhaoqi.github.io/404.html
 https://caozhaoqi.github.io/
 https://caozhaoqi.github.io/tags/android/
 https://caozhaoqi.github.io/tags/doc/
