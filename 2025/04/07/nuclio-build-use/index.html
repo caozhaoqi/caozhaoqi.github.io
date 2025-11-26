@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>Nuclio与CVAT使用yolov8目标检测模型实现半自动化标注 | Zhaoqi.Cao static blog</title>
+
+  <link rel="icon" type="image/png" href="/medias/logo.png">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '0';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+        <script src="/js/valine/index.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Zhaoqi.Cao static blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Zhaoqi.Cao static blog</h3>
+      <h5 class="drawer-box-head_desc">A static personal blog.</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                      <i class="fas fa-link"></i>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Zhaoqi.Cao static blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="主页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友链">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                    <i class="fas fa-link"></i>
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">Search</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="Please enter keywords"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Nuclio与CVAT使用yolov8目标检测模型实现半自动化标注
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2025-04-07 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 5.8k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 26min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <blockquote>
+<p>Nuclio Dashboard 是 Nuclio Serverless 平台的一个基于 Web 的图形用户界面（GUI），它允许用户方便地管理（创建、查看、编辑、删除、部署）Nuclio 函数、项目、事件源（Triggers）等资源。</p>
+</blockquote>
+<p><strong>核心概念：</strong></p>
+<ol>
+<li>
+<p><strong>部署 (Deployment) vs 构建 (Building from Source):</strong></p>
+<ul>
+<li><strong>部署:</strong> 对于大多数用户来说，“构建” Nuclio Dashboard 意味着<strong>部署</strong>预先构建好的 Docker 镜像。这是最常见和推荐的方式。你不需要从源代码编译它。</li>
+<li><strong>从源码构建:</strong> 这是指获取 Nuclio Dashboard 的源代码并自行编译生成可执行文件或 Docker 镜像。这通常只在开发 Nuclio 本身或需要特殊定制时才需要，对于普通用户不推荐。</li>
+</ul>
+</li>
+<li>
+<p><strong>运行环境:</strong> Nuclio（及其 Dashboard）可以在多种环境中运行，最常见的是：</p>
+<ul>
+<li><strong>Standalone Docker:</strong> 在单个 Docker 主机上运行。</li>
+<li><strong>Kubernetes:</strong> 在 Kubernetes 集群中运行，这是生产环境中最常见的方式。</li>
+</ul>
+</li>
+</ol>
+<p><strong>部署</strong> Nuclio Dashboard 的方法以及如何<strong>使用</strong>它。</p>
+<hr>
+<h3 id="一、部署-Nuclio-Dashboard">一、部署 Nuclio Dashboard</h3>
+<p>Nuclio Dashboard 通常与 Nuclio Controller 一起部署。Controller 是 Nuclio 的核心控制平面，而 Dashboard 是其 UI。</p>
+<p><strong>方法一：在 Standalone Docker 环境中部署</strong></p>
+<p>这是最简单的方法，适合本地测试和开发。通常，当你运行 Nuclio Controller 容器时，它已经包含了 Dashboard。</p>
+<ol>
+<li>
+<p><strong>拉取并运行 Nuclio Controller 镜像:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8070:8070 -v /var/run/docker.sock:/var/run/docker.sock --name nuclio-dashboard quay.io/nuclio/dashboard:stable-amd64</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-d</code>: 后台运行容器。</li>
+<li><code>-p 8070:8070</code>: 将主机的 8070 端口映射到容器的 8070 端口（Nuclio Dashboard 默认监听此端口）。</li>
+<li><code>-v /var/run/docker.sock:/var/run/docker.sock</code>: 允许 Nuclio Controller 与宿主机的 Docker守护进程通信，以便构建和运行函数容器。<strong>（注意安全风险）</strong></li>
+<li><code>-v /tmp:/tmp</code>: 提供临时文件存储。</li>
+<li><code>--name nuclio-controller</code>: 给容器命名。</li>
+<li><code>nuclio/controller:stable</code>: 使用的镜像。</li>
+<li><code>--platform-kind &quot;local&quot;</code> 或 <code>&quot;docker&quot;</code>: 指定平台类型为本地 Docker 环境。</li>
+</ul>
+</li>
+<li>
+<p><strong>访问 Dashboard:</strong><br>
+部署成功后，在浏览器中打开 <code>http://&lt;你的主机IP&gt;:8070</code> 或 <code>http://localhost:8070</code> 即可访问 Nuclio Dashboard。</p>
+</li>
+</ol>
+<p><strong>方法二：在 Kubernetes 环境中部署</strong></p>
+<p>这是在生产或集群环境中最常用的方法。推荐使用 Helm Chart 来部署 Nuclio。</p>
+<ol>
+<li>
+<p><strong>添加 Nuclio Helm 仓库 (如果尚未添加):</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">helm repo add nuclio https://nuclio.github.io/nuclio/charts</span><br><span class="line">helm repo update</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装 Nuclio Chart:</strong><br>
+这将同时部署 Nuclio Controller（包含 Dashboard）和其他必要的组件（如 CRDs）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个 namespace (推荐)</span></span><br><span class="line">kubectl create namespace nuclio</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 Helm 安装</span></span><br><span class="line">helm install nuclio nuclio/nuclio --namespace nuclio</span><br></pre></td></tr></table></figure>
+<ul>
+<li>你可以通过创建 <code>values.yaml</code> 文件或使用 <code>--set</code> 参数来自定义安装选项（例如，指定 Service 类型、资源限制等）。</li>
+</ul>
+</li>
+<li>
+<p><strong>访问 Dashboard:</strong><br>
+部署后，需要一种方式从集群外部访问 Dashboard Service。常用方法有：</p>
+<ul>
+<li><strong>Port Forwarding (用于临时访问/调试):</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到 Nuclio Dashboard Pod 的名称 (通常包含 &#x27;controller&#x27;)</span></span><br><span class="line">kubectl get pods -n nuclio</span><br><span class="line"><span class="comment"># 假设 pod 名称为 nuclio-controller-xxxxxxxxxx-yyyyy</span></span><br><span class="line">kubectl port-forward -n nuclio &lt;nuclio-controller-pod-name&gt; 8070:8070</span><br></pre></td></tr></table></figure>
+然后在浏览器中访问 <code>http://localhost:8070</code>。</li>
+<li><strong>LoadBalancer Service:</strong> 如果你的 Kubernetes 集群支持 LoadBalancer 类型的 Service，并且你在 Helm 安装时配置了 Dashboard Service 为 LoadBalancer 类型，你可以获取其外部 IP 地址来访问。<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get svc -n nuclio <span class="comment"># 查找 dashboard service 的 EXTERNAL-IP</span></span><br></pre></td></tr></table></figure>
+然后在浏览器中访问 <code>http://&lt;EXTERNAL-IP&gt;:8070</code>。</li>
+<li><strong>NodePort Service:</strong> 如果配置为 NodePort，你可以通过 <code>http://&lt;任意节点IP&gt;:&lt;NodePort端口&gt;</code> 访问。</li>
+<li><strong>Ingress:</strong> 配置 Ingress 资源，通过 Ingress Controller 提供的域名或路径来访问 Dashboard。这是生产环境中最推荐的方式。</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2025/04/07/nuclio-build-use/nuclio_ui.png" class="lazyload placeholder" data-srcset="/2025/04/07/nuclio-build-use/nuclio_ui.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<h3 id="二、使用-Nuclio-Dashboard">二、使用 Nuclio Dashboard</h3>
+<p>当你成功访问 Nuclio Dashboard 后，你会看到一个用户友好的界面。以下是主要功能区域和常见操作：</p>
+<ol>
+<li>
+<p><strong>概览 (Overview / Dashboard):</strong></p>
+<ul>
+<li>通常是进入后的首页，显示项目和函数的摘要信息，例如总数、运行状态等。</li>
+</ul>
+</li>
+<li>
+<p><strong>项目 (Projects):</strong></p>
+<ul>
+<li>Nuclio 使用项目来组织函数。一个项目可以包含多个函数。</li>
+<li><strong>创建项目:</strong> 点击 “New Project” 或类似按钮，输入项目名称和可选的描述、标签。</li>
+<li><strong>查看项目:</strong> 点击项目名称进入项目详情页，可以看到该项目下的所有函数。</li>
+<li><strong>编辑/删除项目:</strong> 在项目列表或详情页通常有编辑和删除的操作按钮。</li>
+</ul>
+</li>
+<li>
+<p><strong>函数 (Functions):</strong></p>
+<ul>
+<li>这是 Nuclio 的核心。你可以在项目内部创建和管理函数。</li>
+<li><strong>创建函数:</strong>
+<ul>
+<li>进入一个项目，点击 “New Function” 或 “Create Function”。</li>
+<li><strong>模板选择:</strong> 你可以选择一个预定义的模板（例如，Go 的 HTTP 处理、Python 的事件处理等），或者从头开始。</li>
+<li><strong>配置:</strong>
+<ul>
+<li><strong>Function Name:</strong> 函数的唯一名称。</li>
+<li><strong>Description/Labels:</strong> 可选的描述和标签。</li>
+<li><strong>Runtime:</strong> 选择函数的运行时语言（Go, Python, Node.js, Java, .NET Core, Shell, Binary）。</li>
+<li><strong>Source Code:</strong>
+<ul>
+<li><strong>Inline Editor:</strong> 直接在 Web 编辑器中编写代码。</li>
+<li><strong>Upload:</strong> 上传代码文件或压缩包 (zip, jar)。</li>
+<li><strong>Git Repository:</strong> 从 Git 仓库拉取代码（需要配置）。</li>
+<li><strong>Image:</strong> 使用一个已经包含函数代码和依赖的 Docker 镜像。</li>
+</ul>
+</li>
+<li><strong>Handler:</strong> 指定函数入口点（例如，Python 文件名:函数名，<code>main:handler</code>）。</li>
+<li><strong>Dependencies:</strong> 如果代码有外部依赖，需要在这里指定（例如，Python 的 <code>requirements.txt</code> 内容，Go 的 <code>go.mod</code> 等）。Nuclio 会在构建过程中安装它们。</li>
+<li><strong>Triggers:</strong> 配置触发函数的方式。最常见的是 <code>http</code>（通过 HTTP 请求触发），但也支持 Kafka, Kinesis, RabbitMQ, Cron (定时任务) 等多种事件源。需要配置触发器的详细信息（如 HTTP 路径、方法，Kafka 主题等）。</li>
+<li><strong>Environment Variables:</strong> 设置函数运行时可以访问的环境变量。</li>
+<li><strong>Volumes:</strong> (Kubernetes 环境) 挂载存储卷到函数 Pod。</li>
+<li><strong>Resources:</strong> 配置函数的资源请求和限制（CPU, Memory）。</li>
+<li><strong>Scaling:</strong> 配置自动伸缩参数（最小/最大副本数，目标 CPU 使用率等）。</li>
+<li><strong>Build Settings:</strong> 配置构建过程的参数，例如基础镜像、构建命令等。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>部署函数:</strong> 配置完成后，点击 “Deploy” 或 “Create”。Nuclio Controller 会开始构建函数镜像（如果需要）并将其实例化（在 Docker 中是启动容器，在 Kubernetes 中是创建 Deployment/Pod）。部署状态会显示在函数列表中（例如：Building, Ready, Error）。</li>
+<li><strong>查看函数详情:</strong> 点击函数名称进入详情页。
+<ul>
+<li><strong>Code &amp; Configuration:</strong> 查看或编辑函数的代码和配置。</li>
+<li><strong>Triggers:</strong> 查看触发器信息，特别是 HTTP 触发器的调用 URL。</li>
+<li><strong>Logs:</strong> 查看函数的实时或历史日志输出。</li>
+<li><strong>Monitoring:</strong> 查看函数的调用次数、延迟、成功/失败率等指标（可能需要集成监控系统）。</li>
+<li><strong>Versions:</strong> 查看函数的部署历史版本。</li>
+</ul>
+</li>
+<li><strong>调用/测试函数:</strong> 对于 HTTP 触发器，可以直接在浏览器或使用 <code>curl</code> 等工具访问其 URL 来调用函数。Dashboard 有时也提供简单的调用测试界面。</li>
+<li><strong>编辑/删除函数:</strong> 在函数列表或详情页进行操作。编辑后需要重新部署才能生效。</li>
+</ul>
+</li>
+<li>
+<p><strong>API Gateways:</strong> (如果使用了 Nuclio 的 API Gateway 功能)</p>
+<ul>
+<li>用于创建和管理 API 网关，将外部请求路由到不同的 Nuclio 函数。</li>
+<li>可以配置路径、方法、认证、限流等。</li>
+</ul>
+</li>
+<li>
+<p><strong>设置/平台配置 (Settings / Platform Configuration):</strong> (可能在某些版本或模式下可见)</p>
+<ul>
+<li>查看 Nuclio 平台的配置信息。</li>
+</ul>
+</li>
+</ol>
+<h2 id="基于yolov8模型部署函数计算到nuclio">基于yolov8模型部署函数计算到nuclio</h2>
+<h3 id="yml">yml</h3>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">nuclio.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Function</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">yolov8-detector</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">nuclio</span> <span class="comment"># Or your preferred namespace</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">nuclio.io/project-name:</span> <span class="comment"># Add your project name if using Nuclio projects</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">description:</span> <span class="string">&quot;YOLOv8 Object Detection Function using model copied during build&quot;</span></span><br><span class="line">  <span class="attr">runtime:</span> <span class="string">python:3.9</span> <span class="comment"># Ensure this matches the Python version you need</span></span><br><span class="line">  <span class="attr">handler:</span> <span class="string">main:handler</span> <span class="comment"># Points to main.py -&gt; handler function</span></span><br><span class="line">  <span class="attr">env:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">HTTP_PROXY</span></span><br><span class="line">      <span class="attr">value:</span> <span class="string">http://192.168.10.123:7890</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">HTTPS_PROXY</span></span><br><span class="line">      <span class="attr">value:</span> <span class="string">http://192.168.10.123:7890</span> <span class="comment"># 或者 https://... 如果代理本身用https</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">NO_PROXY</span></span><br><span class="line">      <span class="attr">value:</span> <span class="string">localhost,127.0.0.1,kubernetes.default.svc</span> <span class="comment"># 添加其他内部地址</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">.</span> <span class="comment"># Build context is still copied somewhere by Nuclio, just maybe not where expected.</span></span><br><span class="line">    <span class="attr">commands:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;apt-get update &amp;&amp; apt-get install -y --no-install-recommends libgl1-mesa-glx libglib2.0-0&#x27;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;pip install --default-timeout=600 --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu&#x27;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple --default-timeout=600 --no-cache-dir ultralytics Pillow nuclio-sdk numpy&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ---- Runtime Configuration ----</span></span><br><span class="line">  <span class="comment"># (Optional but Recommended) Set resource limits, especially memory for large models</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">limits:</span></span><br><span class="line">      <span class="attr">memory:</span> <span class="string">&quot;4Gi&quot;</span>   <span class="comment"># Adjust memory limit based on yolov8x needs (e.g., 4Gi, 6Gi, 8Gi)</span></span><br></pre></td></tr></table></figure>
+<h3 id="python-code">python code</h3>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> nuclio_sdk</span><br><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_context</span>(<span class="params">context: nuclio_sdk.Context</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;初始化函数上下文，加载模型&quot;&quot;&quot;</span></span><br><span class="line">    context.logger.info(<span class="string">&quot;Initializing YOLOv8 model...&quot;</span>)</span><br><span class="line">    <span class="comment"># 从函数工作目录加载模型文件 (假设 .pt 文件和 main.py 在同一目录)</span></span><br><span class="line">    <span class="comment"># 或者提供模型的绝对路径（如果在 function.yaml 中挂载了）</span></span><br><span class="line">    model_path = <span class="string">&quot;/detect/yolov8/yolov8x.pt&quot;</span></span><br><span class="line">    model = YOLO(model_path)</span><br><span class="line">    context.user_data.model = model</span><br><span class="line">    context.logger.info(<span class="string">&quot;Model loaded successfully.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handler</span>(<span class="params">context: nuclio_sdk.Context, event: nuclio_sdk.Event</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;处理输入的 HTTP 请求&quot;&quot;&quot;</span></span><br><span class="line">    context.logger.info(<span class="string">&quot;Received event.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 检查请求体类型</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(event.body, <span class="built_in">bytes</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            data = json.loads(event.body.decode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            context.logger.error(<span class="string">f&quot;Failed to decode JSON body: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> context.Response(body=<span class="string">f&quot;Bad request: <span class="subst">&#123;e&#125;</span>&quot;</span>, status_code=<span class="number">400</span>)</span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">isinstance</span>(event.body, <span class="built_in">dict</span>):</span><br><span class="line">        data = event.body</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> context.Response(body=<span class="string">&quot;Unsupported event body type&quot;</span>, status_code=<span class="number">400</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从请求中获取 base64 编码的图像数据</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;image&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> data:</span><br><span class="line">        <span class="keyword">return</span> context.Response(body=<span class="string">&quot;Missing &#x27;image&#x27; field in request body&quot;</span>, status_code=<span class="number">400</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        image_b64 = data[<span class="string">&#x27;image&#x27;</span>]</span><br><span class="line">        image_bytes = base64.b64decode(image_b64)</span><br><span class="line">        image = Image.<span class="built_in">open</span>(io.BytesIO(image_bytes)).convert(<span class="string">&#x27;RGB&#x27;</span>) <span class="comment"># 确保是 RGB</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        context.logger.error(<span class="string">f&quot;Failed to decode base64 image: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> context.Response(body=<span class="string">f&quot;Invalid image data: <span class="subst">&#123;e&#125;</span>&quot;</span>, status_code=<span class="number">400</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用加载的模型进行预测</span></span><br><span class="line">    context.logger.info(<span class="string">&quot;Performing inference...&quot;</span>)</span><br><span class="line">    model = context.user_data.model</span><br><span class="line">    results = model(image) <span class="comment"># results 是一个列表，通常包含一个 Results 对象</span></span><br><span class="line">    context.logger.info(<span class="string">&quot;Inference complete.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 处理预测结果</span></span><br><span class="line">    detections = []</span><br><span class="line">    <span class="keyword">if</span> results <span class="keyword">and</span> results[<span class="number">0</span>]:</span><br><span class="line">        result = results[<span class="number">0</span>] <span class="comment"># 获取第一个图像的结果</span></span><br><span class="line">        boxes = result.boxes  <span class="comment"># Boxes object</span></span><br><span class="line">        names = result.names  <span class="comment"># Class names dict &#123;id: name&#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(boxes)):</span><br><span class="line">            box = boxes[i]</span><br><span class="line">            xyxy = box.xyxy.cpu().numpy().flatten().tolist() <span class="comment"># [x1, y1, x2, y2]</span></span><br><span class="line">            conf = <span class="built_in">float</span>(box.conf.cpu().numpy()) <span class="comment"># 置信度</span></span><br><span class="line">            cls_id = <span class="built_in">int</span>(box.cls.cpu().numpy())   <span class="comment"># 类别 ID</span></span><br><span class="line">            label = names[cls_id]                 <span class="comment"># 类别名称</span></span><br><span class="line"></span><br><span class="line">            detections.append(&#123;</span><br><span class="line">                <span class="string">&quot;label&quot;</span>: label,</span><br><span class="line">                <span class="string">&quot;confidence&quot;</span>: conf,</span><br><span class="line">                <span class="comment"># CVAT 通常需要 [xtl, ytl, xbr, ybr] 格式的整数坐标</span></span><br><span class="line">                <span class="string">&quot;points&quot;</span>: [<span class="built_in">int</span>(xyxy[<span class="number">0</span>]), <span class="built_in">int</span>(xyxy[<span class="number">1</span>]), <span class="built_in">int</span>(xyxy[<span class="number">2</span>]), <span class="built_in">int</span>(xyxy[<span class="number">3</span>])]</span><br><span class="line">                <span class="comment"># 或者根据需要返回归一化坐标或其他格式</span></span><br><span class="line">                <span class="comment"># &quot;xtl&quot;: xyxy[0], &quot;ytl&quot;: xyxy[1], &quot;xbr&quot;: xyxy[2], &quot;ybr&quot;: xyxy[3]</span></span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">    context.logger.info(<span class="string">f&quot;Detected <span class="subst">&#123;<span class="built_in">len</span>(detections)&#125;</span> objects.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回 JSON 格式的检测结果</span></span><br><span class="line">    <span class="keyword">return</span> context.Response(body=json.dumps(detections),</span><br><span class="line">                            content_type=<span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">                            status_code=<span class="number">200</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="web-http-调用-yolov8模型">web http 调用 yolov8模型</h2>
+<blockquote>
+<p>可输出 cvat v1.1格式的标注后xml文件，根据输入视频输出目标检测标注结果生成代码 获得标注结果后 压缩标注结果文件 导入cvat对应项目对应task</p>
+</blockquote>
+<ul>
+<li>代码如下：</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -</span></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> timedelta</span><br><span class="line"><span class="keyword">import</span> xml.etree.ElementTree <span class="keyword">as</span> ET</span><br><span class="line"><span class="keyword">from</span> xml.dom <span class="keyword">import</span> minidom <span class="comment"># 用于美化打印XML</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 配置区 ---</span></span><br><span class="line">VIDEO_PATH = <span class="string">&quot;/Users/zg/PycharmProjects/CVAT_model_nuclio/src/run/data/1.mp4&quot;</span>  <span class="comment"># &lt;&lt;&lt;--- 修改这里: 你的视频文件的完整路径</span></span><br><span class="line">NUCLIO_FUNCTION_URL = <span class="string">&quot;http://192.168.10.158:32774&quot;</span> <span class="comment"># YOLOv8检测器的端口</span></span><br><span class="line">OUTPUT_DIR = <span class="string">&quot;./data/&quot;</span>  <span class="comment"># 输出XML文件的目录</span></span><br><span class="line">LOG_FILE = <span class="string">&quot;./logs/video_processing_cvat_images_cn.log&quot;</span>  <span class="comment"># 日志文件名</span></span><br><span class="line">FRAME_SKIP = <span class="number">5</span>  <span class="comment"># 处理每 N 帧 (1 = 处理所有帧, 5 = 每5帧处理1帧)</span></span><br><span class="line">REQUEST_TIMEOUT = <span class="number">30</span>  <span class="comment"># 等待Nuclio响应的超时时间（秒）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建日志和数据目录（如果不存在）</span></span><br><span class="line">os.makedirs(<span class="string">&#x27;./logs/&#x27;</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line">os.makedirs(OUTPUT_DIR, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 设置日志记录 ---</span></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.INFO, <span class="comment"># 日志级别</span></span><br><span class="line">    <span class="built_in">format</span>=<span class="string">&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;</span>, <span class="comment"># 日志格式</span></span><br><span class="line">    handlers=[</span><br><span class="line">        logging.FileHandler(LOG_FILE, encoding=<span class="string">&#x27;utf-8&#x27;</span>),  <span class="comment"># 输出日志到文件，使用utf-8编码</span></span><br><span class="line">        logging.StreamHandler()  <span class="comment"># 同时输出日志到控制台</span></span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 辅助函数 ---</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_frame_to_base64</span>(<span class="params">frame</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将OpenCV读取的帧(NumPy数组)编码为Base64字符串。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 将帧编码为内存中的JPEG格式</span></span><br><span class="line">        is_success, buffer = cv2.imencode(<span class="string">&quot;.jpg&quot;</span>, frame)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> is_success:</span><br><span class="line">            logging.error(<span class="string">&quot;无法将帧编码为JPEG。&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="comment"># 将字节缓冲区编码为Base64字符串</span></span><br><span class="line">        b64_string = base64.b64encode(buffer).decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> b64_string</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logging.error(<span class="string">f&quot;帧编码过程中出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">call_nuclio_detector</span>(<span class="params">base64_image_string, frame_number</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将Base64编码的图像发送给Nuclio函数并返回检测结果。&quot;&quot;&quot;</span></span><br><span class="line">    payload = json.dumps(&#123;<span class="string">&quot;image&quot;</span>: base64_image_string&#125;)</span><br><span class="line">    headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        start_time = time.time()</span><br><span class="line">        <span class="comment"># 发送POST请求</span></span><br><span class="line">        response = requests.post(NUCLIO_FUNCTION_URL, headers=headers, data=payload, timeout=REQUEST_TIMEOUT)</span><br><span class="line">        end_time = time.time()</span><br><span class="line">        logging.info(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: Nuclio请求耗时 <span class="subst">&#123;end_time - start_time:<span class="number">.2</span>f&#125;</span> 秒。&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查响应状态码</span></span><br><span class="line">        <span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                detections = response.json()</span><br><span class="line">                <span class="comment"># 验证检测结果的基本结构</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(detections, <span class="built_in">list</span>):</span><br><span class="line">                     logging.error(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: Nuclio响应不是列表。收到类型: <span class="subst">&#123;<span class="built_in">type</span>(detections)&#125;</span>&quot;</span>)</span><br><span class="line">                     <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">                valid_detections = []</span><br><span class="line">                <span class="keyword">for</span> det <span class="keyword">in</span> detections:</span><br><span class="line">                    <span class="keyword">if</span> <span class="built_in">isinstance</span>(det, <span class="built_in">dict</span>) <span class="keyword">and</span> <span class="string">&#x27;label&#x27;</span> <span class="keyword">in</span> det <span class="keyword">and</span> <span class="string">&#x27;points&#x27;</span> <span class="keyword">in</span> det <span class="keyword">and</span> <span class="string">&#x27;confidence&#x27;</span> <span class="keyword">in</span> det:</span><br><span class="line">                         <span class="keyword">if</span> <span class="built_in">isinstance</span>(det[<span class="string">&#x27;points&#x27;</span>], <span class="built_in">list</span>) <span class="keyword">and</span> <span class="built_in">len</span>(det[<span class="string">&#x27;points&#x27;</span>]) == <span class="number">4</span>:</span><br><span class="line">                              valid_detections.append(det)</span><br><span class="line">                         <span class="keyword">else</span>:</span><br><span class="line">                              logging.warning(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: 跳过无效&#x27;points&#x27;的检测结果: <span class="subst">&#123;det.get(<span class="string">&#x27;points&#x27;</span>)&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                         logging.warning(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: 跳过缺少键或类型错误的检测结果: <span class="subst">&#123;det&#125;</span>&quot;</span>)</span><br><span class="line">                logging.info(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: 收到 <span class="subst">&#123;<span class="built_in">len</span>(valid_detections)&#125;</span> 个有效检测结果。&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span> valid_detections</span><br><span class="line">            <span class="keyword">except</span> json.JSONDecodeError:</span><br><span class="line">                logging.error(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: 解析Nuclio的JSON响应失败。状态码: <span class="subst">&#123;response.status_code&#125;</span>, 响应体(前200字符): <span class="subst">&#123;response.text[:<span class="number">200</span>]&#125;</span>...&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e_val:</span><br><span class="line">                 logging.error(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: 验证Nuclio响应结构时出错: <span class="subst">&#123;e_val&#125;</span>&quot;</span>)</span><br><span class="line">                 <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            logging.error(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: Nuclio函数返回错误。状态码: <span class="subst">&#123;response.status_code&#125;</span>, 响应体(前200字符): <span class="subst">&#123;response.text[:<span class="number">200</span>]&#125;</span>...&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">except</span> requests.exceptions.Timeout:</span><br><span class="line">        logging.error(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: 请求Nuclio函数超时 (<span class="subst">&#123;REQUEST_TIMEOUT&#125;</span>秒)。&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">except</span> requests.exceptions.RequestException <span class="keyword">as</span> e:</span><br><span class="line">        logging.error(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: 请求Nuclio函数失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logging.error(<span class="string">f&quot;帧 <span class="subst">&#123;frame_number&#125;</span>: 调用Nuclio时发生意外错误: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- XML 生成 ---</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pretty_print_xml</span>(<span class="params">elem</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;返回包含声明且格式化（美化）的XML字符串。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 将ElementTree元素转换为utf-8字节字符串</span></span><br><span class="line">        rough_string = ET.tostring(elem, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        <span class="comment"># 使用minidom解析字节字符串</span></span><br><span class="line">        reparsed = minidom.parseString(rough_string)</span><br><span class="line">        <span class="comment"># 使用toprettyxml进行格式化，包含缩进和XML声明</span></span><br><span class="line">        <span class="comment"># 确保它返回utf-8编码的字节字符串，然后解码为python字符串</span></span><br><span class="line">        xml_str = reparsed.toprettyxml(indent=<span class="string">&quot;  &quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>).decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> xml_str</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logging.error(<span class="string">f&quot;XML美化打印过程中出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="comment"># 返回None，表示需要调用函数中的后备方案</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_results_to_cvat_image_xml</span>(<span class="params">all_results, xml_output_path, video_filename, frame_width, frame_height, total_processed_frames, original_total_frames</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将检测结果保存为 CVAT XML 1.1 for Images 格式。&quot;&quot;&quot;</span></span><br><span class="line">    logging.info(<span class="string">f&quot;正在为 <span class="subst">&#123;<span class="built_in">len</span>(all_results)&#125;</span> 个处理过的帧构建CVAT图像XML输出...&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- 构建XML结构 ---</span></span><br><span class="line">    root = ET.Element(<span class="string">&quot;annotations&quot;</span>)</span><br><span class="line">    ET.SubElement(root, <span class="string">&quot;version&quot;</span>).text = <span class="string">&quot;1.1&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Meta元信息</span></span><br><span class="line">    meta = ET.SubElement(root, <span class="string">&quot;meta&quot;</span>)</span><br><span class="line">    task = ET.SubElement(meta, <span class="string">&quot;task&quot;</span>)</span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;id&quot;</span>).text = <span class="string">&quot;N/A&quot;</span> <span class="comment"># 占位符</span></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;name&quot;</span>).text = video_filename <span class="comment"># 使用视频名作为任务名</span></span><br><span class="line">    <span class="comment"># 注意: size在这里表示标注的图像数量 (即处理过的帧数)</span></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;size&quot;</span>).text = <span class="built_in">str</span>(total_processed_frames)</span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;mode&quot;</span>).text = <span class="string">&quot;annotation&quot;</span> <span class="comment"># 模式改为 annotation (图像模式)</span></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;overlap&quot;</span>).text = <span class="string">&quot;0&quot;</span></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;bugtracker&quot;</span>).text = <span class="string">&quot;&quot;</span></span><br><span class="line">    current_time_utc = time.strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S.%f&quot;</span>)[:-<span class="number">3</span>] + <span class="string">&quot;+00:00&quot;</span> <span class="comment"># 当前UTC时间</span></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;created&quot;</span>).text = current_time_utc</span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;updated&quot;</span>).text = current_time_utc</span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;start_frame&quot;</span>).text = <span class="string">&quot;0&quot;</span></span><br><span class="line">    <span class="comment"># stop_frame对应最后一帧的索引(0-based)</span></span><br><span class="line">    <span class="comment"># 我们基于处理过的帧来计算，找到最大的帧号</span></span><br><span class="line">    last_processed_frame_num = <span class="built_in">max</span>(all_results.keys()) <span class="keyword">if</span> all_results <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;stop_frame&quot;</span>).text = <span class="built_in">str</span>(last_processed_frame_num - <span class="number">1</span> <span class="keyword">if</span> last_processed_frame_num &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;frame_filter&quot;</span>).text = <span class="string">&quot;&quot;</span> <span class="comment"># 如果有跳帧，可以写在这里，但通常导入时不需要</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 提取并添加标签信息</span></span><br><span class="line">    labels = <span class="built_in">set</span>()</span><br><span class="line">    <span class="keyword">if</span> all_results:</span><br><span class="line">        <span class="keyword">for</span> frame_dets <span class="keyword">in</span> all_results.values():</span><br><span class="line">            <span class="keyword">if</span> frame_dets:</span><br><span class="line">                <span class="keyword">for</span> det <span class="keyword">in</span> frame_dets:</span><br><span class="line">                    labels.add(<span class="built_in">str</span>(det.get(<span class="string">&#x27;label&#x27;</span>, <span class="string">&#x27;unknown&#x27;</span>)))</span><br><span class="line"></span><br><span class="line">    labels_elem = ET.SubElement(task, <span class="string">&quot;labels&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> labels: <span class="comment"># 如果没有检测到任何标签，添加一个默认标签</span></span><br><span class="line">        logging.warning(<span class="string">&quot;在检测结果中未找到标签，添加默认&#x27;unknown&#x27;标签。&quot;</span>)</span><br><span class="line">        labels.add(<span class="string">&#x27;unknown&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> label_name <span class="keyword">in</span> <span class="built_in">sorted</span>(<span class="built_in">list</span>(labels)):</span><br><span class="line">         label_elem = ET.SubElement(labels_elem, <span class="string">&quot;label&quot;</span>)</span><br><span class="line">         ET.SubElement(label_elem, <span class="string">&quot;name&quot;</span>).text = label_name</span><br><span class="line">         ET.SubElement(label_elem, <span class="string">&quot;color&quot;</span>).text = <span class="string">&quot;&quot;</span> <span class="comment"># CVAT会自动分配颜色</span></span><br><span class="line">         ET.SubElement(label_elem, <span class="string">&quot;type&quot;</span>).text = <span class="string">&quot;rectangle&quot;</span> <span class="comment"># 假设都是矩形框</span></span><br><span class="line">         ET.SubElement(label_elem, <span class="string">&quot;attributes&quot;</span>) <span class="comment"># 这里不定义属性</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 添加最小化的 segments 信息 (CVAT格式要求)</span></span><br><span class="line">    segments = ET.SubElement(task, <span class="string">&quot;segments&quot;</span>)</span><br><span class="line">    segment = ET.SubElement(segments, <span class="string">&quot;segment&quot;</span>)</span><br><span class="line">    ET.SubElement(segment, <span class="string">&quot;id&quot;</span>).text = <span class="string">&quot;0&quot;</span></span><br><span class="line">    ET.SubElement(segment, <span class="string">&quot;start&quot;</span>).text = <span class="string">&quot;0&quot;</span></span><br><span class="line">    ET.SubElement(segment, <span class="string">&quot;stop&quot;</span>).text = <span class="built_in">str</span>(original_total_frames - <span class="number">1</span>) <span class="comment"># 使用原始视频的总帧数</span></span><br><span class="line">    ET.SubElement(segment, <span class="string">&quot;url&quot;</span>).text = <span class="string">&quot;N/A&quot;</span> <span class="comment"># 占位符</span></span><br><span class="line"></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;owner&quot;</span>) <span class="comment"># 空的 owner</span></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;assignee&quot;</span>) <span class="comment"># 空的 assignee</span></span><br><span class="line">    ET.SubElement(task, <span class="string">&quot;subset&quot;</span>).text = <span class="string">&quot;Default&quot;</span> <span class="comment"># 默认子集</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 原始尺寸信息 (需要)</span></span><br><span class="line">    original_size = ET.SubElement(meta, <span class="string">&quot;original_size&quot;</span>)</span><br><span class="line">    ET.SubElement(original_size, <span class="string">&quot;width&quot;</span>).text = <span class="built_in">str</span>(frame_width)</span><br><span class="line">    ET.SubElement(original_size, <span class="string">&quot;height&quot;</span>).text = <span class="built_in">str</span>(frame_height)</span><br><span class="line"></span><br><span class="line">    ET.SubElement(meta, <span class="string">&quot;dumped&quot;</span>).text = current_time_utc <span class="comment"># 导出时间</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 为每个处理过的帧添加 &lt;image&gt; 标注</span></span><br><span class="line">    <span class="keyword">if</span> all_results:</span><br><span class="line">        <span class="keyword">for</span> frame_number <span class="keyword">in</span> <span class="built_in">sorted</span>(all_results.keys()): <span class="comment"># 按帧号排序</span></span><br><span class="line">            detections = all_results[frame_number]</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> detections: <span class="comment"># 如果该帧没有检测结果，跳过（理论上不应发生，因为我们只存储有结果的帧）</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 创建 &lt;image&gt; 元素</span></span><br><span class="line">            image_elem = ET.SubElement(root, <span class="string">&quot;image&quot;</span>)</span><br><span class="line">            <span class="comment"># CVAT 使用 0-based 索引作为 id</span></span><br><span class="line">            image_elem.<span class="built_in">set</span>(<span class="string">&quot;id&quot;</span>, <span class="built_in">str</span>(frame_number - <span class="number">1</span>))</span><br><span class="line">            <span class="comment"># 生成一个规范的帧名 (可选，但推荐)</span></span><br><span class="line">            image_elem.<span class="built_in">set</span>(<span class="string">&quot;name&quot;</span>, <span class="string">f&quot;frame_<span class="subst">&#123;frame_number:06d&#125;</span>&quot;</span>) <span class="comment"># 格式化帧号，如 frame_000123</span></span><br><span class="line">            image_elem.<span class="built_in">set</span>(<span class="string">&quot;width&quot;</span>, <span class="built_in">str</span>(frame_width))</span><br><span class="line">            image_elem.<span class="built_in">set</span>(<span class="string">&quot;height&quot;</span>, <span class="built_in">str</span>(frame_height))</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 在 &lt;image&gt; 元素内部添加 &lt;box&gt; 元素</span></span><br><span class="line">            <span class="keyword">for</span> det <span class="keyword">in</span> detections:</span><br><span class="line">                box_elem = ET.SubElement(image_elem, <span class="string">&quot;box&quot;</span>)</span><br><span class="line">                box_elem.<span class="built_in">set</span>(<span class="string">&quot;label&quot;</span>, <span class="built_in">str</span>(det.get(<span class="string">&#x27;label&#x27;</span>, <span class="string">&#x27;unknown&#x27;</span>)))</span><br><span class="line"></span><br><span class="line">                points = det.get(<span class="string">&#x27;points&#x27;</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])</span><br><span class="line">                <span class="comment"># 坐标使用两位小数的浮点数格式</span></span><br><span class="line">                box_elem.<span class="built_in">set</span>(<span class="string">&quot;xtl&quot;</span>, <span class="string">f&quot;<span class="subst">&#123;<span class="built_in">float</span>(points[<span class="number">0</span>]):<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br><span class="line">                box_elem.<span class="built_in">set</span>(<span class="string">&quot;ytl&quot;</span>, <span class="string">f&quot;<span class="subst">&#123;<span class="built_in">float</span>(points[<span class="number">1</span>]):<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br><span class="line">                box_elem.<span class="built_in">set</span>(<span class="string">&quot;xbr&quot;</span>, <span class="string">f&quot;<span class="subst">&#123;<span class="built_in">float</span>(points[<span class="number">2</span>]):<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br><span class="line">                box_elem.<span class="built_in">set</span>(<span class="string">&quot;ybr&quot;</span>, <span class="string">f&quot;<span class="subst">&#123;<span class="built_in">float</span>(points[<span class="number">3</span>]):<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 对于图像格式，通常不需要 outside，但 occluded 可以保留</span></span><br><span class="line">                box_elem.<span class="built_in">set</span>(<span class="string">&quot;occluded&quot;</span>, <span class="string">&quot;0&quot;</span>) <span class="comment"># 0 表示未遮挡 (假设)</span></span><br><span class="line">                <span class="comment"># 在 CVAT for Images 格式中，不需要 keyframe 和 outside</span></span><br><span class="line">                <span class="comment"># box_elem.set(&quot;outside&quot;, &quot;0&quot;) # 通常不需要为图像设置outside</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 将置信度添加为属性</span></span><br><span class="line">                attr_conf = ET.SubElement(box_elem, <span class="string">&quot;attribute&quot;</span>, name=<span class="string">&quot;confidence&quot;</span>)</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    confidence_val = <span class="built_in">float</span>(det.get(<span class="string">&#x27;confidence&#x27;</span>, <span class="number">0.0</span>))</span><br><span class="line">                <span class="keyword">except</span> (ValueError, TypeError):</span><br><span class="line">                    confidence_val = <span class="number">0.0</span></span><br><span class="line">                attr_conf.text = <span class="string">f&quot;<span class="subst">&#123;confidence_val:<span class="number">.4</span>f&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- 结束构建XML结构 ---</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- 写入 XML 文件 ---</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 获取包含声明且格式化的完整XML字符串</span></span><br><span class="line">        full_xml_string = pretty_print_xml(root)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> full_xml_string:</span><br><span class="line">            <span class="comment"># 在写入前确保字符串以 &lt;?xml 开头</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> full_xml_string.strip().startswith(<span class="string">&quot;&lt;?xml&quot;</span>):</span><br><span class="line">                 logging.error(<span class="string">&quot;美化打印未能生成有效的XML开头。&quot;</span>)</span><br><span class="line">                 <span class="keyword">raise</span> ValueError(<span class="string">&quot;美化打印失败。&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(xml_output_path, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                <span class="comment"># 直接写入完整的字符串</span></span><br><span class="line">                f.write(full_xml_string)</span><br><span class="line">            logging.info(<span class="string">f&quot;检测结果已保存至 CVAT 图像 XML: <span class="subst">&#123;xml_output_path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 如果 pretty_print_xml 返回 None，使用后备方案</span></span><br><span class="line">            logging.warning(<span class="string">&quot;美化打印失败，回退到基础XML写入器。&quot;</span>)</span><br><span class="line">            tree = ET.ElementTree(root)</span><br><span class="line">            <span class="comment"># 如果 Python &gt;= 3.9, 可以使用 ET.indent 添加基本缩进</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">hasattr</span>(ET, <span class="string">&#x27;indent&#x27;</span>):</span><br><span class="line">                 ET.indent(tree, space=<span class="string">&quot;  &quot;</span>, level=<span class="number">0</span>)</span><br><span class="line">            <span class="comment"># 使用 ElementTree 写入，并请求 XML 声明</span></span><br><span class="line">            tree.write(xml_output_path, encoding=<span class="string">&#x27;utf-8&#x27;</span>, xml_declaration=<span class="literal">True</span>)</span><br><span class="line">            logging.info(<span class="string">f&quot;检测结果已保存至基础 CVAT XML (后备方案): <span class="subst">&#123;xml_output_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logging.error(<span class="string">f&quot;保存结果到 CVAT XML 文件失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 主处理逻辑 ---</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    logging.info(<span class="string">f&quot;开始处理视频: <span class="subst">&#123;VIDEO_PATH&#125;</span>&quot;</span>)</span><br><span class="line">    logging.info(<span class="string">f&quot;Nuclio 函数 URL: <span class="subst">&#123;NUCLIO_FUNCTION_URL&#125;</span>&quot;</span>)</span><br><span class="line">    logging.info(<span class="string">f&quot;处理帧间隔: 每 <span class="subst">&#123;FRAME_SKIP&#125;</span> 帧&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(VIDEO_PATH):</span><br><span class="line">        logging.error(<span class="string">f&quot;视频文件未找到: <span class="subst">&#123;VIDEO_PATH&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    cap = cv2.VideoCapture(VIDEO_PATH)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> cap.isOpened():</span><br><span class="line">        logging.error(<span class="string">f&quot;打开视频文件错误: <span class="subst">&#123;VIDEO_PATH&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取视频元数据</span></span><br><span class="line">    original_total_frames = <span class="built_in">int</span>(cap.get(cv2.CAP_PROP_FRAME_COUNT))</span><br><span class="line">    fps = cap.get(cv2.CAP_PROP_FPS)</span><br><span class="line">    frame_width = <span class="built_in">int</span>(cap.get(cv2.CAP_PROP_FRAME_WIDTH))</span><br><span class="line">    frame_height = <span class="built_in">int</span>(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))</span><br><span class="line">    <span class="keyword">if</span> original_total_frames &lt;= <span class="number">0</span>:</span><br><span class="line">        logging.error(<span class="string">f&quot;视频文件似乎为空或元数据错误 (总帧数: <span class="subst">&#123;original_total_frames&#125;</span>)。&quot;</span>)</span><br><span class="line">        cap.release()</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    logging.info(<span class="string">f&quot;视频信息: 总帧数: <span class="subst">&#123;original_total_frames&#125;</span>, FPS: <span class="subst">&#123;fps:<span class="number">.2</span>f&#125;</span>, 尺寸: <span class="subst">&#123;frame_width&#125;</span>x<span class="subst">&#123;frame_height&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    frame_count = <span class="number">0</span> <span class="comment"># 已读取的帧计数 (1-based for logging)</span></span><br><span class="line">    processed_frame_count = <span class="number">0</span> <span class="comment"># 实际处理的帧计数</span></span><br><span class="line">    all_results = &#123;&#125; <span class="comment"># 存储结果: &#123;帧号 (1-based): [检测列表]&#125;</span></span><br><span class="line">    start_process_time = time.time() <span class="comment"># 开始计时</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 读取一帧</span></span><br><span class="line">        ret, frame = cap.read()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查是否成功读取</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">            <span class="keyword">if</span> frame_count &lt; original_total_frames:</span><br><span class="line">                logging.warning(<span class="string">f&quot;无法读取帧 <span class="subst">&#123;frame_count + <span class="number">1</span>&#125;</span> (总帧数 <span class="subst">&#123;original_total_frames&#125;</span>)，假定视频结束。&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                 logging.info(<span class="string">&quot;视频处理到达结尾。&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span> <span class="comment"># 退出循环</span></span><br><span class="line"></span><br><span class="line">        frame_count += <span class="number">1</span> <span class="comment"># 更新已读取帧计数</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># --- 跳帧逻辑 ---</span></span><br><span class="line">        <span class="keyword">if</span> FRAME_SKIP &gt; <span class="number">1</span> <span class="keyword">and</span> frame_count % FRAME_SKIP != <span class="number">0</span> :</span><br><span class="line">            <span class="keyword">continue</span> <span class="comment"># 跳过当前帧</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># --- 处理当前帧 ---</span></span><br><span class="line">        processed_frame_count += <span class="number">1</span> <span class="comment"># 更新已处理帧计数</span></span><br><span class="line">        logging.info(<span class="string">f&quot;正在处理帧 <span class="subst">&#123;frame_count&#125;</span>/<span class="subst">&#123;original_total_frames&#125;</span>...&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 编码帧</span></span><br><span class="line">        b64_string = encode_frame_to_base64(frame)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> b64_string:</span><br><span class="line">            logging.warning(<span class="string">f&quot;因编码错误跳过帧 <span class="subst">&#123;frame_count&#125;</span>。&quot;</span>)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 调用 Nuclio 检测器</span></span><br><span class="line">        detections = call_nuclio_detector(b64_string, frame_count)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 存储检测结果 (仅当检测结果非空时存储)</span></span><br><span class="line">        <span class="keyword">if</span> detections:</span><br><span class="line">            all_results[frame_count] = detections <span class="comment"># 使用 1-based 帧号作为键</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># --- 进度估计 (可选) ---</span></span><br><span class="line">        <span class="keyword">if</span> processed_frame_count &gt; <span class="number">0</span> <span class="keyword">and</span> processed_frame_count % <span class="number">10</span> == <span class="number">0</span>: <span class="comment"># 每处理10帧更新一次进度</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                elapsed_time = time.time() - start_process_time</span><br><span class="line">                <span class="comment"># 估计总共需要处理的帧数</span></span><br><span class="line">                estimated_total_to_process = (original_total_frames // FRAME_SKIP) <span class="keyword">if</span> FRAME_SKIP &gt; <span class="number">1</span> <span class="keyword">else</span> original_total_frames</span><br><span class="line">                <span class="keyword">if</span> estimated_total_to_process &gt; <span class="number">0</span>:</span><br><span class="line">                    fraction_done = processed_frame_count / estimated_total_to_process</span><br><span class="line">                    <span class="comment"># 避免除零错误和进度超过100%的情况</span></span><br><span class="line">                    <span class="keyword">if</span> fraction_done &gt; <span class="number">0</span> <span class="keyword">and</span> fraction_done &lt;= <span class="number">1</span>:</span><br><span class="line">                        total_estimated_time = elapsed_time / fraction_done</span><br><span class="line">                        estimated_remaining_time = <span class="built_in">max</span>(<span class="number">0</span>, total_estimated_time - elapsed_time) <span class="comment"># 确保不为负</span></span><br><span class="line">                        logging.info(</span><br><span class="line">                            <span class="string">f&quot;进度: 帧 <span class="subst">&#123;frame_count&#125;</span>/<span class="subst">&#123;original_total_frames&#125;</span>。已处理 <span class="subst">&#123;processed_frame_count&#125;</span> 帧。预计剩余时间: <span class="subst">&#123;timedelta(seconds=<span class="built_in">int</span>(estimated_remaining_time))&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">                logging.warning(<span class="string">&quot;无法估计剩余时间 (除零错误)。&quot;</span>)</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e_est:</span><br><span class="line">                logging.warning(<span class="string">f&quot;无法估计剩余时间: <span class="subst">&#123;e_est&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- 清理与保存 ---</span></span><br><span class="line">    cap.release() <span class="comment"># 释放视频捕获对象</span></span><br><span class="line">    logging.info(<span class="string">&quot;视频捕获已释放。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 确定输出XML文件名</span></span><br><span class="line">    video_basename = os.path.basename(VIDEO_PATH)</span><br><span class="line">    video_name_no_ext, _ = os.path.splitext(video_basename)</span><br><span class="line">    <span class="comment"># 文件名表明是CVAT图像格式</span></span><br><span class="line">    xml_output_filename = <span class="string">f&quot;<span class="subst">&#123;video_name_no_ext&#125;</span>_cvat_images.xml&quot;</span></span><br><span class="line">    xml_output_path = os.path.join(OUTPUT_DIR, xml_output_filename)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存为 CVAT 图像 XML</span></span><br><span class="line">    <span class="keyword">if</span> all_results:</span><br><span class="line">         <span class="comment"># 传递处理过的帧数给size字段</span></span><br><span class="line">         save_results_to_cvat_image_xml(</span><br><span class="line">             all_results,</span><br><span class="line">             xml_output_path,</span><br><span class="line">             video_basename,</span><br><span class="line">             frame_width,</span><br><span class="line">             frame_height,</span><br><span class="line">             processed_frame_count, <span class="comment"># 传递处理过的帧数</span></span><br><span class="line">             original_total_frames <span class="comment"># 传递原始总帧数</span></span><br><span class="line">         )</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">         logging.warning(<span class="string">&quot;没有记录到任何检测结果，将不会创建CVAT XML文件。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- 结束处理 ---</span></span><br><span class="line">    end_process_time = time.time()</span><br><span class="line">    total_time = <span class="built_in">max</span>(<span class="number">0</span>, end_process_time - start_process_time) <span class="comment"># 确保总时间非负</span></span><br><span class="line">    logging.info(<span class="string">f&quot;视频处理完成。总耗时: <span class="subst">&#123;timedelta(seconds=<span class="built_in">int</span>(total_time))&#125;</span>&quot;</span>)</span><br><span class="line">    logging.info(<span class="string">f&quot;总共读取帧数: <span class="subst">&#123;frame_count&#125;</span>。实际处理帧数: <span class="subst">&#123;processed_frame_count&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 程序入口 ---</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="see">see</h2>
+<ul>
+<li>1.<a target="_blank" rel="noopener" href="https://github.com/nuclio/nuclio?tab=readme-ov-file#quick-start-steps">https://github.com/nuclio/nuclio?tab=readme-ov-file#quick-start-steps</a></li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2025/04/07/nuclio-build-use/" target="_blank" title="Nuclio与CVAT使用yolov8目标检测模型实现半自动化标注">https://caozhaoqi.github.io/2025/04/07/nuclio-build-use/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/04/09/yolov8-train-model/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">基于yolov8根据CVAT标注结果训练模型</div>
+      </div>
+      
+      <!-- <div class="content">
+        模型简介
+
+YOLO 是一种实时目标检测算法家族的名称。与传统的需要先进行区域提议（Region Proposal）再进
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/04/07/ffmpeg-problem-video/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">ffmpeg分割视频与音频中的处理问题分析</div>
+      </div>
+      <!-- <div class="content">
+        背景
+
+ffmpeg is a universal media converter. It can read a wid
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/logo.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>浅斟低唱</h2>
+        
+        
+          <p>博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1150118968@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/caozhaoqi/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%83%A8%E7%BD%B2-Nuclio-Dashboard"><span class="toc-text">一、部署 Nuclio Dashboard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8-Nuclio-Dashboard"><span class="toc-text">二、使用 Nuclio Dashboard</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8Eyolov8%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97%E5%88%B0nuclio"><span class="toc-text">基于yolov8模型部署函数计算到nuclio</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yml"><span class="toc-text">yml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-code"><span class="toc-text">python code</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#web-http-%E8%B0%83%E7%94%A8-yolov8%E6%A8%A1%E5%9E%8B"><span class="toc-text">web http 调用 yolov8模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#see"><span class="toc-text">see</span></a> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/11/26/agent-research-llm/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">11-26</span>
+                
+              </div>
+              <a class="post-title" href="/2025/11/26/agent-research-llm/">基于 FastAPI + LangChain 的简单agent实现</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/30/mysql-cluster-use/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-30</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/30/mysql-cluster-use/">实现高可用 MySQL 集群</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/17/pypi-mirror-self/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-17</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/17/pypi-mirror-self/">使用Devpi与Nginx构建高可用PyPI镜像源</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/29/ss-build-doc/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-29</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/29/ss-build-doc/">使用 Docker Compose 快速部署 Shadowsocks 代理服务教程</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/14/pyav-use-video/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-14</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/14/pyav-use-video/">PyAV用于视频剪辑处理</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a href="/atom.xml" class="social">
+                  
+                    <i class="fas fa-rss" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="mailto:1150118968@qq.com" class="social">
+                  
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="social">
+                  
+                    <i class="fas fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968" class="social">
+                  
+                    <i class="fas fa-qq" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a></p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>Total visits：<span id="busuanzi_value_site_pv"></span> times
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>Number of visitors：<span id="busuanzi_value_site_uv"></span> people
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="7289498727"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = 'copy';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <!-- 弹幕所需的css和js -->
+    
+  <!-- 弹幕插件 -->
+  <link href="/js/danmu/barrager.css" rel="stylesheet">
+  <script src="/js/danmu/jquery.barrager.js"></script>
+
+<!-- 具体js，请前往valine/script.ejs查看 -->
+
+    <script>
+  var requiredFields = 'nick,mail';
+  requiredFields = requiredFields.split(',');
+  comment_el = '.comment';
+  let looperValine = null;
+  load_valine = function () {
+    if ($(comment_el).length) {
+      var valine = new Valine({
+        el: '#vcomment',
+        path: window.location.pathname,
+        notify: false,
+        verify: false,
+        app_id: "PZlzAc6FzhlN4QJ4gUgas7AQ-gzGzoHsz",
+        app_key: "YYSIuQIfbSqnug2Kq117KGAK",
+        placeholder: "客官，说点什么吧",
+        avatar: "",
+        master: "d0ca78e6945a9e55aaf81645413dde96",   //博主邮箱md5
+        tagMeta: ["博主","小伙伴","访客"],     //标识字段名
+        friends: "",
+        metaPlaceholder: { "nick": "昵称/QQ号", "mail": "邮箱" },
+        requiredFields: requiredFields,
+        enableQQ: true,
+      });
+      function debounce(fn) {
+        var timerID = null
+        return function () {
+          var arg = arguments[0]   //获取事件
+          if (timerID) {
+            clearTimeout(timerID)
+          }
+          timerID = setTimeout(function () {
+            fn(arg)              //事件传入函数
+          }, 200)
+        }
+      }
+      //查询评论 valine.Q('*').limit(7) -- 查询所有，限制7条, 下面的的代码是查询当前页面
+      var themeDanmu = eval('true');
+      var themeLoop = eval('true');
+      var themeLooperTime = '5000' || 5000;
+      var speed = '40' || 20;
+      var isBarrager = true;
+      if (themeDanmu == true) {
+        do_barrager();
+        if ($('.danmuBox').length <= 0) {
+          $('.navbar').append('<div class="danmuBox"><div class="danmuBtn open"><span class="danmuCircle"></span><span class="danmuText">弹幕</span></div></div>');
+        }
+        $('.danmuBtn').on('click', debounce(
+          function () {
+            if ($('.danmuBtn').hasClass('open')) {
+              $('.danmuBtn').removeClass('open')
+              clearInterval(looperValine);
+              $.fn.barrager.removeAll();
+            } else {
+              $('.danmuBtn').addClass("open");
+              do_barrager();
+            }
+          }
+        ))
+      }
+      function do_barrager() {
+        isBarrager && valine.Q(window.location.pathname).find().then(function (comments) {
+          // var num = 0; // 可以记录条数，循环调用的时候只取最新的评论放入弹幕中
+          var run_once = true;
+          var looper_time = themeLooperTime;
+          var total = comments.length;
+          // var looper = null;
+          var index = 0;
+          if (total > 0) {
+            barrager();
+          } else {
+            // 当评论数为0的时候，自动关闭弹幕
+            // $('.danmuBtn').removeClass('open');
+          }
+          function barrager() {
+            if (run_once) {
+              //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+              looperValine = setInterval(barrager, looper_time);
+              run_once = false;
+            }
+            var content = comments[index]._serverData.comment;
+            var email = comments[index]._serverData.mail;
+            var link = comments[index]._serverData.link;
+            var newcontent = content.substring(0, 50).replace(/<[^>]+>/g, "");
+            //发布一个弹幕
+            const item = {
+              img: `https://q1.qlogo.cn/g?b=qq&nk=${email}&s=640`, //图片 
+              info: newcontent, //文字 
+              href: link, //链接 
+              close: true, //显示关闭按钮 
+              speed: speed, //延迟,单位秒,默认6 
+              color: '#fff', //颜色,默认白色 
+              old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+            }
+            $('body').barrager(item);
+            //索引自增
+            index++;
+            //所有弹幕发布完毕，清除计时器。
+            if (index == total) {
+              clearInterval(looperValine);
+              if (themeLoop === true) {
+                setTimeout(function () {
+                  do_barrager();
+                }, 5000);
+              } else {
+                $('.danmuBtn').removeClass('open');
+              }
+              return false;
+            }
+
+          }
+        })
+      }
+    }
+  };
+  $(document).ready(load_valine);
+  document.addEventListener('pjax:send', function (e) {
+    
+      $('.danmuBox').length > 0 && $('.danmuBox').remove()
+      looperValine && clearInterval(looperValine);
+      $.fn.barrager.removeAll();
+    
+  })
+  document.addEventListener('pjax:complete', function () {
+    load_valine();
+  });
+</script>
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>PySceneDetect 中场景检测器 | Zhaoqi.Cao static blog</title>
+
+  <link rel="icon" type="image/png" href="/medias/logo.png">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '0';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+        <script src="/js/valine/index.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Zhaoqi.Cao static blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Zhaoqi.Cao static blog</h3>
+      <h5 class="drawer-box-head_desc">A static personal blog.</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                      <i class="fas fa-link"></i>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Zhaoqi.Cao static blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="主页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友链">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                    <i class="fas fa-link"></i>
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">Search</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="Please enter keywords"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        PySceneDetect 中场景检测器
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2025-05-15 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 7.8k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 33min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1>PySceneDetect 中场景检测器</h1>
+<blockquote>
+<p>主要包括：<code>ContentDetector</code>, <code>ThresholdDetector</code>, <code>AdaptiveDetector</code>的算法及参数含义、算法思想以及如何确定这些参数。</p>
+</blockquote>
+<h2 id="通用概念"><strong>通用概念</strong></h2>
+<ul>
+<li><strong>场景 (Scene):</strong> 一系列连续的、在视觉上或叙事上构成一个单元的镜头。</li>
+<li><strong>切点 (Cut/Scene Break):</strong> 两个不同场景之间的边界。</li>
+<li><strong>帧间差异 (Frame-to-Frame Difference):</strong> 检测器通常通过比较连续（或间隔的）视频帧之间的差异来识别潜在的切点。差异的计算方式因检测器而异。</li>
+<li><strong>阈值 (Threshold):</strong> 一个预设的数值。当计算出的帧间差异超过这个阈值时，检测器就认为可能发生了一个场景切换。</li>
+<li><strong>最小场景长度 (Min Scene Length / <code>min_scene_len</code>):</strong> 检测到的场景必须达到的最短持续时间（通常以帧数或时间码表示）。如果两个检测到的原始切点之间的距离小于这个值，它们可能会被合并，以避免产生过多非常短的、无意义的场景片段。<strong>为了分析和找到最佳检测参数，我们通常将这个值设为1帧，以观察检测器最原始的输出。</strong></li>
+</ul>
+<hr>
+<h2 id="算法概述">算法概述</h2>
+<p><strong>1. <code>ThresholdDetector</code> (阈值检测器)</strong></p>
+<blockquote>
+<p>主要检测淡入淡出到黑屏或白屏场景</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>命令:</strong> <code>detect-threshold</code></p>
+</li>
+<li>
+<p><strong>核心思想:</strong> 主要通过监测视频帧的<strong>平均亮度/强度</strong>是否跨越一个固定的阈值来判断淡入/淡出事件。它假设场景切换（特别是淡入淡出）会伴随着画面整体变亮或变暗到某个程度。</p>
+</li>
+<li>
+<p><strong>主要参数及其含义：</strong></p>
+<ul>
+<li>
+<p><strong><code>threshold</code> (或 <code>-t VAL</code>)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 一个 0-255 之间的整数（或浮点数）。这是判断画面是否进入“淡出”或“淡入”状态的亮度基准。</li>
+<li><strong>算法交互:</strong> 与 <code>method</code> 参数配合使用。</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li><strong>使用亮度分析工具 (如我们之前编写的 <code>analyze_brightness.py</code>)</strong>：查看你的视频在发生淡入淡出到“黑屏”或“白屏”时，那些“黑/白”帧的实际平均亮度值。</li>
+<li>如果使用 <code>method = FLOOR</code> (检测淡出到暗/从暗淡入)：<code>threshold</code> 应略高于视频中“黑屏”状态的平均亮度。例如，如果黑屏亮度在 2-5 之间，你可以尝试 <code>threshold = 5</code> 或 <code>8</code> 或 <code>10</code>。如果阈值设得太低（比如1），那么只有几乎纯黑的帧才会被识别。</li>
+<li>如果使用 <code>method = CEILING</code> (检测淡出到亮/从亮淡入)：<code>threshold</code> 应略低于视频中“白屏”状态的平均亮度。例如，如果白屏亮度在 250-253 之间，你可以尝试 <code>threshold = 250</code> 或 <code>245</code>。</li>
+<li><strong>实验法：</strong> 从一个相对宽松的值开始（例如，对于 FLOOR 方法，从 15-20 开始；对于 CEILING，从 230-240 开始），然后逐渐向更严格的值调整（FLOOR 向下调，CEILING 向上调），同时观察 <code>save-images</code> 的结果。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>fade_bias</code> (或 <code>-f PERCENT</code>)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 一个百分比值（命令行是 -100 到 100，Python 类内部是 -1.0 到 +1.0）。它调整检测到的淡入淡出切点的<strong>精确位置</strong>。</li>
+<li><strong>算法交互:</strong> 当检测器识别到一次亮度从阈值一侧跨越到另一侧（例如，从高于阈值变为低于阈值，再恢复到高于阈值，这构成一次淡出再淡入），<code>fade_bias</code> 决定切点放在这个过程的哪个阶段。
+<ul>
+<li>命令行 <code>-100</code> (Python <code>-1.0</code>): 切点尽可能靠近完全淡出到黑/白的时刻，或者刚开始从黑/白恢复的时刻（取决于具体实现和淡入/淡出方向）。</li>
+<li>命令行 <code>0</code> (Python <code>0.0</code>): 切点放在淡出和淡入过程的中间。</li>
+<li>命令行 <code>+100</code> (Python <code>+1.0</code>): 切点尽可能靠近刚开始淡出或完全淡入完成的时刻。</li>
+</ul>
+</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li>通常对于视频间的切换，我们希望在画面完全变黑/白之后，或者刚开始有新画面时进行切割。所以一个中等到较大的负偏置（例如命令行的 <code>30</code> 到 <code>70</code>，对应 Python 的 <code>(PERCENT/50.0) - 1.0</code>）可能是合适的，这会使切点更倾向于“黑场”的边缘。</li>
+<li><strong>实验法：</strong> 设置一个基础的 <code>threshold</code>，然后尝试不同的 <code>fade_bias</code> 值（例如 -80, -50, 0, 50, 80），观察 <code>save-images</code> 中切点图片的位置，看哪个最符合你的期望。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>method</code> (Python 类参数，<code>ThresholdDetector.Method.FLOOR</code> 或 <code>ThresholdDetector.Method.CEILING</code>)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 定义了如何将帧的平均亮度与 <code>threshold</code> 进行比较来触发事件。
+<ul>
+<li><code>FLOOR</code>: 当帧亮度<strong>低于 (falls below)</strong> <code>threshold</code> 时，认为是淡出（到暗）；当从低于状态恢复到<strong>高于等于</strong> <code>threshold</code> 时，认为是淡入（从暗）。</li>
+<li><code>CEILING</code>: 当帧亮度<strong>高于 (rises above)</strong> <code>threshold</code> 时，认为是淡出（到亮）；当从高于状态恢复到<strong>低于</strong> <code>threshold</code> 时，认为是淡入（从亮）。</li>
+</ul>
+</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li>如果你的视频主要是淡入淡出到<strong>黑色</strong>，或者从黑色淡入，选择 <code>FLOOR</code>。</li>
+<li>如果你的视频主要是淡入淡出到<strong>白色</strong>，或者从白色淡入，选择 <code>CEILING</code> (并配合非常高的 <code>threshold</code>)。</li>
+<li>你的 <code>config.ini</code> 中 <code>method = FLOOR</code> (因为 <code>FRAME_AVERAGE</code> 会回退到 <code>FLOOR</code>)，所以当前是针对暗场景的。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>min_scene_len</code> (或 <code>-m TIMECODE</code>，命令行是 <code>-m 1</code> 表示1帧)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 最小场景长度。</li>
+<li><strong>如何确定:</strong> 为了分析检测器的原始性能和找到最佳的 <code>threshold</code> / <code>fade_bias</code>，<strong>始终将其设置为 <code>1</code> (或 <code>1f</code>，根据具体命令格式)</strong>。在确定了最佳检测参数后，如果需要避免过多短片段，再在最终处理时考虑增大这个值。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>2. <code>ContentDetector</code> (内容检测器)</strong></p>
+<ul>
+<li>
+<p><strong>命令:</strong> <code>detect-content</code></p>
+</li>
+<li>
+<p><strong>核心思想:</strong> 通过比较连续帧之间<strong>视觉内容的整体差异</strong>来检测场景切换。它不仅仅看亮度，还会考虑颜色分布（色调 Hue, 饱和度 Saturation）和可能的边缘信息。对于平均亮度变化不大但内容发生显著改变的切换（如交叉淡化、某些快速剪辑）通常更有效。</p>
+</li>
+<li>
+<p><strong>主要参数及其含义：</strong></p>
+<ul>
+<li>
+<p><strong><code>threshold</code> (或 <code>-t VAL</code>)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 一个浮点数，表示帧间内容差异的阈值。这个差异值是综合了色调、饱和度、亮度（以及可能有的边缘）通道的变化计算出来的。</li>
+<li><strong>算法交互:</strong> 当计算出的帧间内容综合差异值<strong>超过</strong>此阈值时，触发切点。</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li><code>ContentDetector</code> 的阈值范围和敏感度与 <code>ThresholdDetector</code> 不同。默认值通常在 20-35 之间。</li>
+<li><strong>较低的阈值意味着更敏感。</strong> 对于平滑的交叉淡化或细微的内容变化，你可能需要将阈值降低到 15-25，甚至更低（5-15）。</li>
+<li><strong>实验法是关键：</strong>
+<ul>
+<li><strong>使用 <code>threshold_explorer.py</code> 工具（代码见后）</strong>：这是最系统的方法。设定一个阈值范围（例如，从 5.0 到 30.0，步长 1.0 或 2.0），对抽样视频运行。</li>
+<li><strong>观察图表：</strong> 查看“平均场景数 vs. 阈值”图。寻找曲线的“拐点”——即阈值再降低，场景数开始急剧增加（可能引入噪声）；或者阈值再升高，场景数急剧减少（可能遗漏切换）的那个临界区域。</li>
+<li><strong>结合 <code>save-images</code>：</strong> 对于你在图表上找到的几个有希望的阈值点，使用 <code>--save_images_for</code> 选项（在 <code>threshold_explorer.py</code> 中）或直接用 <code>scenedetect</code> 命令行工具（配合 <code>save-images</code>）来实际查看这些阈值下的切点图片。人工判断这些切点是否符合你对交叉淡化或其他场景切换的定义。</li>
+</ul>
+</li>
+<li><strong>从一个相对保守的值开始（例如 25-30），如果检测不到足够的场景，逐渐降低阈值，并观察结果。</strong></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>min_scene_len</code> (或 <code>-m TIMECODE</code>，命令行通常是 <code>-m 1</code> 表示1帧)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 最小场景长度。</li>
+<li><strong>如何确定:</strong> 同 <code>ThresholdDetector</code>，在参数探索阶段，<strong>始终将其设置为 <code>1</code></strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>weights</code> (Hue, Saturation, Luma, Edges - Python 类参数)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 定义在计算帧间内容差异时，色调、饱和度、亮度、边缘这几个分量各自所占的权重。</li>
+<li><strong>算法交互:</strong> 影响最终的综合差异值。</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li><strong>通常从默认权重开始。</strong> PySceneDetect 的默认权重是经过一定调优的。</li>
+<li>如果默认权重效果不佳，并且你对视频内容的特性有了解：
+<ul>
+<li>如果场景切换主要体现在<strong>颜色</strong>变化上（例如，从冷色调场景交叉淡化到暖色调场景），可以尝试<strong>增加 <code>weights_hue</code> 和 <code>weights_saturation</code></strong> 的权重，同时<strong>减少 <code>weights_luma</code></strong> 的权重。</li>
+<li>如果场景切换主要体现在<strong>结构或物体轮廓</strong>变化上，确保边缘检测被启用并且 <code>weights_edges</code> 有合适的权重。</li>
+<li>这部分调整通常需要更多的实验和对视频内容的细致分析。你的 <code>config.ini</code> 和 <code>scene_detector.py</code> 允许你设置这些权重。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>luma_only</code> (布尔值)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 如果为 <code>true</code>，则在计算内容差异时只考虑亮度通道，忽略色调和饱和度。</li>
+<li><strong>算法交互:</strong> 相当于将 <code>weights_hue</code> 和 <code>weights_saturation</code> 设为 0。</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li>对于颜色信息丰富且对场景区分很重要的视频（尤其是交叉淡化），通常应将此设为 <code>false</code>（默认）。</li>
+<li>如果视频是黑白的，或者颜色信息干扰性强且不重要，可以设为 <code>true</code>。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>3. <code>AdaptiveDetector</code> (自适应检测器)</strong></p>
+<ul>
+<li>
+<p><strong>命令:</strong> <code>detect-adaptive</code></p>
+</li>
+<li>
+<p><strong>核心思想:</strong> 与 <code>ContentDetector</code> 类似，它也计算帧间内容的差异。但不同之处在于，它不是使用一个固定的全局阈值，而是根据最近一段视频窗口内的帧间差异动态地计算一个自适应阈值。当某一帧的差异显著高于这个动态计算出的局部平均差异时，触发切点。</p>
+</li>
+<li>
+<p><strong>适用场景:</strong> 对于视频整体亮度或内容变化幅度不一致的情况可能有用。例如，一个视频可能有些部分变化剧烈，有些部分变化平缓。固定阈值可能难以同时适应这两种情况。</p>
+</li>
+<li>
+<p><strong>主要参数及其含义：</strong></p>
+<ul>
+<li>
+<p><strong><code>adaptive_threshold</code> (或 <code>-t VAL</code>)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 一个乘数因子（通常是较小的浮点数，例如 2.0-5.0，默认可能是 3.0）。</li>
+<li><strong>算法交互:</strong> 检测器会计算一个基于滑动窗口的帧间差异的统计量（例如平均值或移动平均值）。如果当前帧的差异超过了这个统计量乘以 <code>adaptive_threshold</code>，则认为是一个切点。值越大，检测越不敏感（需要更大的相对变化）。</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li><strong>实验法：</strong> 从默认值（例如 3.0）开始。</li>
+<li>如果检测到的场景太少，尝试降低此值（例如 2.5, 2.0）。</li>
+<li>如果检测到的场景太多（噪声），尝试增加此值（例如 3.5, 4.0）。</li>
+<li>同样，结合 <code>save-images</code> 进行人工检查。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>min_scene_len</code> (或 <code>-m TIMECODE</code>)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 最小场景长度。</li>
+<li><strong>如何确定:</strong> 同上，参数探索阶段设为 <code>1</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>window_width</code> (或 <code>--window_width VAL</code>, 帧数)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 用于计算自适应阈值的滑动窗口的宽度（以帧为单位）。如果为 0，检测器通常会根据视频帧率自动设置一个合理的窗口大小。</li>
+<li><strong>算法交互:</strong> 窗口越大，自适应阈值对局部快速变化的敏感度越低，对较长时间的平均变化更敏感。窗口越小，对局部突变越敏感。</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li>通常可以从默认值 (0，即自动) 开始。</li>
+<li>如果自动设置效果不佳，可以根据视频的平均镜头长度或变化节奏来手动设置。例如，如果快速剪辑多，可以尝试较小的窗口；如果长镜头多，可以尝试较大的窗口。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>min_delta_hsv</code> (浮点数 0-255)</strong>:</p>
+<ul>
+<li><strong>含义:</strong> 有些版本的 <code>AdaptiveDetector</code> 可能使用这个参数。它设定了一个帧间 HSV（色调、饱和度、亮度）差异的最小绝对值。即使相对差异（通过 <code>adaptive_threshold</code> 判断）很大，但如果绝对差异本身非常小（例如，在几乎全黑的场景中微小的噪声变化），也可能不被视为切点。这有助于过滤掉在非常低对比度区域的噪声。</li>
+<li><strong>如何确定:</strong>
+<ol>
+<li>如果你的视频中有非常暗或对比度非常低的区域，并且 <code>AdaptiveDetector</code> 在这些区域产生了误报，可以尝试增加此值（例如从默认的 10-15 增加到 20-25）。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="通用参数确定流程："><strong>通用参数确定流程：</strong></h2>
+<ol>
+<li>
+<p><strong>选择检测器类型：</strong></p>
+<ul>
+<li><strong>淡入淡出到黑/白：</strong> 优先尝试 <code>ThresholdDetector</code>。</li>
+<li><strong>交叉淡化、内容变化明显但亮度变化不大：</strong> 优先尝试 <code>ContentDetector</code>。</li>
+<li><strong>视频内容变化特征不一致，难以用固定阈值把握：</strong> 可以尝试 <code>AdaptiveDetector</code>。</li>
+<li><strong>不确定或想组合使用：</strong> 可以使用 <code>MultiDetector</code>，并分别配置上述检测器（在你的 <code>config.ini</code> 中将 <code>[SceneDetectorSetup]</code> 的 <code>detector_type</code> 设为 <code>MultiDetector</code>，然后在各个检测器的配置节中设置 <code>enabled = true</code> 和相应的参数）。</li>
+</ul>
+</li>
+<li>
+<p><strong>设置 <code>min_scene_len = 1</code>：</strong> 在寻找最佳检测参数的阶段，始终这样做。</p>
+</li>
+<li>
+<p><strong>选择一个（或几个）代表性的抽样视频：</strong> 这些视频应该包含你期望检测到的各种场景切换效果。</p>
+</li>
+<li>
+<p><strong>对于选定的检测器，系统地扫描其主要阈值参数：</strong></p>
+<ul>
+<li><strong><code>ThresholdDetector</code></strong>: 扫描 <code>threshold</code> 和 <code>fade_bias</code>。</li>
+<li><strong><code>ContentDetector</code></strong>: 主要扫描 <code>threshold</code>。可以后续再调整 <code>weights</code>。</li>
+<li><strong><code>AdaptiveDetector</code></strong>: 主要扫描 <code>adaptive_threshold</code>。可以后续再调整 <code>window_width</code>。</li>
+<li><strong>使用你的 <code>threshold_explorer.py</code> 工具</strong> (如果它是针对 <code>ContentDetector</code> 的，你需要为其他检测器做类似的参数扫描逻辑，或者修改它使其更通用)。</li>
+</ul>
+</li>
+<li>
+<p><strong>可视化和人工检查：</strong></p>
+<ul>
+<li>查看场景数量随阈值变化的图表。</li>
+<li>对于几个有希望的阈值设置，使用 <code>save-images</code> 生成的图片进行人工检查，看切点是否准确、是否有漏检或误报。</li>
+</ul>
+</li>
+<li>
+<p><strong>迭代和微调：</strong> 根据可视化和人工检查的结果，调整参数范围，进行更细致的扫描，或者尝试调整次要参数（如权重、窗口宽度等）。</p>
+</li>
+<li>
+<p><strong>选择“最佳”参数：</strong> “最佳”通常是在“召回率”（找到所有想找的切换）和“精确率”（找到的切换都是正确的）之间的一个平衡。这取决于你的具体需求。可能没有一组参数对所有视频都完美，你可能需要根据视频类型选择不同的参数集，或者接受一定的折衷。</p>
+</li>
+</ol>
+<h2 id="可视化确定内容检测阈值方法">可视化确定内容检测阈值方法</h2>
+<h3 id="内容检测器阈值参考代码">内容检测器阈值参考代码</h3>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Tuple</span>, <span class="type">Dict</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> scenedetect <span class="keyword">import</span> open_video, SceneManager, ContentDetector, FrameTimecode, VideoStreamCv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">    <span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">    MATPLOTLIB_AVAILABLE = <span class="literal">True</span></span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    MATPLOTLIB_AVAILABLE = <span class="literal">False</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;警告: Matplotlib 或 Pandas 未安装，将无法生成可视化图表。&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;请运行: pip install matplotlib pandas&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 日志设置 ---</span></span><br><span class="line">logger = logging.getLogger(<span class="string">&quot;ThresholdExplorer&quot;</span>)</span><br><span class="line">logging.basicConfig(level=logging.INFO, <span class="built_in">format</span>=<span class="string">&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_video_files</span>(<span class="params">input_path: Path, extensions: <span class="type">List</span>[<span class="built_in">str</span>], recursive: <span class="built_in">bool</span></span>) -&gt; <span class="type">List</span>[Path]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;从指定路径收集视频文件列表。&quot;&quot;&quot;</span></span><br><span class="line">    video_files = []</span><br><span class="line">    logger.info(<span class="string">f&quot;正在扫描目录: <span class="subst">&#123;input_path&#125;</span> (递归: <span class="subst">&#123;recursive&#125;</span>)，寻找扩展名: <span class="subst">&#123;extensions&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> extensions:</span><br><span class="line">        pattern = <span class="string">f&quot;**/*<span class="subst">&#123;ext&#125;</span>&quot;</span> <span class="keyword">if</span> recursive <span class="keyword">else</span> <span class="string">f&quot;*<span class="subst">&#123;ext&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">for</span> file_path <span class="keyword">in</span> input_path.glob(pattern):</span><br><span class="line">            <span class="keyword">if</span> file_path.is_file() <span class="keyword">and</span> <span class="keyword">not</span> file_path.name.startswith(<span class="string">&#x27;._&#x27;</span>):</span><br><span class="line">                video_files.append(file_path)</span><br><span class="line">    logger.info(<span class="string">f&quot;在文件系统中找到 <span class="subst">&#123;<span class="built_in">len</span>(video_files)&#125;</span> 个视频文件。&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> video_files</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_sampled_videos</span>(<span class="params">video_list: <span class="type">List</span>[Path], sample_ratio: <span class="built_in">float</span> = -<span class="number">1.0</span>, num_samples: <span class="built_in">int</span> = -<span class="number">1</span></span>) -&gt; <span class="type">List</span>[Path]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;根据比例或数量对视频列表进行抽样。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> video_list:</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> num_samples &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> num_samples &gt;= <span class="built_in">len</span>(video_list):</span><br><span class="line">            <span class="keyword">return</span> video_list</span><br><span class="line">        <span class="keyword">return</span> random.sample(video_list, num_samples)</span><br><span class="line">    <span class="keyword">elif</span> <span class="number">0.0</span> &lt; sample_ratio &lt;= <span class="number">1.0</span>:</span><br><span class="line">        k = <span class="built_in">int</span>(<span class="built_in">len</span>(video_list) * sample_ratio)</span><br><span class="line">        <span class="keyword">if</span> k == <span class="number">0</span> <span class="keyword">and</span> <span class="built_in">len</span>(video_list) &gt; <span class="number">0</span>: k = <span class="number">1</span>  <span class="comment"># 至少抽一个样本</span></span><br><span class="line">        <span class="keyword">return</span> random.sample(video_list, k)</span><br><span class="line">    <span class="keyword">else</span>:  <span class="comment"># 默认不抽样，处理所有</span></span><br><span class="line">        <span class="keyword">return</span> video_list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_detection_for_threshold</span>(<span class="params"></span></span><br><span class="line"><span class="params">        video_path: Path,</span></span><br><span class="line"><span class="params">        threshold_value: <span class="built_in">float</span>,</span></span><br><span class="line"><span class="params">        min_len: <span class="built_in">int</span> = <span class="number">1</span>,  <span class="comment"># 保持为1以获得原始切点</span></span></span><br><span class="line"><span class="params">        save_images_output_dir: Path = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">        save_images_for_this_run: <span class="built_in">bool</span> = <span class="literal">False</span>  <span class="comment"># 是否为本次特定的阈值运行保存图像</span></span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;对单个视频和单个阈值运行 ContentDetector。&quot;&quot;&quot;</span></span><br><span class="line">    scene_manager = SceneManager()</span><br><span class="line">    <span class="comment"># 注意：ContentDetector 的其他参数（如 weights, luma_only）这里使用默认值。</span></span><br><span class="line">    <span class="comment"># 如果需要，也可以将它们作为参数传入。</span></span><br><span class="line">    detector = ContentDetector(threshold=threshold_value, min_scene_len=min_len)</span><br><span class="line">    scene_manager.add_detector(detector)</span><br><span class="line"></span><br><span class="line">    video = <span class="literal">None</span></span><br><span class="line">    num_scenes = <span class="number">0</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        video = open_video(<span class="built_in">str</span>(video_path))</span><br><span class="line">        <span class="comment"># video.set_downscale_factor(1) # 可以考虑降采样以加速，但可能影响检测精度</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取有限的帧数进行分析，而不是整个视频，以加快速度</span></span><br><span class="line">        <span class="comment"># 这里我们仍然处理整个（抽样的）视频，因为交叉淡化可能在任何地方</span></span><br><span class="line">        <span class="comment"># 如果视频非常长，可以考虑只分析视频的一部分，但这会使抽样更复杂</span></span><br><span class="line">        scene_manager.detect_scenes(video=video, show_progress=<span class="literal">False</span>)</span><br><span class="line">        scene_list = scene_manager.get_scene_list()</span><br><span class="line">        num_scenes = <span class="built_in">len</span>(scene_list)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> save_images_for_this_run <span class="keyword">and</span> save_images_output_dir <span class="keyword">and</span> scene_list:</span><br><span class="line">            <span class="keyword">from</span> scenedetect.video_splitter <span class="keyword">import</span> save_images <span class="keyword">as</span> save_images_func</span><br><span class="line">            video_images_dir = save_images_output_dir / <span class="string">f&quot;<span class="subst">&#123;video_path.stem&#125;</span>_thresh_<span class="subst">&#123;threshold_value:<span class="number">.1</span>f&#125;</span>&quot;</span></span><br><span class="line">            video_images_dir.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line">            logger.info(<span class="string">f&quot;为视频 <span class="subst">&#123;video_path.name&#125;</span> (阈值 <span class="subst">&#123;threshold_value:<span class="number">.1</span>f&#125;</span>) 保存场景图片到 <span class="subst">&#123;video_images_dir&#125;</span>&quot;</span>)</span><br><span class="line">            save_images_func(</span><br><span class="line">                scene_list=scene_list,</span><br><span class="line">                video_manager=video,  <span class="comment"># open_video 返回的是 VideoManager 或其后端实例</span></span><br><span class="line">                num_images=<span class="number">2</span>,  <span class="comment"># 每个切点前后各一张</span></span><br><span class="line">                output_dir=<span class="built_in">str</span>(video_images_dir),</span><br><span class="line">                image_name_template=<span class="string">&#x27;$VIDEO_NAME-Scene-$SCENE_NUMBER-$IMAGE_NUMBER&#x27;</span></span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.error(<span class="string">f&quot;处理视频 <span class="subst">&#123;video_path.name&#125;</span> (阈值 <span class="subst">&#123;threshold_value&#125;</span>) 时出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        num_scenes = -<span class="number">1</span>  <span class="comment"># 表示错误</span></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">if</span> video:</span><br><span class="line">            <span class="comment"># 尝试通用的 release 方法 (适用于 VideoManager)</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">hasattr</span>(video, <span class="string">&#x27;release&#x27;</span>) <span class="keyword">and</span> <span class="built_in">callable</span>(<span class="built_in">getattr</span>(video, <span class="string">&#x27;release&#x27;</span>)):</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    video.release()</span><br><span class="line">                    logger.debug(<span class="string">f&quot;Released video object for <span class="subst">&#123;video_path.name&#125;</span> via .release()&quot;</span>)</span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> e_rel:</span><br><span class="line">                    logger.warning(<span class="string">f&quot;Error calling .release() on video object for <span class="subst">&#123;video_path.name&#125;</span>: <span class="subst">&#123;e_rel&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="comment"># 针对 VideoStreamCv2 (以及继承它的 VideoStreamCv2Cuda) 的特殊处理</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">isinstance</span>(video, VideoStreamCv2):  <span class="comment"># VideoStreamCv2 是从 scenedetect.backends.opencv 导入的</span></span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">hasattr</span>(video, <span class="string">&#x27;_cap&#x27;</span>) <span class="keyword">and</span> video._cap <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    <span class="keyword">try</span>:</span><br><span class="line">                        <span class="keyword">if</span> video._cap.isOpened():</span><br><span class="line">                            video._cap.release()</span><br><span class="line">                            logger.debug(<span class="string">f&quot;Released VideoStreamCv2._cap for <span class="subst">&#123;video_path.name&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="keyword">except</span> Exception <span class="keyword">as</span> e_cap_rel:</span><br><span class="line">                        logger.warning(<span class="string">f&quot;Error releasing VideoStreamCv2._cap for <span class="subst">&#123;video_path.name&#125;</span>: <span class="subst">&#123;e_cap_rel&#125;</span>&quot;</span>)</span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">                logger.warning(</span><br><span class="line">                    <span class="string">f&quot;Video object for <span class="subst">&#123;video_path.name&#125;</span> (type: <span class="subst">&#123;<span class="built_in">type</span>(video).__name__&#125;</span>) &quot;</span></span><br><span class="line">                    <span class="string">&quot;does not have a public .release() method and is not a known direct backend &quot;</span></span><br><span class="line">                    <span class="string">&quot;with a specific release pattern. Relying on __del__ for cleanup.&quot;</span></span><br><span class="line">                )</span><br><span class="line">    <span class="keyword">return</span> num_scenes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">explore_thresholds</span>(<span class="params"></span></span><br><span class="line"><span class="params">        video_paths: <span class="type">List</span>[Path],</span></span><br><span class="line"><span class="params">        threshold_range: <span class="type">Tuple</span>[<span class="built_in">float</span>, <span class="built_in">float</span>, <span class="built_in">float</span>],  <span class="comment"># (start, end, step)</span></span></span><br><span class="line"><span class="params">        sample_ratio: <span class="built_in">float</span> = -<span class="number">1.0</span>,</span></span><br><span class="line"><span class="params">        num_sample_videos: <span class="built_in">int</span> = -<span class="number">1</span>,</span></span><br><span class="line"><span class="params">        min_scene_len: <span class="built_in">int</span> = <span class="number">1</span>,</span></span><br><span class="line"><span class="params">        output_dir_base: Path = Path(<span class="params"><span class="string">&quot;threshold_exploration_output&quot;</span></span>),</span></span><br><span class="line"><span class="params">        save_images_for_thresholds: <span class="type">List</span>[<span class="built_in">float</span>] = <span class="literal">None</span>  <span class="comment"># 指定哪些阈值需要保存图像</span></span></span><br><span class="line"><span class="params"></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    对一批视频，在一系列阈值下运行 ContentDetector，并记录结果。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> video_paths:</span><br><span class="line">        logger.warning(<span class="string">&quot;没有提供视频文件进行分析。&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    sampled_videos = get_sampled_videos(video_paths, sample_ratio, num_sample_videos)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> sampled_videos:</span><br><span class="line">        logger.warning(<span class="string">&quot;抽样后没有视频可供分析。&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">f&quot;将对以下 <span class="subst">&#123;<span class="built_in">len</span>(sampled_videos)&#125;</span> 个抽样视频进行分析:&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> vid_path <span class="keyword">in</span> sampled_videos:</span><br><span class="line">        logger.info(<span class="string">f&quot;  - <span class="subst">&#123;vid_path.name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    start_thresh, end_thresh, step_thresh = threshold_range</span><br><span class="line">    thresholds_to_test = np.arange(start_thresh, end_thresh + step_thresh / <span class="number">2</span>, step_thresh)  <span class="comment"># +step/2 确保包含 end_thresh</span></span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">f&quot;将测试以下阈值: <span class="subst">&#123;thresholds_to_test&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建主输出目录</span></span><br><span class="line">    output_dir_base.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    images_base_dir = output_dir_base / <span class="string">&quot;saved_scene_images&quot;</span></span><br><span class="line">    <span class="keyword">if</span> save_images_for_thresholds:</span><br><span class="line">        images_base_dir.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    results = []  <span class="comment"># 存储 (video_name, threshold, num_scenes)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> video_path <span class="keyword">in</span> sampled_videos:</span><br><span class="line">        logger.info(<span class="string">f&quot;--- 开始处理视频: <span class="subst">&#123;video_path.name&#125;</span> ---&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> threshold <span class="keyword">in</span> thresholds_to_test:</span><br><span class="line">            logger.info(<span class="string">f&quot;  测试阈值: <span class="subst">&#123;threshold:<span class="number">.2</span>f&#125;</span> for <span class="subst">&#123;video_path.name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            save_images_this_run = <span class="literal">False</span></span><br><span class="line">            <span class="keyword">if</span> save_images_for_thresholds <span class="keyword">and</span> <span class="built_in">any</span>(</span><br><span class="line">                    <span class="built_in">abs</span>(threshold - t_save) &lt; <span class="number">1e-5</span> <span class="keyword">for</span> t_save <span class="keyword">in</span> save_images_for_thresholds):</span><br><span class="line">                save_images_this_run = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">            num_scenes = run_detection_for_threshold(</span><br><span class="line">                video_path,</span><br><span class="line">                threshold,</span><br><span class="line">                min_len=min_scene_len,</span><br><span class="line">                save_images_output_dir=images_base_dir <span class="keyword">if</span> save_images_this_run <span class="keyword">else</span> <span class="literal">None</span>,</span><br><span class="line">                save_images_for_this_run=save_images_this_run</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">if</span> num_scenes != -<span class="number">1</span>:  <span class="comment"># 如果没有发生错误</span></span><br><span class="line">                results.append(&#123;</span><br><span class="line">                    <span class="string">&quot;video_name&quot;</span>: video_path.name,</span><br><span class="line">                    <span class="string">&quot;threshold&quot;</span>: threshold,</span><br><span class="line">                    <span class="string">&quot;num_scenes&quot;</span>: num_scenes</span><br><span class="line">                &#125;)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                logger.warning(<span class="string">f&quot;跳过记录视频 <span class="subst">&#123;video_path.name&#125;</span> 在阈值 <span class="subst">&#123;threshold:<span class="number">.2</span>f&#125;</span> 的结果，因为检测出错。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> results:</span><br><span class="line">        logger.warning(<span class="string">&quot;没有收集到任何有效的检测结果。&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    results_df = pd.DataFrame(results) <span class="keyword">if</span> MATPLOTLIB_AVAILABLE <span class="keyword">and</span> pd <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存原始数据到 CSV</span></span><br><span class="line">    csv_output_path = output_dir_base / <span class="string">&quot;threshold_scan_results.csv&quot;</span></span><br><span class="line">    <span class="keyword">if</span> results_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            results_df.to_csv(csv_output_path, index=<span class="literal">False</span>)</span><br><span class="line">            logger.info(<span class="string">f&quot;详细扫描结果已保存到: <span class="subst">&#123;csv_output_path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;无法保存扫描结果到 CSV: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:  <span class="comment"># 如果 pandas 不可用，尝试手动保存</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(csv_output_path, <span class="string">&#x27;w&#x27;</span>, newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                writer = csv.writer(f)</span><br><span class="line">                writer.writerow([<span class="string">&#x27;video_name&#x27;</span>, <span class="string">&#x27;threshold&#x27;</span>, <span class="string">&#x27;num_scenes&#x27;</span>])</span><br><span class="line">                <span class="keyword">for</span> res_dict <span class="keyword">in</span> results:</span><br><span class="line">                    writer.writerow([res_dict[<span class="string">&#x27;video_name&#x27;</span>], res_dict[<span class="string">&#x27;threshold&#x27;</span>], res_dict[<span class="string">&#x27;num_scenes&#x27;</span>]])</span><br><span class="line">            logger.info(<span class="string">f&quot;详细扫描结果已保存到: <span class="subst">&#123;csv_output_path&#125;</span> (手动保存)&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;无法手动保存扫描结果到 CSV: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 可视化</span></span><br><span class="line">    <span class="keyword">if</span> MATPLOTLIB_AVAILABLE <span class="keyword">and</span> results_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 图1: 每个视频的场景数 vs 阈值</span></span><br><span class="line">            plt.figure(figsize=(<span class="number">12</span>, <span class="number">7</span>))</span><br><span class="line">            <span class="keyword">for</span> video_name, group <span class="keyword">in</span> results_df.groupby(<span class="string">&quot;video_name&quot;</span>):</span><br><span class="line">                plt.plot(group[<span class="string">&quot;threshold&quot;</span>], group[<span class="string">&quot;num_scenes&quot;</span>], marker=<span class="string">&#x27;o&#x27;</span>, linestyle=<span class="string">&#x27;-&#x27;</span>, label=video_name)</span><br><span class="line">            plt.xlabel(<span class="string">&quot;ContentDetector Threshold&quot;</span>)</span><br><span class="line">            plt.ylabel(<span class="string">&quot;Number of Detected Scenes&quot;</span>)</span><br><span class="line">            plt.title(<span class="string">&quot;Number of Scenes vs. Threshold (Per Video)&quot;</span>)</span><br><span class="line">            plt.legend(bbox_to_anchor=(<span class="number">1.05</span>, <span class="number">1</span>), loc=<span class="string">&#x27;upper left&#x27;</span>, borderaxespad=<span class="number">0.</span>)</span><br><span class="line">            plt.grid(<span class="literal">True</span>)</span><br><span class="line">            plt.tight_layout(rect=[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.85</span>, <span class="number">1</span>])  <span class="comment"># 给 legend 留空间</span></span><br><span class="line">            plot_path1 = output_dir_base / <span class="string">&quot;scenes_vs_threshold_per_video.png&quot;</span></span><br><span class="line">            plt.savefig(plot_path1)</span><br><span class="line">            logger.info(<span class="string">f&quot;每个视频的场景数-阈值图已保存到: <span class="subst">&#123;plot_path1&#125;</span>&quot;</span>)</span><br><span class="line">            plt.close()</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 图2: 平均场景数 vs 阈值</span></span><br><span class="line">            avg_scenes_df = results_df.groupby(<span class="string">&quot;threshold&quot;</span>)[<span class="string">&quot;num_scenes&quot;</span>].mean().reset_index()</span><br><span class="line">            plt.figure(figsize=(<span class="number">10</span>, <span class="number">6</span>))</span><br><span class="line">            plt.plot(avg_scenes_df[<span class="string">&quot;threshold&quot;</span>], avg_scenes_df[<span class="string">&quot;num_scenes&quot;</span>], marker=<span class="string">&#x27;o&#x27;</span>, linestyle=<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">            plt.xlabel(<span class="string">&quot;ContentDetector Threshold&quot;</span>)</span><br><span class="line">            plt.ylabel(<span class="string">&quot;Average Number of Detected Scenes&quot;</span>)</span><br><span class="line">            plt.title(<span class="string">&quot;Average Number of Scenes vs. Threshold (Across Sampled Videos)&quot;</span>)</span><br><span class="line">            plt.grid(<span class="literal">True</span>)</span><br><span class="line">            plot_path2 = output_dir_base / <span class="string">&quot;avg_scenes_vs_threshold.png&quot;</span></span><br><span class="line">            plt.savefig(plot_path2)</span><br><span class="line">            logger.info(<span class="string">f&quot;平均场景数-阈值图已保存到: <span class="subst">&#123;plot_path2&#125;</span>&quot;</span>)</span><br><span class="line">            plt.close()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logger.error(<span class="string">f&quot;生成图表时出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 提出建议（基于启发式，用户仍需判断）</span></span><br><span class="line">    logger.info(<span class="string">&quot;--- 阈值选择建议 ---&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> results_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># 启发式：寻找场景数开始急剧下降然后趋于平缓的“拐点”</span></span><br><span class="line">        <span class="comment"># 或者场景数在一个小范围内波动但相对稳定的区域</span></span><br><span class="line">        avg_scenes_series = results_df.groupby(<span class="string">&quot;threshold&quot;</span>)[<span class="string">&quot;num_scenes&quot;</span>].mean()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> avg_scenes_series.empty:</span><br><span class="line">            logger.info(<span class="string">&quot;请查看 &#x27;avg_scenes_vs_threshold.png&#x27; 图表。&quot;</span>)</span><br><span class="line">            logger.info(<span class="string">&quot;理想的阈值通常位于以下区域：&quot;</span>)</span><br><span class="line">            logger.info(<span class="string">&quot;  - 场景数量开始显著减少之前的点（如果你想捕捉更多细节）。&quot;</span>)</span><br><span class="line">            logger.info(<span class="string">&quot;  - 场景数量趋于稳定，不再随阈值增加而大幅减少的点（如果你想更鲁棒，减少误报）。&quot;</span>)</span><br><span class="line">            logger.info(<span class="string">&quot;  - 避免阈值过低导致场景数过多（可能是噪声或微小变化）。&quot;</span>)</span><br><span class="line">            logger.info(<span class="string">&quot;  - 避免阈值过高导致场景数过少（可能遗漏真实切换）。&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 尝试找到一个“拐点”的简单启发式</span></span><br><span class="line">            <span class="comment"># 计算二阶差分，寻找变化最大的地方，但这可能不稳定</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                diff1 = avg_scenes_series.diff().fillna(<span class="number">0</span>)</span><br><span class="line">                diff2 = diff1.diff().fillna(<span class="number">0</span>)</span><br><span class="line">                <span class="comment"># 寻找 diff2 绝对值最大的几个点，或者第一个显著的正值（表示下降趋势减缓）</span></span><br><span class="line">                <span class="comment"># 这是一个非常简化的方法，实际效果可能有限</span></span><br><span class="line">                potential_elbow_threshold = diff2.<span class="built_in">abs</span>().nlargest(<span class="number">3</span>).index.tolist()</span><br><span class="line">                <span class="keyword">if</span> potential_elbow_threshold:</span><br><span class="line">                    logger.info(</span><br><span class="line">                        <span class="string">f&quot;  根据简单的变化率分析，可以关注以下阈值附近的表现：<span class="subst">&#123;<span class="built_in">sorted</span>(potential_elbow_threshold)&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">except</span> Exception:</span><br><span class="line">                <span class="keyword">pass</span>  <span class="comment"># 启发式失败，不影响主要功能</span></span><br><span class="line"></span><br><span class="line">            logger.info(<span class="string">&quot;结合 &#x27;saved_scene_images&#x27; (如果生成了) 中的实际场景图片进行人工判断。&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            logger.warning(<span class="string">&quot;未能计算平均场景数，无法提供基于图表的建议。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">f&quot;请检查输出目录 &#x27;<span class="subst">&#123;output_dir_base&#125;</span>&#x27; 中的结果。&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> results_df</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    parser = argparse.ArgumentParser(</span><br><span class="line">        description=<span class="string">&quot;为一批视频探索 ContentDetector 的最佳阈值。&quot;</span>,</span><br><span class="line">        formatter_class=argparse.ArgumentDefaultsHelpFormatter</span><br><span class="line">    )</span><br><span class="line">    parser.add_argument(<span class="string">&quot;input_source&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;包含视频文件的目录路径，或单个视频文件路径。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;-e&quot;</span>, <span class="string">&quot;--extensions&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, default=<span class="string">&quot;.mp4,.mkv,.mov,.avi&quot;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;逗号分隔的视频文件扩展名 (例如: .mp4,.mov)。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;-r&quot;</span>, <span class="string">&quot;--recursive&quot;</span>, action=<span class="string">&quot;store_true&quot;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;如果 input_source 是目录，则递归扫描子目录。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 抽样参数</span></span><br><span class="line">    sample_group = parser.add_mutually_exclusive_group()</span><br><span class="line">    sample_group.add_argument(<span class="string">&quot;--sample_ratio&quot;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=-<span class="number">1.0</span>,</span><br><span class="line">                              <span class="built_in">help</span>=<span class="string">&quot;要处理的视频占总数的比例 (0.0 到 1.0)。例如 0.1 表示 10%%。默认为-1.0 (处理所有)。&quot;</span>)</span><br><span class="line">    sample_group.add_argument(<span class="string">&quot;--num_sample_videos&quot;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=-<span class="number">1</span>,</span><br><span class="line">                              <span class="built_in">help</span>=<span class="string">&quot;要随机抽取的视频数量。默认为-1 (处理所有或按比例)。如果指定，则优先于 sample_ratio。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ContentDetector 参数</span></span><br><span class="line">    parser.add_argument(<span class="string">&quot;--threshold_start&quot;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">15.0</span>, <span class="built_in">help</span>=<span class="string">&quot;测试的 ContentDetector 阈值起始值。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--threshold_end&quot;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">35.0</span>, <span class="built_in">help</span>=<span class="string">&quot;测试的 ContentDetector 阈值结束值。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--threshold_step&quot;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">1.0</span>, <span class="built_in">help</span>=<span class="string">&quot;测试的 ContentDetector 阈值步长。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--min_len&quot;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=<span class="number">1</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;传递给 ContentDetector 的 min_scene_len 参数 (帧数)。建议保持为1以分析原始切点。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 输出和可视化</span></span><br><span class="line">    parser.add_argument(<span class="string">&quot;-o&quot;</span>, <span class="string">&quot;--output_dir&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, default=<span class="string">&quot;threshold_exploration_output&quot;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;保存结果 (CSV, 图表, 图片) 的主输出目录。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--save_images_for&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, default=<span class="literal">None</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;逗号分隔的阈值列表，将为这些阈值下的检测结果保存场景图片。例如 &#x27;15.0,20.0,25.0&#x27;。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) == <span class="number">1</span>:</span><br><span class="line">        parser.print_help(sys.stderr)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line"></span><br><span class="line">    input_path_obj = Path(args.input_source)</span><br><span class="line">    video_files_to_scan = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> input_path_obj.is_dir():</span><br><span class="line">        ext_list = [e.strip().lower() <span class="keyword">for</span> e <span class="keyword">in</span> args.extensions.split(<span class="string">&#x27;,&#x27;</span>) <span class="keyword">if</span> e.strip()]</span><br><span class="line">        video_files_to_scan = get_video_files(input_path_obj, ext_list, args.recursive)</span><br><span class="line">    <span class="keyword">elif</span> input_path_obj.is_file():</span><br><span class="line">        video_files_to_scan.append(input_path_obj)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        logger.error(<span class="string">f&quot;输入路径 &#x27;<span class="subst">&#123;args.input_source&#125;</span>&#x27; 不是有效的文件或目录。&quot;</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> video_files_to_scan:</span><br><span class="line">        logger.info(<span class="string">&quot;在指定路径下没有找到符合条件的视频文件。&quot;</span>)</span><br><span class="line">        sys.exit(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    threshold_r = (args.threshold_start, args.threshold_end, args.threshold_step)</span><br><span class="line">    output_dir_base_path = Path(args.output_dir)</span><br><span class="line"></span><br><span class="line">    save_thresholds_for_images = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> args.save_images_for:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            save_thresholds_for_images = [<span class="built_in">float</span>(t.strip()) <span class="keyword">for</span> t <span class="keyword">in</span> args.save_images_for.split(<span class="string">&#x27;,&#x27;</span>)]</span><br><span class="line">        <span class="keyword">except</span> ValueError:</span><br><span class="line">            logger.error(<span class="string">&quot;`--save_images_for` 参数中的阈值列表格式错误。应为逗号分隔的数字。&quot;</span>)</span><br><span class="line">            sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    explore_thresholds(</span><br><span class="line">        video_files_to_scan,</span><br><span class="line">        threshold_r,</span><br><span class="line">        sample_ratio=args.sample_ratio,</span><br><span class="line">        num_sample_videos=args.num_sample_videos,</span><br><span class="line">        min_scene_len=args.min_len,</span><br><span class="line">        output_dir_base=output_dir_base_path,</span><br><span class="line">        save_images_for_thresholds=save_thresholds_for_images</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">&quot;阈值探索完成。&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="亮度参数选定方法参考代码">亮度参数选定方法参考代码</h3>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_average_brightness</span>(<span class="params">frame_bgr</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    计算 BGR 帧的平均亮度。</span></span><br><span class="line"><span class="string">    一种常见的方法是先转换为灰度图，然后计算平均像素值。</span></span><br><span class="line"><span class="string">    另一种是直接计算 BGR 各通道的平均值，然后再取平均，或者使用加权平均（如亮度公式 Y = 0.299R + 0.587G + 0.114B）。</span></span><br><span class="line"><span class="string">    这里我们使用转换为灰度图的方法，因为它直接反映了人眼感知的亮度。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    gray_frame = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    average_brightness = np.mean(gray_frame)</span><br><span class="line">    <span class="keyword">return</span> average_brightness</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">analyze_video_brightness</span>(<span class="params">video_path: <span class="built_in">str</span>, output_csv_path: <span class="built_in">str</span> = <span class="literal">None</span>, frame_skip: <span class="built_in">int</span> = <span class="number">0</span>, max_frames: <span class="built_in">int</span> = <span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    逐帧分析视频的平均亮度。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数:</span></span><br><span class="line"><span class="string">        video_path (str): 视频文件路径。</span></span><br><span class="line"><span class="string">        output_csv_path (str, optional): CSV文件输出路径。如果提供，则将结果保存到此文件。</span></span><br><span class="line"><span class="string">        frame_skip (int, optional): 每隔多少帧分析一次（0 表示逐帧分析）。</span></span><br><span class="line"><span class="string">        max_frames (int, optional): 最多分析多少帧。如果为 None，则分析整个视频。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> Path(video_path).exists():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;错误: 视频文件未找到: <span class="subst">&#123;video_path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    cap = cv2.VideoCapture(video_path)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> cap.isOpened():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;错误: 无法打开视频文件: <span class="subst">&#123;video_path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    total_frames_video = <span class="built_in">int</span>(cap.get(cv2.CAP_PROP_FRAME_COUNT))</span><br><span class="line">    fps = cap.get(cv2.CAP_PROP_FPS)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;视频信息: <span class="subst">&#123;Path(video_path).name&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  总帧数: <span class="subst">&#123;total_frames_video&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  FPS: <span class="subst">&#123;fps:<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;帧号\t平均亮度&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">    csv_data = []</span><br><span class="line">    frame_count = <span class="number">0</span></span><br><span class="line">    processed_frame_num = <span class="number">0</span>  <span class="comment"># 实际处理的帧的计数器，用于 max_frames</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        ret, frame = cap.read()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">            <span class="keyword">break</span>  <span class="comment"># 视频结束或读取错误</span></span><br><span class="line"></span><br><span class="line">        current_frame_num_video = <span class="built_in">int</span>(</span><br><span class="line">            cap.get(cv2.CAP_PROP_POS_FRAMES))  <span class="comment"># 获取当前帧在视频中的实际编号 (1-based for some backends, 0-based for others)</span></span><br><span class="line">        <span class="comment"># 或者直接用 frame_count 作为0-based的帧号</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> frame_count % (frame_skip + <span class="number">1</span>) == <span class="number">0</span>:  <span class="comment"># frame_skip=0 表示每帧都处理</span></span><br><span class="line">            avg_brightness = calculate_average_brightness(frame)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;frame_count&#125;</span>\t<span class="subst">&#123;avg_brightness:<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> output_csv_path:</span><br><span class="line">                csv_data.append([frame_count, avg_brightness])</span><br><span class="line"></span><br><span class="line">            processed_frame_num += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> max_frames <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> processed_frame_num &gt;= max_frames:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;\n已达到最大分析帧数限制: <span class="subst">&#123;max_frames&#125;</span> 帧。&quot;</span>)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        frame_count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    cap.release()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;分析完成。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> output_csv_path <span class="keyword">and</span> csv_data:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            output_file = Path(output_csv_path)</span><br><span class="line">            output_file.parent.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)  <span class="comment"># 创建输出目录</span></span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(output_file, <span class="string">&#x27;w&#x27;</span>, newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                <span class="keyword">import</span> csv</span><br><span class="line">                writer = csv.writer(f)</span><br><span class="line">                writer.writerow([<span class="string">&#x27;FrameNumber&#x27;</span>, <span class="string">&#x27;AverageBrightness&#x27;</span>])  <span class="comment"># 写入表头</span></span><br><span class="line">                writer.writerows(csv_data)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;亮度数据已保存到: <span class="subst">&#123;output_file&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;错误: 无法保存 CSV 文件到 <span class="subst">&#123;output_csv_path&#125;</span>: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    parser = argparse.ArgumentParser(description=<span class="string">&quot;分析视频每帧的平均亮度。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;video_path&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, <span class="built_in">help</span>=<span class="string">&quot;要分析的视频文件路径。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;-o&quot;</span>, <span class="string">&quot;--output_csv&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, default=<span class="literal">None</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;可选：将结果保存到的 CSV 文件路径。例如：brightness_data.csv&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;-s&quot;</span>, <span class="string">&quot;--frame_skip&quot;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=<span class="number">0</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;可选：每隔多少帧分析一次（0 表示逐帧分析，1 表示隔1帧分析1帧，即处理第0,2,4...帧）。默认为0。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;-m&quot;</span>, <span class="string">&quot;--max_frames&quot;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, default=<span class="literal">None</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&quot;可选：最多分析的帧数。用于快速预览长视频。默认为分析整个视频。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) == <span class="number">1</span>:  <span class="comment"># 如果没有参数，打印帮助信息并退出</span></span><br><span class="line">        parser.print_help(sys.stderr)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    args = parser.parse_args()</span><br><span class="line"></span><br><span class="line">    analyze_video_brightness(args.video_path, args.output_csv, args.frame_skip, args.max_frames)</span><br></pre></td></tr></table></figure>
+<h2 id="阈值选择方法">阈值选择方法</h2>
+<blockquote>
+<p>查看 avg_scenes_vs_threshold.png 图。通常，你会寻找一个点，在该点之后，进一步降低阈值会导致场景数量急剧增加（可能引入过多噪声或非期望的切点），或者在该点之前，提高阈值会导致场景数量急剧减少（可能遗漏真实切点）。一个“平稳”的区域或者一个明显的“拐点”可能是好的候选范围。<br>
+对于你在图表上选出的几个候选阈值</p>
+</blockquote>
+<ul>
+<li>可视化阈值选择工具使用方法</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">python threshold_explorer.py &quot;/Volumes/shared/czq/video/scene-detect/淡入淡出-result/无转场-result/无转场/无转场/无转场/无转场/无转场/无转场/无转场/无转场/无转场&quot; \</span><br><span class="line">   -e &quot;.mp4,.mkv&quot; \</span><br><span class="line">   -r \</span><br><span class="line">   --sample_ratio 0.2 \</span><br><span class="line">   --threshold_start 1.0 \</span><br><span class="line">   --threshold_end 30.0 \</span><br><span class="line">   --threshold_step 1.0 \</span><br><span class="line">   --min_len 1 \</span><br><span class="line">   --output_dir &quot;./content_detector_exploration&quot; \</span><br><span class="line">   --save_images_for &quot;8.0,12.0,15.0&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>亮度检测工具使用方法</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python analyze_brightness.py &#x27;/Volumes/shared/czq/video/scene-detect/淡入淡出-result/无转场-result/无转场/无转场/无转场/无转场/无转场/无转场/无转场/无转场/无转场/3 (15).mp4&#x27;</span><br></pre></td></tr></table></figure>
+<h3 id="结果显示">结果显示</h3>
+<blockquote>
+<p>如图</p>
+</blockquote>
+<ul>
+<li>平均阈值</li>
+</ul>
+<p><img src="/2025/05/15/scene-detect-method/avg_scenes_vs_threshold.png" class="lazyload placeholder" data-srcset="/2025/05/15/scene-detect-method/avg_scenes_vs_threshold.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<ul>
+<li>检测视频所有阈值</li>
+</ul>
+<p><img src="/2025/05/15/scene-detect-method/scenes_vs_threshold_per_video.png" class="lazyload placeholder" data-srcset="/2025/05/15/scene-detect-method/scenes_vs_threshold_per_video.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">2025-05-14 19:17:47,588 - INFO - --- 阈值选择建议 ---</span><br><span class="line">2025-05-14 19:17:47,589 - INFO - 请查看 &#x27;avg_scenes_vs_threshold.png&#x27; 图表。</span><br><span class="line">2025-05-14 19:17:47,589 - INFO - 理想的阈值通常位于以下区域：</span><br><span class="line">2025-05-14 19:17:47,589 - INFO -   - 场景数量开始显著减少之前的点（如果你想捕捉更多细节）。</span><br><span class="line">2025-05-14 19:17:47,589 - INFO -   - 场景数量趋于稳定，不再随阈值增加而大幅减少的点（如果你想更鲁棒，减少误报）。</span><br><span class="line">2025-05-14 19:17:47,589 - INFO -   - 避免阈值过低导致场景数过多（可能是噪声或微小变化）。</span><br><span class="line">2025-05-14 19:17:47,589 - INFO -   - 避免阈值过高导致场景数过少（可能遗漏真实切换）。</span><br><span class="line">2025-05-14 19:17:47,590 - INFO -   根据简单的变化率分析，可以关注以下阈值附近的表现：[2.0, 3.0, 9.0]</span><br><span class="line">2025-05-14 19:17:47,590 - INFO - 结合 &#x27;saved_scene_images&#x27; (如果生成了) 中的实际场景图片进行人工判断。</span><br><span class="line">2025-05-14 19:17:47,590 - INFO - 请检查输出目录 &#x27;content_detector_exploration&#x27; 中的结果。</span><br><span class="line">2025-05-14 19:17:47,590 - INFO - 阈值探索完成。</span><br></pre></td></tr></table></figure>
+<h2 id="参考">参考</h2>
+<ul>
+<li>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.scenedetect.com/docs/latest/cli.html#detect-threshold">https://www.scenedetect.com/docs/latest/cli.html#detect-threshold</a></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="https://caozhaoqi.github.io/2025/04/03/video-secene-detect/">https://caozhaoqi.github.io/2025/04/03/video-secene-detect/</a></li>
+</ol>
+</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2025/05/15/scene-detect-method/" target="_blank" title="PySceneDetect 中场景检测器">https://caozhaoqi.github.io/2025/05/15/scene-detect-method/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/05/30/scene-detect-benchmark/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">场景检测性能优化方向与测试方法</div>
+      </div>
+      
+      <!-- <div class="content">
+        场景检测性能优化方向与测试方法
+1. 引言
+本指南旨在提供一套系统化的方法，用于验证和分析视频处理项目的效率，特别是针对
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/04/09/yolov8-train-model/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">基于yolov8根据CVAT标注结果训练模型</div>
+      </div>
+      <!-- <div class="content">
+        模型简介
+
+YOLO 是一种实时目标检测算法家族的名称。与传统的需要先进行区域提议（Region Proposal）再进
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/logo.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>浅斟低唱</h2>
+        
+        
+          <p>博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1150118968@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/caozhaoqi/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">PySceneDetect 中场景检测器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5"><span class="toc-text">通用概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0"><span class="toc-text">算法概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%8F%82%E6%95%B0%E7%A1%AE%E5%AE%9A%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="toc-text">通用参数确定流程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E7%A1%AE%E5%AE%9A%E5%86%85%E5%AE%B9%E6%A3%80%E6%B5%8B%E9%98%88%E5%80%BC%E6%96%B9%E6%B3%95"><span class="toc-text">可视化确定内容检测阈值方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E6%A3%80%E6%B5%8B%E5%99%A8%E9%98%88%E5%80%BC%E5%8F%82%E8%80%83%E4%BB%A3%E7%A0%81"><span class="toc-text">内容检测器阈值参考代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%AE%E5%BA%A6%E5%8F%82%E6%95%B0%E9%80%89%E5%AE%9A%E6%96%B9%E6%B3%95%E5%8F%82%E8%80%83%E4%BB%A3%E7%A0%81"><span class="toc-text">亮度参数选定方法参考代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%88%E5%80%BC%E9%80%89%E6%8B%A9%E6%96%B9%E6%B3%95"><span class="toc-text">阈值选择方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E6%98%BE%E7%A4%BA"><span class="toc-text">结果显示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/11/26/agent-research-llm/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">11-26</span>
+                
+              </div>
+              <a class="post-title" href="/2025/11/26/agent-research-llm/">基于 FastAPI + LangChain 的简单agent实现</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/30/mysql-cluster-use/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-30</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/30/mysql-cluster-use/">实现高可用 MySQL 集群</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/17/pypi-mirror-self/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-17</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/17/pypi-mirror-self/">使用Devpi与Nginx构建高可用PyPI镜像源</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/29/ss-build-doc/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-29</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/29/ss-build-doc/">使用 Docker Compose 快速部署 Shadowsocks 代理服务教程</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/14/pyav-use-video/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-14</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/14/pyav-use-video/">PyAV用于视频剪辑处理</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a href="/atom.xml" class="social">
+                  
+                    <i class="fas fa-rss" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="mailto:1150118968@qq.com" class="social">
+                  
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="social">
+                  
+                    <i class="fas fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968" class="social">
+                  
+                    <i class="fas fa-qq" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a></p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>Total visits：<span id="busuanzi_value_site_pv"></span> times
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>Number of visitors：<span id="busuanzi_value_site_uv"></span> people
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="7289498727"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = 'copy';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <!-- 弹幕所需的css和js -->
+    
+  <!-- 弹幕插件 -->
+  <link href="/js/danmu/barrager.css" rel="stylesheet">
+  <script src="/js/danmu/jquery.barrager.js"></script>
+
+<!-- 具体js，请前往valine/script.ejs查看 -->
+
+    <script>
+  var requiredFields = 'nick,mail';
+  requiredFields = requiredFields.split(',');
+  comment_el = '.comment';
+  let looperValine = null;
+  load_valine = function () {
+    if ($(comment_el).length) {
+      var valine = new Valine({
+        el: '#vcomment',
+        path: window.location.pathname,
+        notify: false,
+        verify: false,
+        app_id: "PZlzAc6FzhlN4QJ4gUgas7AQ-gzGzoHsz",
+        app_key: "YYSIuQIfbSqnug2Kq117KGAK",
+        placeholder: "客官，说点什么吧",
+        avatar: "",
+        master: "d0ca78e6945a9e55aaf81645413dde96",   //博主邮箱md5
+        tagMeta: ["博主","小伙伴","访客"],     //标识字段名
+        friends: "",
+        metaPlaceholder: { "nick": "昵称/QQ号", "mail": "邮箱" },
+        requiredFields: requiredFields,
+        enableQQ: true,
+      });
+      function debounce(fn) {
+        var timerID = null
+        return function () {
+          var arg = arguments[0]   //获取事件
+          if (timerID) {
+            clearTimeout(timerID)
+          }
+          timerID = setTimeout(function () {
+            fn(arg)              //事件传入函数
+          }, 200)
+        }
+      }
+      //查询评论 valine.Q('*').limit(7) -- 查询所有，限制7条, 下面的的代码是查询当前页面
+      var themeDanmu = eval('true');
+      var themeLoop = eval('true');
+      var themeLooperTime = '5000' || 5000;
+      var speed = '40' || 20;
+      var isBarrager = true;
+      if (themeDanmu == true) {
+        do_barrager();
+        if ($('.danmuBox').length <= 0) {
+          $('.navbar').append('<div class="danmuBox"><div class="danmuBtn open"><span class="danmuCircle"></span><span class="danmuText">弹幕</span></div></div>');
+        }
+        $('.danmuBtn').on('click', debounce(
+          function () {
+            if ($('.danmuBtn').hasClass('open')) {
+              $('.danmuBtn').removeClass('open')
+              clearInterval(looperValine);
+              $.fn.barrager.removeAll();
+            } else {
+              $('.danmuBtn').addClass("open");
+              do_barrager();
+            }
+          }
+        ))
+      }
+      function do_barrager() {
+        isBarrager && valine.Q(window.location.pathname).find().then(function (comments) {
+          // var num = 0; // 可以记录条数，循环调用的时候只取最新的评论放入弹幕中
+          var run_once = true;
+          var looper_time = themeLooperTime;
+          var total = comments.length;
+          // var looper = null;
+          var index = 0;
+          if (total > 0) {
+            barrager();
+          } else {
+            // 当评论数为0的时候，自动关闭弹幕
+            // $('.danmuBtn').removeClass('open');
+          }
+          function barrager() {
+            if (run_once) {
+              //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+              looperValine = setInterval(barrager, looper_time);
+              run_once = false;
+            }
+            var content = comments[index]._serverData.comment;
+            var email = comments[index]._serverData.mail;
+            var link = comments[index]._serverData.link;
+            var newcontent = content.substring(0, 50).replace(/<[^>]+>/g, "");
+            //发布一个弹幕
+            const item = {
+              img: `https://q1.qlogo.cn/g?b=qq&nk=${email}&s=640`, //图片 
+              info: newcontent, //文字 
+              href: link, //链接 
+              close: true, //显示关闭按钮 
+              speed: speed, //延迟,单位秒,默认6 
+              color: '#fff', //颜色,默认白色 
+              old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+            }
+            $('body').barrager(item);
+            //索引自增
+            index++;
+            //所有弹幕发布完毕，清除计时器。
+            if (index == total) {
+              clearInterval(looperValine);
+              if (themeLoop === true) {
+                setTimeout(function () {
+                  do_barrager();
+                }, 5000);
+              } else {
+                $('.danmuBtn').removeClass('open');
+              }
+              return false;
+            }
+
+          }
+        })
+      }
+    }
+  };
+  $(document).ready(load_valine);
+  document.addEventListener('pjax:send', function (e) {
+    
+      $('.danmuBox').length > 0 && $('.danmuBox').remove()
+      looperValine && clearInterval(looperValine);
+      $.fn.barrager.removeAll();
+    
+  })
+  document.addEventListener('pjax:complete', function () {
+    load_valine();
+  });
+</script>
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

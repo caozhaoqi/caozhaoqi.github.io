@@ -1,0 +1,2499 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>基于CLion IDE的CPP项目构建与运行 | Zhaoqi.Cao static blog</title>
+
+  <link rel="icon" type="image/png" href="/medias/logo.png">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '0';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+        <script src="/js/valine/index.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Zhaoqi.Cao static blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Zhaoqi.Cao static blog</h3>
+      <h5 class="drawer-box-head_desc">A static personal blog.</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                      <i class="fas fa-link"></i>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Zhaoqi.Cao static blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="主页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友链">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                    <i class="fas fa-link"></i>
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">Search</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="Please enter keywords"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        基于CLion IDE的CPP项目构建与运行
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2023-12-01 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 3.5k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 18min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1>基于Clion IDE的CPP项目构建与运行</h1>
+<h2 id="工具基本信息">工具基本信息</h2>
+<h3 id="1-CLion">1.CLion</h3>
+<blockquote>
+<p>CLion:<br>
+A cross-platform IDE for C and C++<br>
+CLion takes a lot of the toil out of C++, allowing me to concentrate on the interesting part: problem solving.</p>
+</blockquote>
+<ul>
+<li>下载地址</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.jetbrains.com/clion/download/#section=windows</span><br></pre></td></tr></table></figure>
+<h3 id="2-MingW">2.MingW</h3>
+<blockquote>
+<p>A complete runtime environment for GCC &amp; LLVMfor 32 and 64 bit Windows</p>
+</blockquote>
+<ul>
+<li>下载地址（x64、posix、.seh版本）</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如图<br>
+<img src="/2023/12/01/cpp-project-build-clion/mingw-version.png" class="lazyload placeholder" data-srcset="/2023/12/01/cpp-project-build-clion/mingw-version.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
+</ul>
+<h3 id="3-CMake">3.CMake</h3>
+<blockquote>
+<p>CMake允许开发者编写一种平台无关的 CMakeList.txt 文件来定制整个编译流程，然后再根据目标用户的平台进一步生成所需的本地化 Makefile 和工程文件</p>
+</blockquote>
+<ul>
+<li>基本指令</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required：指定运行此配置文件所需的 CMake 的最低版本；</span><br><span class="line">project：参数值是 Demo1，该命令表示项目的名称是 Demo1 。</span><br><span class="line">add_executable：将名为 main.cc 的源文件编译成一个名称为 Demo 的可执行文件</span><br><span class="line"><span class="comment"># 查找当前目录下的所有源文件</span></span><br><span class="line"><span class="comment"># 并将名称保存到 DIR_LIB_SRCS 变量</span></span><br><span class="line">aux_source_directory(. DIR_LIB_SRCS)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成链接库</span></span><br><span class="line">add_library (MathFunctions <span class="variable">$&#123;DIR_LIB_SRCS&#125;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>举例</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line"><span class="built_in">cmake_minimum_required</span> (VERSION <span class="number">2.8</span>)</span><br><span class="line"></span><br><span class="line"># 项目信息</span><br><span class="line"><span class="built_in">project</span> (Demo4)</span><br><span class="line"></span><br><span class="line"># 加入一个配置头文件，用于处理 CMake 对源码的设置</span><br><span class="line"><span class="built_in">configure_file</span> (</span><br><span class="line">  <span class="string">&quot;$&#123;PROJECT_SOURCE_DIR&#125;/config.h.in&quot;</span></span><br><span class="line">  <span class="string">&quot;$&#123;PROJECT_BINARY_DIR&#125;/config.h&quot;</span></span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line"># 是否使用自己的 MathFunctions 库</span><br><span class="line"><span class="built_in">option</span> (USE_MYMATH</span><br><span class="line">       <span class="string">&quot;Use provided math implementation&quot;</span> ON)</span><br><span class="line"></span><br><span class="line"># 是否加入 MathFunctions 库</span><br><span class="line"><span class="keyword">if</span> (USE_MYMATH)</span><br><span class="line">  <span class="built_in">include_directories</span> (<span class="string">&quot;$&#123;PROJECT_SOURCE_DIR&#125;/math&quot;</span>)</span><br><span class="line">  <span class="built_in">add_subdirectory</span> (math)  </span><br><span class="line">  <span class="built_in">set</span> (EXTRA_LIBS $&#123;EXTRA_LIBS&#125; MathFunctions)</span><br><span class="line"><span class="built_in">endif</span> (USE_MYMATH)</span><br><span class="line"></span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line"><span class="built_in">aux_source_directory</span>(. DIR_SRCS)</span><br><span class="line"></span><br><span class="line"># 指定生成目标</span><br><span class="line"><span class="built_in">add_executable</span>(Demo $&#123;DIR_SRCS&#125;)</span><br><span class="line"><span class="built_in">target_link_libraries</span> (Demo  $&#123;EXTRA_LIBS&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="工具安装构建">工具安装构建</h2>
+<h3 id="CLion">CLion</h3>
+<h4 id="1-新建cpp项目">1.新建cpp项目</h4>
+<blockquote>
+<p>如图<br>
+<img src="/2023/12/01/cpp-project-build-clion/clion_new_project.png" class="lazyload placeholder" data-srcset="/2023/12/01/cpp-project-build-clion/clion_new_project.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+</blockquote>
+<h4 id="2-编写测试代码">2.编写测试代码</h4>
+<ul>
+<li>1.src/test.cpp</li>
+</ul>
+<blockquote>
+<p>定义socket套机字，构建socket服务端；实现登录、登出、数据转发等功能</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;tcpSocket.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Clog.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;tcpSocket/MySocket.hpp&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;WebServer.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;tinyxml2.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;xmlParser.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 客户�?信息结构�?</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SockInfo</span> &#123;</span><br><span class="line">    sockaddr_in addr;</span><br><span class="line">    <span class="type">int</span> fd;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 登录状态记录</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> UserName[<span class="number">32</span>];</span><br><span class="line">    <span class="type">int</span> SocketID;</span><br><span class="line">&#125;loginPool;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// 用户登录验证代码部分</span></span><br><span class="line"></span><br><span class="line">std::vector&lt;loginPool&gt; login_pool_vect;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查用户ID是否存在与容器内,如果存在则返回用户名</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">is_login</span><span class="params">(std::vector&lt;loginPool&gt; &amp;ptr, <span class="type">int</span> socket_id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp; x : ptr)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (x.SocketID == socket_id)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用户登录验证</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">login</span><span class="params">(<span class="type">char</span> *username, <span class="type">char</span> *password, <span class="type">int</span> socket_id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ((<span class="built_in">strcmp</span>(username, <span class="string">&quot;admin&quot;</span>) == <span class="number">0</span>) &amp;&amp; (<span class="built_in">strcmp</span>(password, <span class="string">&quot;123456&quot;</span>) == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果在则增加一个socket登录标志</span></span><br><span class="line">        loginPool pool_ptr;</span><br><span class="line">        pool_ptr.SocketID = socket_id;</span><br><span class="line">        <span class="built_in">strcpy</span>(pool_ptr.UserName, <span class="string">&quot;admin&quot;</span>);</span><br><span class="line"></span><br><span class="line">        login_pool_vect.<span class="built_in">push_back</span>(pool_ptr);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="built_in">strcmp</span>(username, <span class="string">&quot;admin&quot;</span>) == <span class="number">0</span>) &amp;&amp; (<span class="built_in">strcmp</span>(password, <span class="string">&quot;123456&quot;</span>) == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果在则增加一个socket登录标志</span></span><br><span class="line">        loginPool pool_ptr;</span><br><span class="line">        pool_ptr.SocketID = socket_id;</span><br><span class="line">        <span class="built_in">strcpy</span>(pool_ptr.UserName, <span class="string">&quot;admin&quot;</span>);</span><br><span class="line"></span><br><span class="line">        login_pool_vect.<span class="built_in">push_back</span>(pool_ptr);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据传入ID从容器内弹出一个节点</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">logout</span><span class="params">(std::vector&lt;loginPool&gt; &amp;ptr, <span class="type">int</span> socket_id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> it = ptr.<span class="built_in">begin</span>(); it != ptr.<span class="built_in">end</span>(); it++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (it-&gt;SocketID == socket_id)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 弹出指定结构体</span></span><br><span class="line">            ptr.<span class="built_in">erase</span>(it);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ClientPro</span><span class="params">(<span class="type">void</span>* ptr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化</span></span><br><span class="line">    <span class="keyword">auto</span>* pSock = (MySocket*)ptr;</span><br><span class="line">    MySocket server_socket = *pSock;</span><br><span class="line">    server_socket.<span class="built_in">Send</span>((<span class="type">const</span> <span class="type">char</span> *)<span class="string">&quot;Welcome to CPP WebSocket Server!&quot;</span>, <span class="number">31</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取客户端信息</span></span><br><span class="line">    <span class="type">char</span> sIp[<span class="number">20</span>];</span><br><span class="line">    UINT nPort;</span><br><span class="line">    server_socket.<span class="built_in">GetPeerName</span>(sIp, nPort);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">char</span> szBuffer[<span class="number">4096</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">        <span class="type">int</span> sid = pSock-&gt;<span class="built_in">GetSocketID</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> ref = server_socket.<span class="built_in">Receive</span>(szBuffer, <span class="built_in">sizeof</span>(szBuffer));</span><br><span class="line">        <span class="keyword">if</span> (ref &lt;= <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">logout</span>(login_pool_vect, sid);</span><br><span class="line">            ilog-&gt;<span class="built_in">warn</span>(<span class="string">&quot;client :&#123;0&#125;:&#123;1&#125; , [disconnect]&quot;</span>,sIp,nPort);</span><br><span class="line"><span class="comment">//            std::cout &lt;&lt; &quot;客户: &quot; &lt;&lt; sIp &lt;&lt; &quot;:&quot; &lt;&lt; nPort &lt;&lt; &quot; [已断开]&quot; &lt;&lt; std::endl;</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ilog-&gt;<span class="built_in">info</span>(<span class="string">&quot;address:&#123;0&#125;:&#123;1&#125;,receive command:&#123;2&#125; &quot;</span>,sIp,nPort,szBuffer);</span><br><span class="line"><span class="comment">//        std::cout &lt;&lt; &quot;地址: &quot; &lt;&lt; sIp &lt;&lt; &quot;:&quot; &lt;&lt; nPort &lt;&lt; &quot; 接收命令: &quot; &lt;&lt; szBuffer &lt;&lt; std::endl;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 用户登录</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">strcmp</span>(szBuffer, <span class="string">&quot;login\n&quot;</span>) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">char</span> recv_username[<span class="number">32</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">            <span class="type">char</span> recv_password[<span class="number">32</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 接收用户名和密码</span></span><br><span class="line">            pSock-&gt;<span class="built_in">Receive</span>(recv_username, <span class="number">32</span>, <span class="number">0</span>);</span><br><span class="line">            pSock-&gt;<span class="built_in">Receive</span>(recv_password, <span class="number">32</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            ilog-&gt;<span class="built_in">info</span>(<span class="string">&quot;account :&#123;0&#125;, password : &#123;1&#125;&quot;</span>,recv_username,recv_password);</span><br><span class="line">            <span class="comment">// 验证登录状态</span></span><br><span class="line">            <span class="type">bool</span> login_flag = <span class="built_in">login</span>(recv_username, recv_password, sid);</span><br><span class="line">            <span class="keyword">if</span> (login_flag == TRUE)</span><br><span class="line">            &#123;</span><br><span class="line">                ilog-&gt;<span class="built_in">info</span>(<span class="string">&quot;user :&#123;0&#125;, login .&quot;</span>,recv_username);</span><br><span class="line"><span class="comment">//                std::cout &lt;&lt; &quot;用户: &quot; &lt;&lt; recv_username &lt;&lt; &quot; 已登录&quot; &lt;&lt; std::endl;</span></span><br><span class="line">                pSock-&gt;<span class="built_in">Send</span>(<span class="string">&quot;login&quot;</span>, <span class="built_in">sizeof</span>(<span class="string">&quot;login&quot;</span>), <span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                pSock-&gt;<span class="built_in">Send</span>(<span class="string">&quot;account or password incorrect&quot;</span>, <span class="built_in">sizeof</span>(<span class="string">&quot;account or password incorrect&quot;</span>), <span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 用户登出</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">strcmp</span>(szBuffer, <span class="string">&quot;logout\n&quot;</span>) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 验证是否登录成功</span></span><br><span class="line">            <span class="type">int</span> login_flag = <span class="built_in">is_login</span>(login_pool_vect, sid);</span><br><span class="line">            <span class="keyword">if</span> (login_flag == TRUE)</span><br><span class="line">            &#123;</span><br><span class="line">                ilog-&gt;<span class="built_in">info</span>(<span class="string">&quot;user logout.&quot;</span>);</span><br><span class="line"><span class="comment">//                std::cout &lt;&lt; &quot;用户已登出&quot; &lt;&lt; std::endl;</span></span><br><span class="line">                <span class="built_in">logout</span>(login_pool_vect, sid);</span><br><span class="line">                pSock-&gt;<span class="built_in">Send</span>(<span class="string">&quot;user logout.&quot;</span>, <span class="built_in">sizeof</span>(<span class="string">&quot;user logout.&quot;</span>), <span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                ilog-&gt;<span class="built_in">warn</span>(<span class="string">&quot;please login account!&quot;</span>);</span><br><span class="line"><span class="comment">//                std::cout &lt;&lt; &quot;请先登录&quot; &lt;&lt; std::endl;</span></span><br><span class="line">                pSock-&gt;<span class="built_in">Send</span>(<span class="string">&quot;please login account!&quot;</span>, <span class="built_in">sizeof</span>(<span class="string">&quot;please login account!&quot;</span>), <span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 遍历本机文件</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">strcmp</span>(szBuffer, <span class="string">&quot;list\n&quot;</span>) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 验证是否登录成功</span></span><br><span class="line">            <span class="type">int</span> login_flag = <span class="built_in">is_login</span>(login_pool_vect, sid);</span><br><span class="line">            <span class="keyword">if</span> (login_flag == TRUE)</span><br><span class="line">            &#123;</span><br><span class="line">                ilog-&gt;<span class="built_in">info</span>(<span class="string">&quot;user has login , output current pc file &quot;</span>);</span><br><span class="line"><span class="comment">//                std::cout &lt;&lt; &quot;用户已登录,输出本机文件&quot; &lt;&lt; std::endl;</span></span><br><span class="line">                pSock-&gt;<span class="built_in">Send</span>(<span class="string">&quot;auth success!&quot;</span>, <span class="built_in">sizeof</span>(<span class="string">&quot;auth success!&quot;</span>), <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 循环输出数据包</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> x = <span class="number">0</span>; x &lt; <span class="number">10</span>; x++)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="type">char</span> sz[<span class="number">1024</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">                    <span class="built_in">sprintf</span>(sz, <span class="string">&quot;count -&gt; %d&quot;</span>, x);</span><br><span class="line">                    pSock-&gt;<span class="built_in">Send</span>(sz, <span class="built_in">sizeof</span>(sz), <span class="number">0</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                ilog-&gt;<span class="built_in">warn</span>(<span class="string">&quot;please login account!&quot;</span>);</span><br><span class="line"><span class="comment">//                std::cout &lt;&lt; &quot;请先登录&quot; &lt;&lt; std::endl;</span></span><br><span class="line">                pSock-&gt;<span class="built_in">Send</span>(<span class="string">&quot;please login account!&quot;</span>, <span class="built_in">sizeof</span>(<span class="string">&quot;please login account!&quot;</span>), <span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">startSocketServer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    MySocket sock;</span><br><span class="line">    <span class="keyword">if</span> (!sock.<span class="built_in">Create</span>(<span class="number">8233</span>, SOCK_STREAM, <span class="string">&quot;127.0.0.1&quot;</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取本机信息</span></span><br><span class="line">    <span class="type">char</span> sSevIp[<span class="number">20</span>];</span><br><span class="line">    UINT nSevPort;</span><br><span class="line">    sock.<span class="built_in">GetSockName</span>(sSevIp, nSevPort);</span><br><span class="line">    ilog-&gt;<span class="built_in">info</span>(<span class="string">&quot;server : &#123;0&#125;,&#123;1&#125; ,server is running!&quot;</span>,sSevIp,nSevPort);</span><br><span class="line"><span class="comment">//    std::cout &lt;&lt; &quot;服务端: &quot; &lt;&lt; sSevIp &lt;&lt; &quot;:&quot; &lt;&lt; nSevPort &lt;&lt; &quot; 服务器启动成功&quot; &lt;&lt; std::endl;</span></span><br><span class="line"></span><br><span class="line">    sock.<span class="built_in">Listen</span>(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取客户端信息</span></span><br><span class="line">    <span class="type">char</span> sIp[<span class="number">20</span>];</span><br><span class="line">    UINT nPort;</span><br><span class="line"></span><br><span class="line">    MySocket ptr;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 当有新用户进来自动创建一个线程来维持会话</span></span><br><span class="line">        sock.<span class="built_in">Accept</span>(ptr, sIp, &amp;nPort);</span><br><span class="line">        ilog-&gt;<span class="built_in">info</span>(<span class="string">&quot;client : &#123;0&#125; :&#123;1&#125; [login]&quot;</span>,sIp,nPort);</span><br><span class="line"><span class="comment">//        std::cout &lt;&lt; &quot;客户: &quot; &lt;&lt; sIp &lt;&lt; &quot;:&quot; &lt;&lt; nPort &lt;&lt; &quot; [已登录]&quot; &lt;&lt; std::endl;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 多线程</span></span><br><span class="line">        _beginthread(ClientPro, <span class="number">0</span>, &amp;ptr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">std::string <span class="title">testR</span><span class="params">(wsProtocol ws)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;asd&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">std::string <span class="title">httpR</span><span class="params">(requestHttp httpRq)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;httpR&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">XmlNodeGetVal</span><span class="params">(std::stringstream stringstream, tinyxml2::XMLElement *pElement, <span class="type">const</span> <span class="type">char</span> *string, <span class="type">const</span> <span class="type">char</span> *ip)</span> </span>&#123;</span><br><span class="line">ip = pElement-&gt;<span class="built_in">Attribute</span>(string);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">//    readXMLConfig(&quot;./../config.xml&quot;);</span></span><br><span class="line">    <span class="built_in">startSocketServer</span>();</span><br><span class="line"><span class="comment">//    startWebSocketServer();</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.include/test.h</li>
+</ul>
+<blockquote>
+<p>存放test.cpp中所需头文件与函数定义，变量定义.</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;WinSock2.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib, <span class="string">&quot;ws2_32.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MySocket</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    SOCKET m_hSocket;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取对端Socket用户IP端口等</span></span><br><span class="line">    <span class="function">BOOL <span class="title">GetPeerName</span><span class="params">(<span class="type">char</span>* rSocketAddress, UINT&amp; rSocketPort)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        sockaddr_in name = &#123; AF_INET &#125;;</span><br><span class="line">        <span class="type">int</span> lenname = <span class="built_in">sizeof</span>(name);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">getpeername</span>(m_hSocket, (sockaddr*)&amp;name, &amp;lenname) &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="built_in">strcpy</span>(rSocketAddress, <span class="built_in">inet_ntoa</span>(name.sin_addr));</span><br><span class="line">        rSocketPort = <span class="built_in">htons</span>(name.sin_port);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取本机Socket用户IP端口等</span></span><br><span class="line">    <span class="function">BOOL <span class="title">GetSockName</span><span class="params">(<span class="type">char</span>* rSocketAddress, UINT&amp; rSocketPort)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        sockaddr_in name = &#123; AF_INET &#125;;</span><br><span class="line">        <span class="type">int</span> lenname = <span class="built_in">sizeof</span>(name);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">getsockname</span>(m_hSocket, (sockaddr*)&amp;name, &amp;lenname) &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="built_in">strcpy</span>(rSocketAddress, <span class="built_in">inet_ntoa</span>(name.sin_addr));</span><br><span class="line">        rSocketPort = <span class="built_in">htons</span>(name.sin_port);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当前用户SocketID</span></span><br><span class="line">    <span class="function">BOOL <span class="title">GetSocketID</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m_hSocket;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建套接字</span></span><br><span class="line">    <span class="function">BOOL <span class="title">Create</span><span class="params">(UINT nSocketPort = <span class="number">0</span>, <span class="type">int</span> nSockType = SOCK_STREAM, LPCTSTR lpszSocketAddress = <span class="literal">NULL</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建套接字</span></span><br><span class="line">        m_hSocket = <span class="built_in">socket</span>(AF_INET, nSockType, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (m_hSocket == INVALID_SOCKET)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置IP地址和端口</span></span><br><span class="line">        sockaddr_in sa = &#123; AF_INET &#125;;</span><br><span class="line">        sa.sin_port = <span class="built_in">htons</span>(nSocketPort);</span><br><span class="line">        <span class="keyword">if</span> (lpszSocketAddress)</span><br><span class="line">            sa.sin_addr.s_addr = <span class="built_in">inet_addr</span>(lpszSocketAddress);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 绑定套接字和IP地址端口</span></span><br><span class="line">        <span class="keyword">return</span> !<span class="built_in">bind</span>(m_hSocket, (sockaddr*)&amp;sa, <span class="built_in">sizeof</span>(sa));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 接受客户请求</span></span><br><span class="line">    <span class="function">BOOL <span class="title">Accept</span><span class="params">(MySocket&amp; rConnectedSock, LPSTR szIp = <span class="literal">NULL</span>, UINT* nPort = <span class="literal">NULL</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        sockaddr_in sa = &#123; AF_INET &#125;;</span><br><span class="line">        <span class="type">int</span> nLen = <span class="built_in">sizeof</span>(sa);</span><br><span class="line">        rConnectedSock.m_hSocket = <span class="built_in">accept</span>(<span class="keyword">this</span>-&gt;m_hSocket, (sockaddr*)&amp;sa, &amp;nLen);</span><br><span class="line">        <span class="keyword">if</span> (rConnectedSock.m_hSocket == INVALID_SOCKET)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (szIp)</span><br><span class="line">            <span class="built_in">strcpy</span>(szIp, <span class="built_in">inet_ntoa</span>(sa.sin_addr));</span><br><span class="line">        <span class="keyword">if</span> (nPort)</span><br><span class="line">            *nPort = <span class="built_in">htons</span>(sa.sin_port);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接服务端</span></span><br><span class="line">    <span class="function">BOOL <span class="title">Connection</span><span class="params">(LPCSTR lpszHostAddress, UINT nPort)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        sockaddr_in sa = &#123; AF_INET &#125;;</span><br><span class="line">        sa.sin_port = <span class="built_in">htons</span>(nPort);</span><br><span class="line">        sa.sin_addr.s_addr = <span class="built_in">inet_addr</span>(lpszHostAddress);</span><br><span class="line">        <span class="keyword">return</span> !<span class="built_in">connect</span>(m_hSocket, (sockaddr*)&amp;sa, <span class="built_in">sizeof</span>(sa));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 侦听</span></span><br><span class="line">    <span class="function">BOOL <span class="title">Listen</span><span class="params">(<span class="type">int</span> nConnectionBacklog = <span class="number">5</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !<span class="built_in">listen</span>(m_hSocket, nConnectionBacklog);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 逐条发送</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">Send</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* lpBuf, <span class="type">int</span> nBufLen, <span class="type">int</span> nFlags = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">send</span>(m_hSocket, (LPCSTR)lpBuf, nBufLen, nFlags);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 发送整个缓冲区</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">SendTo</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* lpBuf, <span class="type">int</span> nBufLen, UINT nHostPort, LPCSTR lpszHostAddress = <span class="literal">NULL</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">               <span class="type">int</span> nFlags = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        sockaddr_in to = &#123; AF_INET &#125;;</span><br><span class="line">        to.sin_port = <span class="built_in">htons</span>(nHostPort);</span><br><span class="line">        to.sin_addr.s_addr = <span class="built_in">inet_addr</span>(lpszHostAddress);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sendto</span>(m_hSocket, (LPCSTR)lpBuf, nBufLen, nFlags, (sockaddr*)&amp;to, <span class="built_in">sizeof</span>(to));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 逐条接收</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">Receive</span><span class="params">(<span class="type">void</span>* lpBuf, <span class="type">int</span> nBufLen, <span class="type">int</span> nFlags = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">recv</span>(m_hSocket, (LPTSTR)lpBuf, nBufLen, nFlags);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 接收整个缓冲区</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">ReceiveFrom</span><span class="params">(<span class="type">void</span>* lpBuf, <span class="type">int</span> nBufLen, <span class="type">char</span>* rSocketAddress, UINT&amp; rSocketPort, <span class="type">int</span> nFlags = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        sockaddr_in from = &#123; AF_INET &#125;;</span><br><span class="line">        <span class="type">int</span> lenFrom = <span class="built_in">sizeof</span>(from);</span><br><span class="line">        <span class="type">int</span> n = <span class="built_in">recvfrom</span>(m_hSocket, (LPSTR)lpBuf, nBufLen, nFlags, (sockaddr*)&amp;from, &amp;lenFrom);</span><br><span class="line">        <span class="built_in">strcpy</span>(rSocketAddress, <span class="built_in">inet_ntoa</span>(from.sin_addr));</span><br><span class="line">        rSocketPort = <span class="built_in">htons</span>(from.sin_port);</span><br><span class="line">        <span class="keyword">return</span> n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 关闭套接字</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Close</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">closesocket</span>(m_hSocket);</span><br><span class="line">        m_hSocket = INVALID_SOCKET;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">MySocket</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        WSADATA wsaData;</span><br><span class="line">        <span class="built_in">WSAStartup</span>(<span class="number">0x0202</span>, &amp;wsaData);</span><br><span class="line">        m_hSocket = INVALID_SOCKET;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">MySocket</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">Close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>3.CMakeLists.txt</li>
+</ul>
+<blockquote>
+<p>配置CMake编译所需环境</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cmake最小版本</span></span><br><span class="line">cmake_minimum_required(VERSION 3.26)</span><br><span class="line"><span class="comment"># 定义项目名</span></span><br><span class="line">project(cpp_socket_server)</span><br><span class="line"><span class="comment"># cpp版本</span></span><br><span class="line"><span class="built_in">set</span>(CMAKE_CXX_STANDARD 17)</span><br><span class="line"><span class="comment"># 设置编译参数</span></span><br><span class="line"><span class="built_in">set</span>(CMAKE_C_FLAGS   <span class="string">&quot;<span class="variable">$&#123;CMAKE_C_FLAGS&#125;</span>   -s&quot;</span>)</span><br><span class="line"><span class="built_in">set</span>(CMAKE_CXX_FLAGS <span class="string">&quot;<span class="variable">$&#123;CMAKE_CXX_FLAGS&#125;</span> -s&quot;</span>)</span><br><span class="line"><span class="comment"># 引入win平台socket库</span></span><br><span class="line">link_libraries(ws2_32)</span><br><span class="line"><span class="comment"># 引入所需头文件库</span></span><br><span class="line">include_directories(</span><br><span class="line">        lib/include</span><br><span class="line">        lib/include/spdlog</span><br><span class="line"><span class="comment">#        lib/include/cryptopp</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># 引入所需编译源文件（*.cpp）</span></span><br><span class="line">aux_source_directory(</span><br><span class="line">        src</span><br><span class="line">        SRC_FILES</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置编译文件</span></span><br><span class="line"><span class="built_in">set</span>(main_file</span><br><span class="line">        <span class="variable">$&#123;SRC_FILES&#125;</span></span><br><span class="line">        lib/include/tcpSocket.h</span><br><span class="line">        src/tcpSocket/tcpSocket.cpp</span><br><span class="line">        src/tcpSocket/MySocket.hpp</span><br><span class="line">        lib/include/tinyxml2.h</span><br><span class="line">        src/utils/tinyxml2.cpp</span><br><span class="line">        lib/include/xmlParser.h</span><br><span class="line">        src/utils/xmlParser.cpp</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接第三方库</span></span><br><span class="line"><span class="keyword">if</span>(SPDLOG_BUILD_EXAMPLE_HO)</span><br><span class="line">    target_link_libraries(cpp_socket_server PRIVATE spdlog::spdlog_header_only)</span><br><span class="line">endif()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加可执行文件</span></span><br><span class="line"><span class="comment"># Add executable files</span></span><br><span class="line">add_executable(</span><br><span class="line">        <span class="variable">$&#123;PROJECT_NAME&#125;</span></span><br><span class="line">        <span class="variable">$&#123;main_file&#125;</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># 链接第三方库</span></span><br><span class="line">target_link_libraries(</span><br><span class="line">        <span class="variable">$&#123;PROJECT_NAME&#125;</span></span><br><span class="line">        <span class="variable">$&#123;LIBRARY&#125;</span></span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="mingw工具">mingw工具</h3>
+<ul>
+<li>配置环境</li>
+</ul>
+<blockquote>
+<p>下载完mingw包后，在系统变量Path中引入以下路径</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D:\mingw64\bin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>工具引入</li>
+</ul>
+<blockquote>
+<p>在clion中，可添加mingw工具。点击File-&gt;Settings-&gt;Build、Execution、Deployment-&gt;Toolchains；在其中设置如下路径，也可使用clion默认路径</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toolset: D:\\mingw64\\bin</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如图<br>
+<img src="/2023/12/01/cpp-project-build-clion/clion-mingw.png" class="lazyload placeholder" data-srcset="/2023/12/01/cpp-project-build-clion/clion-mingw.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+</blockquote>
+<ul>
+<li>编写配置</li>
+</ul>
+<blockquote>
+<p>在CMakeLists.txt（示例）中写入需引入配置，如下所示：</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置 CMake 最低版本要求</span></span><br><span class="line">cmake_minimum_required(VERSION 3.8)</span><br><span class="line"><span class="comment"># 定义项目名称和版本</span></span><br><span class="line">project(MyApp VERSION 1.0.0 LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 C++ 标准</span></span><br><span class="line"><span class="built_in">set</span>(CMAKE_CXX_STANDARD 17)</span><br><span class="line"><span class="built_in">set</span>(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line"><span class="built_in">set</span>(CMAKE_CXX_EXTENSIONS OFF)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义用户可配置的选项</span></span><br><span class="line">option(ENABLE_DEBUG <span class="string">&quot;Enable debug output&quot;</span> ON)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(ENABLE_DEBUG)</span><br><span class="line">  add_definitions(-DDEBUG_OUTPUT)</span><br><span class="line">endif()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义宏：添加 MSVC 常用编译选项</span></span><br><span class="line">macro(add_msvc_options target)</span><br><span class="line">  <span class="keyword">if</span>(MSVC)</span><br><span class="line">    target_compile_options(<span class="variable">$&#123;target&#125;</span> PRIVATE</span><br><span class="line">    /W4                <span class="comment"># 设置警告级别为 4</span></span><br><span class="line">    /WX                <span class="comment"># 将警告视为错误</span></span><br><span class="line">    /MP                <span class="comment"># 启用多处理器编译</span></span><br><span class="line">    /permissive-       <span class="comment"># 禁用不严格的语言 conformance</span></span><br><span class="line">    /Zc:__cplusplus    <span class="comment"># 启用正确的 __cplusplus 宏值</span></span><br><span class="line">    /Zc:inline         <span class="comment"># 移除未使用的函数</span></span><br><span class="line">    /Gm-               <span class="comment"># 禁用最小生成（minimal rebuild）</span></span><br><span class="line">    /EHsc              <span class="comment"># 指定异常处理模型</span></span><br><span class="line">    )</span><br><span class="line">  endif()</span><br><span class="line">endmacro()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加源文件</span></span><br><span class="line"><span class="built_in">set</span>(SOURCE_FILES src/main.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成可执行文件</span></span><br><span class="line">add_executable(MyApp <span class="variable">$&#123;SOURCE_FILES&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用自定义宏，为 MyApp 添加 MSVC 常用编译选项</span></span><br><span class="line">add_msvc_options(MyApp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为特定目标设置头文件目录</span></span><br><span class="line">target_include_directories(MyApp PRIVATE include)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接静态库</span></span><br><span class="line">find_library(STATIC_LIB libStatic.lib PATHS <span class="string">&quot;<span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/libs/static&quot;</span>)</span><br><span class="line">target_link_libraries(MyApp PRIVATE <span class="variable">$&#123;STATIC_LIB&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接动态库</span></span><br><span class="line">find_library(DYNAMIC_LIB libDynamic.dll PATHS <span class="string">&quot;<span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/libs/dynamic&quot;</span>)</span><br><span class="line">find_library(DYNAMIC_LIB_IMPORT libDynamic.lib PATHS <span class="string">&quot;<span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/libs/dynamic&quot;</span>)</span><br><span class="line">target_link_libraries(MyApp PRIVATE <span class="variable">$&#123;DYNAMIC_LIB_IMPORT&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 Windows 的 DLL delay-load 机制</span></span><br><span class="line">set_target_properties(MyApp PROPERTIES LINK_FLAGS <span class="string">&quot;/DELAYLOAD:libDynamic.dll&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据目标架构定制编译选项和链接选项</span></span><br><span class="line"><span class="keyword">if</span>(CMAKE_GENERATOR_PLATFORM STREQUAL <span class="string">&quot;Win32&quot;</span>)</span><br><span class="line">  message(<span class="string">&quot;Building for Win32 (x86) architecture&quot;</span>)</span><br><span class="line">  target_compile_options(MyApp PRIVATE /arch:SSE2)</span><br><span class="line">elseif(CMAKE_GENERATOR_PLATFORM STREQUAL <span class="string">&quot;x64&quot;</span>)</span><br><span class="line">  message(<span class="string">&quot;Building for x64 architecture&quot;</span>)</span><br><span class="line">  target_compile_options(MyApp PRIVATE /arch:AVX2)</span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">  message(WARNING <span class="string">&quot;Unknown architecture&quot;</span>)</span><br><span class="line">endif()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加子项目</span></span><br><span class="line">add_subdirectory(subproject)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在构建时生成配置文件</span></span><br><span class="line">configure_file(config.h.in config.h @ONLY)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定安装规则</span></span><br><span class="line">install(TARGETS MyApp RUNTIME DESTINATION bin)</span><br><span class="line">install(FILES <span class="string">&quot;<span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/libs/dynamic/libDynamic.dll&quot;</span> DESTINATION bin)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="CMake编译">CMake编译</h3>
+<ul>
+<li>编译test.exe</li>
+</ul>
+<blockquote>
+<p>点击运行按钮，查看效果</p>
+</blockquote>
+<ul>
+<li>目录结构</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">MyApp/</span><br><span class="line">  ├─ CMakeLists.txt</span><br><span class="line">  ├─ src/</span><br><span class="line">  │   └─ main.cpp</span><br><span class="line">  ├─ include/</span><br><span class="line">  │   ├─ static_lib/</span><br><span class="line">  │   │   └─ StaticLibHeader.h</span><br><span class="line">  │   └─ dynamic_lib/</span><br><span class="line">  │       └─ DynamicLibHeader.h</span><br><span class="line">  ├─ libs/</span><br><span class="line">  │   ├─ static/</span><br><span class="line">  │   │   └─ libStatic.lib</span><br><span class="line">  │   └─ dynamic/</span><br><span class="line">  │       ├─ libDynamic.dll</span><br><span class="line">  │       └─ libDynamic.lib</span><br><span class="line">  ├─ subproject/</span><br><span class="line">  │   ├─ CMakeLists.txt</span><br><span class="line">  │   ├─ src/</span><br><span class="line">  │   │   └─ subproject_main.cpp</span><br><span class="line">  │   └─ include/</span><br><span class="line">  │       └─ subproject/</span><br><span class="line">  │           └─ SubProjectHeader.h</span><br><span class="line">  └─ config.h.in</span><br></pre></td></tr></table></figure>
+<ul>
+<li>cmake运行(Visual Studio 2019)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对于 x86 架构： </span></span><br><span class="line">cmake -G <span class="string">&quot;Visual Studio 16 2019&quot;</span> -A Win32 ..</span><br><span class="line"><span class="comment"># 对于 x64 架构： </span></span><br><span class="line">cmake -G <span class="string">&quot;Visual Studio 16 2019&quot;</span> -A x64 ..</span><br></pre></td></tr></table></figure>
+<h2 id="引入第三方库（以spdlog为例）">引入第三方库（以spdlog为例）</h2>
+<blockquote>
+<p>Very fast, header-only/compiled, C++ logging library.</p>
+</blockquote>
+<h3 id="工具下载">工具下载</h3>
+<blockquote>
+<p>在以下路径下载spdlog：</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/gabime/spdlog.git</span><br></pre></td></tr></table></figure>
+<h3 id="cmake引入">cmake引入</h3>
+<h4 id="在项目include-文件夹中复制以下文件夹内容">在项目include 文件夹中复制以下文件夹内容</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include/spdlog/</span><br></pre></td></tr></table></figure>
+<h4 id="在CMakeLists-txt中引入库">在CMakeLists.txt中引入库</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">include_directories(</span><br><span class="line">        lib/include</span><br><span class="line">        lib/include/spdlog</span><br><span class="line"><span class="comment">#        lib/include/cryptopp</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(SPDLOG_BUILD_EXAMPLE_HO)</span><br><span class="line">    target_link_libraries(cpp_socket_server PRIVATE spdlog::spdlog_header_only)</span><br><span class="line">endif()</span><br></pre></td></tr></table></figure>
+<h3 id="测试运行">测试运行</h3>
+<h4 id="编写如下代码">编写如下代码</h4>
+<ul>
+<li>1.封装spdlog库</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> MY_SPDLOG_LOG_HPP</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MY_SPDLOG_LOG_HPP</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;spdlog/spdlog.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;spdlog/async.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;spdlog/sinks/stdout_color_sinks.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;spdlog/sinks/rotating_file_sink.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;spdlog/sinks/daily_file_sink.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;spdlog/sinks/basic_file_sink.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CLog</span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> CLog &amp;<span class="title">instance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="type">static</span> CLog m_instance;</span><br><span class="line">        <span class="keyword">return</span> m_instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">auto</span> <span class="title">get_logger</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>-&gt;logger_;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">CLog</span>() &#123;</span><br><span class="line">        spdlog::<span class="built_in">drop_all</span>(); <span class="comment">// 释放所有logger</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CLog</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;<span class="built_in">init</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Log System Init , start record log : &quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">this</span>-&gt;<span class="built_in">init_file</span>();</span><br><span class="line">        <span class="keyword">this</span>-&gt;<span class="built_in">init_logger</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">init_file</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;log_root_path = <span class="string">R&quot;(C:\Users\Administrator\CLionProjects\cpp_socket_server\logs\)&quot;</span>;</span><br><span class="line">        <span class="keyword">this</span>-&gt;info_file_path = <span class="string">&quot;info.log&quot;</span>;</span><br><span class="line">        <span class="keyword">this</span>-&gt;error_file_path = <span class="string">&quot;error.log&quot;</span>;</span><br><span class="line">        <span class="keyword">this</span>-&gt;rotation_h = <span class="number">5</span>; <span class="comment">// 分割时间</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;rotation_m = <span class="number">59</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">init_logger</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>-&gt;info_sink_ = std::<span class="built_in">make_shared</span>&lt;spdlog::sinks::daily_file_sink_mt&gt;(</span><br><span class="line">                <span class="keyword">this</span>-&gt;log_root_path + <span class="keyword">this</span>-&gt;info_file_path, <span class="keyword">this</span>-&gt;rotation_h, <span class="keyword">this</span>-&gt;rotation_m);</span><br><span class="line">        <span class="keyword">this</span>-&gt;error_sink_ = std::<span class="built_in">make_shared</span>&lt;spdlog::sinks::daily_file_sink_mt&gt;(</span><br><span class="line">                <span class="keyword">this</span>-&gt;log_root_path + <span class="keyword">this</span>-&gt;error_file_path, <span class="keyword">this</span>-&gt;rotation_h, <span class="keyword">this</span>-&gt;rotation_m);</span><br><span class="line">        <span class="keyword">this</span>-&gt;console_sink_ = std::<span class="built_in">make_shared</span>&lt;spdlog::sinks::stdout_color_sink_mt&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>-&gt;info_sink_-&gt;<span class="built_in">set_level</span>(spdlog::level::info); <span class="comment">// debug&lt; info&lt; warn&lt; error&lt; critical  日志信息低于设置的级别时, 不予显示</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;error_sink_-&gt;<span class="built_in">set_level</span>(spdlog::level::err);</span><br><span class="line">        <span class="keyword">this</span>-&gt;console_sink_-&gt;<span class="built_in">set_level</span>(spdlog::level::debug);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>-&gt;sinks_.<span class="built_in">push_back</span>(<span class="keyword">this</span>-&gt;info_sink_); <span class="comment">// info</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;sinks_.<span class="built_in">push_back</span>(<span class="keyword">this</span>-&gt;error_sink_); <span class="comment">// error</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;sinks_.<span class="built_in">push_back</span>(<span class="keyword">this</span>-&gt;console_sink_); <span class="comment">// console</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>-&gt;logger_ = std::<span class="built_in">make_shared</span>&lt;spdlog::logger&gt;(<span class="string">&quot;log_demo&quot;</span>, <span class="built_in">begin</span>(<span class="keyword">this</span>-&gt;sinks_), <span class="built_in">end</span>(<span class="keyword">this</span>-&gt;sinks_));</span><br><span class="line">        <span class="keyword">this</span>-&gt;logger_-&gt;<span class="built_in">set_pattern</span>(<span class="string">&quot;[%l] [%Y-%m-%d %H:%M:%S %e] [Process:%P] - %v&quot;</span>);</span><br><span class="line">        <span class="keyword">this</span>-&gt;logger_-&gt;<span class="built_in">flush_on</span>(spdlog::level::info); <span class="comment">// 设置当触发 info 或更严重的错误时立刻刷新日志到 disk</span></span><br><span class="line">        spdlog::<span class="built_in">register_logger</span>(<span class="keyword">this</span>-&gt;logger_); <span class="comment">// 注册logger</span></span><br><span class="line">        spdlog::<span class="built_in">flush_every</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">10</span>)); <span class="comment">// 每隔10秒刷新一次日志</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::shared_ptr &lt;spdlog::logger&gt; logger_;</span><br><span class="line">    std::shared_ptr &lt;spdlog::sinks::daily_file_sink_mt&gt; info_sink_; <span class="comment">// info</span></span><br><span class="line">    std::shared_ptr &lt;spdlog::sinks::daily_file_sink_mt&gt; error_sink_; <span class="comment">// error</span></span><br><span class="line">    std::shared_ptr &lt;spdlog::sinks::stdout_color_sink_mt&gt; console_sink_; <span class="comment">// console</span></span><br><span class="line">    std::vector &lt;spdlog::sink_ptr&gt; sinks_;</span><br><span class="line">    std::string log_root_path;</span><br><span class="line">    std::string error_file_path;</span><br><span class="line">    std::string info_file_path;</span><br><span class="line">    <span class="type">short</span> <span class="type">int</span> rotation_h&#123;&#125;;</span><br><span class="line">    <span class="type">short</span> <span class="type">int</span> rotation_m&#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;; <span class="comment">// CLog</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ilog CLog::instance().get_logger()</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">//MY_SPDLOG_LOG_HPP</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.在主cpp中写入测试代码</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ilog-&gt;<span class="built_in">info</span>(<span class="string">&quot;server : &#123;0&#125;,&#123;1&#125; ,server is running!&quot;</span>,sSevIp,nSevPort);</span><br><span class="line">ilog-&gt;<span class="built_in">warn</span>(<span class="string">&quot;client :&#123;0&#125;:&#123;1&#125; , [disconnect]&quot;</span>,sIp,nPort);</span><br><span class="line">ilog-&gt;<span class="built_in">error</span>(<span class="string">&quot;[VP] load config file error : &#123;0&#125;&quot;</span>,doc_dump.<span class="built_in">LoadFile</span>(path));</span><br></pre></td></tr></table></figure>
+<ul>
+<li>3.运行主cpp，测试效果</li>
+</ul>
+<blockquote>
+<p>如图：<br>
+<img src="/2023/12/01/cpp-project-build-clion/run-result.png" class="lazyload placeholder" data-srcset="/2023/12/01/cpp-project-build-clion/run-result.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+</blockquote>
+<h2 id="about-me-个人微信">about me 个人微信</h2>
+<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<h2 id="wechat-offical-微信公众号">wechat offical 微信公众号</h2>
+<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/java/" class="">
+              java
+            </a>
+          
+            <a href="/tags/clion/" class="">
+              clion
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2023/12/01/cpp-project-build-clion/" target="_blank" title="基于CLion IDE的CPP项目构建与运行">https://caozhaoqi.github.io/2023/12/01/cpp-project-build-clion/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/12/29/smb-py-operation/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">SMB共享服务python脚本操作文件上传下载</div>
+      </div>
+      
+      <!-- <div class="content">
+        简介
+
+NAS（Network Attached Storage：网络附属存储），连接在网络上，具备资料存储功能的装置，
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/11/28/mdf-file-parser/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">基于Assammdf第三方python库处理mdf、mf4文件</div>
+      </div>
+      <!-- <div class="content">
+        基于Assammdf第三方python库处理mdf、mf4文件
+
+1.ASAMMDF是ASAM（自动化和测量系统标准化协
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/logo.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>浅斟低唱</h2>
+        
+        
+          <p>博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1150118968@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/caozhaoqi/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">基于Clion IDE的CPP项目构建与运行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-text">工具基本信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-CLion"><span class="toc-text">1.CLion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-MingW"><span class="toc-text">2.MingW</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-CMake"><span class="toc-text">3.CMake</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85%E6%9E%84%E5%BB%BA"><span class="toc-text">工具安装构建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CLion"><span class="toc-text">CLion</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%96%B0%E5%BB%BAcpp%E9%A1%B9%E7%9B%AE"><span class="toc-text">1.新建cpp项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="toc-text">2.编写测试代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mingw%E5%B7%A5%E5%85%B7"><span class="toc-text">mingw工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMake%E7%BC%96%E8%AF%91"><span class="toc-text">CMake编译</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93%EF%BC%88%E4%BB%A5spdlog%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="toc-text">引入第三方库（以spdlog为例）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E4%B8%8B%E8%BD%BD"><span class="toc-text">工具下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cmake%E5%BC%95%E5%85%A5"><span class="toc-text">cmake引入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E9%A1%B9%E7%9B%AEinclude-%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E5%A4%8D%E5%88%B6%E4%BB%A5%E4%B8%8B%E6%96%87%E4%BB%B6%E5%A4%B9%E5%86%85%E5%AE%B9"><span class="toc-text">在项目include 文件夹中复制以下文件夹内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8CMakeLists-txt%E4%B8%AD%E5%BC%95%E5%85%A5%E5%BA%93"><span class="toc-text">在CMakeLists.txt中引入库</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E8%BF%90%E8%A1%8C"><span class="toc-text">测试运行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E5%A6%82%E4%B8%8B%E4%BB%A3%E7%A0%81"><span class="toc-text">编写如下代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/11/26/agent-research-llm/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">11-26</span>
+                
+              </div>
+              <a class="post-title" href="/2025/11/26/agent-research-llm/">基于 FastAPI + LangChain 的简单agent实现</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/30/mysql-cluster-use/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-30</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/30/mysql-cluster-use/">实现高可用 MySQL 集群</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/17/pypi-mirror-self/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-17</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/17/pypi-mirror-self/">使用Devpi与Nginx构建高可用PyPI镜像源</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/29/ss-build-doc/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-29</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/29/ss-build-doc/">使用 Docker Compose 快速部署 Shadowsocks 代理服务教程</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/14/pyav-use-video/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-14</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/14/pyav-use-video/">PyAV用于视频剪辑处理</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a href="/atom.xml" class="social">
+                  
+                    <i class="fas fa-rss" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="mailto:1150118968@qq.com" class="social">
+                  
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="social">
+                  
+                    <i class="fas fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968" class="social">
+                  
+                    <i class="fas fa-qq" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a></p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>Total visits：<span id="busuanzi_value_site_pv"></span> times
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>Number of visitors：<span id="busuanzi_value_site_uv"></span> people
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="7289498727"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = 'copy';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <!-- 弹幕所需的css和js -->
+    
+  <!-- 弹幕插件 -->
+  <link href="/js/danmu/barrager.css" rel="stylesheet">
+  <script src="/js/danmu/jquery.barrager.js"></script>
+
+<!-- 具体js，请前往valine/script.ejs查看 -->
+
+    <script>
+  var requiredFields = 'nick,mail';
+  requiredFields = requiredFields.split(',');
+  comment_el = '.comment';
+  let looperValine = null;
+  load_valine = function () {
+    if ($(comment_el).length) {
+      var valine = new Valine({
+        el: '#vcomment',
+        path: window.location.pathname,
+        notify: false,
+        verify: false,
+        app_id: "PZlzAc6FzhlN4QJ4gUgas7AQ-gzGzoHsz",
+        app_key: "YYSIuQIfbSqnug2Kq117KGAK",
+        placeholder: "客官，说点什么吧",
+        avatar: "",
+        master: "d0ca78e6945a9e55aaf81645413dde96",   //博主邮箱md5
+        tagMeta: ["博主","小伙伴","访客"],     //标识字段名
+        friends: "",
+        metaPlaceholder: { "nick": "昵称/QQ号", "mail": "邮箱" },
+        requiredFields: requiredFields,
+        enableQQ: true,
+      });
+      function debounce(fn) {
+        var timerID = null
+        return function () {
+          var arg = arguments[0]   //获取事件
+          if (timerID) {
+            clearTimeout(timerID)
+          }
+          timerID = setTimeout(function () {
+            fn(arg)              //事件传入函数
+          }, 200)
+        }
+      }
+      //查询评论 valine.Q('*').limit(7) -- 查询所有，限制7条, 下面的的代码是查询当前页面
+      var themeDanmu = eval('true');
+      var themeLoop = eval('true');
+      var themeLooperTime = '5000' || 5000;
+      var speed = '40' || 20;
+      var isBarrager = true;
+      if (themeDanmu == true) {
+        do_barrager();
+        if ($('.danmuBox').length <= 0) {
+          $('.navbar').append('<div class="danmuBox"><div class="danmuBtn open"><span class="danmuCircle"></span><span class="danmuText">弹幕</span></div></div>');
+        }
+        $('.danmuBtn').on('click', debounce(
+          function () {
+            if ($('.danmuBtn').hasClass('open')) {
+              $('.danmuBtn').removeClass('open')
+              clearInterval(looperValine);
+              $.fn.barrager.removeAll();
+            } else {
+              $('.danmuBtn').addClass("open");
+              do_barrager();
+            }
+          }
+        ))
+      }
+      function do_barrager() {
+        isBarrager && valine.Q(window.location.pathname).find().then(function (comments) {
+          // var num = 0; // 可以记录条数，循环调用的时候只取最新的评论放入弹幕中
+          var run_once = true;
+          var looper_time = themeLooperTime;
+          var total = comments.length;
+          // var looper = null;
+          var index = 0;
+          if (total > 0) {
+            barrager();
+          } else {
+            // 当评论数为0的时候，自动关闭弹幕
+            // $('.danmuBtn').removeClass('open');
+          }
+          function barrager() {
+            if (run_once) {
+              //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+              looperValine = setInterval(barrager, looper_time);
+              run_once = false;
+            }
+            var content = comments[index]._serverData.comment;
+            var email = comments[index]._serverData.mail;
+            var link = comments[index]._serverData.link;
+            var newcontent = content.substring(0, 50).replace(/<[^>]+>/g, "");
+            //发布一个弹幕
+            const item = {
+              img: `https://q1.qlogo.cn/g?b=qq&nk=${email}&s=640`, //图片 
+              info: newcontent, //文字 
+              href: link, //链接 
+              close: true, //显示关闭按钮 
+              speed: speed, //延迟,单位秒,默认6 
+              color: '#fff', //颜色,默认白色 
+              old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+            }
+            $('body').barrager(item);
+            //索引自增
+            index++;
+            //所有弹幕发布完毕，清除计时器。
+            if (index == total) {
+              clearInterval(looperValine);
+              if (themeLoop === true) {
+                setTimeout(function () {
+                  do_barrager();
+                }, 5000);
+              } else {
+                $('.danmuBtn').removeClass('open');
+              }
+              return false;
+            }
+
+          }
+        })
+      }
+    }
+  };
+  $(document).ready(load_valine);
+  document.addEventListener('pjax:send', function (e) {
+    
+      $('.danmuBox').length > 0 && $('.danmuBox').remove()
+      looperValine && clearInterval(looperValine);
+      $.fn.barrager.removeAll();
+    
+  })
+  document.addEventListener('pjax:complete', function () {
+    load_valine();
+  });
+</script>
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

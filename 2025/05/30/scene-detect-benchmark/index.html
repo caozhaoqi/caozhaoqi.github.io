@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>场景检测性能优化方向与测试方法 | Zhaoqi.Cao static blog</title>
+
+  <link rel="icon" type="image/png" href="/medias/logo.png">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '0';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+        <script src="/js/valine/index.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Zhaoqi.Cao static blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Zhaoqi.Cao static blog</h3>
+      <h5 class="drawer-box-head_desc">A static personal blog.</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                      <i class="fas fa-link"></i>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Zhaoqi.Cao static blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="主页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友链">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                    <i class="fas fa-link"></i>
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">Search</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="Please enter keywords"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        场景检测性能优化方向与测试方法
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2025-05-30 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 7.3k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 32min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1>场景检测性能优化方向与测试方法</h1>
+<h2 id="1-引言">1. 引言</h2>
+<p>本指南旨在提供一套系统化的方法，用于验证和分析视频处理项目的效率，特别是针对场景检测模块的性能。通过收集关键性能指标 (KPIs)<br>
+和剖析代码执行，我们可以识别性能瓶颈，并为后续的代码优化提供数据支持。</p>
+<h2 id="2-准备工作">2. 准备工作</h2>
+<h3 id="2-1-定义关键性能指标-KPIs">2.1. 定义关键性能指标 (KPIs)</h3>
+<p>在开始测试前，明确需要衡量的性能指标：</p>
+<ul>
+<li>总处理时间 (End-to-End Time)*衡量单个视频从场景检测开始到结束的总耗时。</li>
+<li>场景检测函数耗时<code>detect_scenes</code> 函数的精确执行时间。</li>
+<li>CPU 使用率场景检测过程中的平均和峰值 CPU 使用率。</li>
+<li>内存使用量 场景检测过程中的峰值和平均内存消耗。</li>
+<li>GPU 使用率 (若启用)：GPU 计算单元和显存的使用率。</li>
+<li>检测到的场景数作为检测结果的一个基本衡量。</li>
+<li>检测时使用的帧率记录 <code>detect_scenes</code> 内部实际使用的视频帧率。</li>
+</ul>
+<h3 id="2-2-选择测试数据集">2.2. 选择测试数据集</h3>
+<ul>
+<li>多样性 准备一组包含不同特征的视频文件：
+<ul>
+<li>不同分辨率 (例如：720p, 1080p, 4K)。</li>
+<li>不同编码格式 (例如：H.264, HEVC)。</li>
+<li>不同时长 (例如：短视频 &lt; 1分钟，中等视频 5-10分钟，长视频 &gt; 30分钟)。</li>
+<li>不同场景复杂度 (例如：场景切换频繁的预告片，场景切换较少的讲座视频)。</li>
+</ul>
+</li>
+<li>代表性 测试视频应能代表项目实际应用中常见的视频类型。</li>
+<li>可重复性 使用固定的视频集进行所有测试，以便比较不同优化版本的效果。</li>
+</ul>
+<h3 id="2-3-搭建测试环境">2.3. 搭建测试环境</h3>
+<ul>
+<li>硬件一致性 所有基准测试应在同一台机器上进行，以消除硬件差异。记录测试机器的 CPU、内存、GPU型号、磁盘类型等规格。</li>
+<li>软件环境一致性 确保 Python 版本、操作系统以及所有相关依赖库 (如 PySceneDetect, OpenCV, FFmpeg) 的版本在测试期间保持不变。可以从<br>
+<code>requirements.txt</code> 文件中获取依赖列表。</li>
+<li>环境隔离 测试时，尽量关闭其他不必要的应用程序，以减少对测试结果的干扰。</li>
+</ul>
+<h3 id="2-4-配置测试参数">2.4. 配置测试参数</h3>
+<ul>
+<li><code>config.ini</code> 基准测试脚本会加载此文件。确保其中的路径配置 (如 <code>ffmpeg_path</code>, <code>ffprobe_path</code>) 和默认的检测器参数是你想要测试的基础配置。</li>
+<li>测试脚本内配置 <code>benchmark_scene_detector.py</code> 脚本允许定义多种测试配置 ( <code>configurations_to_test</code> 列表)，例如：
+<ul>
+<li>CPU vs GPU 解码。</li>
+<li>使用不同的检测器组合 (例如，仅 <code>ContentDetector</code> vs <code>MultiDetector</code> 全启用)。</li>
+<li>不同的检测器参数 (例如，不同的 <code>threshold</code> 或 <code>min_scene_len_frames</code>)。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-测试执行">3. 测试执行</h2>
+<h3 id="3-1-测试脚本：benchmark-scene-detector-py">3.1. 测试脚本：<code>benchmark_scene_detector.py</code></h3>
+<ul>
+<li>基础库安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install memory-profiler psutil snakeviz # snakeviz 用于可视化 cProfile 结果</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<ul>
+<li>基准测试脚本运行</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python src/video/benchmark_scene_detector.py</span><br></pre></td></tr></table></figure>
+<ul>
+<li>性能分析</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m pstats profiling_results/profile_your_test_video1_Config_Default_CPU.prof</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">snakeviz profiling_results/profile_your_test_video1_Config_Default_CPU.prof</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-性能剖析-Profiling">3.2. 性能剖析 (Profiling)</h3>
+<ul>
+<li>当测试配置中 <code>&quot;profile&quot;: True</code> 时，脚本会为该次运行生成一个 <code>.prof</code> 文件，保存在 <code>profiling_results</code> 目录下。</li>
+<li>这些文件包含了函数调用次数、每次调用的耗时、累计耗时等详细信息。</li>
+</ul>
+<h3 id="3-3-资源监控">3.3. 资源监控</h3>
+<ul>
+<li>手动监控 在测试脚本运行时，使用操作系统自带的工具（如 Windows 的任务管理器，Linux 的 <code>top</code>/<code>htop</code>，macOS 的活动监视器）观察<br>
+CPU 和内存的实时使用情况。</li>
+<li>GPU 监控 如果测试 GPU 加速，使用特定于 GPU 厂商的工具（如 NVIDIA 的 <code>nvidia-smi</code>）监控 GPU 利用率和显存使用。</li>
+<li>脚本内监控 (可选) 可以修改 <code>benchmark_scene_detector.py</code>，使用 <code>psutil</code> 库在调用 <code>detect_scenes</code> 前后记录进程的 CPU<br>
+和内存快照，以获得更精确的数据。</li>
+</ul>
+<h3 id="3-4-比较耗时：">3.4 比较耗时：</h3>
+<ul>
+<li>对比 CPU 和 GPU 配置下的耗时，评估 GPU 加速的实际效果。从示例输出来看，对于“建筑家园-02.mp4”，使用 GPU (<br>
+Config_Default_GPU) 将处理时间从约 15.1 秒降低到了约 8.6 秒，有显著提升。</li>
+<li>对比不同检测器组合或参数下的耗时。例如，Config_ContentDetectorOnly_CPU (仅使用 ContentDetector) 的耗时约为 5.4 秒，远快于使用<br>
+MultiDetector 的 Config_Default_CPU (15.1 秒)，但检测到的场景数也从 12 个减少到了 9 个。这需要在速度和检测全面性之间进行权衡。</li>
+<li>观察不同特性视频（如时长、分辨率）对处理时间的影响（需要更多测试视频样本来分析此项）。4.2. 分析性能剖析 (.prof) 文件使用<br>
+Python 的 pstats 模块或 snakeviz 工具来分析 .prof 文件。使用 pstats (命令行)：</li>
+</ul>
+<h2 id="4-结果分析">4. 结果分析</h2>
+<h3 id="4-1-分析基准测试日志">4.1. 分析基准测试日志</h3>
+<blockquote>
+<p>脚本执行完毕后，会打印一个总结报告，显示每个视频在不同配置下的处理时长和检测到的场景数。</p>
+</blockquote>
+<h4 id="在-pstats-交互式-shell-中，常用命令：">在 pstats 交互式 shell 中，常用命令：</h4>
+<ul>
+<li>sort cumulative: 按累计耗时排序。</li>
+<li>stats 20: 显示耗时最多的前 20 个函数。</li>
+<li>callers function_name: 查看哪些函数调用了 function_name。</li>
+<li>callees function_name: 查看 function_name 调用了哪些函数。</li>
+</ul>
+<h4 id="使用-snakeviz-Web-界面，推荐-：">使用 snakeviz (Web 界面，推荐)：</h4>
+<ul>
+<li>
+<p>比较耗时</p>
+<ul>
+<li>对比 CPU 和 GPU 配置下的耗时，评估 GPU 加速的实际效果。从示例输出来看，对于“建筑家园-02.mp4”，使用 GPU (<br>
+<code>Config_Default_GPU</code>) 将处理时间从约 15.1 秒降低到了约 8.6 秒，有显著提升。</li>
+<li>对比不同检测器组合或参数下的耗时。例如，<code>Config_ContentDetectorOnly_CPU</code> (仅使用 ContentDetector) 的耗时约为 5.4<br>
+秒，远快于使用 <code>MultiDetector</code> 的 <code>Config_Default_CPU</code> (15.1 秒)，但检测到的场景数也从 12 个减少到了 9<br>
+个。这需要在速度和检测全面性之间进行权衡。</li>
+<li>观察不同特性视频（如时长、分辨率）对处理时间的影响（需要更多测试视频样本来分析此项）。</li>
+</ul>
+</li>
+<li>
+<p>比较耗时 (Updated Interpretation based on new logs)</p>
+<ul>
+<li>对比 CPU 和 GPU 配置下的耗时，评估 GPU 加速的实际效果。从最新的示例输出来看，对于“建筑家园-02.mp4” (一个60fps的视频):
+<ul>
+<li><code>Config_Default_CPU</code> (MultiDetector, CPU decode): 433.73 秒</li>
+<li><code>Config_Default_GPU</code> (MultiDetector, GPU decode requested): 411.56 秒</li>
+<li>观察: 在这个特定的测试中 (macOS, <code>VideoStreamCv2</code> 被用作回退)，请求 GPU 解码相比纯 CPU 解码略有性能提升 (约<br>
+22 秒，或 5% 的提升)。这表明在 macOS 上，即使 PySceneDetect 回退到 <code>VideoStreamCv2</code>，底层的 OpenCV 和<br>
+AVFoundation/VideoToolbox 可能仍然利用了一些硬件加速。然而，这与之前日志中在非 macOS 环境下使用<br>
+<code>VideoStreamCv2Cuda</code> 可能带来的更显著提升有所不同。文档中应指出，GPU 加速的效果高度依赖于操作系统、OpenCV<br>
+的编译选项、PySceneDetect 的后端选择以及具体的 GPU 硬件。</li>
+</ul>
+</li>
+<li>对比不同检测器组合或参数下的耗时。例如:
+<ul>
+<li><code>Config_ContentDetectorOnly_CPU</code> (仅使用 ContentDetector, CPU decode): 400.30 秒</li>
+<li>观察: 仅使用 <code>ContentDetector</code> 仍然是最快的配置，比使用 <code>MultiDetector</code> 的 CPU 配置快了约 33 秒。但检测到的场景数从<br>
+214 个减少到了 164 个。这再次强调了在速度和检测全面性/准确性之间的权衡。</li>
+</ul>
+</li>
+<li>重要提示:
+<ul>
+<li>日志中出现 <code>Backend None not available. Trying another backend: opencv</code>，并且在请求 GPU 解码时，最终仍然是<br>
+<code>opened with VideoStreamCv2</code>。这表明在当前的 macOS 测试环境下，<code>VideoStreamCv2Cuda</code> (如果期望使用的话)<br>
+并未被成功加载或使用，PySceneDetect 回退到了标准的 OpenCV 后端 (<code>VideoStreamCv2</code>)。文档应该提及这一点，并建议用户检查其<br>
+PySceneDetect 和 OpenCV (包括 CUDA 支持) 的安装，尤其是在非 macOS 环境下期望使用 NVIDIA GPU 加速时。</li>
+<li>日志中出现 <code>min_delta_hsv is deprecated, use min_content_val instead.</code> 这是来自 <code>AdaptiveDetector</code><br>
+的一个警告。虽然不影响基准测试的耗时记录，但在文档中或代码注释中提及，并建议更新 <code>config.ini</code> 或<br>
+<code>AdaptiveDetector</code> 的参数以使用新的 <code>min_content_val</code> 是一个好做法，以保持与库更新的兼容性。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>macOS性能测试结果解释:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">/Users/zg/PycharmProjects/scene_detect_split/.venv/bin/python /Users/zg/PycharmProjects/scene_detect_split/src/tests/benchmark_scene_detector.py </span><br><span class="line">2025-05-30 10:46:40.555 | INFO     | config.config:initialize_settings:147 - Configuration successfully loaded from: /Users/zg/PycharmProjects/scene_detect_split/src/run/config.ini</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:&lt;module&gt;:118 - Configuration loaded from: /Users/zg/PycharmProjects/scene_detect_split/src/run/config.ini</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:&lt;module&gt;:210 - </span><br><span class="line">===== Processing Video: /Volumes/shared/样例/CG渲染样例/建筑家园/建筑家园-02.mp4 =====</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_Default_CPU ---</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: MultiDetector</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: False</span><br><span class="line">2025-05-30 10:46:40.556 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 10:46:40.720 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 10:46:40.720 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: MultiDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 10:46:40.721 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">min_delta_hsv is deprecated, use min_content_val instead.</span><br><span class="line">2025-05-30 10:53:54.141 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 214 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 10:53:54.143 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 214 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 10:53:54.296 | INFO     | __main__:run_detection_benchmark:76 - Profiling data saved to: profiling_results/profile_建筑家园_02_Config_Default_CPU.prof</span><br><span class="line">2025-05-30 10:53:54.297 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 10:53:54.297 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 214</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 433.7327 seconds</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_Default_GPU ---</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: MultiDetector</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: True</span><br><span class="line">2025-05-30 10:53:54.298 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">2025-05-30 10:53:54.299 | INFO     | video.scene_detector:detect_scenes:95 - [MainThread] GPU decode (AVFoundation/VideoToolbox likely) on macOS for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 10:53:54.381 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 10:53:54.381 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: MultiDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 10:53:54.381 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">min_delta_hsv is deprecated, use min_content_val instead.</span><br><span class="line">2025-05-30 11:00:45.457 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 214 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 11:00:45.458 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 214 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:76 - Profiling data saved to: profiling_results/profile_建筑家园_02_Config_Default_GPU.prof</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 214</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 411.5587 seconds</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_ContentDetectorOnly_CPU ---</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: ContentDetector</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: False</span><br><span class="line">2025-05-30 11:00:45.865 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 11:00:45.939 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 11:00:45.939 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: ContentDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 11:00:45.939 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 11:07:26.007 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 164 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 11:07:26.011 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 164 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 164</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 400.2969 seconds</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:236 - </span><br><span class="line"></span><br><span class="line">===== Benchmark Summary =====</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:238 - </span><br><span class="line">Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_Default_CPU             | Duration: 433.7327s | Scenes: 214</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_Default_GPU             | Duration: 411.5587s | Scenes: 214</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_ContentDetectorOnly_CPU | Duration: 400.2969s | Scenes: 164</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:242 - </span><br><span class="line">To analyze .prof files, use a tool like &#x27;snakeviz&#x27; or Python&#x27;s pstats module.</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:243 - Example: python -m pstats profiling_results/your_profile_file.prof</span><br><span class="line">2025-05-30 11:07:26.170 | INFO     | __main__:&lt;module&gt;:244 - Then in pstats shell: sort cumulative, stats 20</span><br><span class="line"></span><br><span class="line">进程已结束，退出代码为 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>macOS 上的 GPU 解码:
+<ul>
+<li>在 “GPU 监控” 或 “比较耗时” 部分，可以特别说明在 macOS 上，即使没有明确的 <code>VideoStreamCv2Cuda</code>，PySceneDetect 通过<br>
+<code>VideoStreamCv2</code> 也可能间接利用 VideoToolbox/AVFoundation 进行硬件加速解码，但效果可能与专用 CUDA 后端不同。</li>
+</ul>
+</li>
+<li>PySceneDetect 后端回退:
+<ul>
+<li>在 “结果分析” 或 “故障排查” (如果添加此章节) 部分，解释<br>
+<code>Backend None not available. Trying another backend: opencv</code> 日志的含义，即 PySceneDetect<br>
+尝试了默认后端（可能是用户指定的或库的优选）但失败，然后回退到 OpenCV。这对于理解实际使用的解码路径很重要。</li>
+</ul>
+</li>
+<li>依赖库版本的重要性:
+<ul>
+<li>再次强调在 “软件环境一致性” 部分，PySceneDetect、OpenCV (及其 CUDA/OpenCL 支持的编译方式)、FFmpeg<br>
+的版本都会显著影响性能和功能，包括硬件加速的可用性。</li>
+</ul>
+</li>
+<li><code>min_delta_hsv</code> 废弃警告:
+<ul>
+<li>在 “配置测试参数” 或 “结果分析” 部分，提示用户注意 PySceneDetect 的废弃警告，并及时更新其配置文件或代码以使用推荐的新参数。</li>
+</ul>
+</li>
+</ul>
+<p>通过这些补充，<code>benchmark_test.md</code> 文档将更准确地反映实际的测试情况，并为用户提供更有价值的性能分析指导。</p>
+<h3 id="4-2-分析性能剖析-prof-文件">4.2. 分析性能剖析 (<code>.prof</code>) 文件</h3>
+<p>使用 Python 的 <code>pstats</code> 模块或 <code>snakeviz</code> 工具来分析 <code>.prof</code> 文件。</p>
+<ul>
+<li>使用 <code>pstats</code> (命令行)</li>
+<li>snakeviz 会在浏览器中打开一个交互式的火焰图或旭日图，直观地展示函数调用栈和各部分耗时。</li>
+<li>关注点：</li>
+<li>耗时最多的函数：这些是首要的优化目标。通常会是 PySceneDetect 库中与视频解码、帧处理以及各检测器核心算法相关的函数。</li>
+<li>PySceneDetect 内部函数：如果瓶颈在 PySceneDetect 库内部（如特定检测器的 process_frame<br>
+方法，视频解码函数），优化方向可能包括调整检测器参数、选择更快的检测器、或优化视频解码方式（如验证 GPU 解码效果，尝试帧降采样）。</li>
+<li>自定义逻辑：如果 detect_scenes 函数中自定义的逻辑部分（例如，在 scene_detector.py 中添加检测器、调整场景列表的循环）耗时较长，需要针对性优化。</li>
+</ul>
+<h3 id="4-3-分析资源监控数据">4.3. 分析资源监控数据</h3>
+<h4 id="CPU-瓶颈：">CPU 瓶颈：</h4>
+<ul>
+<li>如果 CPU 单核或多核长时间处于高负载状态，表明计算是瓶颈。</li>
+<li>检查是否存在某个核心远高于其他核心的情况（可能表示并行度不足或某些操作无法有效并行，尽管 detect_scenes 本身是单线程的，但其调用的<br>
+OpenCV 或 FFmpeg 后端可能利用多核）。</li>
+</ul>
+<h4 id="内存瓶颈：">内存瓶颈：</h4>
+<ul>
+<li>如果内存使用持续增长或达到系统上限，可能存在内存泄漏或处理大数据时内存管理不当。</li>
+<li>PySceneDetect 通常是流式处理，但某些配置或长视频仍可能消耗较多内存。确保 video_api_obj.reset() 被正确调用。</li>
+</ul>
+<h4 id="GPU-瓶颈：">GPU 瓶颈：</h4>
+<ul>
+<li>如果启用了 GPU 加速，但 GPU 利用率低，检查驱动、CUDA/OpenCV 配置，以及数据传输到 GPU 的开销。示例输出显示 GPU 配置 (<br>
+Config_Default_GPU) 速度更快，表明 GPU 在此场景下可能得到了有效利用。</li>
+<li>如果 GPU 利用率高，但性能提升不明显，可能瓶颈在其他部分（如 Python 代码本身、磁盘 I/O）。</li>
+</ul>
+<h2 id="5-根据分析结果改进代码-优化方向示例">5.根据分析结果改进代码 (优化方向示例)</h2>
+<blockquote>
+<p>基于上述分析，可以针对性地对 scene_detector.py 及相关模块进行优化：</p>
+</blockquote>
+<h4 id="场景检测策略优化：">场景检测策略优化：</h4>
+<ul>
+<li>调整检测器：根据性能和准确度需求，在 config.ini 中启用或禁用特定的检测器，或调整其参数（如 threshold,<br>
+min_scene_len_frames）。从示例输出看，仅使用 ContentDetector 速度最快，但场景数略少。需要根据业务需求决定是否值得牺牲一些检测场景换取速度。</li>
+<li>帧降采样：对于长视频，在 scene_detector.py 中为 SceneManager 设置 frame_skip 或通过<br>
+video_api_obj.set_downscale_factor() 来减少处理的帧数/分辨率，以大幅提升速度。将其作为可配置项。视频解码优化：</li>
+<li>基于测试结果，确定 CPU 解码或 GPU 解码 (VideoStreamCv2Cuda) 在何种情况下更优，并相应调整配置。示例中 GPU 解码效果明显。</li>
+</ul>
+<h4 id="代码逻辑优化：">代码逻辑优化：</h4>
+<ul>
+<li>检查 detect_scenes 内部是否有可优化的循环或数据处理。确保资源（如 video_api_obj）得到正确和及时的释放。</li>
+</ul>
+<h4 id="长视频特定优化：">长视频特定优化：</h4>
+<ul>
+<li>考虑更细粒度的检查点机制（如果 detect_scenes 本身耗时过长）。</li>
+<li>探索分块处理长视频的策略。</li>
+</ul>
+<h2 id="6-迭代与验证">6. 迭代与验证</h2>
+<blockquote>
+<p>性能优化是一个迭代过程。每次应用优化后，都应重新运行基准测试，以验证优化的效果，并确保没有引入新的性能问题或功能性缺陷。</p>
+</blockquote>
+<blockquote>
+<p>通过遵循本指南，您可以系统地评估和提升视频处理项目的性能，特别是在处理计算密集的场景检测任务时。</p>
+</blockquote>
+<h2 id="总结">总结</h2>
+<h3 id="macOS-场景检测性能测试总结">macOS 场景检测性能测试总结</h3>
+<p>测试视频: <code>建筑家园-02.mp4</code> (60fps)<br>
+测试日期: 2025-05-30</p>
+<h4 id="关键测试数据">关键测试数据</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">测试配置</th>
+<th style="text-align:left">解码方式</th>
+<th style="text-align:left">检测器组合</th>
+<th style="text-align:left">处理时长 (秒)</th>
+<th style="text-align:left">检测场景数</th>
+<th style="text-align:left">帧率 (fps)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>Config_Default_CPU</code></td>
+<td style="text-align:left">CPU</td>
+<td style="text-align:left">MultiDetector</td>
+<td style="text-align:left">433.7327</td>
+<td style="text-align:left">214</td>
+<td style="text-align:left">60.00</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>Config_Default_GPU</code></td>
+<td style="text-align:left">GPU (请求)</td>
+<td style="text-align:left">MultiDetector</td>
+<td style="text-align:left">411.5587</td>
+<td style="text-align:left">214</td>
+<td style="text-align:left">60.00</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>Config_ContentDetectorOnly_CPU</code></td>
+<td style="text-align:left">CPU</td>
+<td style="text-align:left">ContentDetector</td>
+<td style="text-align:left">400.2969</td>
+<td style="text-align:left">164</td>
+<td style="text-align:left">60.00</td>
+</tr>
+</tbody>
+</table>
+<h4 id="主要结论">主要结论</h4>
+<ol>
+<li>
+<p>GPU 加速在 macOS 上的表现:</p>
+<ul>
+<li>当请求 GPU 解码时 (<code>Config_Default_GPU</code>)，即使 PySceneDetect 日志显示回退到标准的 <code>VideoStreamCv2</code> 后端 (而非 <code>VideoStreamCv2Cuda</code>)，处理速度相比纯 CPU 解码 (<code>Config_Default_CPU</code>) 仍有约 5% 的提升 (从 433.73 秒降至 411.56 秒)。</li>
+<li>这表明在 macOS 上，<code>VideoStreamCv2</code> 可能间接利用了系统级的硬件加速框架 (如 AVFoundation/VideoToolbox) 进行视频解码。</li>
+<li>需要注意的是，这种提升幅度可能不如在具有专用 NVIDIA GPU 和正确配置 CUDA 的环境中使用 <code>VideoStreamCv2Cuda</code> 时显著。</li>
+</ul>
+</li>
+<li>
+<p>检测器选择对性能和结果的显著影响:</p>
+<ul>
+<li>仅使用 <code>ContentDetector</code> (<code>Config_ContentDetectorOnly_CPU</code>) 的配置速度最快，处理时长为 400.30 秒。</li>
+<li>与使用 <code>MultiDetector</code> 的 CPU 配置 (<code>Config_Default_CPU</code>) 相比，速度提升了约 7.7% (快了约 33 秒)。</li>
+<li>然而，仅使用 <code>ContentDetector</code> 时，检测到的场景数从 214 个减少到 164 个，表明牺牲了一定的检测全面性。这需要在处理效率和检测结果的完整性之间进行权衡。</li>
+</ul>
+</li>
+<li>
+<p>PySceneDetect 后端行为:</p>
+<ul>
+<li>测试日志中出现 <code>Backend None not available. Trying another backend: opencv</code>，表明 PySceneDetect 在尝试使用一个（可能是用户配置的或库优选的）后端失败后，成功回退到了 OpenCV 后端 (<code>VideoStreamCv2</code>)。这对于理解实际的解码路径和排查配置问题非常重要。</li>
+</ul>
+</li>
+<li>
+<p>库的兼容性提示:</p>
+<ul>
+<li>日志中 <code>AdaptiveDetector</code> 相关的警告 <code>min_delta_hsv is deprecated, use min_content_val instead.</code> 提示需要更新配置文件中的参数，以确保与 PySceneDetect 库的持续兼容性和最佳实践。</li>
+</ul>
+</li>
+</ol>
+<h3 id="windows-测试结果">windows 测试结果</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">D:\pythonProject\venv1\Scripts\python.exe D:\pythonProject\scene-detect-split1\src\tests\benchmark_scene_detector.py </span><br><span class="line">2025-05-30 14:11:57.528 | INFO     | config.config:initialize_settings:147 - Configuration successfully loaded from: D:\pythonProject\scene-detect-split1\src\run\config.ini</span><br><span class="line">2025-05-30 14:11:57.529 | INFO     | __main__:&lt;module&gt;:118 - Configuration loaded from: D:\pythonProject\scene-detect-split1\src\run\config.ini</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:&lt;module&gt;:210 - </span><br><span class="line">===== Processing Video: Z:\样例\CG渲染样例\建筑家园\建筑家园-02.mp4 =====</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_Default_CPU ---</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: ContentDetector</span><br><span class="line">2025-05-30 14:11:57.869 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: False</span><br><span class="line">2025-05-30 14:11:57.870 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 14:11:58.075 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 14:11:58.075 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: ContentDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:11:58.075 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:16:45.990 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 159 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:16:45.990 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 159 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:76 - Profiling data saved to: profiling_results\profile_建筑家园_02_Config_Default_CPU.prof</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 159</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 288.2435 seconds</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_Default_GPU ---</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: ContentDetector</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: True</span><br><span class="line">2025-05-30 14:16:46.113 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">2025-05-30 14:16:46.147 | WARNING  | video.scene_detector:detect_scenes:93 - [MainThread] VideoStreamCv2Cuda not available. Using CPU for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 14:16:46.242 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 14:16:46.243 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: ContentDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:16:46.243 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:20:35.982 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 159 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:20:35.982 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 159 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 14:20:36.101 | INFO     | __main__:run_detection_benchmark:76 - Profiling data saved to: profiling_results\profile_建筑家园_02_Config_Default_GPU.prof</span><br><span class="line">2025-05-30 14:20:36.101 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 159</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 229.9882 seconds</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:&lt;module&gt;:214 - --- Running with Configuration: Config_ContentDetectorOnly_CPU ---</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:50 - --- Benchmarking: 建筑家园-02.mp4 ---</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:51 - Detector Setup: ContentDetector</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | __main__:run_detection_benchmark:52 - Using GPU for OpenCV decode: False</span><br><span class="line">2025-05-30 14:20:36.102 | INFO     | video.scene_detector:detect_scenes:69 - [MainThread] Starting detect_scenes for &#x27;建筑家园-02.mp4&#x27;</span><br><span class="line">Backend None not available.</span><br><span class="line">Trying another backend: opencv</span><br><span class="line">2025-05-30 14:20:36.194 | INFO     | video.scene_detector:detect_scenes:99 - [MainThread] Video &#x27;建筑家园-02.mp4&#x27; opened with VideoStreamCv2.</span><br><span class="line">2025-05-30 14:20:36.194 | INFO     | video.scene_detector:detect_scenes:126 - [MainThread] Configured detector type: ContentDetector for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:20:36.194 | INFO     | video.scene_detector:detect_scenes:133 - [MainThread] Effective global min_scene_len (frames) for detectors: 15 for &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:24:23.153 | INFO     | video.scene_detector:detect_scenes:302 - [MainThread] SceneManager detected 159 scenes in &#x27;建筑家园-02.mp4&#x27;.</span><br><span class="line">2025-05-30 14:24:23.153 | INFO     | video.scene_detector:detect_scenes:334 - [MainThread] Final 159 scenes for &#x27;建筑家园-02.mp4&#x27; after adjustments.</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:83 - Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:85 - Detected Scenes: 159</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:86 - Detected Frame Rate: 60.00 fps</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:87 - Processing Time: 227.1770 seconds</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:run_detection_benchmark:90 - --- Benchmark End ---</span><br><span class="line">2025-05-30 14:24:23.278 | INFO     | __main__:&lt;module&gt;:236 - </span><br><span class="line"></span><br><span class="line">===== Benchmark Summary =====</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:238 - </span><br><span class="line">Video: 建筑家园-02.mp4</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_Default_CPU             | Duration: 288.2435s | Scenes: 159</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_Default_GPU             | Duration: 229.9882s | Scenes: 159</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:240 -   Config: Config_ContentDetectorOnly_CPU | Duration: 227.1770s | Scenes: 159</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:242 - </span><br><span class="line">To analyze .prof files, use a tool like &#x27;snakeviz&#x27; or Python&#x27;s pstats module.</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:243 - Example: python -m pstats profiling_results/your_profile_file.prof</span><br><span class="line">2025-05-30 14:24:23.280 | INFO     | __main__:&lt;module&gt;:244 - Then in pstats shell: sort cumulative, stats 20</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Windows-平台场景检测性能测试总结">Windows 平台场景检测性能测试总结</h4>
+<p>测试视频: <code>建筑家园-02.mp4</code> (60fps)<br>
+测试日期: 2025-05-30<br>
+测试平台: Windows</p>
+<h5 id="关键测试数据-2">关键测试数据</h5>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">测试配置</th>
+<th style="text-align:left">解码方式</th>
+<th style="text-align:left">检测器设置</th>
+<th style="text-align:left">处理时长 (秒)</th>
+<th style="text-align:left">检测场景数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>Config_Default_CPU</code></td>
+<td style="text-align:left">CPU</td>
+<td style="text-align:left">ContentDetector*</td>
+<td style="text-align:left">288.2435</td>
+<td style="text-align:left">159</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>Config_Default_GPU</code></td>
+<td style="text-align:left">GPU (请求)</td>
+<td style="text-align:left">ContentDetector*</td>
+<td style="text-align:left">229.9882</td>
+<td style="text-align:left">159</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>Config_ContentDetectorOnly_CPU</code></td>
+<td style="text-align:left">CPU</td>
+<td style="text-align:left">ContentDetector</td>
+<td style="text-align:left">227.1770</td>
+<td style="text-align:left">159</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>重要: 日志显示所有配置（包括 <code>Config_Default_CPU</code> 和 <code>Config_Default_GPU</code>）的 <code>Detector Setup</code> 均为 <code>ContentDetector</code>。这表明 <code>benchmark_scene_detector.py</code> 中的这些 “Default” 配置可能错误地仅指定了 <code>ContentDetector</code>，而不是 <code>config.ini</code> 中定义的 <code>MultiDetector</code>。因此，以下分析基于所有测试实际上都只使用了 <code>ContentDetector</code>。</li>
+</ul>
+<h5 id="主要结论-2">主要结论</h5>
+<ol>
+<li>
+<p>GPU 加速请求在 Windows 上的表现 (当 CUDA 后端不可用时):</p>
+<ul>
+<li>当请求 GPU 解码时 (<code>Config_Default_GPU</code>)，日志明确指出 <code>VideoStreamCv2Cuda not available. Using CPU...</code>。最终视频流通过标准的 <code>VideoStreamCv2</code> 后端由 CPU 完成解码。</li>
+<li>尽管如此，<code>Config_Default_GPU</code> (229.99 秒) 仍然比 <code>Config_Default_CPU</code> (288.24 秒) 快了约 58.25 秒，性能提升约 20.2%。</li>
+<li>这可能归因于 Windows 平台上 OpenCV 的 CPU 解码后端（如 Media Foundation 或 DirectShow）在特定路径或针对某些视频格式时，相比纯粹的 CPU 路径有更优化的表现，或者系统资源调度差异。</li>
+</ul>
+</li>
+<li>
+<p><code>ContentDetectorOnly_CPU</code> 作为最快配置:</p>
+<ul>
+<li><code>Config_ContentDetectorOnly_CPU</code> (227.18 秒) 是所有配置中最快的，符合预期。</li>
+<li>它与 <code>Config_Default_GPU</code> (实际也是 ContentDetector + CPU 解码) 的性能差异较小 (约 2.8 秒)，可能在测量误差范围内。</li>
+</ul>
+</li>
+<li>
+<p>PySceneDetect 后端回退:</p>
+<ul>
+<li>日志清晰展示了当优选后端（如 CUDA）不可用时，PySceneDetect 回退到标准 OpenCV (<code>VideoStreamCv2</code>) 的行为。</li>
+</ul>
+</li>
+<li>
+<p>与 macOS 测试的对比 (针对同一视频，但检测器配置可能不同):</p>
+<ul>
+<li>在 Windows 上仅使用 <code>ContentDetector</code> (CPU) 处理此视频 (约 227-288 秒) 比之前在 macOS 上使用 <code>MultiDetector</code> (CPU) (约 433 秒) 要快。如果 macOS 也仅用 <code>ContentDetector</code> (约 400 秒)，Windows 仍然更快。这可能反映了操作系统底层视频处理框架的效率差异。</li>
+<li>在“请求GPU但回退到CPU”的情况下，Windows 平台显示出相对更大的性能提升 (约 20.2%)，而 macOS 平台 (针对 <code>MultiDetector</code>) 约为 5%。</li>
+</ul>
+</li>
+</ol>
+<h5 id="关键问题点与后续行动建议">关键问题点与后续行动建议</h5>
+<ol>
+<li>
+<p>核实并修正 <code>benchmark_scene_detector.py</code> 中的测试配置:</p>
+<ul>
+<li>首要任务: 确保 <code>Config_Default_CPU</code> 和 <code>Config_Default_GPU</code> 配置正确地使用了您期望的 <code>MultiDetector</code> 设置（从 <code>config.ini</code> 的 <code>[SceneDetectorSetup]</code> 加载）。如果当前它们被错误地指向了仅 <code>ContentDetector</code>，那么对 <code>MultiDetector</code> 的性能评估是不准确的。</li>
+</ul>
+</li>
+<li>
+<p>彻底排查 <code>VideoStreamCv2Cuda not available</code> 问题:</p>
+<ul>
+<li>检查 OpenCV-Python 版本 (确保是为 Windows 编译的、包含 CUDA 支持的版本)。</li>
+<li>检查 CUDA Toolkit 和 cuDNN 的安装与兼容性。</li>
+<li>检查 系统环境变量 (如 <code>PATH</code>, <code>CUDA_PATH</code>)。</li>
+<li>检查 NVIDIA 驱动程序版本。</li>
+<li>运行项目中的 <code>cuda_available_verify.py</code> 脚本获取直接反馈。</li>
+</ul>
+</li>
+<li>
+<p>在 CUDA 成功启用后重新进行基准测试:</p>
+<ul>
+<li>只有当 <code>VideoStreamCv2Cuda</code> 能够成功加载和使用时，才能真正评估 GPU 对视频解码的加速效果。</li>
+<li>届时，重点对比 <code>MultiDetector</code> 配置下 CPU 与 GPU (CUDA) 的性能。</li>
+</ul>
+</li>
+<li>
+<p>分析 <code>.prof</code> 文件:</p>
+<ul>
+<li>对于修正配置后的 <code>MultiDetector</code> 测试，使用 <code>snakeviz</code> 分析 <code>.prof</code> 文件。</li>
+<li>关注视频 I/O (<code>cv2.VideoCapture</code> 的 <code>retrieve</code> 和 <code>grab</code> 方法) 和各个子检测器在 CPU 与 GPU 配置下的耗时。</li>
+</ul>
+</li>
+<li>
+<p>继续测试帧降采样:</p>
+<ul>
+<li>无论 CUDA 是否成功启用，如果视频 I/O 依然是主要瓶颈，帧降采样 (<code>frame_skip</code> 和 <code>downscale_factor</code>) 都是至关重要的优化策略。</li>
+</ul>
+</li>
+</ol>
+<h2 id="后续分析建议">后续分析建议</h2>
+<ul>
+<li>深入剖析 <code>.prof</code> 文件: 使用 <code>snakeviz</code> 或 <code>pstats</code> 分析 <code>MultiDetector</code> 配置下各具体检测器的耗时，以精确定位性能瓶颈。</li>
+<li>测试帧降采样: 鉴于当前处理时间较长，强烈建议测试帧降采样 (<code>frame_skip</code> 或 <code>downscale_factor</code>) 对长视频处理效率的影响。</li>
+<li>参数调优: 针对 <code>MultiDetector</code> 中的各个检测器，细致调整其参数，寻找性能与准确度的最佳平衡点。</li>
+<li>多样化测试: 使用更多不同类型和长度的视频进行测试，以验证当前结论的普适性。</li>
+</ul>
+<h4 id="测试结果如图">测试结果如图</h4>
+<h5 id="macOS平台测试结果图示">macOS平台测试结果图示</h5>
+<ul>
+<li>cpu</li>
+</ul>
+<p><img src="/2025/05/30/scene-detect-benchmark/cpu_prof.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/cpu_prof.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2025/05/30/scene-detect-benchmark/cpu_profile_1.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/cpu_profile_1.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<ul>
+<li>gpu</li>
+</ul>
+<p><img src="/2025/05/30/scene-detect-benchmark/gpu_prof.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/gpu_prof.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2025/05/30/scene-detect-benchmark/gpu_prof_1.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/gpu_prof_1.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<h5 id="window平台测试结果图示">window平台测试结果图示</h5>
+<ul>
+<li>cpu</li>
+</ul>
+<p><img src="/2025/05/30/scene-detect-benchmark/cpu_win_pro.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/cpu_win_pro.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2025/05/30/scene-detect-benchmark/cpu_win_pro_1.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/cpu_win_pro_1.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<ul>
+<li>gpu</li>
+</ul>
+<p><img src="/2025/05/30/scene-detect-benchmark/gpu_win_pro.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/gpu_win_pro.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><img src="/2025/05/30/scene-detect-benchmark/gpu_win_pro_1.png" class="lazyload placeholder" data-srcset="/2025/05/30/scene-detect-benchmark/gpu_win_pro_1.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2025/05/30/scene-detect-benchmark/" target="_blank" title="场景检测性能优化方向与测试方法">https://caozhaoqi.github.io/2025/05/30/scene-detect-benchmark/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/06/09/TransNetV2-model-use/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">TransNetV2模型用于视频复杂转场检测</div>
+      </div>
+      
+      <!-- <div class="content">
+        TransNet V2 模型介绍
+
+目标：
+TransNet V2 的目标是创建一个快速且准确的镜头边界检测（Shot 
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/05/15/scene-detect-method/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">PySceneDetect 中场景检测器</div>
+      </div>
+      <!-- <div class="content">
+        PySceneDetect 中场景检测器
+
+主要包括：ContentDetector, ThresholdDetecto
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/logo.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>浅斟低唱</h2>
+        
+        
+          <p>博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1150118968@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/caozhaoqi/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">场景检测性能优化方向与测试方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1. 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-text">2. 准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%9A%E4%B9%89%E5%85%B3%E9%94%AE%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87-KPIs"><span class="toc-text">2.1. 定义关键性能指标 (KPIs)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%80%89%E6%8B%A9%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">2.2. 选择测试数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%90%AD%E5%BB%BA%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="toc-text">2.3. 搭建测试环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E9%85%8D%E7%BD%AE%E6%B5%8B%E8%AF%95%E5%8F%82%E6%95%B0"><span class="toc-text">2.4. 配置测试参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B5%8B%E8%AF%95%E6%89%A7%E8%A1%8C"><span class="toc-text">3. 测试执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC%EF%BC%9Abenchmark-scene-detector-py"><span class="toc-text">3.1. 测试脚本：benchmark_scene_detector.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%80%A7%E8%83%BD%E5%89%96%E6%9E%90-Profiling"><span class="toc-text">3.2. 性能剖析 (Profiling)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7"><span class="toc-text">3.3. 资源监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%AF%94%E8%BE%83%E8%80%97%E6%97%B6%EF%BC%9A"><span class="toc-text">3.4 比较耗时：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="toc-text">4. 结果分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%88%86%E6%9E%90%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95%E6%97%A5%E5%BF%97"><span class="toc-text">4.1. 分析基准测试日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8-pstats-%E4%BA%A4%E4%BA%92%E5%BC%8F-shell-%E4%B8%AD%EF%BC%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="toc-text">在 pstats 交互式 shell 中，常用命令：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-snakeviz-Web-%E7%95%8C%E9%9D%A2%EF%BC%8C%E6%8E%A8%E8%8D%90-%EF%BC%9A"><span class="toc-text">使用 snakeviz (Web 界面，推荐)：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%88%86%E6%9E%90%E6%80%A7%E8%83%BD%E5%89%96%E6%9E%90-prof-%E6%96%87%E4%BB%B6"><span class="toc-text">4.2. 分析性能剖析 (.prof) 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%88%86%E6%9E%90%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E6%95%B0%E6%8D%AE"><span class="toc-text">4.3. 分析资源监控数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU-%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">CPU 瓶颈：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">内存瓶颈：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GPU-%E7%93%B6%E9%A2%88%EF%BC%9A"><span class="toc-text">GPU 瓶颈：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%A0%B9%E6%8D%AE%E5%88%86%E6%9E%90%E7%BB%93%E6%9E%9C%E6%94%B9%E8%BF%9B%E4%BB%A3%E7%A0%81-%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91%E7%A4%BA%E4%BE%8B"><span class="toc-text">5.根据分析结果改进代码 (优化方向示例)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E7%AD%96%E7%95%A5%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">场景检测策略优化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">代码逻辑优化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%95%BF%E8%A7%86%E9%A2%91%E7%89%B9%E5%AE%9A%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="toc-text">长视频特定优化：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%BF%AD%E4%BB%A3%E4%B8%8E%E9%AA%8C%E8%AF%81"><span class="toc-text">6. 迭代与验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#macOS-%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%80%BB%E7%BB%93"><span class="toc-text">macOS 场景检测性能测试总结</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE"><span class="toc-text">关键测试数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%93%E8%AE%BA"><span class="toc-text">主要结论</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#windows-%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="toc-text">windows 测试结果</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Windows-%E5%B9%B3%E5%8F%B0%E5%9C%BA%E6%99%AF%E6%A3%80%E6%B5%8B%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%80%BB%E7%BB%93"><span class="toc-text">Windows 平台场景检测性能测试总结</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE-2"><span class="toc-text">关键测试数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%93%E8%AE%BA-2"><span class="toc-text">主要结论</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E7%82%B9%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE"><span class="toc-text">关键问题点与后续行动建议</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E5%BB%BA%E8%AE%AE"><span class="toc-text">后续分析建议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%A6%82%E5%9B%BE"><span class="toc-text">测试结果如图</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#macOS%E5%B9%B3%E5%8F%B0%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%9B%BE%E7%A4%BA"><span class="toc-text">macOS平台测试结果图示</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#window%E5%B9%B3%E5%8F%B0%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%9B%BE%E7%A4%BA"><span class="toc-text">window平台测试结果图示</span></a></li></ol></li></ol></li></ol></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/11/26/agent-research-llm/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">11-26</span>
+                
+              </div>
+              <a class="post-title" href="/2025/11/26/agent-research-llm/">基于 FastAPI + LangChain 的简单agent实现</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/30/mysql-cluster-use/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-30</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/30/mysql-cluster-use/">实现高可用 MySQL 集群</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/17/pypi-mirror-self/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-17</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/17/pypi-mirror-self/">使用Devpi与Nginx构建高可用PyPI镜像源</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/29/ss-build-doc/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-29</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/29/ss-build-doc/">使用 Docker Compose 快速部署 Shadowsocks 代理服务教程</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/14/pyav-use-video/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-14</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/14/pyav-use-video/">PyAV用于视频剪辑处理</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a href="/atom.xml" class="social">
+                  
+                    <i class="fas fa-rss" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="mailto:1150118968@qq.com" class="social">
+                  
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="social">
+                  
+                    <i class="fas fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968" class="social">
+                  
+                    <i class="fas fa-qq" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a></p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>Total visits：<span id="busuanzi_value_site_pv"></span> times
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>Number of visitors：<span id="busuanzi_value_site_uv"></span> people
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="7289498727"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = 'copy';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <!-- 弹幕所需的css和js -->
+    
+  <!-- 弹幕插件 -->
+  <link href="/js/danmu/barrager.css" rel="stylesheet">
+  <script src="/js/danmu/jquery.barrager.js"></script>
+
+<!-- 具体js，请前往valine/script.ejs查看 -->
+
+    <script>
+  var requiredFields = 'nick,mail';
+  requiredFields = requiredFields.split(',');
+  comment_el = '.comment';
+  let looperValine = null;
+  load_valine = function () {
+    if ($(comment_el).length) {
+      var valine = new Valine({
+        el: '#vcomment',
+        path: window.location.pathname,
+        notify: false,
+        verify: false,
+        app_id: "PZlzAc6FzhlN4QJ4gUgas7AQ-gzGzoHsz",
+        app_key: "YYSIuQIfbSqnug2Kq117KGAK",
+        placeholder: "客官，说点什么吧",
+        avatar: "",
+        master: "d0ca78e6945a9e55aaf81645413dde96",   //博主邮箱md5
+        tagMeta: ["博主","小伙伴","访客"],     //标识字段名
+        friends: "",
+        metaPlaceholder: { "nick": "昵称/QQ号", "mail": "邮箱" },
+        requiredFields: requiredFields,
+        enableQQ: true,
+      });
+      function debounce(fn) {
+        var timerID = null
+        return function () {
+          var arg = arguments[0]   //获取事件
+          if (timerID) {
+            clearTimeout(timerID)
+          }
+          timerID = setTimeout(function () {
+            fn(arg)              //事件传入函数
+          }, 200)
+        }
+      }
+      //查询评论 valine.Q('*').limit(7) -- 查询所有，限制7条, 下面的的代码是查询当前页面
+      var themeDanmu = eval('true');
+      var themeLoop = eval('true');
+      var themeLooperTime = '5000' || 5000;
+      var speed = '40' || 20;
+      var isBarrager = true;
+      if (themeDanmu == true) {
+        do_barrager();
+        if ($('.danmuBox').length <= 0) {
+          $('.navbar').append('<div class="danmuBox"><div class="danmuBtn open"><span class="danmuCircle"></span><span class="danmuText">弹幕</span></div></div>');
+        }
+        $('.danmuBtn').on('click', debounce(
+          function () {
+            if ($('.danmuBtn').hasClass('open')) {
+              $('.danmuBtn').removeClass('open')
+              clearInterval(looperValine);
+              $.fn.barrager.removeAll();
+            } else {
+              $('.danmuBtn').addClass("open");
+              do_barrager();
+            }
+          }
+        ))
+      }
+      function do_barrager() {
+        isBarrager && valine.Q(window.location.pathname).find().then(function (comments) {
+          // var num = 0; // 可以记录条数，循环调用的时候只取最新的评论放入弹幕中
+          var run_once = true;
+          var looper_time = themeLooperTime;
+          var total = comments.length;
+          // var looper = null;
+          var index = 0;
+          if (total > 0) {
+            barrager();
+          } else {
+            // 当评论数为0的时候，自动关闭弹幕
+            // $('.danmuBtn').removeClass('open');
+          }
+          function barrager() {
+            if (run_once) {
+              //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+              looperValine = setInterval(barrager, looper_time);
+              run_once = false;
+            }
+            var content = comments[index]._serverData.comment;
+            var email = comments[index]._serverData.mail;
+            var link = comments[index]._serverData.link;
+            var newcontent = content.substring(0, 50).replace(/<[^>]+>/g, "");
+            //发布一个弹幕
+            const item = {
+              img: `https://q1.qlogo.cn/g?b=qq&nk=${email}&s=640`, //图片 
+              info: newcontent, //文字 
+              href: link, //链接 
+              close: true, //显示关闭按钮 
+              speed: speed, //延迟,单位秒,默认6 
+              color: '#fff', //颜色,默认白色 
+              old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+            }
+            $('body').barrager(item);
+            //索引自增
+            index++;
+            //所有弹幕发布完毕，清除计时器。
+            if (index == total) {
+              clearInterval(looperValine);
+              if (themeLoop === true) {
+                setTimeout(function () {
+                  do_barrager();
+                }, 5000);
+              } else {
+                $('.danmuBtn').removeClass('open');
+              }
+              return false;
+            }
+
+          }
+        })
+      }
+    }
+  };
+  $(document).ready(load_valine);
+  document.addEventListener('pjax:send', function (e) {
+    
+      $('.danmuBox').length > 0 && $('.danmuBox').remove()
+      looperValine && clearInterval(looperValine);
+      $.fn.barrager.removeAll();
+    
+  })
+  document.addEventListener('pjax:complete', function () {
+    load_valine();
+  });
+</script>
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

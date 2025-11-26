@@ -1,0 +1,2429 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>基于Assammdf第三方python库处理mdf、mf4文件 | Zhaoqi.Cao static blog</title>
+
+  <link rel="icon" type="image/png" href="/medias/logo.png">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '0';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+        <script src="/js/valine/index.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Zhaoqi.Cao static blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Zhaoqi.Cao static blog</h3>
+      <h5 class="drawer-box-head_desc">A static personal blog.</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                      <i class="fas fa-link"></i>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Zhaoqi.Cao static blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="主页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友链">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                    <i class="fas fa-link"></i>
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">Search</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="Please enter keywords"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        基于Assammdf第三方python库处理mdf、mf4文件
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2023-11-28 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 3.1k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 14min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1>基于Assammdf第三方python库处理mdf、mf4文件</h1>
+<blockquote>
+<p>1.ASAMMDF是ASAM（自动化和测量系统标准化协会）MDF（测量数据格式）文件的快速解析器和编辑器。<br>
+2.asammdf支持MDF版本2（.dat）、3（.mdf）和4（.mf4）。<br>
+3.asammdf适用于python&gt;；=3.6（对于python 2.7、3.4和3.5，请参阅4.x.y版本）</p>
+</blockquote>
+<h2 id="第三方库主要功能">第三方库主要功能</h2>
+<ul>
+<li>1.mdf、mf4文件创建读取</li>
+<li>2.读取、提取can总线日志文件信息</li>
+<li>3.不同版本文件转换</li>
+<li>4.原始数据导入、导出，包括：HDF5、Matlab（v4、v5和v7.3）、CSV和Parquet</li>
+</ul>
+<h2 id="基础用法">基础用法</h2>
+<ul>
+<li>参考代码如下：</li>
+</ul>
+<blockquote>
+<p>基础mdf文件引入、数据过滤与解析、数据转换存储、数据图形化绘制</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> asammdf <span class="keyword">import</span> MDF </span><br><span class="line">mdf=MDF(<span class="string">&#x27;sample.mdf&#x27;</span>)</span><br><span class="line">speed=mdf.get(<span class="string">&#x27;WheelSpeed&#x27;</span>)</span><br><span class="line">speed.plot()</span><br><span class="line">important_signals=[<span class="string">&#x27;WheelSpeed&#x27;</span>,<span class="string">&#x27;VehicleSpeed&#x27;</span>,<span class="string">&#x27;VehicleAcceleration&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># get short measurement with a subset of channels from 10s to 12s</span></span><br><span class="line">short=mdf.<span class="built_in">filter</span>(important_signals).cut(start=<span class="number">10</span>,stop=<span class="number">12</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># convert to version 4.10 and save to disk</span></span><br><span class="line">short.convert(<span class="string">&#x27;4.10&#x27;</span>).save(<span class="string">&#x27;important signals.mf4&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># plot some channels from a huge file</span></span><br><span class="line">efficient=MDF(<span class="string">&#x27;huge.mf4&#x27;</span>) </span><br><span class="line"><span class="keyword">for</span> signal <span class="keyword">in</span> efficient.select([<span class="string">&#x27;Sensor1&#x27;</span>,<span class="string">&#x27;Voltage3&#x27;</span>]):</span><br><span class="line">	signal.plot()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="使用流程">使用流程</h2>
+<h3 id="第三方库安装">第三方库安装</h3>
+<ul>
+<li>1.pip工具安装</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install asammdf</span><br><span class="line"><span class="comment"># GUI version install</span></span><br><span class="line">pip install asammdf[gui]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.基础文件读取(mf4)</li>
+</ul>
+<blockquote>
+<ol>
+<li>查找MDF文件中特定信号最大值；</li>
+<li>计算平均车速和里程，使用matplotlib作图；</li>
+<li>计算两信号差值，进行波峰判断并记录峰值个数，避免信号毛刺干扰，设定差值门限值，使用matplotlib作图（含主次坐标)；</li>
+<li>以上信息直接写入word保存。</li>
+</ol>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 处理mf4数据</span></span><br><span class="line"><span class="comment"># 20220530 FQF</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 引入库文件</span></span><br><span class="line"><span class="keyword">from</span> asammdf <span class="keyword">import</span> MDF     <span class="comment"># 用于处理MDF文件</span></span><br><span class="line"><span class="keyword">import</span> os       <span class="comment"># 用于获取文件路径</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np      <span class="comment"># 用于数学处理</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt     <span class="comment"># 用于绘图</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取mf4</span></span><br><span class="line">path = <span class="string">&#x27;C:/fqf&#x27;</span></span><br><span class="line">os.chdir(path)      <span class="comment"># 更改python的工作空间</span></span><br><span class="line">files = os.listdir(path)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> files:</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;_decoded&#x27;</span> <span class="keyword">in</span> f <span class="keyword">and</span> f.endswith(<span class="string">&#x27;.mf4&#x27;</span>) <span class="keyword">and</span> f.startswith(<span class="string">&#x27;df&#x27;</span>):      <span class="comment"># 查找文件名字含有fish且以.png后缀的文件</span></span><br><span class="line">        <span class="comment"># print(&#x27;Find the mf4: &#x27; + f)</span></span><br><span class="line">        <span class="comment"># print(f.title())</span></span><br><span class="line">        mf4_name = f.split()</span><br><span class="line">        mdf = MDF(f)</span><br><span class="line">        <span class="comment"># print(mdf.info())</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取数据</span></span><br><span class="line">        Prompt_info = mdf.get(<span class="string">&quot;InterSysInfoDisp&quot;</span>)</span><br><span class="line">        Prompt_value = ICA_Prompt_info.samples</span><br><span class="line">        Prompt_timestamps = Prompt_info .timestamps</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索工况</span></span><br><span class="line">        i = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(Prompt_timestamps )-<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span> Prompt_value [i] != <span class="number">9</span> &amp; Prompt_value [i+<span class="number">1</span>] == <span class="number">9</span>:       <span class="comment"># 搜索工况</span></span><br><span class="line">                <span class="built_in">print</span>( <span class="string">&quot;============================&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(f)</span><br><span class="line">                <span class="built_in">print</span>(Prompt_timestamps [i])</span><br><span class="line">            i = i + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line"><span class="comment"># plt.plot(Prompt_timestamps ,Prompt_value )#r表示颜色，v表示下三角线类型</span></span><br><span class="line"><span class="comment"># plt.xlabel(&#x27;xlabel&#x27;,fontsize = 25)</span></span><br><span class="line"><span class="comment"># plt.ylabel(&#x27;ylabel&#x27;,fontsize = 16)</span></span><br><span class="line"><span class="comment"># plt.grid()</span></span><br><span class="line"><span class="comment"># plt.show()</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>3.文件读取处理（mdf）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span>   asammdf <span class="keyword">import</span> MDF                                    <span class="comment"># 用于处理MDF文件</span></span><br><span class="line"><span class="keyword">import</span> os                                                    <span class="comment"># 用于获取文件路径</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd                                          <span class="comment"># 用于数据分析</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np                                           <span class="comment"># 用于数组处理</span></span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> trapz                                      <span class="comment"># 可用于积分求面积</span></span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt                         <span class="comment"># 用于作图 </span></span><br><span class="line"><span class="keyword">import</span> datetime <span class="keyword">as</span> dt                                        <span class="comment"># 用于调用系统时间</span></span><br><span class="line"><span class="keyword">import</span> docx                                                  <span class="comment"># 调用word文档库</span></span><br><span class="line"><span class="keyword">from</span> docx.shared <span class="keyword">import</span> Inches                               <span class="comment"># 用于设置图片尺寸</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_MDF</span>(<span class="params">Document_Adress</span>):                              <span class="comment"># 定义check_MDF函数</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;文件名： &#x27;</span>+Adress_str+<span class="string">&#x27;，相关统计信息如下：&#x27;</span>)       <span class="comment"># 提取地址中文件名信息，打印</span></span><br><span class="line"></span><br><span class="line">    new_Doc = document.add_paragraph\</span><br><span class="line">        (<span class="string">&#x27;文件名： &#x27;</span>+Adress_str+<span class="string">&#x27;，相关统计信息如下：&#x27;</span>)        <span class="comment"># 新增段落文本</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    MDF_File=MDF(Document_Adress)                            <span class="comment"># 使用asammdf第三方包调取.mdf文件内容</span></span><br><span class="line">    TCOil= MDF_File.get(<span class="string">&quot;TCOil&quot;</span>)                             <span class="comment"># 调用.mdf中零件处油温Signal   </span></span><br><span class="line">    TOil=MDF_File.get(<span class="string">&quot;TOil&quot;</span>)                                <span class="comment"># 调用.mdf中油底壳温度Signal</span></span><br><span class="line">    VehSpd=MDF_File.get(<span class="string">&quot;VehSpd&quot;</span>)                            <span class="comment"># 调用.mdf中车速Signal</span></span><br><span class="line"></span><br><span class="line">    VehSpdCheck(VehSpd)                                      <span class="comment"># check_MDF()函数调用VehSpdCheck()函数</span></span><br><span class="line">    Signal_Data_Max(TCOil)                                   <span class="comment"># check_MDF()函数调用Signal_Data_Max()函数</span></span><br><span class="line">    T_Subtract_Peak(TCOil, TOil, <span class="number">20</span>)                         <span class="comment"># check_MDF()函数调用T_Subtract_Peak()函数</span></span><br><span class="line"></span><br><span class="line">    document.save(Veh_VIN+<span class="string">&#x27;.docx&#x27;</span>)                           <span class="comment"># 运行完程序后保存word文档</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">timeconvert</span>(<span class="params">second</span>):                                     <span class="comment"># 将时间秒转化str类型的时分秒</span></span><br><span class="line">    Timestr =<span class="built_in">str</span>(<span class="built_in">int</span>(second/<span class="number">3600</span>)) + <span class="string">&#x27;h &#x27;</span> + \</span><br><span class="line">             <span class="built_in">str</span>(<span class="built_in">int</span>((second%<span class="number">3600</span>)/ <span class="number">60</span>)) + <span class="string">&#x27;min &#x27;</span> + \</span><br><span class="line">             <span class="built_in">str</span>(<span class="built_in">int</span>((second%<span class="number">3600</span>) % <span class="number">60</span>)) + <span class="string">&#x27;s&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> Timestr</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Signal_Data_Max</span>(<span class="params">Signal</span>):                                 <span class="comment"># 定义Signal_Data_Max()函数</span></span><br><span class="line">    x=Signal.timestamps                                      <span class="comment"># 提取Signal中所有时刻值存放列表x()中</span></span><br><span class="line">    y=Signal.samples                                         <span class="comment"># 提取Signal中所有实测值存放列表y()中</span></span><br><span class="line">    T_C_Max=np.<span class="built_in">max</span>(y)                                        <span class="comment"># 使用Numpy库中max()函数求y中数据的最大值</span></span><br><span class="line">    Positon=np.where(y==np.<span class="built_in">max</span>(y))                           <span class="comment"># 找到y最大值对应的索引值（可理解为序号）</span></span><br><span class="line">    Time=(x[Positon[<span class="number">0</span>][<span class="number">0</span>]])                                  <span class="comment"># 提取索引值对应时刻</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;零件处油温最大值%d&#x27;</span> %T_C_Max+\</span><br><span class="line">          <span class="string">&#x27;时间是&#x27;</span>+timeconvert(Time))                        <span class="comment"># 打印零件处油温最大值及对应的时间（秒转化为分钟）</span></span><br><span class="line"></span><br><span class="line">    new_Doc = document.add_paragraph\</span><br><span class="line">        (<span class="string">&#x27;零件处油温最大值为 &#x27;</span>+<span class="built_in">str</span>(T_C_Max)+<span class="string">&#x27; ℃，&#x27;</span>\</span><br><span class="line">         <span class="string">&#x27;时间是&#x27;</span>+timeconvert(Time),style=<span class="string">&#x27;List Bullet&#x27;</span>)     <span class="comment"># 新增段落文本</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">VehSpdCheck</span>(<span class="params">Singal</span>):                                     <span class="comment"># 定义Signal_Data_Max()函数</span></span><br><span class="line">    x=Singal.timestamps                                      <span class="comment"># 提取Signal中所有时刻值存放列表x()中</span></span><br><span class="line">    <span class="comment">#print(Singal.display_name)</span></span><br><span class="line">    y=Singal.samples                                         <span class="comment"># 提取Signal中所有实测值存放列表y()中</span></span><br><span class="line">    Average_Vehspd=np.<span class="built_in">sum</span>(y)/<span class="built_in">len</span>(y)                          <span class="comment"># 使用Numpy库中sum()函数求和后除以点的个数</span></span><br><span class="line">    Drive_Distance=Average_Vehspd*x[-<span class="number">1</span>]/<span class="number">3600</span>                 <span class="comment"># 行驶里程通过均值与时间乘积获得</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;该文件平均车速 %.2f km/h,&#x27;</span> %Average_Vehspd+\</span><br><span class="line">    <span class="string">&#x27;行驶里程 %.2f km&#x27;</span> %Drive_Distance)                      <span class="comment"># 打印平均车速和行驶里程（使用换行\）</span></span><br><span class="line"></span><br><span class="line">    Average_Vehspd_str=<span class="built_in">str</span>(<span class="built_in">round</span>(Average_Vehspd, <span class="number">2</span>))         <span class="comment"># 平均速度保留两位，转化为字符串</span></span><br><span class="line">    Drive_Distance_str =<span class="built_in">str</span>(<span class="built_in">round</span>( Drive_Distance, <span class="number">2</span>))       <span class="comment"># 行驶里程保留两位，转化为字符串</span></span><br><span class="line">    new_Doc = document.add_paragraph\</span><br><span class="line">        (<span class="string">&#x27;该文件平均车速 &#x27;</span>+ Average_Vehspd_str+<span class="string">&#x27; km/h，&#x27;</span>+\</span><br><span class="line">         <span class="string">&#x27;行驶里程= &#x27;</span>+Drive_Distance_str+<span class="string">&#x27; km&#x27;</span>+<span class="string">&#x27;，见下图：&#x27;</span>,style=<span class="string">&#x27;List Bullet&#x27;</span>)</span><br><span class="line">                                                             <span class="comment"># 新增段落文本</span></span><br><span class="line"></span><br><span class="line">    plt.figure(Adress_str+<span class="string">&#x27;--&#x27;</span>+Singal.display_name)          <span class="comment"># 图表命名为文件名加信号名称</span></span><br><span class="line">    plt.axis([np.<span class="built_in">min</span>(x),np.<span class="built_in">max</span>(x),<span class="number">0</span>,np.<span class="built_in">max</span>(y)])              <span class="comment"># 使用pyplot函数定义x轴和y轴最大及最小值</span></span><br><span class="line">    plt.plot(x,y,label=<span class="string">&#x27;$VehSpd$&#x27;</span>)                           <span class="comment"># 使用pyplot作图，图例为VehSpd</span></span><br><span class="line">    plt.xlabel(<span class="string">&#x27;t (s) &#x27;</span>)                                     <span class="comment"># 增加X轴-坐标轴标题</span></span><br><span class="line">    plt.ylabel(<span class="string">&#x27;VehicleSpeed (km/h) &#x27;</span>)                       <span class="comment"># 增加y轴-坐标轴标题</span></span><br><span class="line"></span><br><span class="line">    plt.fill_between(x,y1=y,y2=<span class="number">0</span>,facecolor=<span class="string">&#x27;purple&#x27;</span>,\</span><br><span class="line">                     alpha=<span class="number">0.2</span>)                              <span class="comment"># 对y与x围成面积着色，展示速度求积分→里程</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    plt.text(x[-<span class="number">1</span>]/<span class="number">3</span>,np.<span class="built_in">max</span>(y)-<span class="number">3</span>, <span class="string">&#x27;DriveDistance:%.2f km&#x27;</span> \</span><br><span class="line">             %Drive_Distance, \</span><br><span class="line">             fontdict=&#123;<span class="string">&#x27;size&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;color&#x27;</span>: <span class="string">&#x27;red&#x27;</span>&#125;)          <span class="comment">#  x轴坐标，y轴坐标,显示内容,字体大小、颜色</span></span><br><span class="line"></span><br><span class="line">    plt.title(Adress_str)                                    <span class="comment"># 将全局变量信息增加入表头</span></span><br><span class="line">    <span class="comment">#plt.title(Adress_str+&#x27;__&#x27;+&#x27;(DriveDistance: %.2f &#x27;%Drive_Distance+&#x27; km)&#x27;)</span></span><br><span class="line">    plt.legend(loc=<span class="string">&#x27;upper right&#x27;</span>)                            <span class="comment"># 图例选择最佳位置，可选择best</span></span><br><span class="line">    <span class="comment">#plt.show()                                              # 显示图例</span></span><br><span class="line">    picture_name=Adress_str +<span class="string">&#x27;-&#x27;</span>+ \</span><br><span class="line">                 Singal.display_name+<span class="string">&#x27;.png&#x27;</span>                  <span class="comment"># 图片保存时名称</span></span><br><span class="line">    plt.savefig(picture_name, dpi=<span class="number">200</span>)                       <span class="comment"># 保存图片</span></span><br><span class="line"></span><br><span class="line">    new_Doc = document.add_picture(picture_name, width=Inches(<span class="number">5.0</span>))</span><br><span class="line">                                                             <span class="comment"># 图片写入word</span></span><br><span class="line">    os.remove(picture_name)                                  <span class="comment"># 删除图片文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">T_Subtract_Peak</span>(<span class="params">T1,T2,threshold</span>):</span><br><span class="line">    <span class="comment"># T1.plot()                                              # 使用ASAMMDF自带Plot制图</span></span><br><span class="line">    <span class="comment"># T2.plot()</span></span><br><span class="line">    x = T1.timestamps                                        <span class="comment"># 提取信号T1中所有时刻值的点存放列表x()中</span></span><br><span class="line">    y1 = T1.samples                                          <span class="comment"># 提取信号T1中所有信号值的点存放列表y()中</span></span><br><span class="line">    y2 = T2.samples                                          <span class="comment"># 提取信号T2中所有信号值的点存放列表y()中</span></span><br><span class="line">    k = <span class="built_in">len</span>(x)                                               <span class="comment"># 统计数据的总个数</span></span><br><span class="line"></span><br><span class="line">    a = <span class="number">0</span>                                                    <span class="comment"># 定义数字a</span></span><br><span class="line">    i = <span class="number">0</span>                                                    <span class="comment"># 定义数字i</span></span><br><span class="line">    m = <span class="number">0</span>                                                    <span class="comment"># 定义数字m</span></span><br><span class="line"></span><br><span class="line">    T_Up = []                                                <span class="comment"># 定义T_Up为列表</span></span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, k):</span><br><span class="line">        T_Up.append(y1[a] - y2[a])                           <span class="comment"># 将所有温差点写入T_Up</span></span><br><span class="line">    y3 = T_Up</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> i &lt; k - <span class="number">1</span>:                                         <span class="comment"># 从0到k，使用while循环，条件满足一直执行</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">int</span>(T1.samples[i] - T2.samples[i]) &gt;= \</span><br><span class="line">                threshold:                                   <span class="comment"># T1和T2在某时刻温差大于门限值,执行一次</span></span><br><span class="line">            j = i                                            <span class="comment"># 过滤信号毛刺，寻找大于门限值波峰个数</span></span><br><span class="line">            <span class="keyword">while</span> j &lt; k - <span class="number">1</span>:</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">int</span>(T1.samples[j] - \</span><br><span class="line">                       T2.samples[j]) &lt; threshold - <span class="number">3</span>:        <span class="comment"># 设置差值为2作为过滤信号</span></span><br><span class="line">                    m = m + <span class="number">1</span>                                 <span class="comment"># 记录波峰个数</span></span><br><span class="line">                    time = <span class="built_in">int</span>(j / k * T1.timestamps[-<span class="number">1</span>] / <span class="number">60</span>)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&#x27;该文件零件处油温与油底壳温差大于&#x27;</span> + <span class="built_in">str</span>(threshold) + <span class="string">&#x27;的波峰第 %d 处,&#x27;</span> % m + \</span><br><span class="line">                          <span class="string">&#x27;时间是 %d s,&#x27;</span> % time + <span class="string">&#x27;零件处油温 %d ℃&#x27;</span> % T1.samples[j])</span><br><span class="line"></span><br><span class="line">                    new_Doc = document.add_paragraph \</span><br><span class="line">                        (<span class="string">&#x27;该文件零件处油温与油底壳温差大于&#x27;</span>\</span><br><span class="line">                         + <span class="built_in">str</span>(threshold) + <span class="string">&#x27;℃的波峰第&#x27;</span> +\</span><br><span class="line">                         <span class="built_in">str</span>(m) + <span class="string">&#x27;处，时间是&#x27;</span> + timeconvert(time))</span><br><span class="line">                                                              <span class="comment"># 新增段落文本</span></span><br><span class="line"></span><br><span class="line">                    i = j                                     <span class="comment"># 局部变量i更新为j</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">break</span>                                     <span class="comment"># 循环退出</span></span><br><span class="line">        i = i + <span class="number">1</span>                                             <span class="comment"># 以上程序不执行或者退出，执行i自加</span></span><br><span class="line"></span><br><span class="line">    plt.figure(Adress_str + <span class="string">&#x27;—&#x27;</span> + T1.display_name +</span><br><span class="line">               <span class="string">&#x27;-&#x27;</span> + T1.display_name)                         <span class="comment"># 图表命名为文件名加两信号名称</span></span><br><span class="line"></span><br><span class="line">    fig = plt.figure(num=<span class="number">1</span>, figsize=(<span class="number">15</span>, <span class="number">8</span>), dpi=<span class="number">80</span>)         <span class="comment"># 开启一个窗口，同时设置大小，分辨率</span></span><br><span class="line">    fig, ax1 = plt.subplots()                                <span class="comment"># 作1个图</span></span><br><span class="line">    ax2 = ax1.twinx()                                        <span class="comment"># 坐标轴2为次要坐标</span></span><br><span class="line">    ax1.plot(x, y1, <span class="string">&#x27;-&#x27;</span>, color=<span class="string">&#x27;g&#x27;</span>, label=<span class="string">&#x27;TCOil&#x27;</span>)           <span class="comment"># 绘制曲线y1，含线型、颜色、图例名称</span></span><br><span class="line">    ax1.plot(x, y2, <span class="string">&#x27;-&#x27;</span>, color=<span class="string">&#x27;b&#x27;</span>, label=<span class="string">&#x27;TOil&#x27;</span>)            <span class="comment"># 绘制曲线y2</span></span><br><span class="line">    ax2.plot(x, y3, <span class="string">&#x27;-&#x27;</span>, color=<span class="string">&#x27;r&#x27;</span>, label=<span class="string">&#x27;T_Up&#x27;</span>)            <span class="comment"># 绘制曲线y3</span></span><br><span class="line">    ax1.legend(loc=<span class="string">&#x27;upper left&#x27;</span>)                             <span class="comment"># 显示图例位置,plt.legend()，左上</span></span><br><span class="line">    ax2.legend(loc=<span class="string">&#x27;upper right&#x27;</span>)                            <span class="comment"># 显示图例位置,右上</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ax1.set_xlim(-5,5)</span></span><br><span class="line">    ax1.set_ylim(np.<span class="built_in">min</span>(y2) - <span class="number">5</span>, np.<span class="built_in">max</span>(y1) + <span class="number">5</span>)             <span class="comment"># 设定y1轴最大最小值</span></span><br><span class="line">    ax2.set_ylim(np.<span class="built_in">min</span>(y3) - <span class="number">5</span>, np.<span class="built_in">max</span>(y3) + <span class="number">5</span>)             <span class="comment">#  同上</span></span><br><span class="line"></span><br><span class="line">    ax1.set_title(Adress_str)                                <span class="comment"># 图表表头</span></span><br><span class="line"></span><br><span class="line">    ax1.set_xlabel(<span class="string">&#x27;time(s)&#x27;</span>)                                <span class="comment"># 设定x轴标题</span></span><br><span class="line">    ax1.set_ylabel(<span class="string">&quot;TC_Oil &amp; T_Oil (℃)&quot;</span>, color=<span class="string">&#x27;b&#x27;</span>)         <span class="comment">#  设定y1轴标题</span></span><br><span class="line">    ax2.set_ylabel(<span class="string">&quot;T_Up(℃)&quot;</span>, color=<span class="string">&#x27;r&#x27;</span>)                    <span class="comment"># 设定y2轴标题</span></span><br><span class="line">    <span class="comment"># plt.show()                                             # 参考之前注释</span></span><br><span class="line"></span><br><span class="line">    picture_name = Adress_str + <span class="string">&#x27;-&#x27;</span> + T1.display_name + <span class="string">&#x27;-&#x27;</span> + T2.display_name +<span class="string">&#x27;.png&#x27;</span></span><br><span class="line">    plt.savefig(picture_name, dpi=<span class="number">100</span>)                       <span class="comment"># 保存图片文件到文件夹</span></span><br><span class="line"></span><br><span class="line">    new_Doc = document.add_picture(picture_name, width=Inches(<span class="number">6.0</span>))</span><br><span class="line">                                                             <span class="comment"># 保存图片到word</span></span><br><span class="line">    os.remove(picture_name)                                  <span class="comment"># 删除图片文件</span></span><br><span class="line"></span><br><span class="line">file_path = <span class="string">&#x27;D:\SoftApp\Python\HardWay2StudyPython\MDFData&#x27;</span>  <span class="comment"># 文件所在文件夹</span></span><br><span class="line">now_time=dt.datetime.now().strftime(<span class="string">&#x27;%F  %T&#x27;</span>)                <span class="comment"># 调用系统时间</span></span><br><span class="line">Veh_VIN=<span class="built_in">input</span>(<span class="string">&quot;请在下方输入故障排查车辆VIN数字编号后，回车：&quot;</span>) <span class="comment"># 提示输入车辆信息</span></span><br><span class="line"><span class="built_in">print</span>(Veh_VIN+<span class="string">&quot;车辆&quot;</span>+<span class="string">&#x27;数据分析时间：&#x27;</span>+now_time)               <span class="comment"># 打印输出车辆和系统时间</span></span><br><span class="line"></span><br><span class="line">document = docx.Document()                                  <span class="comment"># 创建word文档对象</span></span><br><span class="line">document.add_heading(Veh_VIN+<span class="string">&#x27;车排查信息&#x27;</span>, <span class="number">0</span>)                <span class="comment"># 添加文档标题</span></span><br><span class="line">new_Doc= document.add_paragraph \</span><br><span class="line">    (<span class="string">&#x27;主要排查行驶里程、最高油温、\</span></span><br><span class="line"><span class="string">    零件处与变速箱油温差值出现的峰值数。 &#x27;</span>)                    <span class="comment"># 新增段落文本，字符\用于换行</span></span><br><span class="line">new_Doc=document.add_paragraph\</span><br><span class="line">     (Veh_VIN+<span class="string">&quot;车辆&quot;</span>+<span class="string">&#x27;数据分析时间：&#x27;</span>+ now_time)              <span class="comment"># 新增段落文本</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(file_path):                 <span class="comment"># os.walk返回三个对象: dirpath(目录路径，string类型) ;</span></span><br><span class="line">                                                             <span class="comment"># dirname(多个子目录名，列表); filename(多个文件名，列表）</span></span><br><span class="line">    Documents=[os.path.join(root, name) <span class="keyword">for</span> name <span class="keyword">in</span> files]   <span class="comment"># 遍历文件名存放list(列表)类型的Documets</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> Document_Path <span class="keyword">in</span> Documents:                              <span class="comment"># 遍历文件名对应的地址（假设有3个文件地址）</span></span><br><span class="line">    <span class="comment"># print(Document_path.info())                            # 打印MDF文件信号，例如可以看到有哪些信号</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&#x27;</span>*<span class="number">60</span>)                                            <span class="comment"># 打印分割行</span></span><br><span class="line"></span><br><span class="line">    new_Doc = document.add_paragraph(<span class="string">&#x27;-&#x27;</span>*<span class="number">100</span>)                <span class="comment"># 新增段落文本，字符\用于换行</span></span><br><span class="line">    new_Doc = document.add_paragraph(<span class="string">&#x27;-&#x27;</span> * <span class="number">100</span>)              <span class="comment"># 新增段落文本，字符\用于换行</span></span><br><span class="line"></span><br><span class="line">    Adress=Document_Path.split(<span class="string">&#x27;\\&#x27;</span>)[-<span class="number">1</span>]                     <span class="comment"># 提取路径中的含后缀的文件名</span></span><br><span class="line">    Adress_str=Adress.split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]                          <span class="comment"># 提取路径中的文件名</span></span><br><span class="line"></span><br><span class="line">    check_MDF(Document_Path)                                 <span class="comment"># 调用def check_MDF()函数</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="常用API">常用API</h3>
+<ul>
+<li>1.基础文件读取</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> asammdf <span class="keyword">import</span> MDF</span><br><span class="line"> </span><br><span class="line">f = <span class="string">r&quot;xxx.mdf&quot;</span></span><br><span class="line">mdf = MDF(f)</span><br><span class="line">signal = mdf.get(<span class="string">&#x27;信号名&#x27;</span>)</span><br><span class="line">data = signal.samples</span><br><span class="line">timestamps = signal.timestamps</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.信号数据获取与数据转换</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chn_db = mdf.channels_db</span><br><span class="line"><span class="comment">#代码接上</span></span><br><span class="line">df = mdf.to_dataframe()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>3.channel和channelgroup获取</li>
+</ul>
+<blockquote>
+<p>mdf文件一般是用channel和channel group组织的，一个文件可能包含多个chnannel group，一个channel group也可以包含多个channel，channel和signal一一对应，channel保存了一些描述信息，数据和时间戳保存在signal里。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> group_index, (virtual_group_index, virtual_group) <span class="keyword">in</span> <span class="built_in">enumerate</span>(</span><br><span class="line">            mdf_ins.virtual_groups.items()</span><br><span class="line">        ):</span><br><span class="line">            <span class="keyword">if</span> virtual_group.cycles_nr == <span class="number">0</span> <span class="keyword">and</span> empty_channels == <span class="string">&quot;skip&quot;</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"> </span><br><span class="line">            channels = [</span><br><span class="line">                (<span class="literal">None</span>, gp_index, ch_index)</span><br><span class="line">                <span class="keyword">for</span> gp_index, channel_indexes <span class="keyword">in</span> mdf_ins.included_channels(</span><br><span class="line">                    virtual_group_index</span><br><span class="line">                )[virtual_group_index].items()</span><br><span class="line">                <span class="keyword">for</span> ch_index <span class="keyword">in</span> channel_indexes</span><br><span class="line">                <span class="keyword">if</span> ch_index != mdf_ins.masters_db.get(gp_index, <span class="literal">None</span>)</span><br><span class="line">            ]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>4.基础文件创建（mf4、mdf）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">*asammdf* MDF usage example</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> asammdf <span class="keyword">import</span> MDF, Signal</span><br><span class="line"> </span><br><span class="line"><span class="comment"># create 3 Signal objects</span></span><br><span class="line"> </span><br><span class="line">timestamps = np.array([<span class="number">0.1</span>, <span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.4</span>, <span class="number">0.5</span>], dtype=np.float32)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># unit8</span></span><br><span class="line">s_uint8 = Signal(</span><br><span class="line">    samples=np.array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], dtype=np.uint8),</span><br><span class="line">    timestamps=timestamps,</span><br><span class="line">    name=<span class="string">&quot;Uint8_Signal&quot;</span>,</span><br><span class="line">    unit=<span class="string">&quot;u1&quot;</span>,</span><br><span class="line">)</span><br><span class="line"><span class="comment"># int32</span></span><br><span class="line">s_int32 = Signal(</span><br><span class="line">    samples=np.array([-<span class="number">20</span>, -<span class="number">10</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">20</span>], dtype=np.int32),</span><br><span class="line">    timestamps=timestamps,</span><br><span class="line">    name=<span class="string">&quot;Int32_Signal&quot;</span>,</span><br><span class="line">    unit=<span class="string">&quot;i4&quot;</span>,</span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># float64</span></span><br><span class="line">s_float64 = Signal(</span><br><span class="line">    samples=np.array([-<span class="number">20</span>, -<span class="number">10</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">20</span>], dtype=np.float64),</span><br><span class="line">    timestamps=timestamps,</span><br><span class="line">    name=<span class="string">&quot;Float64_Signal&quot;</span>,</span><br><span class="line">    unit=<span class="string">&quot;f8&quot;</span>,</span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># create empty MDf version 4.00 file</span></span><br><span class="line"><span class="keyword">with</span> MDF(version=<span class="string">&quot;4.10&quot;</span>) <span class="keyword">as</span> mdf4:</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># append the 3 signals to the new file</span></span><br><span class="line">    signals = [s_uint8, s_int32, s_float64]</span><br><span class="line">    mdf4.append(signals, comment=<span class="string">&quot;Created by Python&quot;</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># save new file</span></span><br><span class="line">    mdf4.save(<span class="string">&quot;my_new_file.mf4&quot;</span>, overwrite=<span class="literal">True</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># convert new file to mdf version 3.10</span></span><br><span class="line">    mdf3 = mdf4.convert(version=<span class="string">&quot;3.10&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(mdf3.version)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># get the float signal</span></span><br><span class="line">    sig = mdf3.get(<span class="string">&quot;Float64_Signal&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(sig)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># cut measurement from 0.3s to end of measurement</span></span><br><span class="line">    mdf4_cut = mdf4.cut(start=<span class="number">0.3</span>)</span><br><span class="line">    mdf4_cut.get(<span class="string">&quot;Float64_Signal&quot;</span>).plot()</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># cut measurement from start of measurement to 0.4s</span></span><br><span class="line">    mdf4_cut = mdf4.cut(stop=<span class="number">0.45</span>)</span><br><span class="line">    mdf4_cut.get(<span class="string">&quot;Float64_Signal&quot;</span>).plot()</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># filter some signals from the file</span></span><br><span class="line">    mdf4 = mdf4.<span class="built_in">filter</span>([<span class="string">&quot;Int32_Signal&quot;</span>, <span class="string">&quot;Uint8_Signal&quot;</span>])</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># save using zipped transpose deflate blocks</span></span><br><span class="line">    mdf4.save(<span class="string">&quot;out.mf4&quot;</span>, compression=<span class="number">2</span>, overwrite=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="参考">参考</h2>
+<ul>
+<li>[1].官方API文档: <a target="_blank" rel="noopener" href="https://asammdf.readthedocs.io/en/master/">https://asammdf.readthedocs.io/en/master/</a></li>
+<li>[2].源代码：<a target="_blank" rel="noopener" href="https://github.com/danielhrisca/asammdf">https://github.com/danielhrisca/asammdf</a></li>
+</ul>
+<h2 id="about-me-个人微信">about me 个人微信</h2>
+<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<h2 id="wechat-offical-微信公众号">wechat offical 微信公众号</h2>
+<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2023/11/28/mdf-file-parser/" target="_blank" title="基于Assammdf第三方python库处理mdf、mf4文件">https://caozhaoqi.github.io/2023/11/28/mdf-file-parser/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/12/01/cpp-project-build-clion/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">基于CLion IDE的CPP项目构建与运行</div>
+      </div>
+      
+      <!-- <div class="content">
+        基于Clion IDE的CPP项目构建与运行
+工具基本信息
+1.CLion
+
+CLion:
+A cross-platfo
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-9c50d3af0bc62a0e8b6e89e24c769317_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/11/06/python-ini-file-config/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">使用python 读写 ini config 文件</div>
+      </div>
+      <!-- <div class="content">
+        使用python 读写 ini config 文件
+
+使用configparser 库读写ini文件,ini配置文件由节
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/logo.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>浅斟低唱</h2>
+        
+        
+          <p>博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1150118968@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/caozhaoqi/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">基于Assammdf第三方python库处理mdf、mf4文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="toc-text">第三方库主要功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95"><span class="toc-text">基础用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="toc-text">使用流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93%E5%AE%89%E8%A3%85"><span class="toc-text">第三方库安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8API"><span class="toc-text">常用API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/11/26/agent-research-llm/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">11-26</span>
+                
+              </div>
+              <a class="post-title" href="/2025/11/26/agent-research-llm/">基于 FastAPI + LangChain 的简单agent实现</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/30/mysql-cluster-use/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-30</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/30/mysql-cluster-use/">实现高可用 MySQL 集群</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/17/pypi-mirror-self/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-17</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/17/pypi-mirror-self/">使用Devpi与Nginx构建高可用PyPI镜像源</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/29/ss-build-doc/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-29</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/29/ss-build-doc/">使用 Docker Compose 快速部署 Shadowsocks 代理服务教程</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/14/pyav-use-video/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-14</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/14/pyav-use-video/">PyAV用于视频剪辑处理</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a href="/atom.xml" class="social">
+                  
+                    <i class="fas fa-rss" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="mailto:1150118968@qq.com" class="social">
+                  
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="social">
+                  
+                    <i class="fas fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968" class="social">
+                  
+                    <i class="fas fa-qq" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a></p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>Total visits：<span id="busuanzi_value_site_pv"></span> times
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>Number of visitors：<span id="busuanzi_value_site_uv"></span> people
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="7289498727"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = 'copy';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <!-- 弹幕所需的css和js -->
+    
+  <!-- 弹幕插件 -->
+  <link href="/js/danmu/barrager.css" rel="stylesheet">
+  <script src="/js/danmu/jquery.barrager.js"></script>
+
+<!-- 具体js，请前往valine/script.ejs查看 -->
+
+    <script>
+  var requiredFields = 'nick,mail';
+  requiredFields = requiredFields.split(',');
+  comment_el = '.comment';
+  let looperValine = null;
+  load_valine = function () {
+    if ($(comment_el).length) {
+      var valine = new Valine({
+        el: '#vcomment',
+        path: window.location.pathname,
+        notify: false,
+        verify: false,
+        app_id: "PZlzAc6FzhlN4QJ4gUgas7AQ-gzGzoHsz",
+        app_key: "YYSIuQIfbSqnug2Kq117KGAK",
+        placeholder: "客官，说点什么吧",
+        avatar: "",
+        master: "d0ca78e6945a9e55aaf81645413dde96",   //博主邮箱md5
+        tagMeta: ["博主","小伙伴","访客"],     //标识字段名
+        friends: "",
+        metaPlaceholder: { "nick": "昵称/QQ号", "mail": "邮箱" },
+        requiredFields: requiredFields,
+        enableQQ: true,
+      });
+      function debounce(fn) {
+        var timerID = null
+        return function () {
+          var arg = arguments[0]   //获取事件
+          if (timerID) {
+            clearTimeout(timerID)
+          }
+          timerID = setTimeout(function () {
+            fn(arg)              //事件传入函数
+          }, 200)
+        }
+      }
+      //查询评论 valine.Q('*').limit(7) -- 查询所有，限制7条, 下面的的代码是查询当前页面
+      var themeDanmu = eval('true');
+      var themeLoop = eval('true');
+      var themeLooperTime = '5000' || 5000;
+      var speed = '40' || 20;
+      var isBarrager = true;
+      if (themeDanmu == true) {
+        do_barrager();
+        if ($('.danmuBox').length <= 0) {
+          $('.navbar').append('<div class="danmuBox"><div class="danmuBtn open"><span class="danmuCircle"></span><span class="danmuText">弹幕</span></div></div>');
+        }
+        $('.danmuBtn').on('click', debounce(
+          function () {
+            if ($('.danmuBtn').hasClass('open')) {
+              $('.danmuBtn').removeClass('open')
+              clearInterval(looperValine);
+              $.fn.barrager.removeAll();
+            } else {
+              $('.danmuBtn').addClass("open");
+              do_barrager();
+            }
+          }
+        ))
+      }
+      function do_barrager() {
+        isBarrager && valine.Q(window.location.pathname).find().then(function (comments) {
+          // var num = 0; // 可以记录条数，循环调用的时候只取最新的评论放入弹幕中
+          var run_once = true;
+          var looper_time = themeLooperTime;
+          var total = comments.length;
+          // var looper = null;
+          var index = 0;
+          if (total > 0) {
+            barrager();
+          } else {
+            // 当评论数为0的时候，自动关闭弹幕
+            // $('.danmuBtn').removeClass('open');
+          }
+          function barrager() {
+            if (run_once) {
+              //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+              looperValine = setInterval(barrager, looper_time);
+              run_once = false;
+            }
+            var content = comments[index]._serverData.comment;
+            var email = comments[index]._serverData.mail;
+            var link = comments[index]._serverData.link;
+            var newcontent = content.substring(0, 50).replace(/<[^>]+>/g, "");
+            //发布一个弹幕
+            const item = {
+              img: `https://q1.qlogo.cn/g?b=qq&nk=${email}&s=640`, //图片 
+              info: newcontent, //文字 
+              href: link, //链接 
+              close: true, //显示关闭按钮 
+              speed: speed, //延迟,单位秒,默认6 
+              color: '#fff', //颜色,默认白色 
+              old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+            }
+            $('body').barrager(item);
+            //索引自增
+            index++;
+            //所有弹幕发布完毕，清除计时器。
+            if (index == total) {
+              clearInterval(looperValine);
+              if (themeLoop === true) {
+                setTimeout(function () {
+                  do_barrager();
+                }, 5000);
+              } else {
+                $('.danmuBtn').removeClass('open');
+              }
+              return false;
+            }
+
+          }
+        })
+      }
+    }
+  };
+  $(document).ready(load_valine);
+  document.addEventListener('pjax:send', function (e) {
+    
+      $('.danmuBox').length > 0 && $('.danmuBox').remove()
+      looperValine && clearInterval(looperValine);
+      $.fn.barrager.removeAll();
+    
+  })
+  document.addEventListener('pjax:complete', function () {
+    load_valine();
+  });
+</script>
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>数字水印系统实现 | Zhaoqi.Cao static blog</title>
+
+  <link rel="icon" type="image/png" href="/medias/logo.png">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '0';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+        <script src="/js/valine/index.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Zhaoqi.Cao static blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Zhaoqi.Cao static blog</h3>
+      <h5 class="drawer-box-head_desc">A static personal blog.</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                      <i class="fas fa-link"></i>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Zhaoqi.Cao static blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="主页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友链">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                    <i class="fas fa-link"></i>
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">Search</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="Please enter keywords"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        数字水印系统实现
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2025-07-22 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 5.1k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 23min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h2 id="实现流程框架">实现流程框架</h2>
+<p>无论使用哪种技术，一个完整的数字水印系统通常都包括两个基本过程：</p>
+<ol>
+<li>
+<p><strong>水印嵌入 (Watermark Embedding)</strong>：</p>
+<ul>
+<li><strong>输入</strong>：原始载体（如图片A）、水印信息（如字符串&quot;ID:123&quot;或一个Logo图片B）。</li>
+<li><strong>过程</strong>：通过特定算法，将水印信息B处理后，“叠加”或“融入”到原始载体A中。</li>
+<li><strong>输出</strong>：一个带有水印、但看起来和原始载体几乎没区别的载体A’。</li>
+</ul>
+</li>
+<li>
+<p><strong>水印提取/检测 (Watermark Extraction/Detection)</strong>：</p>
+<ul>
+<li><strong>输入</strong>：可能被修改过的带水印载体A’'，有时还需要原始载体A或原始水印B作为参考。</li>
+<li><strong>过程</strong>：通过与嵌入过程相逆的算法，从载体A’'中解码出隐藏的水印信息。</li>
+<li><strong>输出</strong>：提取出的水印信息B’，或者一个“是/否”的判断（确认是否存在某个特定水印）。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>现在，我们来看实现这些流程的具体技术。</p>
+</blockquote>
+<hr>
+<h3 id="一、-空域（Spatial-Domain）技术">一、 空域（Spatial Domain）技术</h3>
+<p><strong>核心思想</strong>：直接修改原始图像的像素值（比如RGB值）来嵌入信息。这种方法直观、简单。</p>
+<h4 id="典型技术：LSB-Least-Significant-Bit-算法">典型技术：LSB (Least Significant Bit) 算法</h4>
+<p>这是最经典、最简单的空域水印技术。</p>
+<ul>
+<li>
+<p><strong>原理</strong>：</p>
+<ul>
+<li>计算机中的图像，每个像素的颜色由若干个二进制位（bits）表示。例如，一个8位的灰度图像，每个像素的灰度值范围是0-255，由8个二进制位组成。</li>
+<li><strong>最低有效位 (LSB)</strong> 就是这8个位中最右边的那一位。改变这一位，对像素值的整体影响最小（最多改变1），人眼基本无法察觉。</li>
+<li><strong>嵌入方法</strong>：将要隐藏的水印信息（比如一张黑白Logo图片）转换成二进制流（0和1的序列）。然后，用这个二进制流去替换原始图像中每个（或部分）像素的LSB。
+<ul>
+<li>如果要嵌入<code>1</code>，就把像素的LSB改成<code>1</code>。</li>
+<li>如果要嵌入<code>0</code>，就把像素的LSB改成<code>0</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>提取方法</strong>：直接读取带水印图像中相应像素的LSB，就能还原出隐藏的二进制流，从而重构水印信息。</p>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li><strong>实现简单</strong>：算法非常直接。</li>
+<li><strong>容量大</strong>：每个像素都能藏1比特信息，可以隐藏大量数据。</li>
+<li><strong>隐蔽性好</strong>：对视觉影响极小。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>鲁棒性极差（非常脆弱）</strong>：这是它的致命弱点。任何对图像的轻微处理，如 <strong>JPEG压缩、缩放、裁剪、加个滤镜</strong>，都会破坏LSB层的数据，导致水印完全丢失。</li>
+</ul>
+</li>
+<li>
+<p><strong>应用场景</strong>：主要用于<strong>脆弱水印</strong>，即<strong>内容完整性认证</strong>。因为只要图片被改动，水印就会被破坏，从而可以证明“此图已被修改”。</p>
+</li>
+</ul>
+<hr>
+<h3 id="二、-变换域（Transform-Domain）技术">二、 变换域（Transform Domain）技术</h3>
+<p><strong>核心思想</strong>：不直接改像素值，而是先对图像进行数学变换（如傅里叶变换、余弦变换），将其从空域转换到另一个域（如频域）。然后，在变换后的域中修改系数来嵌入水印。这是目前主流的、<strong>鲁棒水印</strong>的实现方式。</p>
+<p><strong>为什么要这么做？</strong><br>
+因为像JPEG压缩这样的操作，主要丢弃的是图像的<strong>高频信息</strong>（细节），而保留<strong>中低频信息</strong>（轮廓、主要能量）。如果在中低频系数里嵌入水印，那么即使经过压缩，水印信息也能大概率被保留下来。</p>
+<h4 id="1-基于DCT（离散余弦变换）的技术">1. 基于DCT（离散余弦变换）的技术</h4>
+<ul>
+<li><strong>背景</strong>：DCT是 <strong>JPEG 压缩</strong>的核心算法。它将图像分成8x8的小块，然后对每个块进行DCT变换，得到一个频率系数矩阵。这个矩阵中，左上角是低频系数（能量集中），右下角是高频系数。</li>
+<li><strong>嵌入方法</strong>：
+<ol>
+<li>将原始图像分块（如8x8）。</li>
+<li>对每个块进行DCT变换。</li>
+<li>选择<strong>中频区域</strong>的系数进行修改。为什么是中频？因为低频系数对视觉影响太大，高频系数容易在压缩中丢失，中频是最佳平衡点。</li>
+<li>根据水印信息（0或1）来修改这些中频系数。例如，通过量化或比较两个系数的大小来嵌入1比特信息。</li>
+<li>对修改后的系数矩阵进行<strong>逆DCT变换</strong> (IDCT)，得到带水印的图像块。</li>
+</ol>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li><strong>鲁棒性强</strong>：对JPEG压缩、轻微噪声、亮度调整等有很好的抵抗能力。</li>
+<li><strong>隐蔽性好</strong>：利用了人类视觉系统对中频变化不敏感的特性。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：<strong>版权保护</strong>、<strong>盗版追踪</strong>等需要强鲁棒性的场合。</li>
+</ul>
+<h4 id="2-基于DWT（离散小波变换）的技术">2. 基于DWT（离散小波变换）的技术</h4>
+<ul>
+<li><strong>背景</strong>：DWT是 <strong>JPEG 2000</strong> 压缩标准的核心。与DCT不同，DWT能对整个图像进行多分辨率分析，得到不同尺度和方向的子带（低频、水平细节、垂直细节、对角线细节）。</li>
+<li><strong>嵌入方法</strong>：
+<ol>
+<li>对整个图像进行DWT变换。</li>
+<li>水印通常被嵌入到<strong>中、低频子带</strong>的系数中。</li>
+<li>因为DWT提供了图像的空间和频率局部化信息，所以它对裁剪、缩放等几何攻击的抵抗性更好。</li>
+</ol>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li><strong>多分辨率特性</strong>：鲁棒性比DCT更全面，尤其在抗几何攻击方面。</li>
+<li><strong>与人类视觉系统（HVS）匹配更好</strong>：可以更精细地控制水印的嵌入强度，达到更好的隐蔽性。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：同DCT，用于需要更高鲁棒性的版权保护系统。</li>
+</ul>
+<h4 id="3-基于DFT（离散傅里叶变换）的技术">3. 基于DFT（离散傅里叶变换）的技术</h4>
+<ul>
+<li><strong>背景</strong>：DFT将图像转换成幅度和相位谱。</li>
+<li><strong>特点</strong>：图像的幅度谱对<strong>旋转、缩放和平移（RST攻击）</strong> 具有不变性或特定的变化规律。</li>
+<li><strong>嵌入方法</strong>：通过修改DFT变换后的<strong>幅度谱</strong>来嵌入水印。</li>
+<li><strong>优点</strong>：
+<ul>
+<li>对旋转、缩放等几何攻击具有天然的鲁棒性。</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>实现复杂，且容易出现图像块效应。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：主要用于抵抗几何变换的特定场合。</li>
+</ul>
+<hr>
+<h2 id="实现">实现</h2>
+<h3 id="核心的Python库：">核心的Python库：</h3>
+<ul>
+<li><strong>Pillow (PIL Fork)</strong>: 用于图像的读写和基本的像素操作（实现LSB）。</li>
+<li><strong>NumPy</strong>: 用于高效的数组和矩阵运算，是所有图像处理的基础。</li>
+<li><strong>PyWavelets (pywt)</strong>: 用于实现DWT（离散小波变换）。</li>
+<li><strong>OpenCV-Python (cv2)</strong>: 功能最强大的计算机视觉库，可以方便地实现DCT、DFT以及各种图像处理操作。</li>
+</ul>
+<hr>
+<h3 id="1-空域-Spatial-Domain-LSB-算法">1. 空域 (Spatial Domain) - LSB 算法</h3>
+<p><strong>核心库</strong>: <code>Pillow</code> (PIL), <code>NumPy</code></p>
+<p>这个算法不依赖复杂的数学库，Pillow和NumPy足以胜任。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_lsb</span>(<span class="params">image_path, secret_message</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将秘密信息嵌入到图片的LSB层&quot;&quot;&quot;</span></span><br><span class="line">    img = Image.<span class="built_in">open</span>(image_path, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    width, height = img.size</span><br><span class="line">    img_array = np.array(img)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 将秘密信息转换为二进制流</span></span><br><span class="line">    binary_secret = <span class="string">&#x27;&#x27;</span>.join([<span class="built_in">format</span>(<span class="built_in">ord</span>(c), <span class="string">&#x27;08b&#x27;</span>) <span class="keyword">for</span> c <span class="keyword">in</span> secret_message])</span><br><span class="line">    binary_secret += <span class="string">&#x27;1111111111111110&#x27;</span> <span class="comment"># 添加结束标记</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(binary_secret) &gt; width * height * <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;信息过长，无法嵌入到图片中！&quot;</span>)</span><br><span class="line"></span><br><span class="line">    data_index = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 2. 遍历像素并修改LSB</span></span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">            pixel = img_array[y, x]</span><br><span class="line">            <span class="comment"># 遍历RGB三个通道</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">                <span class="keyword">if</span> data_index &lt; <span class="built_in">len</span>(binary_secret):</span><br><span class="line">                    <span class="comment"># 清除LSB并设置新的位</span></span><br><span class="line">                    pixel[i] = (pixel[i] &amp; <span class="number">0xFE</span>) | <span class="built_in">int</span>(binary_secret[data_index])</span><br><span class="line">                    data_index += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">if</span> data_index &gt;= <span class="built_in">len</span>(binary_secret):</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> data_index &gt;= <span class="built_in">len</span>(binary_secret):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 创建并保存新图片</span></span><br><span class="line">    encoded_image = Image.fromarray(img_array)</span><br><span class="line">    encoded_image.save(<span class="string">&quot;encoded_image.png&quot;</span>, <span class="string">&quot;PNG&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;信息嵌入成功，已保存为 encoded_image.png&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode_lsb</span>(<span class="params">image_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;从图片的LSB层提取秘密信息&quot;&quot;&quot;</span></span><br><span class="line">    img = Image.<span class="built_in">open</span>(image_path, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    img_array = np.array(img)</span><br><span class="line">    width, height = img.size</span><br><span class="line"></span><br><span class="line">    binary_data = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 遍历像素并提取LSB</span></span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">            pixel = img_array[y, x]</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">                binary_data += <span class="built_in">str</span>(pixel[i] &amp; <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 找到结束标记并转换信息</span></span><br><span class="line">    end_marker = <span class="string">&#x27;1111111111111110&#x27;</span></span><br><span class="line">    end_index = binary_data.find(end_marker)</span><br><span class="line">    <span class="keyword">if</span> end_index != -<span class="number">1</span>:</span><br><span class="line">        secret_binary = binary_data[:end_index]</span><br><span class="line">        secret_message = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(secret_binary), <span class="number">8</span>):</span><br><span class="line">            byte = secret_binary[i:i+<span class="number">8</span>]</span><br><span class="line">            secret_message += <span class="built_in">chr</span>(<span class="built_in">int</span>(byte, <span class="number">2</span>))</span><br><span class="line">        <span class="keyword">return</span> secret_message</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;未找到结束标记或信息。&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 使用示例 ---</span></span><br><span class="line"><span class="comment"># 请准备一张名为 &#x27;original.png&#x27; 的图片</span></span><br><span class="line"><span class="comment"># encode_lsb(&#x27;original.png&#x27;, &quot;This is a secret message!&quot;)</span></span><br><span class="line"><span class="comment"># message = decode_lsb(&#x27;encoded_image.png&#x27;)</span></span><br><span class="line"><span class="comment"># print(f&quot;提取到的信息: &#123;message&#125;&quot;)</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-变换域-Transform-Domain-DCT-算法">2. 变换域 (Transform Domain) - DCT 算法</h3>
+<p><strong>核心库</strong>: <code>OpenCV-Python (cv2)</code>, <code>NumPy</code></p>
+<p>OpenCV 提供了非常方便的 <code>cv2.dct()</code> 和 <code>cv2.idct()</code> 函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dct_watermark_embed</span>(<span class="params">image_path, watermark_path, alpha=<span class="number">0.1</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;基于DCT的中频带嵌入图像水印&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 准备载体和水印</span></span><br><span class="line">    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    watermark = cv2.imread(watermark_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 确保水印尺寸小于载体</span></span><br><span class="line">    watermark = cv2.resize(watermark, (img.shape[<span class="number">1</span>], img.shape[<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 对载体图像进行DCT变换</span></span><br><span class="line">    img_dct = cv2.dct(np.float32(img))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 对水印图像进行DCT变换 (也可以直接用二值化水印)</span></span><br><span class="line">    watermark_dct = cv2.dct(np.float32(watermark))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 4. 将水印的DCT系数加到载体的中频DCT系数上</span></span><br><span class="line">    <span class="comment"># 这里简单地将整个水印DCT加到载体DCT上，更复杂的会选择特定区域</span></span><br><span class="line">    <span class="comment"># alpha 是嵌入强度</span></span><br><span class="line">    result_dct = img_dct + alpha * watermark_dct</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5. 进行逆DCT变换</span></span><br><span class="line">    result_img = cv2.idct(result_dct)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 裁剪值到 0-255 并转换为uint8</span></span><br><span class="line">    result_img = np.clip(result_img, <span class="number">0</span>, <span class="number">255</span>).astype(np.uint8)</span><br><span class="line"></span><br><span class="line">    cv2.imwrite(<span class="string">&#x27;dct_embedded_image.png&#x27;</span>, result_img)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;DCT水印嵌入成功！&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dct_watermark_extract</span>(<span class="params">embedded_image_path, original_image_path, alpha=<span class="number">0.1</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;提取DCT水印（需要原始图像）&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 这是一个非盲水印提取的例子</span></span><br><span class="line">    embedded_img = cv2.imread(embedded_image_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    original_img = cv2.imread(original_image_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 对带水印图像和原始图像分别做DCT</span></span><br><span class="line">    embedded_dct = cv2.dct(np.float32(embedded_img))</span><br><span class="line">    original_dct = cv2.dct(np.float32(original_img))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 相减并除以强度因子，得到水印的DCT系数</span></span><br><span class="line">    extracted_watermark_dct = (embedded_dct - original_dct) / alpha</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 逆DCT变换，恢复水印</span></span><br><span class="line">    extracted_watermark = cv2.idct(extracted_watermark_dct)</span><br><span class="line">    extracted_watermark = np.clip(extracted_watermark, <span class="number">0</span>, <span class="number">255</span>).astype(np.uint8)</span><br><span class="line"></span><br><span class="line">    cv2.imwrite(<span class="string">&#x27;dct_extracted_watermark.png&#x27;</span>, extracted_watermark)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;DCT水印提取成功！&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 使用示例 ---</span></span><br><span class="line"><span class="comment"># 请准备 &#x27;original.png&#x27; 和 &#x27;watermark_logo.png&#x27;</span></span><br><span class="line"><span class="comment"># dct_watermark_embed(&#x27;original.png&#x27;, &#x27;watermark_logo.png&#x27;, alpha=0.1)</span></span><br><span class="line"><span class="comment"># dct_watermark_extract(&#x27;dct_embedded_image.png&#x27;, &#x27;original.png&#x27;, alpha=0.1)</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>: 上述DCT示例是一个<strong>非盲水印</strong>，提取时需要原始图像。实现盲水印（无需原图）会更复杂，通常涉及在中频带选择特定的系数对进行比较，而不是直接叠加。</p>
+<hr>
+<h3 id="3-变换域-Transform-Domain-DWT-算法">3. 变换域 (Transform Domain) - DWT 算法</h3>
+<p><strong>核心库</strong>: <code>PyWavelets (pywt)</code>, <code>NumPy</code>, <code>OpenCV-Python (cv2)</code></p>
+<p><code>pywt</code> 是Python中进行小波变换的标准库。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pywt</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dwt_watermark_embed</span>(<span class="params">image_path, watermark_path, alpha=<span class="number">0.1</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;基于DWT的LL子带嵌入图像水印&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 准备载体和水印</span></span><br><span class="line">    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    watermark = cv2.imread(watermark_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 对载体图像进行DWT变换</span></span><br><span class="line">    <span class="comment"># &#x27;haar&#x27; 是最简单的小波基</span></span><br><span class="line">    coeffs_img = pywt.dwt2(img, <span class="string">&#x27;haar&#x27;</span>)</span><br><span class="line">    LL, (LH, HL, HH) = coeffs_img</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 确保水印尺寸与LL子带匹配</span></span><br><span class="line">    watermark_resized = cv2.resize(watermark, (LL.shape[<span class="number">1</span>], LL.shape[<span class="number">0</span>]))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 将水印添加到低频子带 (LL)</span></span><br><span class="line">    <span class="comment"># LL子带能量最集中，鲁棒性最强，但对画质影响也最大</span></span><br><span class="line">    LL_watermarked = LL + alpha * watermark_resized</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4. 重构图像</span></span><br><span class="line">    coeffs_watermarked = (LL_watermarked, (LH, HL, HH))</span><br><span class="line">    img_watermarked = pywt.idwt2(coeffs_watermarked, <span class="string">&#x27;haar&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    img_watermarked = np.clip(img_watermarked, <span class="number">0</span>, <span class="number">255</span>).astype(np.uint8)</span><br><span class="line">    cv2.imwrite(<span class="string">&#x27;dwt_embedded_image.png&#x27;</span>, img_watermarked)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;DWT水印嵌入成功！&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dwt_watermark_extract</span>(<span class="params">embedded_image_path, original_image_path, alpha=<span class="number">0.1</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;提取DWT水印（需要原始图像）&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 同样是非盲水印提取</span></span><br><span class="line">    embedded_img = cv2.imread(embedded_image_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    original_img = cv2.imread(original_image_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 对两张图分别做DWT</span></span><br><span class="line">    coeffs_embedded = pywt.dwt2(embedded_img, <span class="string">&#x27;haar&#x27;</span>)</span><br><span class="line">    LL_embedded, _ = coeffs_embedded</span><br><span class="line">    </span><br><span class="line">    coeffs_original = pywt.dwt2(original_img, <span class="string">&#x27;haar&#x27;</span>)</span><br><span class="line">    LL_original, _ = coeffs_original</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 提取水印</span></span><br><span class="line">    extracted_watermark = (LL_embedded - LL_original) / alpha</span><br><span class="line">    </span><br><span class="line">    extracted_watermark = np.clip(extracted_watermark, <span class="number">0</span>, <span class="number">255</span>).astype(np.uint8)</span><br><span class="line">    cv2.imwrite(<span class="string">&#x27;dwt_extracted_watermark.png&#x27;</span>, extracted_watermark)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;DWT水印提取成功！&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 使用示例 ---</span></span><br><span class="line"><span class="comment"># 请准备 &#x27;original.png&#x27; 和 &#x27;watermark_logo.png&#x27;</span></span><br><span class="line"><span class="comment"># dwt_watermark_embed(&#x27;original.png&#x27;, &#x27;watermark_logo.png&#x27;, alpha=0.2)</span></span><br><span class="line"><span class="comment"># dwt_watermark_extract(&#x27;dwt_embedded_image.png&#x27;, &#x27;original.png&#x27;, alpha=0.2)</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="4-变换域-Transform-Domain-DFT-算法">4. 变换域 (Transform Domain) - DFT 算法</h3>
+<p><strong>核心库</strong>: <code>NumPy</code>, <code>OpenCV-Python (cv2)</code></p>
+<p>DFT的实现与DCT类似，但通常用于抵抗几何攻击。这里提供一个基础的嵌入思路。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dft_watermark_embed</span>(<span class="params">image_path, watermark_path, alpha=<span class="number">100</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;基于DFT幅度谱嵌入水印&quot;&quot;&quot;</span></span><br><span class="line">    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    watermark = cv2.imread(watermark_path, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    watermark = cv2.resize(watermark, (img.shape[<span class="number">1</span>], img.shape[<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. DFT变换</span></span><br><span class="line">    <span class="comment"># OpenCV的dft需要输入float32，并会输出双通道复数结果</span></span><br><span class="line">    dft = cv2.dft(np.float32(img), flags=cv2.DFT_COMPLEX_OUTPUT)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 将频谱中心移到图像中央，便于观察和操作</span></span><br><span class="line">    dft_shift = np.fft.fftshift(dft)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 计算幅度和相位谱</span></span><br><span class="line">    magnitude_spectrum = cv2.magnitude(dft_shift[:,:,<span class="number">0</span>], dft_shift[:,:,<span class="number">1</span>])</span><br><span class="line">    phase_spectrum = cv2.phase(dft_shift[:,:,<span class="number">0</span>], dft_shift[:,:,<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4. 在幅度谱上添加水印</span></span><br><span class="line">    magnitude_spectrum_watermarked = magnitude_spectrum + alpha * watermark</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5. 根据新的幅度和旧的相位，重构DFT结果</span></span><br><span class="line">    real_part = magnitude_spectrum_watermarked * np.cos(phase_spectrum)</span><br><span class="line">    imag_part = magnitude_spectrum_watermarked * np.sin(phase_spectrum)</span><br><span class="line">    dft_shift_watermarked = cv2.merge([real_part, imag_part])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 6. 将频谱中心移回左上角</span></span><br><span class="line">    dft_watermarked = np.fft.ifftshift(dft_shift_watermarked)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 7. 逆DFT变换</span></span><br><span class="line">    img_back = cv2.idft(dft_watermarked)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获取实部并恢复图像</span></span><br><span class="line">    img_back = cv2.magnitude(img_back[:,:,<span class="number">0</span>], img_back[:,:,<span class="number">1</span>])</span><br><span class="line">    </span><br><span class="line">    img_back = np.clip(img_back, <span class="number">0</span>, <span class="number">255</span>).astype(np.uint8)</span><br><span class="line">    cv2.imwrite(<span class="string">&#x27;dft_embedded_image.png&#x27;</span>, img_back)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;DFT水印嵌入成功！&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 使用示例 ---</span></span><br><span class="line"><span class="comment"># 请准备 &#x27;original.png&#x27; 和 &#x27;watermark_logo.png&#x27;</span></span><br><span class="line"><span class="comment"># dft_watermark_embed(&#x27;original.png&#x27;, &#x27;watermark_logo.png&#x27;, alpha=100)</span></span><br><span class="line"><span class="comment"># 提取DFT水印通常也需要原始图像，过程与DCT/DWT类似。</span></span><br></pre></td></tr></table></figure>
+<h3 id="安装依赖库">安装依赖库</h3>
+<ul>
+<li>pip安装：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pillow numpy opencv-python pywavelets</span><br></pre></td></tr></table></figure>
+<h2 id="demo">demo</h2>
+<h3 id="水印信息嵌入（LSB）">水印信息嵌入（LSB）</h3>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_message_to_binary</span>(<span class="params">message: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Converts a string message into its binary representation.&quot;&quot;&quot;</span></span><br><span class="line">    binary_message = <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">format</span>(<span class="built_in">ord</span>(char), <span class="string">&#x27;08b&#x27;</span>) <span class="keyword">for</span> char <span class="keyword">in</span> message)</span><br><span class="line">    <span class="keyword">return</span> binary_message</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_binary_to_message</span>(<span class="params">binary_message: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Converts a binary string back into a string message.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># Ensure the binary string is a multiple of 8</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(binary_message) % <span class="number">8</span> != <span class="number">0</span>:</span><br><span class="line">        logger.warning(<span class="string">&quot;Binary string length is not a multiple of 8; data may be incomplete.&quot;</span>)</span><br><span class="line">        binary_message = binary_message[:-(<span class="built_in">len</span>(binary_message) % <span class="number">8</span>)]</span><br><span class="line"></span><br><span class="line">    message = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(binary_message), <span class="number">8</span>):</span><br><span class="line">        byte = binary_message[i:i + <span class="number">8</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(byte) == <span class="number">8</span>:</span><br><span class="line">            message += <span class="built_in">chr</span>(<span class="built_in">int</span>(byte, <span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> message</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_lsb</span>(<span class="params">input_image_path: <span class="built_in">str</span>, secret_message: <span class="built_in">str</span>, output_image_path: <span class="built_in">str</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Encodes a secret message into an image using the LSB (Least Significant Bit) technique.</span></span><br><span class="line"><span class="string">    The output image will be saved in a lossless format (PNG) to preserve the watermark.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        input_image_path (str): The path to the source image.</span></span><br><span class="line"><span class="string">        secret_message (str): The message to hide.</span></span><br><span class="line"><span class="string">        output_image_path (str): The path to save the watermarked image.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        logger.info(<span class="string">f&quot;Starting LSB encoding for &#x27;<span class="subst">&#123;input_image_path&#125;</span>&#x27;...&quot;</span>)</span><br><span class="line">        image = Image.<span class="built_in">open</span>(input_image_path, <span class="string">&#x27;r&#x27;</span>).convert(<span class="string">&quot;RGBA&quot;</span>) <span class="comment"># Convert to RGBA for consistency</span></span><br><span class="line">        width, height = image.size</span><br><span class="line">        img_array = np.array(<span class="built_in">list</span>(image.getdata()))</span><br><span class="line"></span><br><span class="line">        channels = <span class="number">4</span>  <span class="comment"># We are using RGBA</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Add a unique delimiter to know where the message ends</span></span><br><span class="line">        binary_secret_message = _message_to_binary(secret_message + <span class="string">&quot;####&quot;</span>)</span><br><span class="line">        required_pixels = <span class="built_in">len</span>(binary_secret_message)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> required_pixels &gt; width * height * channels:</span><br><span class="line">            logger.error(<span class="string">&quot;Error: Message is too long to be encoded in this image.&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Modify the LSB of the pixel data</span></span><br><span class="line">        data_index = <span class="number">0</span></span><br><span class="line">        flat_array = img_array.flatten()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(flat_array)):</span><br><span class="line">            <span class="keyword">if</span> data_index &lt; required_pixels:</span><br><span class="line">                <span class="comment"># Change the LSB of the color value</span></span><br><span class="line">                flat_array[i] = <span class="built_in">int</span>(<span class="built_in">bin</span>(flat_array[i])[<span class="number">2</span>:-<span class="number">1</span>] + binary_secret_message[data_index], <span class="number">2</span>)</span><br><span class="line">                data_index += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span> <span class="comment"># Stop once the message is encoded</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Create a new image with the modified pixel data</span></span><br><span class="line">        encoded_image = Image.fromarray(flat_array.reshape(height, width, channels).astype(<span class="string">&#x27;uint8&#x27;</span>), image.mode)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Save as PNG to ensure lossless storage of the watermark</span></span><br><span class="line">        encoded_image.save(output_image_path, <span class="string">&quot;PNG&quot;</span>)</span><br><span class="line">        logger.info(<span class="string">f&quot;Successfully encoded message into &#x27;<span class="subst">&#123;output_image_path&#125;</span>&#x27;.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">        logger.error(<span class="string">f&quot;Error: Input image not found at &#x27;<span class="subst">&#123;input_image_path&#125;</span>&#x27;.&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.exception(<span class="string">f&quot;An unexpected error occurred during encoding: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode_lsb</span>(<span class="params">encoded_image_path: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span> | <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Decodes a secret message from an image using the LSB technique.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        encoded_image_path (str): The path to the watermarked image.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        The decoded secret message, or None if an error occurs or no message is found.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        logger.info(<span class="string">f&quot;Starting LSB decoding for &#x27;<span class="subst">&#123;encoded_image_path&#125;</span>&#x27;...&quot;</span>)</span><br><span class="line">        image = Image.<span class="built_in">open</span>(encoded_image_path, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">        img_array = np.array(<span class="built_in">list</span>(image.getdata()))</span><br><span class="line"></span><br><span class="line">        binary_data = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> pixel <span class="keyword">in</span> img_array:</span><br><span class="line">            <span class="keyword">for</span> value <span class="keyword">in</span> pixel:</span><br><span class="line">                binary_data += <span class="built_in">bin</span>(value)[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Find the delimiter by decoding byte by byte</span></span><br><span class="line">        decoded_message = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(binary_data), <span class="number">8</span>):</span><br><span class="line">            byte = binary_data[i:i+<span class="number">8</span>]</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(byte) &lt; <span class="number">8</span>:</span><br><span class="line">                <span class="keyword">break</span> <span class="comment"># End of data</span></span><br><span class="line">            decoded_message += <span class="built_in">chr</span>(<span class="built_in">int</span>(byte, <span class="number">2</span>))</span><br><span class="line">            <span class="keyword">if</span> decoded_message.endswith(<span class="string">&quot;####&quot;</span>):</span><br><span class="line">                logger.info(<span class="string">&quot;Successfully decoded the message.&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span> decoded_message[:-<span class="number">4</span>]  <span class="comment"># Return message without the delimiter</span></span><br><span class="line"></span><br><span class="line">        logger.warning(<span class="string">&quot;Could not find the end-of-message delimiter in the image.&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">        logger.error(<span class="string">f&quot;Error: Encoded image not found at &#x27;<span class="subst">&#123;encoded_image_path&#125;</span>&#x27;.&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.exception(<span class="string">f&quot;An unexpected error occurred during decoding: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<h3 id="水印信息验证">水印信息验证</h3>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">valid_img_msg</span>(<span class="params">image_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Command-line tool to decode an invisible watermark from an image file.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    image_path = Path(image_path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> image_path.is_file():</span><br><span class="line">        logger.debug(<span class="string">f&quot;Error: File not found at &#x27;<span class="subst">&#123;image_path&#125;</span>&#x27;&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    logger.debug(<span class="string">f&quot;Verifying &#x27;<span class="subst">&#123;image_path.name&#125;</span>&#x27;...&quot;</span>)</span><br><span class="line">    decoded_message = decode_lsb(<span class="built_in">str</span>(image_path))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> decoded_message:</span><br><span class="line">        logger.debug(<span class="string">&quot;\n--- ✅ Watermark Found! ---&quot;</span>)</span><br><span class="line">        <span class="comment"># Pretty logger.debug the decoded information</span></span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> decoded_message.split(<span class="string">&#x27;|&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> <span class="string">&#x27;:&#x27;</span> <span class="keyword">in</span> item:</span><br><span class="line">                key, value = item.split(<span class="string">&#x27;:&#x27;</span>, <span class="number">1</span>)</span><br><span class="line">                logger.debug(<span class="string">f&quot;  - <span class="subst">&#123;key.strip():&lt;<span class="number">15</span>&#125;</span>: <span class="subst">&#123;value.strip()&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                logger.debug(<span class="string">f&quot;  - <span class="subst">&#123;item&#125;</span>&quot;</span>)</span><br><span class="line">        logger.debug(<span class="string">&quot;--------------------------\n&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        logger.debug(<span class="string">&quot;\n--- ❌ No Watermark Found ---&quot;</span>)</span><br><span class="line">        logger.debug(<span class="string">&quot;No hidden message could be decoded from this image.&quot;</span>)</span><br><span class="line">        logger.debug(<span class="string">&quot;--------------------------\n&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> decoded_message</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="水印信息嵌入（EXIF）">水印信息嵌入（EXIF）</h3>
+ <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> piexif</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义 UserComment 的标准前缀，UNDEFINED 表示未定义编码，允许我们使用 UTF-8。</span></span><br><span class="line"><span class="comment"># 这是符合 EXIF 规范的推荐做法。</span></span><br><span class="line">USER_COMMENT_PREFIX = <span class="string">b&#x27;UNDEFINED\x00&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_exif</span>(<span class="params">input_image_path: <span class="built_in">str</span>, secret_message: <span class="built_in">str</span>, output_image_path: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    将秘密信息作为隐形水印编码到图片的EXIF元数据中。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        input_image_path: 输入图片的路径。</span></span><br><span class="line"><span class="string">        secret_message: 要隐藏的信息。</span></span><br><span class="line"><span class="string">        output_image_path: 保存带水印图片的路径。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        如果编码成功，返回 True，否则返回 False。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        logger.info(<span class="string">f&quot;正在为 &#x27;<span class="subst">&#123;Path(input_image_path).name&#125;</span>&#x27; 添加EXIF水印...&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 打开图片</span></span><br><span class="line">        image = Image.<span class="built_in">open</span>(input_image_path)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 复制原始图片信息，以便在保存时保留质量、DPI等设置</span></span><br><span class="line">        image_info = image.info.copy()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查图片是否已有EXIF数据，如果没有则创建一个空的</span></span><br><span class="line">        exif_dict = &#123;&#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;exif&quot;</span> <span class="keyword">in</span> image_info <span class="keyword">and</span> image_info[<span class="string">&#x27;exif&#x27;</span>]:</span><br><span class="line">            exif_dict = piexif.load(image_info[<span class="string">&quot;exif&quot;</span>])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># [FIXED] 确保 &#x27;Exif&#x27; 子字典存在，防止 KeyError</span></span><br><span class="line">        <span class="keyword">if</span> piexif.ImageIFD.ExifPtr <span class="keyword">not</span> <span class="keyword">in</span> exif_dict:</span><br><span class="line">             exif_dict[<span class="string">&#x27;Exif&#x27;</span>] = &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># [FIXED] 将秘密信息编码并添加标准前缀，然后放入 UserComment 字段</span></span><br><span class="line">        <span class="comment"># 这是存储任意用户数据的标准字段</span></span><br><span class="line">        user_comment_payload = USER_COMMENT_PREFIX + secret_message.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        exif_dict[<span class="string">&#x27;Exif&#x27;</span>][piexif.ExifIFD.UserComment] = user_comment_payload</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 将更新后的EXIF字典转换为字节流</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            exif_bytes = piexif.dump(exif_dict)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="comment"># 有时 EXIF 数据可能包含 piexif 不支持的格式</span></span><br><span class="line">            logger.error(<span class="string">f&quot;无法序列化 EXIF 数据: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="comment"># 尝试移除可能导致问题的缩略图数据</span></span><br><span class="line">            <span class="keyword">if</span> <span class="string">&#x27;thumbnail&#x27;</span> <span class="keyword">in</span> exif_dict:</span><br><span class="line">                <span class="keyword">del</span> exif_dict[<span class="string">&#x27;thumbnail&#x27;</span>]</span><br><span class="line">                exif_bytes = piexif.dump(exif_dict)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">raise</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># [FIXED] 保存图片，并附上新的EXIF数据</span></span><br><span class="line">        <span class="comment"># 对于 JPEG，传递原始 info 字典以保留质量等设置</span></span><br><span class="line">        <span class="comment"># 对于 PNG 等其他格式，直接使用 exif 参数</span></span><br><span class="line">        <span class="keyword">if</span> image.<span class="built_in">format</span> == <span class="string">&#x27;JPEG&#x27;</span>:</span><br><span class="line">            image.save(output_image_path, <span class="string">&quot;jpeg&quot;</span>, exif=exif_bytes, **image_info)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            image.save(output_image_path, exif=exif_bytes)</span><br><span class="line"></span><br><span class="line">        logger.success(<span class="string">f&quot;成功将EXIF水印写入 &#x27;<span class="subst">&#123;Path(output_image_path).name&#125;</span>&#x27;.&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">        logger.error(<span class="string">f&quot;输入文件未找到: <span class="subst">&#123;input_image_path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.exception(<span class="string">f&quot;添加EXIF水印时发生错误: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode_exif</span>(<span class="params">encoded_image_path: <span class="built_in">str</span></span>) -&gt; <span class="type">Optional</span>[<span class="built_in">str</span>]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    从图片的EXIF元数据中解码出隐藏的秘密信息。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        encoded_image_path: 带水印图片的路径。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        解码后的信息字符串，如果未找到或发生错误则返回 None。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        logger.info(<span class="string">f&quot;正在从 &#x27;<span class="subst">&#123;Path(encoded_image_path).name&#125;</span>&#x27; 解码EXIF水印...&quot;</span>)</span><br><span class="line"></span><br><span class="line">        image = Image.<span class="built_in">open</span>(encoded_image_path)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查图片是否有EXIF数据</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;exif&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> image.info <span class="keyword">or</span> <span class="keyword">not</span> image.info[<span class="string">&#x27;exif&#x27;</span>]:</span><br><span class="line">            logger.warning(<span class="string">&quot;图片中未找到EXIF数据。&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 加载EXIF数据</span></span><br><span class="line">        exif_dict = piexif.load(image.info[<span class="string">&quot;exif&quot;</span>])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># [FIXED] 安全地从 UserComment 字段读取信息，防止 KeyError</span></span><br><span class="line">        exif_ifd = exif_dict.get(<span class="string">&#x27;Exif&#x27;</span>, &#123;&#125;)</span><br><span class="line">        user_comment_bytes = exif_ifd.get(piexif.ExifIFD.UserComment)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> user_comment_bytes:</span><br><span class="line">            <span class="comment"># [FIXED] 检查是否存在我们定义的前缀，并剥离它</span></span><br><span class="line">            <span class="keyword">if</span> user_comment_bytes.startswith(USER_COMMENT_PREFIX):</span><br><span class="line">                message_bytes = user_comment_bytes[<span class="built_in">len</span>(USER_COMMENT_PREFIX):]</span><br><span class="line">                <span class="comment"># 将字节解码回字符串</span></span><br><span class="line">                decoded_message = message_bytes.decode(<span class="string">&#x27;utf-8&#x27;</span>, errors=<span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line">                logger.success(<span class="string">&quot;成功解码EXIF水印。&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span> decoded_message</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                logger.warning(<span class="string">&quot;在&#x27;UserComment&#x27;字段中找到数据，但不包含预期的水印前缀。&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            logger.warning(<span class="string">&quot;在EXIF中未找到&#x27;UserComment&#x27;水印字段。&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">        logger.error(<span class="string">f&quot;文件未找到: <span class="subst">&#123;encoded_image_path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.exception(<span class="string">f&quot;解码EXIF水印时发生错误: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="技术总结对比">技术总结对比</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">技术类别</th>
+<th style="text-align:left">核心算法</th>
+<th style="text-align:left">主要优点</th>
+<th style="text-align:left">主要缺点</th>
+<th style="text-align:left">典型应用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>空域 (Spatial Domain)</strong></td>
+<td style="text-align:left"><strong>LSB</strong></td>
+<td style="text-align:left">实现简单、容量大</td>
+<td style="text-align:left"><strong>鲁棒性极差</strong>，一碰就坏</td>
+<td style="text-align:left"><strong>完整性认证 (脆弱水印)</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>变换域 (Transform Domain)</strong></td>
+<td style="text-align:left"><strong>DCT</strong></td>
+<td style="text-align:left"><strong>对压缩鲁棒</strong>、隐蔽性好</td>
+<td style="text-align:left">对几何攻击抵抗力一般</td>
+<td style="text-align:left"><strong>版权保护 (鲁棒水印)</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>变换域 (Transform Domain)</strong></td>
+<td style="text-align:left"><strong>DWT</strong></td>
+<td style="text-align:left"><strong>综合鲁棒性强</strong>，尤其对裁剪等</td>
+<td style="text-align:left">算法比DCT复杂</td>
+<td style="text-align:left"><strong>版权保护 (鲁棒水印)</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>变换域 (Transform Domain)</strong></td>
+<td style="text-align:left"><strong>DFT</strong></td>
+<td style="text-align:left"><strong>对旋转/缩放鲁棒</strong></td>
+<td style="text-align:left">实现复杂，可能影响画质</td>
+<td style="text-align:left"><strong>抵抗几何攻击的特殊应用</strong></td>
+</tr>
+</tbody>
+</table>
+<p>简单来说：</p>
+<ul>
+<li>想做<strong>防伪标签</strong>，一改就失效，用 <strong>LSB</strong>。</li>
+<li>想做<strong>版权印章</strong>，不怕压缩和基本处理，用 <strong>DCT</strong> 或 <strong>DWT</strong>。它们是目前最实用和最主流的鲁棒水印技术。</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2025/07/22/watermark-gen-valid/" target="_blank" title="数字水印系统实现">https://caozhaoqi.github.io/2025/07/22/watermark-gen-valid/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/08/14/pyav-use-video/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">PyAV用于视频剪辑处理</div>
+      </div>
+      
+      <!-- <div class="content">
+        PyAV用于视频剪辑处理
+
+PyAV是FFmpeg库的Pythonic绑定。它允许你直接在Python代码中，以一种极其
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/07/17/tailscale-docker-build/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Docker 部署 Tailscale</div>
+      </div>
+      <!-- <div class="content">
+        简介
+一、Tailscale 到底是什么？
+你可以把它理解成一个**“为你所有设备打造的、私人的、加密的虚拟局域网”**
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/logo.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>浅斟低唱</h2>
+        
+        
+          <p>博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1150118968@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/caozhaoqi/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%B5%81%E7%A8%8B%E6%A1%86%E6%9E%B6"><span class="toc-text">实现流程框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E7%A9%BA%E5%9F%9F%EF%BC%88Spatial-Domain%EF%BC%89%E6%8A%80%E6%9C%AF"><span class="toc-text">一、 空域（Spatial Domain）技术</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B8%E5%9E%8B%E6%8A%80%E6%9C%AF%EF%BC%9ALSB-Least-Significant-Bit-%E7%AE%97%E6%B3%95"><span class="toc-text">典型技术：LSB (Least Significant Bit) 算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E5%8F%98%E6%8D%A2%E5%9F%9F%EF%BC%88Transform-Domain%EF%BC%89%E6%8A%80%E6%9C%AF"><span class="toc-text">二、 变换域（Transform Domain）技术</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%9F%BA%E4%BA%8EDCT%EF%BC%88%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2%EF%BC%89%E7%9A%84%E6%8A%80%E6%9C%AF"><span class="toc-text">1. 基于DCT（离散余弦变换）的技术</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8EDWT%EF%BC%88%E7%A6%BB%E6%95%A3%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2%EF%BC%89%E7%9A%84%E6%8A%80%E6%9C%AF"><span class="toc-text">2. 基于DWT（离散小波变换）的技术</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%9F%BA%E4%BA%8EDFT%EF%BC%88%E7%A6%BB%E6%95%A3%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%EF%BC%89%E7%9A%84%E6%8A%80%E6%9C%AF"><span class="toc-text">3. 基于DFT（离散傅里叶变换）的技术</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%9A%84Python%E5%BA%93%EF%BC%9A"><span class="toc-text">核心的Python库：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A9%BA%E5%9F%9F-Spatial-Domain-LSB-%E7%AE%97%E6%B3%95"><span class="toc-text">1. 空域 (Spatial Domain) - LSB 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8F%98%E6%8D%A2%E5%9F%9F-Transform-Domain-DCT-%E7%AE%97%E6%B3%95"><span class="toc-text">2. 变换域 (Transform Domain) - DCT 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%8F%98%E6%8D%A2%E5%9F%9F-Transform-Domain-DWT-%E7%AE%97%E6%B3%95"><span class="toc-text">3. 变换域 (Transform Domain) - DWT 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%8F%98%E6%8D%A2%E5%9F%9F-Transform-Domain-DFT-%E7%AE%97%E6%B3%95"><span class="toc-text">4. 变换域 (Transform Domain) - DFT 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E5%BA%93"><span class="toc-text">安装依赖库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#demo"><span class="toc-text">demo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B0%B4%E5%8D%B0%E4%BF%A1%E6%81%AF%E5%B5%8C%E5%85%A5%EF%BC%88LSB%EF%BC%89"><span class="toc-text">水印信息嵌入（LSB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B0%B4%E5%8D%B0%E4%BF%A1%E6%81%AF%E9%AA%8C%E8%AF%81"><span class="toc-text">水印信息验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B0%B4%E5%8D%B0%E4%BF%A1%E6%81%AF%E5%B5%8C%E5%85%A5%EF%BC%88EXIF%EF%BC%89"><span class="toc-text">水印信息嵌入（EXIF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E5%AF%B9%E6%AF%94"><span class="toc-text">技术总结对比</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/11/26/agent-research-llm/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">11-26</span>
+                
+              </div>
+              <a class="post-title" href="/2025/11/26/agent-research-llm/">基于 FastAPI + LangChain 的简单agent实现</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/30/mysql-cluster-use/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-30</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/30/mysql-cluster-use/">实现高可用 MySQL 集群</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/17/pypi-mirror-self/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-17</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/17/pypi-mirror-self/">使用Devpi与Nginx构建高可用PyPI镜像源</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/29/ss-build-doc/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-29</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/29/ss-build-doc/">使用 Docker Compose 快速部署 Shadowsocks 代理服务教程</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/14/pyav-use-video/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-14</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/14/pyav-use-video/">PyAV用于视频剪辑处理</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a href="/atom.xml" class="social">
+                  
+                    <i class="fas fa-rss" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="mailto:1150118968@qq.com" class="social">
+                  
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="social">
+                  
+                    <i class="fas fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968" class="social">
+                  
+                    <i class="fas fa-qq" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a></p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>Total visits：<span id="busuanzi_value_site_pv"></span> times
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>Number of visitors：<span id="busuanzi_value_site_uv"></span> people
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="7289498727"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = 'copy';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <!-- 弹幕所需的css和js -->
+    
+  <!-- 弹幕插件 -->
+  <link href="/js/danmu/barrager.css" rel="stylesheet">
+  <script src="/js/danmu/jquery.barrager.js"></script>
+
+<!-- 具体js，请前往valine/script.ejs查看 -->
+
+    <script>
+  var requiredFields = 'nick,mail';
+  requiredFields = requiredFields.split(',');
+  comment_el = '.comment';
+  let looperValine = null;
+  load_valine = function () {
+    if ($(comment_el).length) {
+      var valine = new Valine({
+        el: '#vcomment',
+        path: window.location.pathname,
+        notify: false,
+        verify: false,
+        app_id: "PZlzAc6FzhlN4QJ4gUgas7AQ-gzGzoHsz",
+        app_key: "YYSIuQIfbSqnug2Kq117KGAK",
+        placeholder: "客官，说点什么吧",
+        avatar: "",
+        master: "d0ca78e6945a9e55aaf81645413dde96",   //博主邮箱md5
+        tagMeta: ["博主","小伙伴","访客"],     //标识字段名
+        friends: "",
+        metaPlaceholder: { "nick": "昵称/QQ号", "mail": "邮箱" },
+        requiredFields: requiredFields,
+        enableQQ: true,
+      });
+      function debounce(fn) {
+        var timerID = null
+        return function () {
+          var arg = arguments[0]   //获取事件
+          if (timerID) {
+            clearTimeout(timerID)
+          }
+          timerID = setTimeout(function () {
+            fn(arg)              //事件传入函数
+          }, 200)
+        }
+      }
+      //查询评论 valine.Q('*').limit(7) -- 查询所有，限制7条, 下面的的代码是查询当前页面
+      var themeDanmu = eval('true');
+      var themeLoop = eval('true');
+      var themeLooperTime = '5000' || 5000;
+      var speed = '40' || 20;
+      var isBarrager = true;
+      if (themeDanmu == true) {
+        do_barrager();
+        if ($('.danmuBox').length <= 0) {
+          $('.navbar').append('<div class="danmuBox"><div class="danmuBtn open"><span class="danmuCircle"></span><span class="danmuText">弹幕</span></div></div>');
+        }
+        $('.danmuBtn').on('click', debounce(
+          function () {
+            if ($('.danmuBtn').hasClass('open')) {
+              $('.danmuBtn').removeClass('open')
+              clearInterval(looperValine);
+              $.fn.barrager.removeAll();
+            } else {
+              $('.danmuBtn').addClass("open");
+              do_barrager();
+            }
+          }
+        ))
+      }
+      function do_barrager() {
+        isBarrager && valine.Q(window.location.pathname).find().then(function (comments) {
+          // var num = 0; // 可以记录条数，循环调用的时候只取最新的评论放入弹幕中
+          var run_once = true;
+          var looper_time = themeLooperTime;
+          var total = comments.length;
+          // var looper = null;
+          var index = 0;
+          if (total > 0) {
+            barrager();
+          } else {
+            // 当评论数为0的时候，自动关闭弹幕
+            // $('.danmuBtn').removeClass('open');
+          }
+          function barrager() {
+            if (run_once) {
+              //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+              looperValine = setInterval(barrager, looper_time);
+              run_once = false;
+            }
+            var content = comments[index]._serverData.comment;
+            var email = comments[index]._serverData.mail;
+            var link = comments[index]._serverData.link;
+            var newcontent = content.substring(0, 50).replace(/<[^>]+>/g, "");
+            //发布一个弹幕
+            const item = {
+              img: `https://q1.qlogo.cn/g?b=qq&nk=${email}&s=640`, //图片 
+              info: newcontent, //文字 
+              href: link, //链接 
+              close: true, //显示关闭按钮 
+              speed: speed, //延迟,单位秒,默认6 
+              color: '#fff', //颜色,默认白色 
+              old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+            }
+            $('body').barrager(item);
+            //索引自增
+            index++;
+            //所有弹幕发布完毕，清除计时器。
+            if (index == total) {
+              clearInterval(looperValine);
+              if (themeLoop === true) {
+                setTimeout(function () {
+                  do_barrager();
+                }, 5000);
+              } else {
+                $('.danmuBtn').removeClass('open');
+              }
+              return false;
+            }
+
+          }
+        })
+      }
+    }
+  };
+  $(document).ready(load_valine);
+  document.addEventListener('pjax:send', function (e) {
+    
+      $('.danmuBox').length > 0 && $('.danmuBox').remove()
+      looperValine && clearInterval(looperValine);
+      $.fn.barrager.removeAll();
+    
+  })
+  document.addEventListener('pjax:complete', function () {
+    load_valine();
+  });
+</script>
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

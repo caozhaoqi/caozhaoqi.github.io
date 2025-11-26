@@ -1,0 +1,2769 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>基于yolov8根据CVAT标注结果训练模型 | Zhaoqi.Cao static blog</title>
+
+  <link rel="icon" type="image/png" href="/medias/logo.png">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '0';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+        <script src="/js/valine/index.js"></script>
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Zhaoqi.Cao static blog" type="application/atom+xml">
+</head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <!-- 预加载动画 -->
+  <!-- 页面预加载动画 -->
+
+  
+    <div class="preloader_2" id="loader">
+  <div class="loader"></div>
+</div>
+
+  
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+</script>
+
+  <body>
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (src) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header  " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Zhaoqi.Cao static blog</h3>
+      <h5 class="drawer-box-head_desc">A static personal blog.</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/friends" class="drawer-menu-item-link">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="javascript:;" class="drawer-menu-item-link has-children" @click="openOrCloseMenu(5)">
+                  <span>
+                    
+                      <i class="fas fa-link"></i>
+                    
+                    <span class="name">更多</span>
+                  </span>
+                  <i class="fas fa-chevron-left arrow " :class="{'icon-rotate': isOpen(5)}" aria-hidden="true"></i>
+                </a>
+                <ul class="drawer-sub-menu" v-if="isOpen(5)">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Zhaoqi.Cao static blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="主页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">主页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/friends" class="menu-item-link" title="友链">
+                  
+                  <span class="name">友链</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="javascript:;" class="menu-item-link" title="更多">
+                  
+                    <i class="fas fa-link"></i>
+                  
+                  <span class="name">更多</span>
+                  <i class="fas fa-chevron-down arrow" aria-hidden="true"></i>
+                </a>
+                <ul class="sub-menu">
+                  
+                  <li>
+                    <a href="/gallerygroup">
+                      
+                      <i class="fas fa-music" style="margin-top: -20px;"></i>
+                      
+                      <span>图库</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/friends">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>友情链接</span>
+                    </a>
+                  </li>
+                  
+                  <li>
+                    <a href="/about">
+                      
+                      <i class="fas fa-film" style="margin-top: -20px;"></i>
+                      
+                      <span>关于我</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">Search</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="Please enter keywords"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+    <div id="he-plugin-simple"></div>
+    <script>
+      WIDGET = {
+        CONFIG: {
+          "modules": "012",
+          "background": 5,
+          "tmpColor": "4A4A4A",
+          "tmpSize": 16,
+          "cityColor": "4A4A4A",
+          "citySize": 16,
+          "aqiSize": 16,
+          "weatherIconSize": 24,
+          "alertIconSize": 18,
+          "padding": "10px 10px 10px 10px",
+          "shadow": "1",
+          "language": "auto",
+          "borderRadius": 5,
+          "fixed": "false",
+          "vertical": "middle",
+          "horizontal": "center",
+          "key": "2784dd3fcb1e4f0f9a9b579bf69641f2"
+        }
+      }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script> 
+    
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        基于yolov8根据CVAT标注结果训练模型
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2025-04-09 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 10.3k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 44min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h2 id="模型简介">模型简介</h2>
+<blockquote>
+<p>YOLO 是一种实时目标检测算法家族的名称。与传统的需要先进行区域提议（Region Proposal）再进行分类的两阶段检测器（如 Faster R-CNN）不同，YOLO 将目标检测视为一个回归问题，直接从整个图像中预测边界框的位置和类别概率，实现了端到端（end-to-end）的检测。</p>
+</blockquote>
+<ul>
+<li><strong>核心思想:</strong>
+<ol>
+<li><strong>网格划分:</strong> 将输入图像划分为 S x S 的网格 (Grid Cells)。</li>
+<li><strong>单元格负责制:</strong> 如果一个物体的中心落入某个网格单元，则该单元负责检测该物体。</li>
+<li><strong>边界框预测:</strong> 每个网格单元预测 B 个边界框 (Bounding Boxes) 以及这些框的置信度 (Confidence Score，表示框内含有物体的概率及框的准确度)。每个边界框包含 5 个预测值：<code>x</code>, <code>y</code> (框中心相对单元格的坐标), <code>w</code>, <code>h</code> (框宽高相对整张图像的比例), 和 <code>confidence</code>。</li>
+<li><strong>类别概率预测:</strong> 每个网格单元还预测 C 个条件类别概率 (Conditional Class Probabilities)，即在包含物体的前提下，该物体属于每个类别的概率。</li>
+<li><strong>最终检测:</strong> 将每个边界框的置信度与对应单元格的类别概率相乘，得到每个框针对每个类别的得分。通过设置阈值过滤低分框，并使用非极大值抑制 (Non-Maximum Suppression, NMS) 消除冗余的重叠框，得到最终的检测结果。</li>
+</ol>
+</li>
+</ul>
+<h2 id="CVAT简介">CVAT简介</h2>
+<blockquote>
+<p>基于 Web 的、功能强大的计算机视觉数据标注工具。它支持对图像和视频进行多种类型的标注，是计算机视觉项目（尤其是监督学习）中数据准备阶段的重要工具</p>
+</blockquote>
+<ul>
+<li><strong>主要功能:</strong>
+<ul>
+<li><strong>多种标注类型:</strong>
+<ul>
+<li><strong>边界框 (Bounding Boxes):</strong> 用于目标检测任务，框出物体的位置。</li>
+<li><strong>多边形 (Polygons):</strong> 用于实例分割任务，精确勾勒物体的轮廓。</li>
+<li><strong>关键点 (Points / Skeleton):</strong> 用于姿态估计、人脸关键点检测等任务。</li>
+<li><strong>分割掩码 (Segmentation Masks):</strong> 用于语义分割任务，为图像中的每个像素分配类别。</li>
+<li><strong>标签 (Tags):</strong> 用于图像分类任务，为整个图像分配类别标签。</li>
+<li><strong>轨迹/立方体 (Tracks/Cuboids):</strong> 支持视频标注，可以跟踪物体或标注3D边界框。</li>
+</ul>
+</li>
+<li><strong>图像和视频支持:</strong> 可以直接对单张图片或整个视频序列进行标注。视频标注支持插值（interpolation），可以减少手动标注的工作量。</li>
+<li><strong>半自动和自动标注:</strong> 集成了多种 AI 模型（如目标检测、分割模型，包括 YOLO、SAM 等），可以预标注数据，然后由人工进行修正，提高效率。支持连接外部 AI 模型（如通过 Nuclio）。</li>
+<li><strong>协作:</strong> 支持多用户协作，可以分配任务、进行审核等。</li>
+<li><strong>数据管理:</strong> 提供项目 (Project) 和任务 (Task) 管理功能，方便组织数据。</li>
+<li><strong>多种导出格式:</strong> 支持导出为多种常见的数据集格式，如 COCO JSON, Pascal VOC XML, YOLO, MOT, Segmentation Mask 等，方便与各种深度学习框架对接。</li>
+<li><strong>可扩展性:</strong> 开源，可以通过插件或集成自定义工具进行扩展。</li>
+<li><strong>部署:</strong> 可以通过 Docker 在本地、服务器或云上部署。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2025/04/09/yolov8-train-model/train_model.png" class="lazyload placeholder" data-srcset="/2025/04/09/yolov8-train-model/train_model.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<h2 id="CVAT标注结果导出">CVAT标注结果导出</h2>
+<blockquote>
+<p>使用从 CVAT 导出的 YOLO 格式数据，并在 <strong>CPU</strong> 上训练一个新的 YOLOv8 模型（使用 Ultralytics 框架），以下详细步骤。</p>
+</blockquote>
+<p><strong>重要提示：</strong> 在 CPU 上训练目标检测模型（尤其是像 YOLOv8 这样较现代的模型）将会<strong>非常非常慢</strong>。根据你的数据集大小、模型大小和 CPU 性能，一个 epoch 可能需要数小时甚至更长时间。这通常只适用于非常小的数据集、快速原型验证或没有 GPU 可用的情况。请有心理准备。</p>
+<p><strong>步骤 1：从 CVAT 导出 YOLO 格式数据</strong></p>
+<ol>
+<li><strong>登录 CVAT</strong> 并导航到你已完成标注的任务 (Task)。</li>
+<li>点击任务卡片上的 <strong>“Actions”</strong> (或任务页面内的菜单按钮)。</li>
+<li>选择 <strong>“Export task dataset”</strong>。</li>
+<li>在弹出的窗口中：
+<ul>
+<li><strong>选择格式:</strong> <strong>务必选择 <code>YOLO</code> 或 <code>YOLO ZIP</code></strong>。</li>
+<li><strong>子集划分 (可选但推荐):</strong> 如果你在 CVAT 中已将数据分配到 <code>Train</code>, <code>Validation</code>, <code>Test</code> 子集，请确保勾选了相应的选项来导出这些子集。这会省去你手动划分的步骤。如果没划分，则导出整个数据集。</li>
+<li><strong>保存图像:</strong> 确保勾选了 “Save images” 选项。</li>
+</ul>
+</li>
+<li>点击 <strong>“OK”</strong> 或 <strong>“Export”</strong>。</li>
+<li>等待导出任务完成，然后下载生成的 <strong>ZIP 文件</strong>。</li>
+</ol>
+<p><strong>步骤 2：准备数据集文件</strong></p>
+<ol>
+<li><strong>解压 ZIP 文件:</strong> 将下载的 ZIP 文件解压到你电脑上一个方便访问的位置，例如 <code>~/datasets/my_yolo_dataset</code>。</li>
+<li><strong>检查文件结构:</strong> 解压后，检查里面的内容。一个典型的 YOLO 导出（特别是包含子集划分的）可能包含：
+<ul>
+<li><code>data.yaml</code> (或 <code>obj.data</code> 和 <code>obj.names</code> 文件)：这是配置文件，非常重要。</li>
+<li><code>train/</code> (或类似的名称)
+<ul>
+<li><code>images/</code>: 包含训练集的图像文件 (<code>.jpg</code>, <code>.png</code> 等)。</li>
+<li><code>labels/</code>: 包含训练集的标注文件 (<code>.txt</code>)，每个图像对应一个。</li>
+</ul>
+</li>
+<li><code>valid/</code> (或 <code>val/</code>)
+<ul>
+<li><code>images/</code>: 包含验证集的图像文件。</li>
+<li><code>labels/</code>: 包含验证集的标注文件。</li>
+</ul>
+</li>
+<li><code>test/</code> (可选)
+<ul>
+<li><code>images/</code>: 包含测试集的图像文件。</li>
+<li><code>labels/</code>: 包含测试集的标注文件。</li>
+</ul>
+</li>
+<li><em>如果导出时没有划分:</em> 你可能只有一个 <code>images/</code> 和一个 <code>labels/</code> 文件夹，以及配置文件。</li>
+</ul>
+</li>
+<li><strong>验证/修改 <code>data.yaml</code> (或创建它):</strong> 这是告诉 YOLOv8 框架如何找到你的数据的关键文件。
+<ul>
+<li><strong>如果已有 <code>data.yaml</code>:</strong> 用文本编辑器打开它。它看起来类似这样：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">path:</span> <span class="string">../datasets/my_yolo_dataset</span> <span class="comment"># ！！可能需要修改：数据集根目录的相对或绝对路径</span></span><br><span class="line"><span class="attr">train:</span> <span class="string">train/images</span>             <span class="comment"># ！！训练集图片路径 (相对于 path)</span></span><br><span class="line"><span class="attr">val:</span> <span class="string">valid/images</span>               <span class="comment"># ！！验证集图片路径 (相对于 path)</span></span><br><span class="line"><span class="comment"># test: test/images             # 可选：测试集图片路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Classes</span></span><br><span class="line"><span class="attr">nc:</span> <span class="number">9</span>                           <span class="comment"># ！！类别数量，必须准确</span></span><br><span class="line"><span class="attr">names:</span> [<span class="string">&#x27;bus&#x27;</span>, <span class="string">&#x27;car&#x27;</span>, <span class="string">&#x27;clock&#x27;</span>, <span class="string">...</span>] <span class="comment"># ！！类别名称列表，顺序必须与 labels/*.txt 中的类别ID (0, 1, 2...) 完全对应！</span></span><br></pre></td></tr></table></figure>
+<strong>你需要仔细检查并可能修改：</strong>
+<ul>
+<li><code>path</code>: 确保它正确指向你解压数据集的<strong>根目录</strong>。<strong>相对于你将要运行训练命令的位置</strong>。使用绝对路径通常更安全。例如：<code>/home/your_user/datasets/my_yolo_dataset</code>。</li>
+<li><code>train</code>, <code>val</code>, <code>test</code>: 确保它们正确指向包含图像文件的文件夹（相对于 <code>path</code> 定义的路径）。</li>
+<li><code>nc</code>: 确保类别数量正确无误。</li>
+<li><code>names</code>: <strong>极其重要！</strong> 确保这个列表中的类别名称<strong>顺序</strong>与 CVAT 导出时使用的类别 ID（从 0 开始）以及 <code>labels/</code> 文件夹下 <code>.txt</code> 文件中使用的数字 ID 完全一致。CVAT 导出 YOLO 格式时通常会保证这一点，但务必检查。</li>
+</ul>
+</li>
+<li><strong>如果只有 <code>obj.data</code> 和 <code>obj.names</code>:</strong> 你需要<strong>手动创建一个 <code>data.yaml</code> 文件</strong>。
+<ul>
+<li>打开 <code>obj.names</code>，将里面的类别名称按顺序列入 <code>data.yaml</code> 的 <code>names</code> 字段。计算类别数量填入 <code>nc</code>。</li>
+<li>打开 <code>obj.data</code>，它通常包含类别数量、训练集/验证集图像列表文件的路径等信息。你需要根据这些信息和你的实际文件结构来填写 <code>data.yaml</code> 中的 <code>path</code>, <code>train</code>, <code>val</code> 字段。你可能需要将 <code>obj.data</code> 中指向的图像列表文件（例如 <code>train.txt</code>, <code>valid.txt</code>）也放到你的数据集目录中，或者直接修改 <code>data.yaml</code> 指向包含图像的文件夹。创建 <code>data.yaml</code> 通常更符合现代 YOLOv8 的习惯。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>手动划分数据集 (如果导出时未划分):</strong>
+<ul>
+<li>如果你只有一个 <code>images/</code> 和 <code>labels/</code> 文件夹，你需要手动将其划分为训练集和验证集。</li>
+<li>创建子目录：在数据集根目录下创建 <code>train/images</code>, <code>train/labels</code>, <code>valid/images</code>, <code>valid/labels</code>。</li>
+<li>编写脚本或手动移动文件：
+<ul>
+<li>确定划分比例（例如，80% 训练，20% 验证）。</li>
+<li>遍历 <code>images/</code> 文件夹中的所有图像文件。</li>
+<li>对于每个图像文件（例如 <code>image1.jpg</code>），找到其对应的标注文件（<code>labels/image1.txt</code>）。</li>
+<li>根据随机抽样或固定规则，将这对文件（图像和标注）移动到 <code>train/</code> 或 <code>valid/</code> 下相应的 <code>images</code> 和 <code>labels</code> 文件夹中。</li>
+<li>确保图像和它的 <code>.txt</code> 标注文件始终在同一集合（train 或 valid）中。</li>
+</ul>
+</li>
+<li>更新 <code>data.yaml</code> 中的 <code>train</code> 和 <code>val</code> 路径指向你新创建的 <code>train/images</code> 和 <code>valid/images</code> 文件夹。</li>
+</ul>
+</li>
+</ol>
+<p><strong>步骤 3：设置 Python 和 Ultralytics 环境</strong></p>
+<ol>
+<li><strong>安装 Python:</strong> 确保你安装了较新版本的 Python（推荐 3.8 - 3.11）。</li>
+<li><strong>创建虚拟环境 (强烈推荐):</strong> 这可以避免库版本冲突。<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 venv (Python 内置)</span></span><br><span class="line">python -m venv yolo_cpu_env</span><br><span class="line"><span class="built_in">source</span> yolo_cpu_env/bin/activate  <span class="comment"># Linux/macOS</span></span><br><span class="line"><span class="comment"># yolo_cpu_env\Scripts\activate  # Windows</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者使用 Conda</span></span><br><span class="line"><span class="comment"># conda create -n yolo_cpu_env python=3.9</span></span><br><span class="line"><span class="comment"># conda activate yolo_cpu_env</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>安装 Ultralytics YOLOv8:</strong> 在激活的虚拟环境中运行：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install ultralytics</span><br></pre></td></tr></table></figure>
+这会自动安装 PyTorch 的 CPU 版本（因为它检测不到兼容的 GPU/CUDA）以及其他必要的依赖库。</li>
+</ol>
+<p><strong>步骤 4：配置训练参数</strong></p>
+<ol>
+<li><strong>选择预训练模型:</strong> 为了利用迁移学习并加快（相对而言）收敛速度，你需要从一个预训练模型开始。对于 CPU 训练，<strong>强烈建议从小模型开始</strong>：
+<ul>
+<li><code>yolov8n.pt</code> (Nano): 最快，占用资源最少，但精度相对较低。<strong>CPU 训练的首选起点。</strong></li>
+<li><code>yolov8s.pt</code> (Small): 稍大，稍慢，精度稍高。如果 <code>yolov8n</code> 效果不佳且你的 CPU 尚可承受，可以尝试。</li>
+<li>更大的模型 (<code>m</code>, <code>l</code>, <code>x</code>) 在 CPU 上训练几乎不可行。</li>
+<li>Ultralytics 会在你第一次使用模型时自动下载 <code>.pt</code> 文件。</li>
+</ul>
+</li>
+<li><strong>确定训练参数:</strong>
+<ul>
+<li><strong><code>model</code>:</strong> 你选择的预训练模型，例如 <code>yolov8n.pt</code>。</li>
+<li><strong><code>data</code>:</strong> 指向你准备好的 <code>data.yaml</code> 文件的路径。</li>
+<li><strong><code>epochs</code>:</strong> 训练的总轮数。对于 CPU，可以先设置一个较小的值（例如 10-50）来测试流程和观察初步结果，后续再增加。完整训练可能需要 100-300 轮甚至更多，但这在 CPU 上会耗费极长时间。</li>
+<li><strong><code>batch</code>:</strong> 批处理大小。<strong>CPU 训练的关键参数</strong>。由于 CPU 计算能力和内存带宽限制，你需要设置一个<strong>非常小</strong>的值，例如 <code>2</code>, <code>4</code>, <code>8</code>。可以从 4 或 8 开始尝试，如果内存不足 (OOM) 或 CPU 占用过高导致系统卡顿，则需要减小。</li>
+<li><strong><code>imgsz</code>:</strong> 输入图像的尺寸。通常设置为 640。更大的尺寸会显著增加 CPU 计算负担和内存占用。CPU 训练建议保持 640 或更小。</li>
+<li><strong><code>device</code>:</strong> <strong>必须设置为 <code>cpu</code></strong>。<code>device=cpu</code>。</li>
+<li><strong><code>workers</code>:</strong> 数据加载时使用的 CPU 核心数。可以设置为你 CPU 核心数的一部分，例如 <code>2</code>, <code>4</code>。不一定越多越好，过高可能导致 CPU 争用。</li>
+</ul>
+</li>
+</ol>
+<p><strong>步骤 5：执行训练</strong></p>
+<ol>
+<li>
+<p><strong>打开终端或命令行。</strong></p>
+</li>
+<li>
+<p><strong>激活你的虚拟环境</strong> (如 <code>source yolo_cpu_env/bin/activate</code>)。</p>
+</li>
+<li>
+<p><strong>导航到你的项目目录</strong> (通常是你存放 <code>data.yaml</code> 或打算运行脚本的地方，确保 <code>data.yaml</code> 中的路径相对于此位置是正确的)。</p>
+</li>
+<li>
+<p><strong>运行训练命令:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yolo train model=yolov8n.pt data=/path/to/your/data.yaml epochs=50 batch=4 imgsz=640 device=cpu workers=4</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>请将 <code>/path/to/your/data.yaml</code> 替换为你的 <code>data.yaml</code> 文件的实际路径。</strong></li>
+<li><strong>根据需要调整 <code>epochs</code>, <code>batch</code>, <code>workers</code> 的值。</strong></li>
+<li><strong>再次强调：请有耐心！</strong> 你会看到训练开始，并显示每个 epoch 的进度、损失值等，但这会非常慢。</li>
+</ul>
+</li>
+<li>
+<p><strong>或者使用 Python 脚本进行训练:</strong> 创建一个 Python 文件（例如 <code>train_cpu.py</code>）:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"><span class="keyword">import</span> torch <span class="comment"># 导入 torch 以便检查</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># 检查 PyTorch 是否确实在使用 CPU</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;PyTorch device: <span class="subst">&#123;torch.cuda.is_available() <span class="keyword">and</span> torch.device(<span class="string">&#x27;cuda&#x27;</span>) <span class="keyword">or</span> torch.device(<span class="string">&#x27;cpu&#x27;</span>)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 加载一个预训练模型 (例如 yolov8n.pt)</span></span><br><span class="line">    <span class="comment"># 模型文件如果本地没有，首次运行时会自动下载</span></span><br><span class="line">    model = YOLO(<span class="string">&#x27;yolov8n.pt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始训练</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        results = model.train(</span><br><span class="line">            data=<span class="string">&#x27;/path/to/your/data.yaml&#x27;</span>,  <span class="comment"># ！！替换为你的 data.yaml 路径</span></span><br><span class="line">            epochs=<span class="number">50</span>,                      <span class="comment"># 训练轮数</span></span><br><span class="line">            batch=<span class="number">4</span>,                        <span class="comment"># 批大小 (根据CPU和内存调整)</span></span><br><span class="line">            imgsz=<span class="number">640</span>,                      <span class="comment"># 图像尺寸</span></span><br><span class="line">            device=<span class="string">&#x27;cpu&#x27;</span>,                   <span class="comment"># ！！指定使用 CPU</span></span><br><span class="line">            workers=<span class="number">4</span>,                      <span class="comment"># 数据加载进程数 (根据CPU核心数调整)</span></span><br><span class="line">            <span class="comment"># 其他可选参数:</span></span><br><span class="line">            <span class="comment"># project=&#x27;runs/train_cpu&#x27;,     # 自定义保存结果的项目名</span></span><br><span class="line">            <span class="comment"># name=&#x27;exp_cpu_run1&#x27;,          # 自定义本次运行的名称</span></span><br><span class="line">            <span class="comment"># patience=20,                  # 早停轮数 (如果验证集指标在20轮内没有提升则停止)</span></span><br><span class="line">            <span class="comment"># lr0=0.01,                     # 初始学习率 (通常用默认值)</span></span><br><span class="line">        )</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;训练完成！&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;结果保存在: <span class="subst">&#123;results.save_dir&#125;</span>&quot;</span>) <span class="comment"># results 对象在 v8 中不直接包含 save_dir，需要从 model 或 trainer 获取，或者直接查找 runs/train 目录</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;训练过程中发生错误: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后运行脚本：<code>python train_cpu.py</code></p>
+</li>
+</ol>
+<ul>
+<li>GPU版本</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">pip install ultralytics</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> torch <span class="comment"># Import torch to check CUDA availability first</span></span><br><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"><span class="keyword">import</span> os <span class="comment"># Import os for path joining if needed</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># --- Verify CUDA Availability ---</span></span><br><span class="line">    <span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">        device_to_use = <span class="number">0</span> <span class="comment"># Use the first available GPU (index 0)</span></span><br><span class="line">        <span class="comment"># device_to_use = &#x27;cuda&#x27; # Alternative way to specify default GPU</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;CUDA is available! Training on GPU device: <span class="subst">&#123;torch.cuda.get_device_name(device_to_use)&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;错误：未检测到兼容的 NVIDIA GPU 或 CUDA 配置不正确。&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;请检查驱动、CUDA Toolkit、cuDNN 和 GPU 版本的 PyTorch 是否已正确安装。&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;将尝试在 CPU 上运行，但这会非常慢...&quot;</span>)</span><br><span class="line">        device_to_use = <span class="string">&#x27;cpu&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- Configuration ---</span></span><br><span class="line">    <span class="comment"># ！！确保 data.yaml 路径正确！！ (使用 os.path.join 或 pathlib 更佳)</span></span><br><span class="line">    data_yaml_path = <span class="string">r&#x27;C:\Users\DELL\Desktop\test_data\test_data\data.yaml&#x27;</span></span><br><span class="line">    model_to_load = <span class="string">&#x27;yolov8x.pt&#x27;</span> <span class="comment"># Using the extra-large model</span></span><br><span class="line">    num_epochs = <span class="number">50</span>            <span class="comment"># Number of training epochs</span></span><br><span class="line">    batch_size = <span class="number">16</span>            <span class="comment"># !! Batch size for GPU (Adjust based on VRAM: 8, 16, 32, etc.)</span></span><br><span class="line">    image_size = <span class="number">640</span>           <span class="comment"># Input image size</span></span><br><span class="line">    num_workers = <span class="number">4</span>            <span class="comment"># Data loading workers (Adjust based on CPU cores)</span></span><br><span class="line">    project_name = <span class="string">&#x27;runs/train_gpu&#x27;</span> <span class="comment"># Directory to save results</span></span><br><span class="line">    run_name = <span class="string">&#x27;exp_gpu_yolov8x&#x27;</span>    <span class="comment"># Specific name for this run</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- Load Model ---</span></span><br><span class="line">    <span class="comment"># Model file will be downloaded automatically if not present locally</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Loading model: <span class="subst">&#123;model_to_load&#125;</span>&quot;</span>)</span><br><span class="line">    model = YOLO(model_to_load)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- Start Training ---</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;开始训练...&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  Data YAML: <span class="subst">&#123;data_yaml_path&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  Epochs: <span class="subst">&#123;num_epochs&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  Batch Size: <span class="subst">&#123;batch_size&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  Image Size: <span class="subst">&#123;image_size&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  Device: <span class="subst">&#123;device_to_use&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  Workers: <span class="subst">&#123;num_workers&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        results = model.train(</span><br><span class="line">            data=data_yaml_path,</span><br><span class="line">            epochs=num_epochs,</span><br><span class="line">            batch=batch_size,</span><br><span class="line">            imgsz=image_size,</span><br><span class="line">            device=device_to_use,   <span class="comment"># !! Use the determined device (e.g., 0 or &#x27;cpu&#x27;)</span></span><br><span class="line">            workers=num_workers,</span><br><span class="line">            project=project_name,   <span class="comment"># Specify project directory</span></span><br><span class="line">            name=run_name,          <span class="comment"># Specify run name</span></span><br><span class="line">            <span class="comment"># Other potentially useful optional parameters for GPU:</span></span><br><span class="line">            <span class="comment"># cache=True,           # Cache images in RAM/disk for faster loading (if RAM/disk allows)</span></span><br><span class="line">            <span class="comment"># patience=20,          # Early stopping patience</span></span><br><span class="line">            <span class="comment"># lr0=0.01,             # Initial learning rate</span></span><br><span class="line">            <span class="comment"># optimizer=&#x27;AdamW&#x27;,    # Optimizer (e.g., &#x27;AdamW&#x27;, &#x27;SGD&#x27;)</span></span><br><span class="line">            <span class="comment"># amp=True,             # Use Automatic Mixed Precision (can speed up training, reduce memory, requires compatible GPU)</span></span><br><span class="line">        )</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;训练完成！&quot;</span>)</span><br><span class="line">        <span class="comment"># Note: The &#x27;results&#x27; object itself might not directly contain the save path in all versions/contexts.</span></span><br><span class="line">        <span class="comment"># The results are reliably saved in the project/name directory.</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;训练结果和模型权重保存在: <span class="subst">&#123;os.path.join(project_name, run_name)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> torch.cuda.OutOfMemoryError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;错误：GPU 显存不足 (Out of Memory)！&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;尝试减小批处理大小 (batch=<span class="subst">&#123;batch_size&#125;</span>)。例如，尝试 batch=8 或 batch=4。&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;如果显存仍然不足，可以考虑减小图像尺寸 (imgsz) 或使用更小的模型 (如 yolov8l.pt, yolov8m.pt)。&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">except</span> FileNotFoundError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;错误：找不到文件或目录: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;请仔细检查 data.yaml 文件中的路径配置是否正确，特别是 &#x27;path&#x27;, &#x27;train&#x27;, &#x27;val&#x27; 字段。&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;确保 data.yaml 文件本身位于: <span class="subst">&#123;data_yaml_path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;训练过程中发生意外错误: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">import</span> traceback</span><br><span class="line">        traceback.print_exc() <span class="comment"># Print detailed traceback for debugging</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/2025/04/09/yolov8-train-model/train_model_cycle.png" class="lazyload placeholder" data-srcset="/2025/04/09/yolov8-train-model/train_model_cycle.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<p><strong>步骤 6：监控训练和评估结果</strong></p>
+<ol>
+<li><strong>观察终端输出:</strong> 查看每个 epoch 的进度、损失函数值（box_loss, cls_loss, dfl_loss）是否在下降，以及在验证集上的指标（如 P, R, mAP50, mAP50-95）是否在提升。</li>
+<li><strong>查找结果:</strong> 训练过程和结果默认会保存在 <code>runs/train/exp&lt;N&gt;</code> 目录下（例如 <code>runs/train/exp</code>, <code>runs/train/exp2</code> 等）。里面包含：
+<ul>
+<li><code>weights/</code>: 保存的模型权重文件。<code>best.pt</code> 是基于验证集指标最佳的模型，<code>last.pt</code> 是最后一个 epoch 的模型。<strong><code>best.pt</code> 通常是你需要的模型。</strong></li>
+<li>日志文件 (TensorBoard logs)。</li>
+<li>配置文件副本。</li>
+<li>验证结果图表和图片（例如 <code>confusion_matrix.png</code>, <code>results.png</code>, <code>val_batch0_pred.jpg</code> 等）。</li>
+</ul>
+</li>
+<li><strong>验证模型:</strong> 训练完成后（或中途），你可以使用 <code>best.pt</code> 在验证集上进行评估：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yolo val model=runs/train/exp&lt;N&gt;/weights/best.pt data=/path/to/your/data.yaml device=cpu</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>步骤 7：使用训练好的模型</strong></p>
+<p>训练完成后，你可以使用 <code>best.pt</code> 文件进行推理（目标检测）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yolo predict model=runs/train/exp&lt;N&gt;/weights/best.pt <span class="built_in">source</span>=/path/to/image.jpg device=cpu</span><br><span class="line"><span class="comment"># 或者对视频进行推理 (CPU上会很慢)</span></span><br><span class="line"><span class="comment"># yolo predict model=runs/train/exp&lt;N&gt;/weights/best.pt source=/path/to/video.mp4 device=cpu</span></span><br></pre></td></tr></table></figure>
+<p>或者在 Python 脚本中使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载你训练好的模型</span></span><br><span class="line">model = YOLO(<span class="string">&#x27;runs/train/exp&lt;N&gt;/weights/best.pt&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行预测</span></span><br><span class="line">results = model.predict(source=<span class="string">&#x27;/path/to/image.jpg&#x27;</span>, device=<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理结果 (例如，绘制边界框)</span></span><br><span class="line"><span class="keyword">for</span> r <span class="keyword">in</span> results:</span><br><span class="line">    boxes = r.boxes  <span class="comment"># Boxes object for bounding box outputs</span></span><br><span class="line">    masks = r.masks  <span class="comment"># Masks object for segmentation masks outputs</span></span><br><span class="line">    keypoints = r.keypoints  <span class="comment"># Keypoints object for pose outputs</span></span><br><span class="line">    probs = r.probs  <span class="comment"># Probs object for classification outputs</span></span><br><span class="line">    <span class="comment"># r.show()  # display to screen</span></span><br><span class="line">    r.save(filename=<span class="string">&#x27;result.jpg&#x27;</span>) <span class="comment"># save to disk</span></span><br></pre></td></tr></table></figure>
+<p><strong>CPU训练的局限性:</strong></p>
+<ul>
+<li><strong>速度极慢:</strong></li>
+<li><strong>内存限制:</strong> 小心 RAM 耗尽，特别是使用较大的 <code>batch</code> 或 <code>imgsz</code> 时。</li>
+<li><strong>可行性:</strong> 对于非常大的数据集或需要高精度（需要训练更长时间或更大模型）的任务，CPU 训练可能实际上不可行。考虑使用 Google Colab（提供免费 GPU）、Kaggle Kernels 或其他云 GPU 服务可能是更好的选择。</li>
+</ul>
+<h2 id="验证数据集获取">验证数据集获取</h2>
+<blockquote>
+<p>获取验证数据集（Validation Set）是训练过程中非常重要的一步，用于评估模型在未见过数据上的表现并调整超参数。当你的数据来自 CVAT 并导出了 YOLO 格式时，有以下几种主要方法来获取或指定验证数据集：</p>
+</blockquote>
+<p><strong>方法一：在 CVAT 中划分并导出 (推荐)</strong></p>
+<p>这是最方便、最不容易出错的方法，推荐优先考虑。</p>
+<ol>
+<li><strong>在 CVAT 中分配子集 (Subset):</strong>
+<ul>
+<li>在你 CVAT 的任务 (Task) 中，你可以将标注好的数据帧或图片分配到不同的子集。默认情况下，所有数据都在 <code>Default</code> 或 <code>Train</code> 子集中。</li>
+<li>进入你的任务，选择一些帧或图片（例如，随机选择总数据的 10-20%）。</li>
+<li>点击 “Actions” -&gt; “Change subset”。</li>
+<li>在弹出的对话框中，选择 <code>Validation</code> 作为目标子集，然后确认。</li>
+<li>这样你就告诉 CVAT，这些选中的数据属于验证集。你也可以同样地分配 <code>Test</code> 子集（如果需要）。</li>
+</ul>
+</li>
+<li><strong>导出时包含子集:</strong>
+<ul>
+<li>在你导出任务数据集时，选择 <code>YOLO</code> 或 <code>YOLO ZIP</code> 格式。</li>
+<li><strong>关键:</strong> 在导出选项中，确保你选择了导出所有子集，或者该格式默认就会将不同的子集分开导出。例如，<code>YOLO ZIP</code> 格式通常会自动创建 <code>train/</code>, <code>valid/</code>, <code>test/</code> 这样的子目录结构。</li>
+</ul>
+</li>
+<li><strong>检查导出的文件:</strong>
+<ul>
+<li>解压下载的 ZIP 文件。</li>
+<li>检查里面是否已经包含了类似 <code>train/</code> 和 <code>valid/</code> (或 <code>val/</code>) 的文件夹，每个文件夹下又分别有 <code>images/</code> 和 <code>labels/</code> 子目录。</li>
+<li>同时检查 <code>data.yaml</code> 文件，它应该已经自动配置好了 <code>train:</code> 和 <code>val:</code> 指向这些对应的文件夹（例如 <code>train: train/images</code>, <code>val: valid/images</code>）。</li>
+<li>如果导出文件已经是这种结构，那么你<strong>不需要</strong>再做任何事情，直接使用这个 <code>data.yaml</code> 文件进行训练即可。</li>
+</ul>
+</li>
+</ol>
+<p><strong>方法二：手动划分已导出的数据集</strong></p>
+<p>如果你从 CVAT 导出时没有划分小子集，或者导出的格式没有自动区分，那么你只有一个包含所有图像和标签的集合。你需要手动将其划分为训练集和验证集。</p>
+<ol>
+<li><strong>确定划分比例:</strong> 根据你的总数据量，决定一个合适的划分比例。常见的比例是 80% 训练 / 20% 验证，或者 70% / 30%。如果数据量很大，验证集比例可以适当降低。</li>
+<li><strong>创建目录结构:</strong> 在你的数据集根目录下（例如 <code>/home/user/my_dataset</code>），创建如下结构：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">my_dataset/</span><br><span class="line">├── train/</span><br><span class="line">│   ├── images/</span><br><span class="line">│   └── labels/</span><br><span class="line">├── valid/</span><br><span class="line">│   ├── images/</span><br><span class="line">│   └── labels/</span><br><span class="line">└── data.yaml  # 你需要创建或修改的文件</span><br></pre></td></tr></table></figure>
+（可能还需要保留原始的 <code>images/</code> 和 <code>labels/</code> 文件夹，或者直接从那里移动文件）。</li>
+<li><strong>编写脚本或手动移动文件 (推荐脚本):</strong>
+<ul>
+<li><strong>核心原则:</strong> 必须保证<strong>同一张图片</strong> (<code>.jpg</code>, <code>.png</code> 等) 和其<strong>对应的标注文件</strong> (<code>.txt</code>) <strong>始终被划分到同一个集合</strong> (要么都在 <code>train</code>，要么都在 <code>valid</code>)。文件名通常是一一对应的（除了扩展名）。</li>
+<li><strong>脚本方法 (Python 示例):</strong></li>
+</ul>
+</li>
+</ol>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">import</span> yaml  <span class="comment"># 需要安装 PyYAML: pip install pyyaml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 配置 ---</span></span><br><span class="line"><span class="comment"># ！！修改这里为你解压后的 CVAT 导出数据集的根目录！！</span></span><br><span class="line"><span class="comment"># 使用 Path 对象处理路径</span></span><br><span class="line">dataset_root = Path(<span class="string">r&#x27;/Users/zg/Downloads/task_13&#x27;</span>).resolve() <span class="comment"># &lt;&lt;--- 修改这里，并确保是绝对路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ！！指定你想要创建的新数据集根目录（如果想分开存放）！！</span></span><br><span class="line"><span class="comment"># 如果设为 None，则在原 dataset_root 下创建 train/valid 目录</span></span><br><span class="line"><span class="comment"># 使用 Path 对象处理路径</span></span><br><span class="line">output_root = dataset_root <span class="comment"># &lt;&lt;--- 可以修改为新的路径，例如 Path(&#x27;./yolov8_dataset&#x27;).resolve()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 Path 对象定义源路径</span></span><br><span class="line">source_data_dir = dataset_root / <span class="string">&#x27;obj_train_data&#x27;</span> <span class="comment"># 包含图像和标签的源文件夹</span></span><br><span class="line">obj_names_file = dataset_root / <span class="string">&#x27;obj.names&#x27;</span>       <span class="comment"># 类别名称文件</span></span><br><span class="line">train_txt_file = dataset_root / <span class="string">&#x27;train.txt&#x27;</span>       <span class="comment"># 原始图像列表文件</span></span><br><span class="line"></span><br><span class="line">train_ratio = <span class="number">0.8</span>  <span class="comment"># 训练集比例 (例如 0.8 表示 80%)</span></span><br><span class="line">random_seed = <span class="number">42</span>   <span class="comment"># 设置随机种子以保证每次划分结果一致 (可选)</span></span><br><span class="line"><span class="comment"># ------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置随机种子</span></span><br><span class="line"><span class="keyword">if</span> random_seed:</span><br><span class="line">    random.seed(random_seed)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 检查输入文件/目录是否存在 ---</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> dataset_root.is_dir():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;错误：数据集根目录不存在: <span class="subst">&#123;dataset_root&#125;</span>&quot;</span>)</span><br><span class="line">    exit()</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> source_data_dir.is_dir():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;错误：源数据目录不存在: <span class="subst">&#123;source_data_dir&#125;</span>&quot;</span>)</span><br><span class="line">    exit()</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> obj_names_file.is_file():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;错误：类别文件不存在: <span class="subst">&#123;obj_names_file&#125;</span>&quot;</span>)</span><br><span class="line">    exit()</span><br><span class="line"></span><br><span class="line">image_paths_from_txt = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> train_txt_file.is_file():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;警告：原始 train.txt 文件不存在: <span class="subst">&#123;train_txt_file&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;将尝试直接扫描源数据目录中的图像文件...&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># --- 从 train.txt 读取图像路径 ---</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;正在从 <span class="subst">&#123;train_txt_file&#125;</span> 读取图像路径...&quot;</span>)</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(train_txt_file, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="comment"># 读取原始路径行</span></span><br><span class="line">            raw_paths = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> f <span class="keyword">if</span> line.strip()]</span><br><span class="line"></span><br><span class="line">        image_paths_from_txt = []</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;正在验证 train.txt 中的图像路径...&quot;</span>)</span><br><span class="line">        processed_raw_paths_count = <span class="number">0</span> <span class="comment"># 计数器</span></span><br><span class="line">        <span class="keyword">for</span> raw_path <span class="keyword">in</span> raw_paths:</span><br><span class="line">            processed_raw_paths_count += <span class="number">1</span></span><br><span class="line">            <span class="comment"># --- 修复逻辑开始 ---</span></span><br><span class="line">            <span class="comment"># 1. 提取文件名 (例如 &#x27;frame_000000.png&#x27;)</span></span><br><span class="line">            filename = Path(raw_path).name</span><br><span class="line">            <span class="comment"># 2. 构建预期应该存在的路径 (在已知的 source_data_dir 下)</span></span><br><span class="line">            <span class="comment">#    使用 resolve() 确保是绝对路径</span></span><br><span class="line">            expected_path = (source_data_dir / filename).resolve()</span><br><span class="line">            <span class="comment"># --- 修复逻辑结束 ---</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 3. 验证这个构建出的预期路径是否存在</span></span><br><span class="line">            <span class="keyword">if</span> expected_path.is_file():</span><br><span class="line">                image_paths_from_txt.append(expected_path) <span class="comment"># 添加 *正确且存在的* 路径</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 打印更具体的警告，显示原始行和尝试查找的位置</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;警告：在 <span class="subst">&#123;source_data_dir&#125;</span> 中找不到 train.txt 行 &#x27;<span class="subst">&#123;raw_path&#125;</span>&#x27; 对应的文件 &#x27;<span class="subst">&#123;filename&#125;</span>&#x27; (预期路径: <span class="subst">&#123;expected_path&#125;</span>)，将跳过。&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;从 <span class="subst">&#123;train_txt_file&#125;</span> 原始读取 <span class="subst">&#123;<span class="built_in">len</span>(raw_paths)&#125;</span> 行。&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> image_paths_from_txt:</span><br><span class="line">             <span class="comment"># 如果修正后仍然没有有效路径，则触发后备扫描</span></span><br><span class="line">             <span class="keyword">raise</span> ValueError(<span class="string">&quot;train.txt 文件中没有找到任何有效且存在的图像文件。&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;验证后，有效图像路径数量: <span class="subst">&#123;<span class="built_in">len</span>(image_paths_from_txt)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;处理 train.txt 时出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;将尝试直接扫描源数据目录中的图像文件...&quot;</span>)</span><br><span class="line">        image_paths_from_txt = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 如果无法从 train.txt 读取或验证失败，则扫描目录 ---</span></span><br><span class="line"><span class="keyword">if</span> image_paths_from_txt <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;正在扫描目录 <span class="subst">&#123;source_data_dir&#125;</span> 中的图像文件...&quot;</span>)</span><br><span class="line">    <span class="comment"># 直接使用 source_data_dir (已经是 Path 对象)</span></span><br><span class="line">    image_paths_from_dir = <span class="built_in">list</span>(source_data_dir.glob(<span class="string">&#x27;*.jpg&#x27;</span>)) + \</span><br><span class="line">                           <span class="built_in">list</span>(source_data_dir.glob(<span class="string">&#x27;*.png&#x27;</span>)) + \</span><br><span class="line">                           <span class="built_in">list</span>(source_data_dir.glob(<span class="string">&#x27;*.jpeg&#x27;</span>))</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> image_paths_from_dir:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;错误：在 <span class="subst">&#123;source_data_dir&#125;</span> 中未找到任何图像文件。&quot;</span>)</span><br><span class="line">        exit()</span><br><span class="line">    <span class="comment"># 确保路径是绝对路径</span></span><br><span class="line">    image_paths = [p.resolve() <span class="keyword">for</span> p <span class="keyword">in</span> image_paths_from_dir]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;在目录中找到 <span class="subst">&#123;<span class="built_in">len</span>(image_paths)&#125;</span> 个图像文件。&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># 如果从 train.txt 成功读取并验证了路径，则使用这个列表</span></span><br><span class="line">    image_paths = image_paths_from_txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在继续之前，最终检查 image_paths 是否为空</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> image_paths:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;错误：未能收集到任何有效的图像路径来继续处理。&quot;</span>)</span><br><span class="line">    exit()</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 读取类别名称 ---</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(obj_names_file, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        class_names = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> f <span class="keyword">if</span> line.strip()]</span><br><span class="line">    num_classes = <span class="built_in">len</span>(class_names)</span><br><span class="line">    <span class="keyword">if</span> num_classes == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;错误：类别文件 <span class="subst">&#123;obj_names_file&#125;</span> 为空。&quot;</span>)</span><br><span class="line">        exit()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;读取到 <span class="subst">&#123;num_classes&#125;</span> 个类别: <span class="subst">&#123;class_names&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;读取类别文件 <span class="subst">&#123;obj_names_file&#125;</span> 时出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    exit()</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 创建输出目录 ---</span></span><br><span class="line"><span class="comment"># 确保 output_root 是 Path 对象</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(output_root, Path):</span><br><span class="line">    output_root = Path(output_root).resolve()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 Path 对象定义目标目录</span></span><br><span class="line">train_img_dir = output_root / <span class="string">&#x27;train&#x27;</span> / <span class="string">&#x27;images&#x27;</span></span><br><span class="line">train_lbl_dir = output_root / <span class="string">&#x27;train&#x27;</span> / <span class="string">&#x27;labels&#x27;</span></span><br><span class="line">valid_img_dir = output_root / <span class="string">&#x27;valid&#x27;</span> / <span class="string">&#x27;images&#x27;</span></span><br><span class="line">valid_lbl_dir = output_root / <span class="string">&#x27;valid&#x27;</span> / <span class="string">&#x27;labels&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># exist_ok=True 避免目录已存在时报错</span></span><br><span class="line">train_img_dir.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line">train_lbl_dir.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line">valid_img_dir.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line">valid_lbl_dir.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 划分数据集 ---</span></span><br><span class="line"><span class="comment"># 打乱图像路径列表 (Path 对象列表)</span></span><br><span class="line">random.shuffle(image_paths)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算训练集和验证集的分割点</span></span><br><span class="line">split_index = <span class="built_in">int</span>(<span class="built_in">len</span>(image_paths) * train_ratio)</span><br><span class="line">train_image_paths = image_paths[:split_index]</span><br><span class="line">valid_image_paths = image_paths[split_index:]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;总有效图像数: <span class="subst">&#123;<span class="built_in">len</span>(image_paths)&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;划分后训练集图像数: <span class="subst">&#123;<span class="built_in">len</span>(train_image_paths)&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;划分后验证集图像数: <span class="subst">&#123;<span class="built_in">len</span>(valid_image_paths)&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 复制或移动文件函数 ---</span></span><br><span class="line"><span class="comment"># copy_mode=True 复制文件, copy_mode=False 移动文件</span></span><br><span class="line">copy_mode = <span class="literal">True</span> <span class="comment"># 建议使用复制以保留原始数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_files</span>(<span class="params">source_img_paths, target_img_dir, target_lbl_dir, copy=<span class="literal">True</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将源图像和对应的标签文件复制或移动到目标目录&quot;&quot;&quot;</span></span><br><span class="line">    processed_count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> img_path <span class="keyword">in</span> source_img_paths: <span class="comment"># img_path 是 Path 对象</span></span><br><span class="line">        <span class="comment"># 构建对应的标签文件路径 (.txt)，标签文件在源目录 source_data_dir 下</span></span><br><span class="line">        <span class="comment"># 使用 img_path.stem 获取不带扩展名的文件名</span></span><br><span class="line">        lbl_path = source_data_dir / (img_path.stem + <span class="string">&#x27;.txt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查图像和标签文件是否存在</span></span><br><span class="line">        <span class="comment"># 图像路径 img_path 已经验证过存在</span></span><br><span class="line">        <span class="keyword">if</span> lbl_path.is_file():</span><br><span class="line">            <span class="comment"># 目标路径</span></span><br><span class="line">            target_img_path = target_img_dir / img_path.name</span><br><span class="line">            target_lbl_path = target_lbl_dir / lbl_path.name</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="keyword">if</span> copy:</span><br><span class="line">                    shutil.copy2(<span class="built_in">str</span>(img_path), <span class="built_in">str</span>(target_img_path)) <span class="comment"># copy2 接收字符串路径</span></span><br><span class="line">                    shutil.copy2(<span class="built_in">str</span>(lbl_path), <span class="built_in">str</span>(target_lbl_path))</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    shutil.move(<span class="built_in">str</span>(img_path), <span class="built_in">str</span>(target_img_path)) <span class="comment"># move 接收字符串路径</span></span><br><span class="line">                    shutil.move(<span class="built_in">str</span>(lbl_path), <span class="built_in">str</span>(target_lbl_path))</span><br><span class="line">                processed_count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;处理文件 <span class="subst">&#123;img_path.name&#125;</span> 时出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 图像文件应该存在，因为我们是从验证过的列表处理的</span></span><br><span class="line">            <span class="comment"># if not img_path.is_file():</span></span><br><span class="line">            <span class="comment">#      print(f&quot;警告：找不到图像文件 &#123;img_path&#125;，跳过。&quot;)</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;警告：找不到对应的标签文件 <span class="subst">&#123;lbl_path&#125;</span>，跳过图像 <span class="subst">&#123;img_path.name&#125;</span>。&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> processed_count</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 执行文件处理 ---</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;正在<span class="subst">&#123;<span class="string">&#x27;复制&#x27;</span> <span class="keyword">if</span> copy_mode <span class="keyword">else</span> <span class="string">&#x27;移动&#x27;</span>&#125;</span>训练集文件...&quot;</span>)</span><br><span class="line">train_processed = process_files(train_image_paths, train_img_dir, train_lbl_dir, copy=copy_mode)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;成功处理 <span class="subst">&#123;train_processed&#125;</span> 个训练集文件对。&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;正在<span class="subst">&#123;<span class="string">&#x27;复制&#x27;</span> <span class="keyword">if</span> copy_mode <span class="keyword">else</span> <span class="string">&#x27;移动&#x27;</span>&#125;</span>验证集文件...&quot;</span>)</span><br><span class="line">valid_processed = process_files(valid_image_paths, valid_img_dir, valid_lbl_dir, copy=copy_mode)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;成功处理 <span class="subst">&#123;valid_processed&#125;</span> 个验证集文件对。&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 生成 data.yaml 文件 ---</span></span><br><span class="line">yaml_path = output_root / <span class="string">&#x27;data.yaml&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用相对于 output_root 的路径</span></span><br><span class="line">yaml_data = &#123;</span><br><span class="line">    <span class="comment"># 使用 resolve() 获取绝对路径字符串</span></span><br><span class="line">    <span class="string">&#x27;path&#x27;</span>: <span class="built_in">str</span>(output_root.resolve()),</span><br><span class="line">    <span class="comment"># 相对路径指向新创建的目录</span></span><br><span class="line">    <span class="string">&#x27;train&#x27;</span>: <span class="string">&#x27;train/images&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;val&#x27;</span>: <span class="string">&#x27;valid/images&#x27;</span>,</span><br><span class="line">    <span class="comment"># &#x27;test&#x27;: &#x27;test/images&#x27;, # 如果有测试集</span></span><br><span class="line">    <span class="string">&#x27;nc&#x27;</span>: num_classes,</span><br><span class="line">    <span class="string">&#x27;names&#x27;</span>: class_names</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(yaml_path, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        yaml.dump(yaml_data, f, sort_keys=<span class="literal">False</span>, default_flow_style=<span class="literal">False</span>) <span class="comment"># default_flow_style=False 更好看</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;data.yaml 文件已生成: <span class="subst">&#123;yaml_path&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;内容:&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(yaml.dump(yaml_data, sort_keys=<span class="literal">False</span>, default_flow_style=<span class="literal">False</span>))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;数据集划分完成！&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;生成 data.yaml 文件时出错: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>你需要根据你的实际情况修改 <code>dataset_root</code>, <code>source_images_dir</code>, <code>source_labels_dir</code> 和 <code>train_ratio</code>。</p>
+</li>
+<li>
+<p>这个脚本会将文件<strong>移动</strong>到新目录。如果你想保留原始文件，可以将 <code>shutil.move</code> 改为 <code>shutil.copy</code>。</p>
+</li>
+<li>
+<p><strong>手动方法 (仅适用于少量数据):</strong> 创建 <code>train</code> 和 <code>valid</code> 子目录，然后手动将图像和对应的 <code>.txt</code> 文件拖拽到相应的 <code>images</code> 和 <code>labels</code> 文件夹中，确保比例大致正确且配对无误。非常容易出错。</p>
+</li>
+</ul>
+<ol start="4">
+<li><strong>修改/创建 <code>data.yaml</code> 文件:</strong>
+<ul>
+<li>在你手动创建了 <code>train/</code> 和 <code>valid/</code> 目录结构后，你需要像下面这样配置 <code>data.yaml</code>：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">path:</span> <span class="string">/home/user/my_dataset</span>   <span class="comment"># 数据集根目录</span></span><br><span class="line"><span class="attr">train:</span> <span class="string">train/images</span>          <span class="comment"># 指向训练图像文件夹</span></span><br><span class="line"><span class="attr">val:</span> <span class="string">valid/images</span>            <span class="comment"># 指向验证图像文件夹</span></span><br><span class="line"><span class="comment"># test: test/images          # 如果有测试集</span></span><br><span class="line"></span><br><span class="line"><span class="attr">nc:</span> <span class="number">3</span>                        <span class="comment"># 你的类别数量</span></span><br><span class="line"><span class="attr">names:</span> [<span class="string">&#x27;car&#x27;</span>, <span class="string">&#x27;person&#x27;</span>, <span class="string">&#x27;truck&#x27;</span>] <span class="comment"># 你的类别名称列表</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>方法三：使用 <code>.txt</code> 文件列表 (如果你选择了方案A来创建<code>data.yaml</code>)</strong></p>
+<p>如果你是根据 <code>obj.data</code> 文件中的 <code>train = .../train.txt</code> 和 <code>valid = .../valid.txt</code> 来配置 <code>data.yaml</code> 的，那么你需要确保：</p>
+<ol>
+<li><code>train.txt</code> 文件确实存在，并且里面列出了所有<strong>训练集</strong>图像的<strong>正确路径</strong>（绝对路径或相对于 <code>data.yaml</code> 中 <code>path</code> 的路径）。</li>
+<li>你有一个类似的 <code>valid.txt</code> 文件，里面列出了所有<strong>验证集</strong>图像的<strong>正确路径</strong>。</li>
+<li><code>data.yaml</code> 文件中的 <code>train:</code> 和 <code>val:</code> 字段正确指向了这两个 <code>.txt</code> 文件。</li>
+</ol>
+<p>如果你只有一个包含所有图像路径的 <code>.txt</code> 文件，你需要像方法二中划分文件一样，将这个 <code>.txt</code> 文件也<strong>划分成两个文件</strong>：<code>train.txt</code> 和 <code>valid.txt</code>，确保划分比例合适。</p>
+<p><strong>总结:</strong></p>
+<ul>
+<li><strong>最佳方式:</strong> 在 CVAT 中就使用 “Subset” 功能区分好训练集和验证集，然后导出 <code>YOLO ZIP</code> 格式，通常 <code>data.yaml</code> 就配置好了。</li>
+<li><strong>次佳方式:</strong> 如果导出的数据未划分，使用脚本（如上例）将其自动划分为 <code>train/</code> 和 <code>valid/</code> 目录结构，然后相应地配置 <code>data.yaml</code> 指向这些目录。</li>
+<li><strong>如果依赖 <code>.txt</code> 列表:</strong> 确保你有分别列出训练图像和验证图像路径的 <code>train.txt</code> 和 <code>valid.txt</code> 文件，并在 <code>data.yaml</code> 中正确引用它们。</li>
+</ul>
+<p>无论哪种方法，最终目标都是要有一个明确区分的训练数据集和一个验证数据集，并且 <code>data.yaml</code> 文件能够准确地告诉 YOLOv8 框架去哪里找到它们。</p>
+<h3 id="训练结果">训练结果</h3>
+<p><img src="/2025/04/09/yolov8-train-model/gpu_train_model.png" class="lazyload placeholder" data-srcset="/2025/04/09/yolov8-train-model/gpu_train_model.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">python train_model.py </span><br><span class="line">PyTorch device: cpu</span><br><span class="line">Ultralytics 8.3.105 🚀 Python-3.12.3 torch-2.6.0+cu124 CPU (Intel Xeon E5-2690 v3 2.60GHz)</span><br><span class="line">engine/trainer: task=detect, mode=train, model=yolov8n.pt, data=/home/czq2/test_data/data.yaml, epochs=50, time=None, patience=100, batch=4, imgsz=640, save=True, save_period=-1, cache=False, device=cpu, workers=4, project=None, name=train2, exist_ok=False, pretrained=True, optimizer=auto, verbose=True, seed=0, deterministic=True, single_cls=False, rect=False, cos_lr=False, close_mosaic=10, resume=False, amp=True, fraction=1.0, profile=False, freeze=None, multi_scale=False, overlap_mask=True, mask_ratio=4, dropout=0.0, val=True, split=val, save_json=False, conf=None, iou=0.7, max_det=300, half=False, dnn=False, plots=True, source=None, vid_stride=1, stream_buffer=False, visualize=False, augment=False, agnostic_nms=False, classes=None, retina_masks=False, embed=None, show=False, save_frames=False, save_txt=False, save_conf=False, save_crop=False, show_labels=True, show_conf=True, show_boxes=True, line_width=None, format=torchscript, keras=False, optimize=False, int8=False, dynamic=False, simplify=True, opset=None, workspace=None, nms=False, lr0=0.01, lrf=0.01, momentum=0.937, weight_decay=0.0005, warmup_epochs=3.0, warmup_momentum=0.8, warmup_bias_lr=0.1, box=7.5, cls=0.5, dfl=1.5, pose=12.0, kobj=1.0, nbs=64, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, degrees=0.0, translate=0.1, scale=0.5, shear=0.0, perspective=0.0, flipud=0.0, fliplr=0.5, bgr=0.0, mosaic=1.0, mixup=0.0, copy_paste=0.0, copy_paste_mode=flip, auto_augment=randaugment, erasing=0.4, crop_fraction=1.0, cfg=None, tracker=botsort.yaml, save_dir=runs/detect/train2</span><br><span class="line">Downloading https://ultralytics.com/assets/Arial.Unicode.ttf to &#x27;/home/czq2/.config/Ultralytics/Arial.Unicode.ttf&#x27;...</span><br><span class="line"><span class="meta prompt_">100%</span><span class="language-bash">|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 22.2M/22.2M [00:01&lt;00:00, 21.2MB/s]</span></span><br><span class="line">Overriding model.yaml nc=80 with nc=4</span><br><span class="line"></span><br><span class="line">                   from  n    params  module                                       arguments                     </span><br><span class="line">  0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 </span><br><span class="line">  1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                </span><br><span class="line">  2                  -1  1      7360  ultralytics.nn.modules.block.C2f             [32, 32, 1, True]             </span><br><span class="line">  3                  -1  1     18560  ultralytics.nn.modules.conv.Conv             [32, 64, 3, 2]                </span><br><span class="line">  4                  -1  2     49664  ultralytics.nn.modules.block.C2f             [64, 64, 2, True]             </span><br><span class="line">  5                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               </span><br><span class="line">  6                  -1  2    197632  ultralytics.nn.modules.block.C2f             [128, 128, 2, True]           </span><br><span class="line">  7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              </span><br><span class="line">  8                  -1  1    460288  ultralytics.nn.modules.block.C2f             [256, 256, 1, True]           </span><br><span class="line">  9                  -1  1    164608  ultralytics.nn.modules.block.SPPF            [256, 256, 5]                 </span><br><span class="line"> 10                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, &#x27;nearest&#x27;]          </span><br><span class="line"> 11             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 12                  -1  1    148224  ultralytics.nn.modules.block.C2f             [384, 128, 1]                 </span><br><span class="line"> 13                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, &#x27;nearest&#x27;]          </span><br><span class="line"> 14             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 15                  -1  1     37248  ultralytics.nn.modules.block.C2f             [192, 64, 1]                  </span><br><span class="line"> 16                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                </span><br><span class="line"> 17            [-1, 12]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 18                  -1  1    123648  ultralytics.nn.modules.block.C2f             [192, 128, 1]                 </span><br><span class="line"> 19                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              </span><br><span class="line"> 20             [-1, 9]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 21                  -1  1    493056  ultralytics.nn.modules.block.C2f             [384, 256, 1]                 </span><br><span class="line"> 22        [15, 18, 21]  1    752092  ultralytics.nn.modules.head.Detect           [4, [64, 128, 256]]           </span><br><span class="line">Model summary: 129 layers, 3,011,628 parameters, 3,011,612 gradients, 8.2 GFLOPs</span><br><span class="line"></span><br><span class="line">Transferred 319/355 items from pretrained weights</span><br><span class="line">Freezing layer &#x27;model.22.dfl.conv.weight&#x27;</span><br><span class="line">train: Scanning /home/czq2/test_data/train/labels... 495 images, 201 backgrounds, 0 corrupt: 100%|██████████| 495/495 [00:14&lt;00:00, 34.44it/s]</span><br><span class="line">train: New cache created: /home/czq2/test_data/train/labels.cache</span><br><span class="line">val: Scanning /home/czq2/test_data/valid/labels... 124 images, 47 backgrounds, 0 corrupt: 100%|██████████| 124/124 [00:03&lt;00:00, 37.91it/s]</span><br><span class="line">val: New cache created: /home/czq2/test_data/valid/labels.cache</span><br><span class="line">Plotting labels to runs/detect/train2/labels.jpg... </span><br><span class="line">/home/czq2/yolo_cpu_env/lib/python3.12/site-packages/ultralytics/utils/plotting.py:587: UserWarning: Glyph 35270 (\N&#123;CJK UNIFIED IDEOGRAPH-89C6&#125;) missing from font(s) DejaVu Sans.</span><br><span class="line">  plt.savefig(fname, dpi=200)</span><br><span class="line">/home/czq2/yolo_cpu_env/lib/python3.12/site-packages/ultralytics/utils/plotting.py:587: UserWarning: Glyph 39057 (\N&#123;CJK UNIFIED IDEOGRAPH-9891&#125;) missing from font(s) DejaVu Sans.</span><br><span class="line">optimizer: &#x27;optimizer=auto&#x27; found, ignoring &#x27;lr0=0.01&#x27; and &#x27;momentum=0.937&#x27; and determining best &#x27;optimizer&#x27;, &#x27;lr0&#x27; and &#x27;momentum&#x27; automatically... </span><br><span class="line">optimizer: AdamW(lr=0.00125, momentum=0.9) with parameter groups 57 weight(decay=0.0), 64 weight(decay=0.0005), 63 bias(decay=0.0)</span><br><span class="line">Image sizes 640 train, 640 val</span><br><span class="line">Using 0 dataloader workers</span><br><span class="line">Logging results to runs/detect/train2</span><br><span class="line">Starting training for 50 epochs...</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">       1/50         0G     0.6873      4.307      1.265          5        640:   2%|▏         | 2/124 [00:02&lt;02:20,  1.15s/it]Downloading https://ultralytics.com/assets/Arial.ttf to &#x27;/home/czq2/.config/Ultralytics/Arial.ttf&#x27;...</span><br><span class="line"><span class="meta prompt_">100%</span><span class="language-bash">|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 755k/755k [00:00&lt;00:00, 2.17MB/s]</span></span><br><span class="line">       1/50         0G      1.137      2.561      1.378          7        640: 100%|██████████| 124/124 [02:08&lt;00:00,  1.03s/it]                   | 512k/755k [00:00&lt;00:00, 1.86MB/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 16/16 [00:19&lt;00:00,  1.24s/it]</span><br><span class="line">                   all        124         77        0.7      0.948      0.802      0.538</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>参数定义</p>
+</li>
+<li>
+<p>我们来详细解释一下 YOLOv8 训练过程中这一行输出的含义：</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">12/50         0G     0.8517     0.8027      1.157          4        640: 100%|██████████| 124/124 [02:08&lt;00:00,  1.04s/it]</span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 16/16 [00:19&lt;00:00,  1.23s/it]</span><br><span class="line">  all        124         77          1      0.999      0.995      0.853</span><br></pre></td></tr></table></figure>
+<p><strong>第一部分：训练进度和损失 (Training Progress and Loss)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">12/50         0G     0.8517     0.8027      1.157          4        640: 100%|██████████| 124/124 [02:08&lt;00:00,  1.04s/it]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>Epoch</code></strong>: <code>12/50</code>
+<ul>
+<li>表示当前训练正在进行第 <strong>12</strong> 轮 (epoch)，总共计划训练 <strong>50</strong> 轮。一个 epoch 指的是模型完整地看过一遍所有的训练数据。</li>
+</ul>
+</li>
+<li><strong><code>GPU_mem</code></strong>: <code>0G</code>
+<ul>
+<li>显示当前 <strong>GPU 显存 (VRAM) 的使用量</strong>。这里显示 <code>0G</code> <strong>非常奇怪</strong>，尤其是如果你指定了使用 GPU 进行训练。
+<ul>
+<li><strong>可能的原因 1 (最可能):</strong> 训练实际上是在 <strong>CPU</strong> 上运行的，即使你可能指定了 <code>device=0</code> 或 <code>device='cuda'</code>。这通常发生在 PyTorch 无法正确检测或使用你的 GPU 时（驱动、CUDA、cuDNN 或 PyTorch 版本问题）。<strong>你需要回过头去验证你的 GPU 环境是否配置正确，以及 PyTorch 是否能真正使用 GPU (<code>torch.cuda.is_available()</code> 必须为 <code>True</code>)。</strong></li>
+<li><strong>可能的原因 2 (不太可能):</strong> 你的模型和批次大小非常小，以至于显存占用可以忽略不计（对于 YOLOv8 尤其是 <code>x</code> 模型和 <code>batch=4</code> 来说几乎不可能）。</li>
+<li><strong>可能的原因 3 (极少):</strong> 监控显存的工具或接口暂时失效。</li>
+</ul>
+</li>
+<li><strong>正常的 GPU 训练</strong> 应该会显示一个非零的显存使用值，例如 <code>5.8G</code>, <code>10.2G</code> 等，具体取决于模型大小、批大小和图像尺寸。</li>
+</ul>
+</li>
+<li><strong><code>box_loss</code></strong>: <code>0.8517</code>
+<ul>
+<li><strong>边界框损失 (Bounding Box Loss)</strong>。这个值衡量的是模型预测的边界框位置/大小与真实边界框之间的差异。值越低越好。</li>
+</ul>
+</li>
+<li><strong><code>cls_loss</code></strong>: <code>0.8027</code>
+<ul>
+<li><strong>分类损失 (Classification Loss)</strong>。这个值衡量的是模型预测的物体类别与真实类别之间的差异。值越低越好。</li>
+</ul>
+</li>
+<li><strong><code>dfl_loss</code></strong>: <code>1.157</code>
+<ul>
+<li><strong>分布焦点损失 (Distribution Focal Loss)</strong>。这是 YOLOv8（尤其是 v8 及更新版本）引入的一种用于边界框回归的损失，它将边界框的连续坐标回归问题转化为离散的概率分布预测问题，有助于提高定位精度。值越低越好。</li>
+</ul>
+</li>
+<li><strong><code>Instances</code></strong>: <code>4</code>
+<ul>
+<li>当前正在处理的这个批次 (batch) 中包含的<strong>目标实例 (objects) 的数量</strong>。这里是 4 个。注意这不是批大小（batch size，即图像数量）。</li>
+</ul>
+</li>
+<li><strong><code>Size</code></strong>: <code>640</code>
+<ul>
+<li>训练时输入模型的<strong>图像尺寸</strong> (通常是 height 和 width 都设为这个值，即 640x640)。</li>
+</ul>
+</li>
+<li><strong><code>100%|██████████| 124/124 [02:08&lt;00:00, 1.04s/it]</code></strong>:
+<ul>
+<li>这是一个<strong>进度条</strong>，显示当前 epoch 内训练数据的处理进度。</li>
+<li><code>100%</code>: 表示当前 epoch 的训练数据已全部处理完毕。</li>
+<li><code>124/124</code>: 表示当前 epoch 共处理了 124 个批次 (batches)，现在已经完成了第 124 个批次。 (总批次数 = 总训练图像数 / batch_size)</li>
+<li><code>[02:08&lt;00:00</code>]: 当前 epoch 已用时 2 分 8 秒，预计剩余时间 0 秒。</li>
+<li><code>1.04s/it]</code>: 处理一个批次 (iteration) 平均需要 1.04 秒。这个速度<strong>对于 GPU 来说相当慢</strong>，进一步印证了可能是在 CPU 上运行。GPU 训练通常是 <code>ms/it</code> (毫秒每迭代)。</li>
+</ul>
+</li>
+</ul>
+<p><strong>第二部分：验证结果评估 (Validation Results Evaluation)</strong></p>
+<p>这部分通常在每个 epoch 的训练结束后（或者根据设置的频率）运行，使用验证集 (Validation Set) 来评估当前模型的性能。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 16/16 [00:19&lt;00:00,  1.23s/it]</span><br><span class="line">  all        124         77          1      0.999      0.995      0.853</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>Class</code></strong>: <code>all</code>
+<ul>
+<li>表示这一行显示的是<strong>所有类别</strong>的平均性能指标。如果你的数据集有多个类别，通常还会在这里或下面几行列出每个单独类别的指标。</li>
+</ul>
+</li>
+<li><strong><code>Images</code></strong>: <code>124</code>
+<ul>
+<li>你的<strong>验证集</strong>中包含 <strong>124</strong> 张图像。</li>
+</ul>
+</li>
+<li><strong><code>Instances</code></strong>: <code>77</code>
+<ul>
+<li>你的<strong>验证集</strong>中所有图像总共包含 <strong>77</strong> 个已标注的目标实例。</li>
+</ul>
+</li>
+<li><strong><code>Box(P R mAP50 mAP50-95)</code></strong>: 这是目标检测任务最核心的评估指标：
+<ul>
+<li><strong><code>P</code> (Precision / 精确率):</strong> <code>1</code>
+<ul>
+<li>指模型预测为正例（检测到物体）的样本中，<strong>真正是正例</strong>的比例。计算公式：<code>TP / (TP + FP)</code> (真阳性 / (真阳性 + 假阳性))。</li>
+<li>值为 <code>1</code> 意味着所有模型检测到的物体都是正确的（没有误报）。这个值通常在 IoU (Intersection over Union) 阈值为 0.5 时计算，并且可能是针对某个最优置信度阈值得出的。</li>
+</ul>
+</li>
+<li><strong><code>R</code> (Recall / 召回率):</strong> <code>0.999</code>
+<ul>
+<li>指所有<strong>真实的</strong>正例（所有实际存在的物体）中，被模型<strong>成功预测出来</strong>的比例。计算公式：<code>TP / (TP + FN)</code> (真阳性 / (真阳性 + 假阴性))。</li>
+<li>值 <code>0.999</code> 意味着模型找回了验证集中几乎所有（99.9%）的真实物体（漏报非常少）。这个值通常也是在 IoU 阈值为 0.5 时计算，并且可能是针对某个最优置信度阈值得出的。</li>
+</ul>
+</li>
+<li><strong><code>mAP50</code> (mean Average Precision @ IoU=0.5):</strong> <code>0.995</code>
+<ul>
+<li>IoU (交并比) 阈值设置为 0.5 时，计算所有类别的平均精度 (Average Precision, AP)，然后对所有类别求平均值 (mean AP)。AP 是综合了精确率和召回率的指标，它衡量的是 PR 曲线下的面积。</li>
+<li><code>0.995</code> 是一个非常高的值，表示在 IoU=0.5 的标准下，模型性能非常好。</li>
+</ul>
+</li>
+<li><strong><code>mAP50-95</code> (mean Average Precision @ IoU=0.5:0.95):</strong> <code>0.853</code>
+<ul>
+<li>这是更严格、也是 COCO 数据集竞赛等场景中更常用的标准。它计算了 IoU 阈值从 0.5 到 0.95、步长为 0.05 的一系列 IoU 值下的 mAP，然后对这些 mAP 求平均。</li>
+<li>这个指标对检测框的定位精度要求更高。<code>0.853</code> (即 85.3%) 是一个相当不错的性能，表明模型不仅能检测到物体，而且定位也比较准确。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>100%|██████████| 16/16 [00:19&lt;00:00, 1.23s/it]</code></strong>:
+<ul>
+<li>这是<strong>验证过程</strong>的进度条。</li>
+<li><code>16/16</code>: 表示验证集被分成了 16 个批次进行处理，现在已经处理完了。 (验证批次数 = 总验证图像数 / 验证批大小，验证批大小可能与训练批大小不同)。</li>
+<li><code>[00:19&lt;00:00</code>]: 整个验证过程用时 19 秒。</li>
+<li><code>1.23s/it]</code>: 处理一个验证批次平均需要 1.23 秒。这个速度同样说明很可能是在 CPU 上运行。</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2025/04/09/yolov8-train-model/" target="_blank" title="基于yolov8根据CVAT标注结果训练模型">https://caozhaoqi.github.io/2025/04/09/yolov8-train-model/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/05/15/scene-detect-method/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">PySceneDetect 中场景检测器</div>
+      </div>
+      
+      <!-- <div class="content">
+        PySceneDetect 中场景检测器
+
+主要包括：ContentDetector, ThresholdDetecto
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/04/07/nuclio-build-use/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Nuclio与CVAT使用yolov8目标检测模型实现半自动化标注</div>
+      </div>
+      <!-- <div class="content">
+        
+Nuclio Dashboard 是 Nuclio Serverless 平台的一个基于 Web 的图形用户界面（GU
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/logo.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>浅斟低唱</h2>
+        
+        
+          <p>博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="mailto:1150118968@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/caozhaoqi/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B"><span class="toc-text">模型简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CVAT%E7%AE%80%E4%BB%8B"><span class="toc-text">CVAT简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CVAT%E6%A0%87%E6%B3%A8%E7%BB%93%E6%9E%9C%E5%AF%BC%E5%87%BA"><span class="toc-text">CVAT标注结果导出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%95%B0%E6%8D%AE%E9%9B%86%E8%8E%B7%E5%8F%96"><span class="toc-text">验证数据集获取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C"><span class="toc-text">训练结果</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/11/26/agent-research-llm/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">11-26</span>
+                
+              </div>
+              <a class="post-title" href="/2025/11/26/agent-research-llm/">基于 FastAPI + LangChain 的简单agent实现</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/30/mysql-cluster-use/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-e5c15010b8ba4608a1974403a02a2da0_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-30</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/30/mysql-cluster-use/">实现高可用 MySQL 集群</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/09/17/pypi-mirror-self/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">09-17</span>
+                
+              </div>
+              <a class="post-title" href="/2025/09/17/pypi-mirror-self/">使用Devpi与Nginx构建高可用PyPI镜像源</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/29/ss-build-doc/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-7cfc909ebe8d83683909846edd6b5232_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-29</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/29/ss-build-doc/">使用 Docker Compose 快速部署 Shadowsocks 代理服务教程</a>
+            </div>
+          </div>
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/08/14/pyav-use-video/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">08-14</span>
+                
+              </div>
+              <a class="post-title" href="/2025/08/14/pyav-use-video/">PyAV用于视频剪辑处理</a>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </section>
+
+    
+  </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.8)';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+              
+                <a href="/atom.xml" class="social">
+                  
+                    <i class="fas fa-rss" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="mailto:1150118968@qq.com" class="social">
+                  
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi" class="social">
+                  
+                    <i class="fas fa-github" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+              
+                <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968" class="social">
+                  
+                    <i class="fas fa-qq" aria-hidden="true"></i>
+                  
+                </a>
+              
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2023 - Now <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi">Zhaoqi.Cao</a> | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/yuang01/theme">Bamboo</a></p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>Total visits：<span id="busuanzi_value_site_pv"></span> times
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>Number of visitors：<span id="busuanzi_value_site_uv"></span> people
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="7289498727"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<!-- <link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
+
+<script>
+  var headerEl = 'h2, h3, h4',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -70,
+    // headingsOffset: -($(window).height() * 0.4 - 45),
+    headingsOffset: -($(window).height() * 0.4 - 70),
+    // positionFixedSelector: '.toc-main',
+    // positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    orderedList: true,
+    collapseDepth: 20,
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 150) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('side_toc')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  /* .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  } */
+</style>
+ 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = 'copy';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <!-- 弹幕所需的css和js -->
+    
+  <!-- 弹幕插件 -->
+  <link href="/js/danmu/barrager.css" rel="stylesheet">
+  <script src="/js/danmu/jquery.barrager.js"></script>
+
+<!-- 具体js，请前往valine/script.ejs查看 -->
+
+    <script>
+  var requiredFields = 'nick,mail';
+  requiredFields = requiredFields.split(',');
+  comment_el = '.comment';
+  let looperValine = null;
+  load_valine = function () {
+    if ($(comment_el).length) {
+      var valine = new Valine({
+        el: '#vcomment',
+        path: window.location.pathname,
+        notify: false,
+        verify: false,
+        app_id: "PZlzAc6FzhlN4QJ4gUgas7AQ-gzGzoHsz",
+        app_key: "YYSIuQIfbSqnug2Kq117KGAK",
+        placeholder: "客官，说点什么吧",
+        avatar: "",
+        master: "d0ca78e6945a9e55aaf81645413dde96",   //博主邮箱md5
+        tagMeta: ["博主","小伙伴","访客"],     //标识字段名
+        friends: "",
+        metaPlaceholder: { "nick": "昵称/QQ号", "mail": "邮箱" },
+        requiredFields: requiredFields,
+        enableQQ: true,
+      });
+      function debounce(fn) {
+        var timerID = null
+        return function () {
+          var arg = arguments[0]   //获取事件
+          if (timerID) {
+            clearTimeout(timerID)
+          }
+          timerID = setTimeout(function () {
+            fn(arg)              //事件传入函数
+          }, 200)
+        }
+      }
+      //查询评论 valine.Q('*').limit(7) -- 查询所有，限制7条, 下面的的代码是查询当前页面
+      var themeDanmu = eval('true');
+      var themeLoop = eval('true');
+      var themeLooperTime = '5000' || 5000;
+      var speed = '40' || 20;
+      var isBarrager = true;
+      if (themeDanmu == true) {
+        do_barrager();
+        if ($('.danmuBox').length <= 0) {
+          $('.navbar').append('<div class="danmuBox"><div class="danmuBtn open"><span class="danmuCircle"></span><span class="danmuText">弹幕</span></div></div>');
+        }
+        $('.danmuBtn').on('click', debounce(
+          function () {
+            if ($('.danmuBtn').hasClass('open')) {
+              $('.danmuBtn').removeClass('open')
+              clearInterval(looperValine);
+              $.fn.barrager.removeAll();
+            } else {
+              $('.danmuBtn').addClass("open");
+              do_barrager();
+            }
+          }
+        ))
+      }
+      function do_barrager() {
+        isBarrager && valine.Q(window.location.pathname).find().then(function (comments) {
+          // var num = 0; // 可以记录条数，循环调用的时候只取最新的评论放入弹幕中
+          var run_once = true;
+          var looper_time = themeLooperTime;
+          var total = comments.length;
+          // var looper = null;
+          var index = 0;
+          if (total > 0) {
+            barrager();
+          } else {
+            // 当评论数为0的时候，自动关闭弹幕
+            // $('.danmuBtn').removeClass('open');
+          }
+          function barrager() {
+            if (run_once) {
+              //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+              looperValine = setInterval(barrager, looper_time);
+              run_once = false;
+            }
+            var content = comments[index]._serverData.comment;
+            var email = comments[index]._serverData.mail;
+            var link = comments[index]._serverData.link;
+            var newcontent = content.substring(0, 50).replace(/<[^>]+>/g, "");
+            //发布一个弹幕
+            const item = {
+              img: `https://q1.qlogo.cn/g?b=qq&nk=${email}&s=640`, //图片 
+              info: newcontent, //文字 
+              href: link, //链接 
+              close: true, //显示关闭按钮 
+              speed: speed, //延迟,单位秒,默认6 
+              color: '#fff', //颜色,默认白色 
+              old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+            }
+            $('body').barrager(item);
+            //索引自增
+            index++;
+            //所有弹幕发布完毕，清除计时器。
+            if (index == total) {
+              clearInterval(looperValine);
+              if (themeLoop === true) {
+                setTimeout(function () {
+                  do_barrager();
+                }, 5000);
+              } else {
+                $('.danmuBtn').removeClass('open');
+              }
+              return false;
+            }
+
+          }
+        })
+      }
+    }
+  };
+  $(document).ready(load_valine);
+  document.addEventListener('pjax:send', function (e) {
+    
+      $('.danmuBox').length > 0 && $('.danmuBox').remove()
+      looperValine && clearInterval(looperValine);
+      $.fn.barrager.removeAll();
+    
+  })
+  document.addEventListener('pjax:complete', function () {
+    load_valine();
+  });
+</script>
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+<!-- 轮播图标签 -->
+<script>
+  var bambooSwiperTag = {};
+  function load_swiper() {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    loadCSS("https://unpkg.com/swiper@6/swiper-bundle.min.css")
+    loadScript("https://unpkg.com/swiper@6/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    bambooSwiperTag.swiper = new Swiper('.post-swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      autoplay: true ? {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        init: function(){
+          swiperAnimateCache(this); //隐藏动画元素 
+          swiperAnimate(this); //初始化完成开始动画
+        }, 
+        slideChangeTransitionEnd: function(){ 
+          swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+          //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+        } 
+      }
+    });
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    if (!document.querySelectorAll(".post-swiper-container")[0]) return;
+    if (typeof bambooSwiperTag.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
