@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>python 使用tesseract实现实时监控桌面 | Zhaoqi.Cao static blog</title>
+  <title>基于 RAG 与 Agent 协作的智能面试助手开发指南 | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -622,21 +622,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-573ac3e25de03fad9c32add5a05e5cfc_1440w.webp')">
+  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        python 使用tesseract实现实时监控桌面
+        基于 RAG 与 Agent 协作的智能面试助手开发指南
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2024-08-21 |
+          <i class="fas fa-calendar"></i> Published in：2025-11-28 |
         </span>
       
 
@@ -645,11 +645,11 @@
       
         <div class="post-detail-header_wordcount">
           <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 801 |
+            <i class="fas fa-file-text-o"></i> Words: 1.5k |
           </span>
   
           <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 3min |
+            <i class="fas fa-clock"></i> Reading time: 5min |
           </span>
   
           
@@ -676,34 +676,115 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1>python 使用tesseract实现实时监控桌面</h1>
-<h2 id="技术介绍">技术介绍</h2>
+        <h1>实战：如何让 AI “读懂”我的博客？——基于 RAG 与 Agent 协作的智能面试助手开发指南</h1>
 <blockquote>
-<p>Tesseract是一个 由HP实验室开发 由Google维护的开源的光学字符识别（OCR）引擎，可以在 Apache 2.0 许可下获得。它可以直接使用，或者（对于程序员）使用 API​​ 从图像中提取输入，包括手写的或打印的文本。与Microsoft Office Document Imaging（MODI）相比，我们可以不断的训练语言，提高图像转换文本的能力</p>
+<p><strong>摘要</strong>：在大模型时代，如何让 AI 不仅具备通用知识，还能利用我们私有的数据（如个人博客、技术笔记）进行回答？本文将拆解一个真实项目 <code>JD_Agent</code> 的实现过程。我们利用 <strong>FastAPI + LangChain</strong> 构建了一个智能体，它不仅能分析岗位 JD，还能通过 <strong>RAG 技术</strong> 检索我的本地 Markdown 博客，生成结合了我个人技术积累的专属面试指南。</p>
 </blockquote>
-<h2 id="下载地址">下载地址</h2>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://digi.bib.uni-mannheim.de/tesseract/</span><br></pre></td></tr></table></figure>
-<h2 id="第三方库安装">第三方库安装</h2>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install pytesseract -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">pip install pillow -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">pip install pywin32 PyAutoGUI pygetwindow loguru</span><br></pre></td></tr></table></figure>
-<h2 id="demo">demo</h2>
-<h3 id="测试代码">测试代码</h3>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytesseract</span><br><span class="line"></span><br><span class="line"><span class="comment"># 确保Tesseract的路径已添加到环境变量或在此处指定</span></span><br><span class="line">pytesseract.pytesseract.tesseract_cmd = <span class="string">r&#x27;C:\Program Files\Tesseract-OCR\tesseract.exe&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 识别固定图片内文字</span></span><br><span class="line">img_path = <span class="string">&quot;../chi.PNG&quot;</span></span><br><span class="line">result = pytesseract.image_to_string(image=img_path, lang=<span class="string">&quot;chi_sim&quot;</span>, config=<span class="string">&quot;--psm 1&quot;</span>)   <span class="comment">#路径；语言；配置</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="案例">案例</h2>
-<h3 id="实现思路">实现思路</h3>
-<blockquote>
-<p>通过pillow动态抓取屏幕截图，tesseract动态识别图片内容，过滤所需信息，即可实现对桌面（主屏）的动态监控</p>
-</blockquote>
-<h3 id="demo-代码">demo 代码</h3>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygetwindow <span class="keyword">as</span> gw</span><br><span class="line"><span class="keyword">import</span> pyautogui</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取窗口句柄</span></span><br><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> run <span class="keyword">import</span> constants</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytesseract</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> ImageGrab, Image</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># 确保Tesseract的路径已添加到环境变量或在此处指定</span></span><br><span class="line">pytesseract.pytesseract.tesseract_cmd = <span class="string">r&#x27;C:\Program Files\Tesseract-OCR\tesseract.exe&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># tesseract_cmd = r&#x27;D:\Program Files\tesseract\tesseract.exe&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ocr_screenshot</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 捕获全屏截图</span></span><br><span class="line">    screenshot = ImageGrab.grab()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存到临时文件（或直接在内存中处理，但pytesseract可能需要文件路径）</span></span><br><span class="line">    temp_file = <span class="string">&quot;screenshot.png&quot;</span></span><br><span class="line">    screenshot.save(temp_file)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用Tesseract进行OCR</span></span><br><span class="line">    text = pytesseract.image_to_string(Image.<span class="built_in">open</span>(temp_file))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 删除临时文件（如果需要）</span></span><br><span class="line">    os.remove(temp_file)</span><br><span class="line">    <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_msg</span>(<span class="params">process_result</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param process_result:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    result_list = []</span><br><span class="line">    <span class="keyword">for</span> version_msg <span class="keyword">in</span> version_pre_list:</span><br><span class="line">        complete_str = success_result_pre + ecu_head + version_msg</span><br><span class="line">        <span class="comment"># logger.debug(complete_str)</span></span><br><span class="line">        ret = extract_after_string(process_result, complete_str)</span><br><span class="line">        <span class="comment"># replace ocr error detect code</span></span><br><span class="line">        ret = ret.replace(<span class="string">&quot;S&quot;</span>, <span class="string">&quot;5&quot;</span>).replace(<span class="string">&quot;o&quot;</span>, <span class="string">&quot;0&quot;</span>).replace(<span class="string">&quot;l&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> ret != <span class="string">&quot;&quot;</span>:</span><br><span class="line">            logger.success(<span class="string">f&quot;find version msg: <span class="subst">&#123;ret&#125;</span>&quot;</span>)</span><br><span class="line">            result_list.append(ret)</span><br><span class="line">    <span class="keyword">return</span> result_list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_after_string</span>(<span class="params">source_str, search_str</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    提取source_str中search_str之后的内容，‌直到遇到换行符为止。‌</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param source_str: 原始字符串</span></span><br><span class="line"><span class="string">    :param search_str: 要搜索的子字符串</span></span><br><span class="line"><span class="string">    :return: search_str之后的内容，‌直到换行符为止</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    index = source_str.find(search_str)</span><br><span class="line">    <span class="keyword">if</span> index != -<span class="number">1</span>:</span><br><span class="line">        <span class="comment"># 从search_str之后开始，‌直到遇到换行符</span></span><br><span class="line">        end_index = source_str.find(<span class="string">&#x27;\n&#x27;</span>, index + <span class="built_in">len</span>(search_str))</span><br><span class="line">        <span class="keyword">if</span> end_index != -<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> source_str[index + <span class="built_in">len</span>(search_str):end_index]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 如果没有找到换行符，‌则返回search_str之后的所有内容</span></span><br><span class="line">            <span class="keyword">return</span> source_str[index + <span class="built_in">len</span>(search_str):]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger.catch</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">detect_status_dsa</span>(<span class="params">ocr_result</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param ocr_result:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> test_pre <span class="keyword">in</span> ocr_result:</span><br><span class="line">            <span class="comment"># logger.debug(&quot;test ing...&quot;)</span></span><br><span class="line">            <span class="keyword">if</span> fail_msg_head <span class="keyword">in</span> ocr_result:</span><br><span class="line">                fail_result = extract_after_string(ocr_result, fail_msg_head)</span><br><span class="line">                logger.warning(<span class="string">f&quot;catch error: <span class="subst">&#123;fail_result&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">elif</span> success_result_pre <span class="keyword">in</span> ocr_result:</span><br><span class="line">                <span class="comment"># logger.success(&quot;success catch result&quot;)</span></span><br><span class="line">                process_msg(ocr_result)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            no_result = extract_after_string(ocr_result, test_pre)</span><br><span class="line">            logger.debug(<span class="string">f&quot;current not found result: <span class="subst">&#123;no_result&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.error(<span class="string">f&quot;Unknown error, detail:<span class="subst">&#123;e&#125;</span>]&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    constants.detect_dsa_flag = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">while</span> constants.detect_dsa_flag:</span><br><span class="line">        time.sleep(<span class="number">1</span> / <span class="number">10</span>)</span><br><span class="line">        result = ocr_screenshot()</span><br><span class="line">        <span class="comment"># logger.debug(result)</span></span><br><span class="line">        detect_ret_list = detect_status_dsa(result)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> detect_ret_list:</span><br><span class="line">            logger.warning(<span class="string">&quot;no result, start next loop detect.&quot;</span>)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            constants.detect_dsa_version_msg = <span class="string">&quot;\n&quot;</span>.join(detect_ret_list)</span><br><span class="line">            logger.debug(<span class="string">f&quot;result: <span class="subst">&#123;constants.detect_dsa_version_msg&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="实现效果">实现效果</h3>
+<hr>
+<h2 id="一、-为什么要做这个？（痛点与思路）">一、 为什么要做这个？（痛点与思路）</h2>
+<p>在准备面试时，我们经常遇到两个问题：</p>
+<ol>
+<li><strong>JD 分析太累</strong>：每个岗位的技术栈不同，需要针对性复习。</li>
+<li><strong>知识遗忘</strong>：明明以前写过关于 Docker 或 Redis 的博客笔记，但面试时一时想不起来细节。</li>
+</ol>
+<p><strong>我的解决方案</strong>：<br>
+构建一个 <strong>AI Agent</strong>。</p>
+<ol>
+<li>它能<strong>自动分析</strong>我投递的 JD（岗位描述），提取核心技术栈。</li>
+<li>它拥有一个<strong>外挂大脑（知识库）</strong>，存储了我所有的博客文章。</li>
+<li>在生成面试题时，它会<strong>优先参考</strong>我的博客内容，并告诉我：“这个问题你可以复习你写的这篇文章。”</li>
+</ol>
+<hr>
+<h2 id="二、-核心原理：RAG-与-Agent-的协作">二、 核心原理：RAG 与 Agent 的协作</h2>
+<p>在本项目中，我们采用了 <strong>RAG (Retrieval-Augmented Generation)</strong> 架构。</p>
+<h3 id="1-什么是-RAG？">1. 什么是 RAG？</h3>
+<p>如果把大模型（LLM）比作一个“超级学霸”，那 RAG 就是给了学霸一本“开卷考试的书”。</p>
 <ul>
-<li>如图<br>
-<img src="/2024/08/21/pytesseract-ocr-demo/ocr_result.png" class="lazyload placeholder" data-srcset="/2024/08/21/pytesseract-ocr-demo/ocr_result.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></li>
+<li><strong>LLM</strong>：负责逻辑推理、语言组织。</li>
+<li><strong>Knowledge Base</strong>：负责提供精准的、私有的事实数据（我的博客）。</li>
 </ul>
-<h2 id="about-me-个人微信">about me 个人微信</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h2 id="wechat-offical-微信公众号">wechat offical 微信公众号</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
+<h3 id="2-协作流程图">2. 协作流程图</h3>
+<p>整个系统的运作流程如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    User[用户输入 JD] --&gt;|1. 提交| Agent[智能体核心 (Service)]</span><br><span class="line">    </span><br><span class="line">    subgraph Analysis [阶段一: 意图识别]</span><br><span class="line">        Agent --&gt;|2. 解析 JD| Parser[LLM 解析器]</span><br><span class="line">        Parser --&gt;|提取关键词: Python, Docker| Keywords[技术栈列表]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    subgraph Retrieval [阶段二: RAG 检索]</span><br><span class="line">        Keywords --&gt;|3. 查询向量库| VectorDB[(FAISS 向量库)]</span><br><span class="line">        VectorDB --&gt;|4. 返回博客片段 + 来源| Context[知识库上下文]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    subgraph Generation [阶段三: 增强生成]</span><br><span class="line">        Context --&gt;|5. 注入 Prompt| Generator[LLM 生成器]</span><br><span class="line">        Generator --&gt;|6. 生成面试题 &amp; 引用来源| Output[最终报告]</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="三、-关键技术实现">三、 关键技术实现</h2>
+<h3 id="1-构建知识库-The-Embedding-Pipeline">1. 构建知识库 (The Embedding Pipeline)</h3>
+<p>这是 RAG 的地基。我们需要把 Markdown 格式的博客文章转换成计算机能理解的“向量”。</p>
+<p><strong>技术栈</strong>：<code>LangChain</code> + <code>BGE-Small-zh</code> + <code>FAISS</code></p>
+<ul>
+<li><strong>数据清洗 (ETL)</strong>：<br>
+使用 <code>MarkdownHeaderTextSplitter</code> 按章节切分文章，保证语义完整性。</li>
+<li><strong>向量化 (Embedding)</strong>：<br>
+我们选用了 <strong>BAAI/bge-small-zh-v1.5</strong> 模型。它能将一段文字转换为 512 维的浮点数组。
+<blockquote>
+<p><em>原理</em>：语义相近的句子（如“Docker容器”和“容器化部署”），在向量空间中的距离非常近。</p>
+</blockquote>
+</li>
+<li><strong>存储结构</strong>：<br>
+存入 FAISS 的不仅是向量，还包含 <strong>Payload</strong>（原文）和 <strong>Metadata</strong>（元数据，如文件名）。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 核心代码片段：入库逻辑</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_index</span>():</span><br><span class="line">    <span class="comment"># 1. 加载博客 Markdown</span></span><br><span class="line">    docs = load_and_split_markdown(<span class="string">&quot;source/_posts&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 初始化 BGE 模型 (使用国内镜像)</span></span><br><span class="line">    embedding_model = HuggingFaceEmbeddings(model_name=<span class="string">&quot;BAAI/bge-small-zh-v1.5&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 向量化并存入 FAISS</span></span><br><span class="line">    vector_store = FAISS.from_documents(docs, embedding_model)</span><br><span class="line">    vector_store.save_local(<span class="string">&quot;blog_faiss_index&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="2-Agent-的大脑：异步编排-Orchestration">2. Agent 的大脑：异步编排 (Orchestration)</h3>
+<p>为了让用户体验达到极致（快！），后端不能串行处理。我们利用 <strong>Python Asyncio</strong> 实现了并行任务流。</p>
+<ul>
+<li><strong>技术挑战</strong>：如何同时进行“公司背景调查”和“知识库检索”？</li>
+<li><strong>解决方案</strong>：<code>asyncio.gather</code>。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 核心代码片段：并行编排</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">generate_interview_guide</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="comment"># 1. 先解析 JD (前置依赖)</span></span><br><span class="line">    jd_meta = <span class="keyword">await</span> parse_jd_async(request.jd_text)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 构造查询：用 JD 里的技术栈去查博客</span></span><br><span class="line">    query = <span class="string">&quot; &quot;</span>.join(jd_meta.tech_stack)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 并行执行：(查博客) &amp; (查公司背景) &amp; (出通用题)</span></span><br><span class="line">    task_rag = kb_engine.search(query)</span><br><span class="line">    task_research = research_company(jd_meta.company_name)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 并发等待结果</span></span><br><span class="line">    rag_result, company_info = <span class="keyword">await</span> asyncio.gather(task_rag, task_research)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 4. 将查到的博客内容注入 Prompt</span></span><br><span class="line">    final_report = <span class="keyword">await</span> generate_final_report(context=rag_result[<span class="string">&#x27;context&#x27;</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="3-上下文注入-Context-Injection">3. 上下文注入 (Context Injection)</h3>
+<p>这是让 AI “读懂”博客的关键一步。我们动态构建了 Prompt Template。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">prompt_template = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">你是一个资深技术面试官。</span></span><br><span class="line"><span class="string">请根据以下【参考知识库】（这是用户的个人博客笔记）来生成面试题。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">【参考知识库】：</span></span><br><span class="line"><span class="string">&#123;kb_context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">请在生成题目时，明确指出用户在博客中对该知识点的理解。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="四、-遇到的坑与优化-Troubleshooting">四、 遇到的坑与优化 (Troubleshooting)</h2>
+<p>在开发过程中，我们解决了几个典型的工程问题：</p>
+<ol>
+<li>
+<p><strong>模型下载卡顿</strong>：</p>
+<ul>
+<li><em>问题</em>：HuggingFace 国内无法直连。</li>
+<li><em>解决</em>：在代码顶部设置 <code>os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'</code> 强制走镜像。</li>
+</ul>
+</li>
+<li>
+<p><strong>Pydantic 数据校验错误</strong>：</p>
+<ul>
+<li><em>问题</em>：有时候 RAG 没查到数据，返回 <code>None</code>，导致接口报错。</li>
+<li><em>解决</em>：在 Schema 定义中使用 <code>Optional[List[str]] = []</code>，增强系统的鲁棒性。</li>
+</ul>
+</li>
+<li>
+<p><strong>大模型“幻觉”</strong>：</p>
+<ul>
+<li><em>问题</em>：AI 编造博客里没有的内容。</li>
+<li><em>解决</em>：在 Prompt 中加入约束——“仅依据参考知识库回答，如果知识库未提及，请忽略”。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="五、-最终效果">五、 最终效果</h2>
+<p>当用户输入一个包含 <strong>“Python, Docker”</strong> 的 JD 时：</p>
+<ol>
+<li><strong>后端</strong> 迅速定位到本地博客中的 <code>Docker部署笔记.md</code> 和 <code>Python并发编程.md</code>。</li>
+<li><strong>AI</strong> 生成的面试指南中写道：
+<blockquote>
+<p><strong>Q1: 请谈谈 Docker 的隔离机制？</strong><br>
+<em>参考回答要点</em>：根据你的博客 <strong>《<a target="_blank" rel="noopener" href="http://xn--Docker-gl3pp3z6v2awsl.md">Docker部署笔记.md</a>》</strong>，你曾总结过 Namespace 负责资源隔离，Cgroups 负责资源限制…</p>
+</blockquote>
+</li>
+<li><strong>前端</strong> 界面底部会展示：
+<blockquote>
+<p>📚 <strong>知识库引用</strong>：</p>
+<ul>
+<li>📄 <code>Docker部署笔记.md</code></li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<p>这不仅是一个面试题生成器，更是一个<strong>唤醒沉睡知识的第二大脑</strong>。</p>
+<hr>
+<h2 id="六、-总结">六、 总结</h2>
+<p>本项目通过 <strong>FastAPI</strong> 构建高性能后端，<strong>LangChain</strong> 处理复杂的 LLM 逻辑，<strong>FAISS</strong> 实现毫秒级知识检索。它展示了 <strong>LLM Ops (大模型工程化)</strong> 的核心思路：<strong>不仅要会调 API，更要懂得如何管理数据流和上下文。</strong></p>
+<p>如果你也想为自己的知识库装上 AI 引擎，欢迎参考我的 GitHub 仓库：[<a target="_blank" rel="noopener" href="https://github.com/caozhaoqi/jd_agent">https://github.com/caozhaoqi/jd_agent</a>]</p>
 
       </div>
       <div class="post-tags-categories">
@@ -712,10 +793,6 @@
           
             <a href="/tags/python/" class="">
               python
-            </a>
-          
-            <a href="/tags/tesseract/" class="">
-              tesseract
             </a>
           
         </div>
@@ -729,7 +806,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>link:  </strong>
-    <a href="/2024/08/21/pytesseract-ocr-demo/" target="_blank" title="python 使用tesseract实现实时监控桌面">https://caozhaoqi.github.io/2024/08/21/pytesseract-ocr-demo/</a>
+    <a href="/2025/11/28/agent-rag-jd/" target="_blank" title="基于 RAG 与 Agent 协作的智能面试助手开发指南">https://caozhaoqi.github.io/2025/11/28/agent-rag-jd/</a>
     </li>
     <li class="post-copyright-license">
       <strong>Copyright notice:   </strong>
@@ -747,46 +824,23 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2024/08/21/pyqt5-singal-thread/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">pyqt5信号槽机制应用</div>
-      </div>
-      
-      <!-- <div class="content">
-        pyqt5信号槽机制应用
-简介
-
-PyQt5中的信号和槽是用于对象之间的事件处理和通信的一种机制。信号在某个特定事件发生
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-63bbdb5b76b8d349ad35ff4281efbd37_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2024/08/19/py-screenshot-demo/" class="post-nav-link">
+    <a href="/2025/11/26/agent-research-llm/" class="post-nav-link">
       <div class="title">
         Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">使用python实现简易截图功能</div>
+        <div class="title-text">基于 FastAPI + LangChain 的简单agent实现</div>
       </div>
       <!-- <div class="content">
-        使用python实现简易截图功能
-技术方案
-pyautogui
+        GitHub 仓库: https://github.com/caozhaoqi/jd_agent
 
-pyautogui 模块，使用screenshot()
+摘要：在 AI Ag
       </div> -->
     </a>
   </div>
@@ -1106,7 +1160,7 @@ pyautogui 模块，使用screenshot()
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">python 使用tesseract实现实时监控桌面</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E4%BB%8B%E7%BB%8D"><span class="toc-text">技术介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80"><span class="toc-text">下载地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93%E5%AE%89%E8%A3%85"><span class="toc-text">第三方库安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#demo"><span class="toc-text">demo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="toc-text">测试代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-text">案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-text">实现思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#demo-%E4%BB%A3%E7%A0%81"><span class="toc-text">demo 代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="toc-text">实现效果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">实战：如何让 AI “读懂”我的博客？——基于 RAG 与 Agent 协作的智能面试助手开发指南</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%81%9A%E8%BF%99%E4%B8%AA%EF%BC%9F%EF%BC%88%E7%97%9B%E7%82%B9%E4%B8%8E%E6%80%9D%E8%B7%AF%EF%BC%89"><span class="toc-text">一、 为什么要做这个？（痛点与思路）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%EF%BC%9ARAG-%E4%B8%8E-Agent-%E7%9A%84%E5%8D%8F%E4%BD%9C"><span class="toc-text">二、 核心原理：RAG 与 Agent 的协作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-RAG%EF%BC%9F"><span class="toc-text">1. 什么是 RAG？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-text">2. 协作流程图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81-%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0"><span class="toc-text">三、 关键技术实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%9E%84%E5%BB%BA%E7%9F%A5%E8%AF%86%E5%BA%93-The-Embedding-Pipeline"><span class="toc-text">1. 构建知识库 (The Embedding Pipeline)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Agent-%E7%9A%84%E5%A4%A7%E8%84%91%EF%BC%9A%E5%BC%82%E6%AD%A5%E7%BC%96%E6%8E%92-Orchestration"><span class="toc-text">2. Agent 的大脑：异步编排 (Orchestration)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%B3%A8%E5%85%A5-Context-Injection"><span class="toc-text">3. 上下文注入 (Context Injection)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81-%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91%E4%B8%8E%E4%BC%98%E5%8C%96-Troubleshooting"><span class="toc-text">四、 遇到的坑与优化 (Troubleshooting)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81-%E6%9C%80%E7%BB%88%E6%95%88%E6%9E%9C"><span class="toc-text">五、 最终效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81-%E6%80%BB%E7%BB%93"><span class="toc-text">六、 总结</span></a></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
