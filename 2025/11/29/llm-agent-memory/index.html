@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>404 页面未找到 | Zhaoqi.Cao static blog</title>
+  <title>从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现 | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -622,17 +622,43 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/80/378da4d6e6ac67c5bcd1d63d76f65d81_1440w.jpg?source=1940ef5c')">
+  background-position: center center;position: relative;background-image:url('https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        404 页面未找到
+        从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现
       </span>
     </div>
     
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2025-11-29 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 1.3k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 5min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
     
   </div>
   
@@ -650,14 +676,131 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p class="p center large">404</p>
-<p class="p center large">很抱歉，您访问的页面不存在</p>
-<p class="p center small">可能是输入地址有误或该地址已被删除</p>
-<span class="btn center large"><a class="button" href="/" title="返回首页"><i class="fa fa-home"></i>返回首页</a></span>
+        <h1>[硬核实战] 从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现</h1>
+<blockquote>
+<p><strong>摘要</strong>：如何将一个简单的 LangChain Demo 进化为生产级的 AI SaaS 应用？本文记录了 <code>JD_Agent</code> 项目的里程碑式更新。我们引入了 <strong>Next.js</strong> 复刻 DeepSeek 的丝滑 UI，基于 <strong>SQLModel</strong> 实现了完整的用户鉴权与会话管理，并利用 <strong>RAG 技术</strong> 实现了“简历解析与长期记忆”功能，让 AI 真正拥有了“记住用户”的能力。</p>
+</blockquote>
+<hr>
+<h2 id="1-项目演进：从-Script-到-Product">1. 项目演进：从 Script 到 Product</h2>
+<p>在之前的版本中，我们的 <code>JD_Agent</code> 只是一个无状态的 API 接口：用户发 JD，AI 返回分析。<br>
+但一个真正的 AI 产品需要具备：</p>
+<ol>
+<li><strong>用户系统</strong>：数据隔离，每个人只能看自己的历史。</li>
+<li><strong>交互体验</strong>：流式输出、Markdown 渲染、历史记录回溯。</li>
+<li><strong>长期记忆</strong>：记住用户的简历背景，不需要每次 Prompt 都重复“我是 Python 开发…”。</li>
+</ol>
+<p>今天，我们完成了这次<strong>全栈重构</strong>。</p>
+<hr>
+<h2 id="2-技术栈全景">2. 技术栈全景</h2>
+<ul>
+<li><strong>Frontend</strong>: Next.js 14 (App Router) + Tailwind CSS + Lucide React</li>
+<li><strong>Backend</strong>: FastAPI + Uvicorn</li>
+<li><strong>Database</strong>: SQLModel (SQLite) + Alembic</li>
+<li><strong>Auth</strong>: JWT (OAuth2PasswordBearer) + Passlib (Bcrypt)</li>
+<li><strong>AI Core</strong>: LangChain + OpenAI/DeepSeek + FAISS (RAG)</li>
+</ul>
+<hr>
+<h2 id="3-核心功能实现">3. 核心功能实现</h2>
+<h3 id="3-1-完美复刻-DeepSeek-的交互界面">3.1 完美复刻 DeepSeek 的交互界面</h3>
+<p>我们抛弃了简陋的 HTML，采用 <strong>Next.js + Tailwind</strong> 打造了现代化的 Chat UI。</p>
+<ul>
+<li><strong>布局攻坚</strong>：为了实现“顶部固定、侧边栏独立滚动、输入框底部悬浮且不遮挡内容”，我们采用了 <code>fixed inset-0</code> 锁死视口高度，并配合 <code>pb-[200px]</code> 的底部内边距策略。</li>
+<li><strong>Markdown 渲染</strong>：后端返回的结构化 JSON 报告，在前端被动态组装成 Markdown，并通过 <code>react-markdown</code> 渲染出漂亮的排版。</li>
+</ul>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 前端布局核心 Trick</span></span><br><span class="line">&lt;div className=<span class="string">&quot;fixed inset-0 flex ...&quot;</span>&gt;</span><br><span class="line">  &#123;<span class="comment">/* 侧边栏 */</span>&#125;</span><br><span class="line">  &lt;div className=<span class="string">&quot;w-[260px] hidden md:flex ...&quot;</span>&gt;...&lt;/div&gt;</span><br><span class="line">  </span><br><span class="line">  &#123;<span class="comment">/* 主聊天区 */</span>&#125;</span><br><span class="line">  &lt;div className=<span class="string">&quot;flex-1 flex flex-col h-full relative&quot;</span>&gt;</span><br><span class="line">     &#123;<span class="comment">/* 消息列表：底部留白防止被输入框遮挡 */</span>&#125;</span><br><span class="line">     &lt;div className=<span class="string">&quot;flex-1 overflow-y-auto pb-[200px]&quot;</span>&gt;...&lt;/div&gt;</span><br><span class="line">     </span><br><span class="line">     &#123;<span class="comment">/* 悬浮输入框：背景渐变透明 */</span>&#125;</span><br><span class="line">     &lt;div className=<span class="string">&quot;absolute bottom-0 ... bg-gradient-to-t ...&quot;</span>&gt;...&lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-长期记忆：简历解析与用户画像-LTM">3.2 长期记忆：简历解析与用户画像 (LTM)</h3>
+<p>这是本次更新的<strong>灵魂功能</strong>。我们不希望 AI 聊完就忘，而是构建了一个<strong>长期记忆系统 (Long-Term Memory)</strong>。</p>
+<p><strong>实现流程</strong>：</p>
+<ol>
+<li><strong>上传</strong>：用户上传 PDF/Word 简历。</li>
+<li><strong>解析</strong>：后端使用 <code>pdfplumber</code> 提取纯文本。</li>
+<li><strong>ETL</strong>：利用 LangChain 的 <code>resume_extractor</code> 链，从杂乱的简历中提取出<strong>结构化画像</strong>（如：<code>tech_stack: [&quot;Python&quot;, &quot;FastAPI&quot;]</code>, <code>experience: &quot;5年&quot;</code>）。</li>
+<li><strong>存储</strong>：存入 <code>UserProfile</code> 数据库表。</li>
+<li><strong>回想</strong>：下次用户发送 JD 时，系统自动读取 <code>UserProfile</code>，注入到 System Prompt 中。</li>
+</ol>
+<p><strong>后端代码片段 (Service Layer)</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/services/interview_service.py</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">generate_interview_guide</span>(<span class="params">request, db, user_id</span>):</span><br><span class="line">    <span class="comment"># 1. 读取长期记忆 (从数据库获取用户画像)</span></span><br><span class="line">    ltm_profile = get_user_profile_str(db, user_id)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 读取短期记忆 (从 ChatMessage 表获取最近对话)</span></span><br><span class="line">    chat_history = get_recent_chat_history(db, user_id)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 带着记忆去思考</span></span><br><span class="line">    task_tech = generate_tech_async(</span><br><span class="line">        ...,</span><br><span class="line">        user_profile=ltm_profile, <span class="comment"># &lt;--- 注入长期记忆</span></span><br><span class="line">        chat_history=chat_history <span class="comment"># &lt;--- 注入短期记忆</span></span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-数据闭环：会话历史管理">3.3 数据闭环：会话历史管理</h3>
+<p>为了实现侧边栏的“历史记录”功能，我们引入了 <strong>SQLModel</strong>。</p>
+<ul>
+<li>
+<p><strong>表结构设计</strong>：</p>
+<ul>
+<li><code>User</code>: 存储用户名、加密密码。</li>
+<li><code>ChatSession</code>: 代表一次对话（如“神州邦邦面试准备”）。</li>
+<li><code>ChatMessage</code>: 存储具体的 User/Assistant 消息内容。</li>
+</ul>
+</li>
+<li>
+<p><strong>难点处理</strong>：Pydantic 对象无法直接存入数据库，我们在存库前将其序列化为 JSON 字符串，在读取时再反序列化，确保前端能拿到结构化的 <code>meta</code> 数据进行渲染。</p>
+</li>
+</ul>
+<hr>
+<h2 id="4-工程化踩坑实录">4. 工程化踩坑实录</h2>
+<p>在开发过程中，我们解决了一系列真实的工程问题：</p>
+<h3 id="坑位-1：Tailwind-CSS-样式失效">坑位 1：Tailwind CSS 样式失效</h3>
+<ul>
+<li><strong>现象</strong>：页面元素堆叠在左上角，样式全无。</li>
+<li><strong>原因</strong>：Next.js 初始化时 <code>tailwind.config.js</code> 路径配置错误，且误装了不兼容的 Tailwind v4 版本。</li>
+<li><strong>解决</strong>：降级至 <code>tailwindcss@3.4.17</code>，并手动修正 <code>content</code> 路径覆盖 <code>src/</code> 目录。</li>
+</ul>
+<h3 id="坑位-2：Bcrypt-版本冲突">坑位 2：Bcrypt 版本冲突</h3>
+<ul>
+<li><strong>现象</strong>：注册时报错 <code>AttributeError: module 'bcrypt' has no attribute '__about__'</code>。</li>
+<li><strong>原因</strong>：<code>passlib</code> 库与最新版 <code>bcrypt 4.0+</code> 不兼容。</li>
+<li><strong>解决</strong>：强制锁定版本 <code>pip install &quot;bcrypt==3.2.2&quot;</code>。</li>
+</ul>
+<h3 id="坑位-3：LangChain-参数丢失">坑位 3：LangChain 参数丢失</h3>
+<ul>
+<li><strong>现象</strong>：<code>KeyError: &quot;Input to ChatPromptTemplate is missing variables &#123;'user_profile'&#125;&quot;</code>。</li>
+<li><strong>原因</strong>：在 Prompt 模板中定义了 <code>&#123;user_profile&#125;</code> 占位符，但在 Chain 调用 (<code>ainvoke</code>) 时忘记传入该参数。</li>
+<li><strong>解决</strong>：在 Service 层获取记忆后，显式传递给 Chain。</li>
+</ul>
+<hr>
+<h2 id="5-总结与展望">5. 总结与展望</h2>
+<p>通过今天的迭代，<code>JD_Agent</code> 已经具备了一个商业化 AI 产品的雏形：</p>
+<ul>
+<li><strong>好看</strong>：媲美 DeepSeek 的 UI。</li>
+<li><strong>好用</strong>：支持简历一键解析，AI 越用越懂你。</li>
+<li><strong>稳健</strong>：完整的鉴权与日志系统。</li>
+</ul>
+<p><strong>下一步计划</strong>：</p>
+<ol>
+<li><strong>多智能体模拟面试</strong>：引入两个 Agent 互相对话，用户旁观“模拟面试”过程（基于 SSE 流式输出）。</li>
+<li><strong>语音交互</strong>：接入 TTS/ASR，实现真正的语音模拟面试。</li>
+</ol>
+<hr>
+<p><em>技术改变生活，AI 赋能求职。如果你对这个项目感兴趣，欢迎关注我的 GitHub！</em></p>
+
       </div>
       <div class="post-tags-categories">
         
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
       </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2025/11/29/llm-agent-memory/" target="_blank" title="从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现">https://caozhaoqi.github.io/2025/11/29/llm-agent-memory/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
       
     </article>
     <!-- 上一篇文章和下一篇文章 -->
@@ -669,6 +812,25 @@
 
 
 
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/11/28/agent-rag-jd/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">基于 RAG 与 Agent 协作的智能面试助手开发指南</div>
+      </div>
+      <!-- <div class="content">
+        实战：如何让 AI “读懂”我的博客？——基于 RAG 与 Agent 协作的智能面试助手开发指南
+
+摘要：在大模型时代
+      </div> -->
+    </a>
+  </div>
+
 </div>
 
     
@@ -676,8 +838,106 @@
 
     <!-- 打赏 -->
     
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
 
     <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
     
     
     <!-- 评论 -->
@@ -874,27 +1134,29 @@
   <div class="layout_sticky">    
     
       
-        
+<section class="widget side_toc">
   
-      
-      
-        
-<section class="widget side_tagcloud">
-    
   <header>
     
-      <a style="color: " href='/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
-    <div class='content'>
-    <a href="/tags/Appium/" style="font-size: 14px; color: #999">Appium</a> <a href="/tags/Excel/" style="font-size: 14px; color: #999">Excel</a> <a href="/tags/LCD/" style="font-size: 14px; color: #999">LCD</a> <a href="/tags/android/" style="font-size: 19px; color: #777">android</a> <a href="/tags/blog/" style="font-size: 14px; color: #999">blog</a> <a href="/tags/clion/" style="font-size: 14px; color: #999">clion</a> <a href="/tags/cpp/" style="font-size: 16.5px; color: #888">cpp</a> <a href="/tags/doc/" style="font-size: 21.5px; color: #666">doc</a> <a href="/tags/electron/" style="font-size: 16.5px; color: #888">electron</a> <a href="/tags/esp32/" style="font-size: 16.5px; color: #888">esp32</a> <a href="/tags/fpga/" style="font-size: 14px; color: #999">fpga</a> <a href="/tags/git/" style="font-size: 16.5px; color: #888">git</a> <a href="/tags/harmonyos/" style="font-size: 14px; color: #999">harmonyos</a> <a href="/tags/java/" style="font-size: 19px; color: #777">java</a> <a href="/tags/macOS/" style="font-size: 14px; color: #999">macOS</a> <a href="/tags/nginx/" style="font-size: 14px; color: #999">nginx</a> <a href="/tags/nlp/" style="font-size: 16.5px; color: #888">nlp</a> <a href="/tags/nodejs/" style="font-size: 14px; color: #999">nodejs</a> <a href="/tags/npm/" style="font-size: 14px; color: #999">npm</a> <a href="/tags/opencv/" style="font-size: 16.5px; color: #888">opencv</a> <a href="/tags/python/" style="font-size: 24px; color: #555">python</a> <a href="/tags/qt/" style="font-size: 14px; color: #999">qt</a> <a href="/tags/rsync/" style="font-size: 14px; color: #999">rsync</a> <a href="/tags/tesseract/" style="font-size: 14px; color: #999">tesseract</a> <a href="/tags/ubuntu/" style="font-size: 14px; color: #999">ubuntu</a> <a href="/tags/unbutu/" style="font-size: 14px; color: #999">unbutu</a> <a href="/tags/unity/" style="font-size: 19px; color: #777">unity</a> <a href="/tags/yolov5/" style="font-size: 14px; color: #999">yolov5</a> <a href="/tags/zuul/" style="font-size: 14px; color: #999">zuul</a>
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">[硬核实战] 从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A1%B9%E7%9B%AE%E6%BC%94%E8%BF%9B%EF%BC%9A%E4%BB%8E-Script-%E5%88%B0-Product"><span class="toc-text">1. 项目演进：从 Script 到 Product</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%8A%80%E6%9C%AF%E6%A0%88%E5%85%A8%E6%99%AF"><span class="toc-text">2. 技术栈全景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="toc-text">3. 核心功能实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%AE%8C%E7%BE%8E%E5%A4%8D%E5%88%BB-DeepSeek-%E7%9A%84%E4%BA%A4%E4%BA%92%E7%95%8C%E9%9D%A2"><span class="toc-text">3.1 完美复刻 DeepSeek 的交互界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E9%95%BF%E6%9C%9F%E8%AE%B0%E5%BF%86%EF%BC%9A%E7%AE%80%E5%8E%86%E8%A7%A3%E6%9E%90%E4%B8%8E%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F-LTM"><span class="toc-text">3.2 长期记忆：简历解析与用户画像 (LTM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%95%B0%E6%8D%AE%E9%97%AD%E7%8E%AF%EF%BC%9A%E4%BC%9A%E8%AF%9D%E5%8E%86%E5%8F%B2%E7%AE%A1%E7%90%86"><span class="toc-text">3.3 数据闭环：会话历史管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%B7%A5%E7%A8%8B%E5%8C%96%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95"><span class="toc-text">4. 工程化踩坑实录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%BD%8D-1%EF%BC%9ATailwind-CSS-%E6%A0%B7%E5%BC%8F%E5%A4%B1%E6%95%88"><span class="toc-text">坑位 1：Tailwind CSS 样式失效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%BD%8D-2%EF%BC%9ABcrypt-%E7%89%88%E6%9C%AC%E5%86%B2%E7%AA%81"><span class="toc-text">坑位 2：Bcrypt 版本冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%BD%8D-3%EF%BC%9ALangChain-%E5%8F%82%E6%95%B0%E4%B8%A2%E5%A4%B1"><span class="toc-text">坑位 3：LangChain 参数丢失</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="toc-text">5. 总结与展望</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
     </div>
+  </div>
 </section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
 
-  
-      
       
   <section class="widget side_recent_post">
     
@@ -1020,136 +1282,6 @@
     </div>
   </section>
 
-      
-  <section class="widget side_archives">
-    
-    <header><a style="color: red" href='/archives/'><i class="fas fa-archive fa-fw" aria-hidden="true"></i><span class='name'>归档</span></a></header><div class="content"><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/11/"><span class="card-archive-list-date">十一月 2025</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/09/"><span class="card-archive-list-date">九月 2025</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/08/"><span class="card-archive-list-date">八月 2025</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/07/"><span class="card-archive-list-date">七月 2025</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/06/"><span class="card-archive-list-date">六月 2025</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/05/"><span class="card-archive-list-date">五月 2025</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/04/"><span class="card-archive-list-date">四月 2025</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/03/"><span class="card-archive-list-date">三月 2025</span><span class="card-archive-list-count">6</span></a></li></ul></div>
-  </section>
-
-      <section class="widget side_webinfo">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-chart-line fa-fw" aria-hidden="true"></i><span class='name'>站点信息</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="webinfo">
-      
-        <div class="webinfo-item">
-          <div>文章数目：</div>
-          <div>96 篇</div>
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>已运行时间：</div>
-          <div id="webinfo-runtime-count" publish_date="03/24/2020 21:34:09"></div>
-        </div>
-        <script>
-          var BirthDay = new Date(new Date('2023/02/22'));
-          var today = new Date();
-          var timeold = (today.getTime() - BirthDay.getTime());
-          var daysold = Math.floor(timeold / (24 * 60 * 60 * 1000));
-          document.getElementById('webinfo-runtime-count').innerHTML = daysold + ' 天';
-        </script>
-      
-
-
-      
-        <div class="webinfo-item">
-          <div>本站总字数：</div>
-          <div>222.6k 字</div>
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>本站访客数：</div>
-          
-          <div><span id="busuanzi_value_site_uv"><i class="fas fa-fan fa-spin fa-fw" aria-hidden="true"></i></span> 人</div>
-          
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>本站总访问量：</div>
-          
-          <div><span id="busuanzi_value_site_pv"><i class="fas fa-fan fa-spin fa-fw" aria-hidden="true"></i></span> 次</div>
-          
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>最后活动时间：</div>
-          
-            <div id="last-update" style="display: none;">Sat Nov 29 2025 22:49:00 GMT+0800 (China Standard Time)</div>
-            <div id="last-update-show">2025-11-29 日</div>
-          
-        </div>
-        
-        <script>
-          function timeago(dateTimeStamp) {
-              var minute = 1000 * 60; //把分，时，天，周，半个月，一个月用毫秒表示
-              var hour = minute * 60;
-              var day = hour * 24;
-              var week = day * 7;
-              var month = day * 30;
-              var now = new Date().getTime(); //获取当前时间毫秒
-              var diffValue = now - dateTimeStamp; //时间差
-              if (diffValue < 0) {
-                  return;
-              }
-              var minC = diffValue / minute; //计算时间差的分，时，天，周，月
-              var hourC = diffValue / hour;
-              var dayC = diffValue / day;
-              var weekC = diffValue / week;
-              var monthC = diffValue / month;
-              if (monthC >= 1 && monthC <= 3) {
-                  result = " " + parseInt(monthC) + " 月前"
-              } else if (weekC >= 1 && weekC <= 3) {
-                  result = " " + parseInt(weekC) + " 周前"
-              } else if (dayC >= 1 && dayC <= 6) {
-                  result = " " + parseInt(dayC) + " 天前"
-              } else if (hourC >= 1 && hourC <= 23) {
-                  result = " " + parseInt(hourC) + " 小时前"
-              } else if (minC >= 1 && minC <= 59) {
-                  result = " " + parseInt(minC) + " 分钟前"
-              } else if (diffValue >= 0 && diffValue <= minute) {
-                  result = "刚刚"
-              } else {
-                  var datetime = new Date();
-                  datetime.setTime(dateTimeStamp);
-                  var Nyear = datetime.getFullYear();
-                  var Nmonth = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-                  var Ndate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-                  var Nhour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-                  var Nminute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-                  var Nsecond = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-                  result = Nyear + "-" + Nmonth + "-" + Ndate
-              }
-              return result;
-          }
-          var lastUpDate = document.getElementById('last-update').innerHTML;
-          try {
-            document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
-          } catch (error) {
-            document.getElementById('last-update-show').innerHTML = '2025-11-29 日';
-          }
-        </script>
-        
-      
-    </div>
-  </div>
-</section>
-      
-  
-
     
   </div>
 </aside>
@@ -1232,7 +1364,7 @@
 			clearInterval(this.time);
 		},
 		mounted() {
-			let prop = 'https://pic2.zhimg.com/v2-b19815c3780fe949adcee6693721087d_b.jpg' || '';
+			let prop = '' || '';
 			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
 			if (isImg) {
 				let img = prop.split(',');

@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://caozhaoqi.github.io/2025/11/29/llm-agent-memory/</loc>
+    
+    <lastmod>2025-11-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2025/11/28/agent-rag-jd/</loc>
     
     <lastmod>2025-11-28</lastmod>
@@ -83,6 +92,15 @@
   </url>
   
   <url>
+    <loc>https://caozhaoqi.github.io/2023/05/09/web-socket-electron/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2024/11/16/wechat-log-upload/</loc>
     
     <lastmod>2025-11-25</lastmod>
@@ -93,42 +111,6 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2024/10/28/wm8731-record-audio/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2023/05/09/web-socket-electron/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/07/22/watermark-gen-valid/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/04/03/video-secene-detect/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/03/17/vpn-ee-build/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -155,7 +137,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/07/17/tailscale-docker-build/</loc>
+    <loc>https://caozhaoqi.github.io/2025/03/17/vpn-ee-build/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -164,7 +146,25 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/01/23/ubuntu-nas/</loc>
+    <loc>https://caozhaoqi.github.io/2025/04/03/video-secene-detect/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2025/07/22/watermark-gen-valid/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2025/07/17/tailscale-docker-build/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -191,25 +191,16 @@
   </url>
   
   <url>
+    <loc>https://caozhaoqi.github.io/2025/01/23/ubuntu-nas/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2023/02/22/unityexport-to-android-md/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/08/29/ss-build-doc/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/03/18/smb-git-svn/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -227,7 +218,16 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/01/01/split-voice/</loc>
+    <loc>https://caozhaoqi.github.io/2023/12/29/smb-py-operation/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2025/03/18/smb-git-svn/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -245,7 +245,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/12/29/smb-py-operation/</loc>
+    <loc>https://caozhaoqi.github.io/2025/01/01/split-voice/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -255,6 +255,15 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2023/08/29/spring-cloud-activiti/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2025/08/29/ss-build-doc/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -281,15 +290,6 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/05/15/scene-detect-method/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/2024/05/07/self-threading-use/</loc>
     
     <lastmod>2025-11-25</lastmod>
@@ -308,43 +308,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/05/30/scene-detect-benchmark/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/03/11/rsync-nas-backup/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/03/04/python-spider-introduce/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/02/08/python-publish/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2024/06/25/requirements-analysis/</loc>
+    <loc>https://caozhaoqi.github.io/2025/05/15/scene-detect-method/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -362,7 +326,34 @@
   </url>
   
   <url>
+    <loc>https://caozhaoqi.github.io/2025/02/08/python-publish/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2024/01/25/python-selenium-spider/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2025/03/04/python-spider-introduce/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2024/06/25/requirements-analysis/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -380,7 +371,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/08/21/pytesseract-ocr-demo/</loc>
+    <loc>https://caozhaoqi.github.io/2025/03/11/rsync-nas-backup/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -389,7 +380,16 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/11/06/python-ini-file-config/</loc>
+    <loc>https://caozhaoqi.github.io/2025/05/30/scene-detect-benchmark/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2024/08/21/pytesseract-ocr-demo/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -407,7 +407,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/08/21/pyqt5-singal-thread/</loc>
+    <loc>https://caozhaoqi.github.io/2023/11/06/python-ini-file-config/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -416,7 +416,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/09/17/pypi-mirror-self/</loc>
+    <loc>https://caozhaoqi.github.io/2024/08/21/pyqt5-singal-thread/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -443,6 +443,15 @@
   </url>
   
   <url>
+    <loc>https://caozhaoqi.github.io/2025/09/17/pypi-mirror-self/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2024/08/19/py-screenshot-demo/</loc>
     
     <lastmod>2025-11-25</lastmod>
@@ -452,7 +461,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/02/28/py-gen-excel/</loc>
+    <loc>https://caozhaoqi.github.io/2024/03/25/opencv-image-video/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -461,7 +470,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/03/25/opencv-image-video/</loc>
+    <loc>https://caozhaoqi.github.io/2025/02/28/py-gen-excel/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -506,24 +515,6 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/04/07/nuclio-build-use/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/02/25/ntfs-macos-mounty/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://caozhaoqi.github.io/2024/11/21/nltk-use/</loc>
     
     <lastmod>2025-11-25</lastmod>
@@ -551,6 +542,24 @@
   </url>
   
   <url>
+    <loc>https://caozhaoqi.github.io/2025/02/25/ntfs-macos-mounty/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2025/04/07/nuclio-build-use/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2025/07/16/minio-nas-build/</loc>
     
     <lastmod>2025-11-25</lastmod>
@@ -569,7 +578,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/03/26/mail-server-Postfix/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/24/kill-process-app/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -596,7 +605,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/12/29/micro-service-py/</loc>
+    <loc>https://caozhaoqi.github.io/2025/03/26/mail-server-Postfix/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -614,7 +623,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/02/24/kill-process-app/</loc>
+    <loc>https://caozhaoqi.github.io/2023/12/29/micro-service-py/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -641,6 +650,15 @@
   </url>
   
   <url>
+    <loc>https://caozhaoqi.github.io/2023/05/31/gateway-auth-control/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2024/07/05/git-respority-error/</loc>
     
     <lastmod>2025-11-25</lastmod>
@@ -659,7 +677,34 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/05/31/gateway-auth-control/</loc>
+    <loc>https://caozhaoqi.github.io/2025/01/10/easyocr-gpuocr/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2023/03/10/eestudy/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2025/01/23/ed2k-bit/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://caozhaoqi.github.io/2024/11/21/excel_parser_pandas/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -686,34 +731,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2025/01/23/ed2k-bit/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2025/01/10/easyocr-gpuocr/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2024/11/21/excel_parser_pandas/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2023/03/10/eestudy/</loc>
+    <loc>https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -732,15 +750,6 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2024/12/15/easy-ocr-gpu/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2023/03/02/csharpkillprocess/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -785,6 +794,15 @@
   </url>
   
   <url>
+    <loc>https://caozhaoqi.github.io/2023/03/02/androidopenapp-md/</loc>
+    
+    <lastmod>2025-11-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://caozhaoqi.github.io/2024/11/21/appium_adb_app/</loc>
     
     <lastmod>2025-11-25</lastmod>
@@ -795,15 +813,6 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/2023/03/06/baidumapuse/</loc>
-    
-    <lastmod>2025-11-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://caozhaoqi.github.io/2023/03/02/androidopenapp-md/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -830,7 +839,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/10/27/air-station/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/UnityRotation/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -848,7 +857,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/02/22/UnityRotation/</loc>
+    <loc>https://caozhaoqi.github.io/2024/10/27/air-station/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -884,7 +893,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2024/06/25/Conceptual-design/</loc>
+    <loc>https://caozhaoqi.github.io/2023/02/22/AndroidSocketToUnity/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -893,7 +902,7 @@
   </url>
   
   <url>
-    <loc>https://caozhaoqi.github.io/2023/02/22/AndroidSocketToUnity/</loc>
+    <loc>https://caozhaoqi.github.io/2024/06/25/Conceptual-design/</loc>
     
     <lastmod>2025-11-25</lastmod>
     
@@ -913,7 +922,7 @@
 
   <url>
     <loc>https://caozhaoqi.github.io/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -921,203 +930,203 @@
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/android/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/doc/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/LCD/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/python/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/unity/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/java/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/esp32/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/Appium/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/clion/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/cpp/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/qt/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/electron/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/Excel/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/zuul/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/git/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/nodejs/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/npm/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/blog/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/nginx/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/ubuntu/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/nlp/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/macOS/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/harmonyos/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/opencv/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/tesseract/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/rsync/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/unbutu/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/fpga/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://caozhaoqi.github.io/tags/yolov5/</loc>
-    <lastmod>2025-11-28</lastmod>
+    <lastmod>2025-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
