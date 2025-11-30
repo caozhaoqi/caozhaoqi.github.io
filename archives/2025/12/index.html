@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>实时语音模拟面试 | Zhaoqi.Cao static blog</title>
+  <title>archives: 2025/12 | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -608,841 +608,106 @@
     
 </header>
         <!-- 内容区域 -->
-        
- <!-- prismjs 代码高亮 -->
- 
-
-
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
-
-
-  <!-- 文章详情页顶部图片和标题 -->
-
-
-
-
-<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp')">
-  <div class="post-detail-header-mask"></div>
-  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
-  
-  <div class="post-detail-header_info-box">
-    <div class="title-box">
-      <span class="title">
-        实时语音模拟面试
-      </span>
-    </div>
-    
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2025-11-30 |
-        </span>
-      
-
-      
-
-      
-        <div class="post-detail-header_wordcount">
-          <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 1.4k |
-          </span>
-  
-          <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 5min |
-          </span>
-  
-          
-            <span class="reading">
-              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
-            </span>
-          
-        </div>
-      
-    
+        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
+<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
+<div class="archive-header" style="background-image:url('https://pic1.zhimg.com/80/v2-1414b3a4b205e19060db18a20d08723a_1440w.jpg?source=1940ef5c')">
+  <div class="archive-header-title">
+    归档
   </div>
+  <div class="archive-header-desc">
   
-  
-    <script src="/js/bubble/bubble.js"></script>
-  
-</div>
-
-
-
-
-
-<div class="post-detail-content post-row" 
-  style="padding-top: 0px;">
-  <div class="main-content">
-    <article class="post post-detail">
-      <div class="post-content">
-        <p><strong>GitHub 仓库</strong>: <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi/jd_agent">https://github.com/caozhaoqi/jd_agent</a></p>
-<blockquote>
-<p><strong>摘要</strong>：在实现了基于 JD 生成面试指南（v1.0）后，我们并未止步。本文记录了 <code>jd_agent</code> 项目的重大升级：引入 <strong>模拟面试（Mock Interview）</strong> 模式，并集成了 <strong>ASR（语音识别）</strong> 与 <strong>TTS（语音合成）</strong> 技术。我们通过 <strong>FastAPI</strong> 的流式响应、<strong>Next.js</strong> 的音频队列管理以及 <strong>双模型配置策略</strong>，打造了一个能够“听懂你、并开口提问”的 AI 面试官。</p>
-</blockquote>
-<hr>
-<h2 id="1-架构升级：从单向生成到双向交互">1. 架构升级：从单向生成到双向交互</h2>
-<p>v1.0 版本主要解决的是“信息提取”问题（JD -&gt; 报告）。<br>
-v2.0 版本则致力于解决“实战演练”问题（用户 &lt;-&gt; AI 面试官）。为此，我们在架构中引入了 <strong>音频层 (Audio Layer)</strong> 和 <strong>会话状态管理</strong>。</p>
-<h3 id="1-1-系统架构图-v2-0">1.1 系统架构图 (v2.0)</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    User((用户)) </span><br><span class="line">    </span><br><span class="line">    subgraph Frontend [Next.js Client]</span><br><span class="line">        Microphone --&gt;|Audio Blob| ASR_Handler</span><br><span class="line">        Chat_UI --&gt;|Text Stream| SSE_Reader</span><br><span class="line">        SSE_Reader --&gt;|Sentence Buffer| Audio_Queue</span><br><span class="line">        Audio_Queue --&gt;|Text Segments| TTS_Player</span><br><span class="line">        TTS_Player --&gt; Speaker</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    subgraph Backend [FastAPI Server]</span><br><span class="line">        ASR_Handler --&gt;|POST /audio/transcribe| Whisper_Service</span><br><span class="line">        Chat_UI --&gt;|POST /chat/stream| Chat_Service</span><br><span class="line">        TTS_Player --&gt;|POST /audio/tts| TTS_Service</span><br><span class="line">        </span><br><span class="line">        subgraph Services</span><br><span class="line">            Chat_Service[LangChain Chat Flow]</span><br><span class="line">            Whisper_Service[ASR Adapter]</span><br><span class="line">            TTS_Service[TTS Adapter]</span><br><span class="line">        end</span><br><span class="line">        </span><br><span class="line">        subgraph Model_Layer [Model Factory]</span><br><span class="line">            Chat_Service --&gt;|Text Generation| DeepSeek_V3</span><br><span class="line">            Whisper_Service &amp; TTS_Service --&gt;|Audio Processing| SiliconFlow/OpenAI</span><br><span class="line">        end</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="2-核心功能实现细节">2. 核心功能实现细节</h2>
-<h3 id="2-1-模拟面试与流式对话-Streaming-Chat">2.1 模拟面试与流式对话 (Streaming Chat)</h3>
-<p>为了模拟真实的面试场景，我们摒弃了“生成完毕再一次性返回”的模式，全面拥抱 <strong>SSE (Server-Sent Events)</strong>。</p>
-<ul>
-<li><strong>后端实现</strong>：使用 <code>LangChain</code> 的 <code>.astream()</code> 方法配合 FastAPI 的 <code>StreamingResponse</code>。</li>
-<li><strong>Prompt 设计</strong>：根据 Session 标题动态切换 System Prompt。如果检测到是面试模式，AI 变身为“严厉的面试官”，每次只问一个问题，并根据候选人的回答进行追问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/api/endpoints.py</span></span><br><span class="line"><span class="meta">@router.post(<span class="params"><span class="string">&quot;/chat/stream&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">stream_chat</span>(<span class="params">req: ChatRequest</span>):</span><br><span class="line">    <span class="comment"># 动态注入人设</span></span><br><span class="line">    system_prompt = <span class="string">&quot;你是一名专业的面试官。请根据求职者的回答进行追问...&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">generate</span>():</span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">for</span> chunk <span class="keyword">in</span> chain.astream(messages):</span><br><span class="line">            <span class="keyword">yield</span> <span class="string">f&quot;data: <span class="subst">&#123;chunk&#125;</span>\n\n&quot;</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="string">&quot;data: [DONE]\n\n&quot;</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> StreamingResponse(generate(), media_type=<span class="string">&quot;text/event-stream&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-语音交互闭环-The-Voice-Loop">2.2 语音交互闭环 (The Voice Loop)</h3>
-<p>这是本次升级的技术高地。我们实现了一个完整的语音交互循环：<strong>录音 -&gt; ASR -&gt; LLM 思考 -&gt; TTS 朗读</strong>。</p>
-<h4 id="A-ASR-听">A. ASR (听)</h4>
-<p>前端使用 <code>react-media-recorder</code> 捕获音频 Blob，后端对接 <strong>OpenAI 兼容接口</strong>（如 SiliconFlow 的 <code>SenseVoiceSmall</code>，识别速度极快）。</p>
-<h4 id="B-TTS-说-关键优化：音频队列-Audio-Queue">B. TTS (说) - 关键优化：音频队列 (Audio Queue)</h4>
-<p>为了解决“AI 说话卡顿”或“多重语音重叠”的问题，我们在前端实现了一个<strong>音频播放队列</strong>。</p>
-<p><strong>痛点</strong>：AI 生成速度很快，如果每收到一段文字就请求播放，声音会重叠。如果等全部生成完再播放，用户等待时间太长。<br>
-<strong>方案</strong>：</p>
-<ol>
-<li><strong>分句检测</strong>：前端监听 SSE 流，利用标点符号（<code>。？！</code>）切分句子。</li>
-<li><strong>入队</strong>：切分好的句子推入 <code>audioQueue</code>。</li>
-<li><strong>串行播放</strong>：<code>processAudioQueue</code> 递归函数确保上一句播完才请求下一句。</li>
-</ol>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hooks/useAudioQueue.ts</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">processAudioQueue</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (isPlayingRef.<span class="property">current</span> || queue.<span class="property">length</span> === <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    </span><br><span class="line">    isPlayingRef.<span class="property">current</span> = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">const</span> text = queue.<span class="title function_">shift</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 请求 TTS API 并播放</span></span><br><span class="line">    <span class="keyword">const</span> audio = <span class="keyword">new</span> <span class="title class_">Audio</span>(tts_url);</span><br><span class="line">    audio.<span class="property">onended</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        isPlayingRef.<span class="property">current</span> = <span class="literal">false</span>;</span><br><span class="line">        <span class="title function_">processAudioQueue</span>(); <span class="comment">// 递归处理下一句</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">await</span> audio.<span class="title function_">play</span>();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="3-基础设施与配置策略-Infrastructure">3. 基础设施与配置策略 (Infrastructure)</h2>
-<p>在引入语音功能时，我们遇到了一个典型的工程问题：<strong>DeepSeek 很强，但它不支持音频</strong>。</p>
-<p>为了兼顾<strong>智能（文本）<strong>与</strong>功能（语音）</strong>，我们设计了<strong>双模型配置策略</strong>。</p>
-<h3 id="3-1-分离配置-env-config-py">3.1 分离配置 (<code>.env</code> &amp; <code>config.py</code>)</h3>
-<p>我们将 LLM 的配置与 Audio 的配置完全解耦，实现了“大脑”用 DeepSeek，“嘴巴和耳朵”用 OpenAI/SiliconFlow。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/core/config.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Settings</span>(<span class="title class_ inherited__">BaseSettings</span>):</span><br><span class="line">    <span class="comment"># 大脑：DeepSeek V3 (高智商，低成本)</span></span><br><span class="line">    OPENAI_API_KEY: <span class="built_in">str</span> </span><br><span class="line">    OPENAI_API_BASE: <span class="built_in">str</span> = <span class="string">&quot;https://api.deepseek.com&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 五官：SiliconFlow / OpenAI (处理语音)</span></span><br><span class="line">    AUDIO_API_KEY: <span class="type">Optional</span>[<span class="built_in">str</span>]</span><br><span class="line">    AUDIO_API_BASE: <span class="type">Optional</span>[<span class="built_in">str</span>] = <span class="string">&quot;https://api.siliconflow.cn/v1&quot;</span></span><br><span class="line">    ASR_MODEL: <span class="built_in">str</span> = <span class="string">&quot;FunAudioLLM/SenseVoiceSmall&quot;</span></span><br></pre></td></tr></table></figure>
-<p>这种设计使得系统极具灵活性，可以在不修改代码的情况下，随意更换底层的语音服务商。</p>
-<hr>
-<h2 id="4-前端工程化踩坑记录-Troubleshooting">4. 前端工程化踩坑记录 (Troubleshooting)</h2>
-<p>在 Next.js + React 的开发过程中，我们解决了几个棘手的 Bug。</p>
-<h3 id="坑位-1：Worker-is-not-defined">坑位 1：<code>Worker is not defined</code></h3>
-<ul>
-<li><strong>现象</strong>：引入 <code>react-media-recorder</code> 后，页面刷新直接报错。</li>
-<li><strong>原因</strong>：Next.js 默认进行服务端渲染 (SSR)，而录音库依赖浏览器特有的 <code>Worker</code> API，Node.js 环境里没有。</li>
-<li><strong>解决</strong>：使用 <code>next/dynamic</code> 进行动态导入，并禁用 SSR。<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">ChatInput</span> = <span class="title function_">dynamic</span>(<span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&quot;@/components/ChatInput&quot;</span>), &#123; <span class="attr">ssr</span>: <span class="literal">false</span> &#125;);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="坑位-2：布局遮挡与滚动失效">坑位 2：布局遮挡与滚动失效</h3>
-<ul>
-<li><strong>现象</strong>：输入框使用 <code>absolute</code> 定位，导致聊天记录过长时被输入框遮挡，无法看到最后一条消息。</li>
-<li><strong>解决</strong>：重构 CSS 布局，放弃绝对定位，改用 <strong>Flexbox</strong>。
-<ul>
-<li>容器：<code>flex flex-col h-screen</code></li>
-<li>消息区：<code>flex-1 overflow-y-auto</code></li>
-<li>输入区：<code>flex-shrink-0</code> (固定在底部，挤压消息区高度)</li>
-</ul>
-</li>
-</ul>
-<h3 id="坑位-3：Markdown-样式丢失">坑位 3：Markdown 样式丢失</h3>
-<ul>
-<li><strong>现象</strong>：AI 回复的 Markdown 没有格式（无加粗、无列表）。</li>
-<li><strong>解决</strong>：引入 <code>@tailwindcss/typography</code> 插件，并正确包裹 <code>prose</code> 类名。<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div className=<span class="string">&quot;prose prose-sm ...&quot;</span>&gt;</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">ReactMarkdown</span>&gt;</span>&#123;content&#125;<span class="tag">&lt;/<span class="name">ReactMarkdown</span>&gt;</span></span></span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<hr>
-<h2 id="5-总结">5. 总结</h2>
-<p>通过本次 v2.0 的迭代，<code>jd_agent</code> 已经不仅仅是一个简单的文本分析工具，而是一个具备<strong>多模态交互能力</strong>的智能助手。</p>
-<ul>
-<li><strong>技术栈</strong>: FastAPI, LangChain, Next.js, Tailwind, Web Audio API.</li>
-<li><strong>核心突破</strong>: 解决了 LLM 生成与 TTS 播放的时序同步问题，实现了流畅的语音对话体验。</li>
-</ul>
-<hr>
-<p><em>希望这篇实战记录能为正在构建 AI Agent 的开发者提供参考！</em></p>
-
-      </div>
-      <div class="post-tags-categories">
-        
-        <div class="tags">
-          
-            <a href="/tags/python/" class="">
-              python
-            </a>
-          
-        </div>
-        
-      </div>
-      
-        <div class="copyright">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-    <strong>author:  </strong>Zhaoqi.Cao</a>
-    </li>
-    <li class="post-copyright-link">
-    <strong>link:  </strong>
-    <a href="/2025/11/30/tts-asr-agent/" target="_blank" title="实时语音模拟面试">https://caozhaoqi.github.io/2025/11/30/tts-asr-agent/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>Copyright notice:   </strong>
-      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-      reprint policy. If reproduced, please indicate source!
-    </li>
-  </ul>
-<div>
-      
-    </article>
-    <!-- 上一篇文章和下一篇文章 -->
-    
-      <!-- 文章详情页的上一页和下一页 -->
-<div class="post-nav">
-
-
-
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2025/12/01/agent-advance-high/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">打造 L5 级人机协同与全双工语音的 AI 面试官</div>
-      </div>
-      
-      <!-- <div class="content">
-        🚀 [实战] 进化！从脚本到数字员工：打造 L5 级人机协同与全双工语音的 AI 面试官
-
-摘要：今天是一个里程碑。我
-      </div> -->
-    </a>
-  </div>
-
-
-
-  
-  <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
-    </div>
-    <a href="/2025/11/29/llm-agent-memory/" class="post-nav-link">
-      <div class="title">
-        Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现</div>
-      </div>
-      <!-- <div class="content">
-        [硬核实战] 从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现
-
-摘要：如何将一个简单的 Lan
-      </div> -->
-    </a>
-  </div>
-
-</div>
-
-    
-    
-
-    <!-- 打赏 -->
-    
-      <div id="appDonate" class="post-donate">
-  <div id="donate_board" class="donate_bar center" ref="donate">
-    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
-  </div>
-  <transition name="fade">
-    <div 
-      class="donate-box-mask"
-      v-cloak 
-      v-show="visible"
-      @click="cancelDialogDrawer()"
-    >
-    </div>
-  </transition>
-  <transition name="bounce">
-    <div class="donate-box" v-cloak v-show="visible">
-      <div class="donate-box_close">
-        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
-      </div>
-      <div class="donate-box_title">
-        <h4>
-          你的赏识是我前进的动力
-        </h4>
-      </div>
-      <div class="donate-box_tab">
-        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
-          支付宝
-        </div>
-        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
-          微信
-        </div>
-      </div>
-      <div class="donate-box_img">
-        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
-          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
-        </div> 
-        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
-          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
-        </div>
-      </div>
-    </div>
-  </transition>
-</div>
-
-<script>
-  var body = document.body || document.documentElement || window;
-  var vm = new Vue({
-    el: '#appDonate',
-    data: {
-      visible: false,
-      tabActive: 'Alipay',
-      top: 0,
-    },
-    computed: {
-    },
-    mounted() {
-    },
-    methods: {
-      showDialogDrawer() {
-        this.visible = true;
-        // 防止页面滚动，只能让弹框滚动
-        // function getScroll() {
-        //   return {
-        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
-        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
-        //   };
-        // }
-        this.top = $(document).scrollTop() // or getScroll().top
-        // console.log('aa', $('.main-content'));
-        body.style.cssText = 'overflow: hidden;';
-      },
-      cancelDialogDrawer() {
-        this.visible = false;
-        body.removeAttribute('style');
-        $(document).scrollTop(this.top)
-      },
-      changeTabActive(name) {
-        this.tabActive = name;
-      }
-    },
-    created() {}
-  })
-</script>
-    
-
-    <!-- 分享 -->
-    
-      <!-- https://github.com/overtrue/share.js -->
-<!-- 文章详情页的分享 -->
-<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-
-<script src="/js/shareJs/social-share.min.js"></script>
-</script>
-
-<style>
-  .social-share {
-    margin: 20px 0;
+  <span class="title" id="archive-header-desc"></span>
+  <script>
+  function typedFn() {
+    const el = '#archive-header-desc';
+    const type = 'archive';
+    let desc = '愿你如风，被人温柔以待'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
   }
-</style>
-
-
-    
-    
-    <!-- 评论 -->
-    <!-- 评论 -->
-
-  <div id="myComment">
-    
-      
-<section id="comments" style="padding: 1em;"
-	class="animated bounceInUp">
-	<div id="vcomment" class="comment"></div>
-</section>
-<style>
-	#comments {
-		background: rgba(255,255,255,0.9);
-	}
-	#veditor {
-		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
-		background-size: contain;
-		background-repeat: no-repeat;
-		background-position: right;
-		background-color: rgba(255, 255, 255, 0);
-		resize: vertical;
-	}
-	#veditor:focus{
-		background-position-y: 200px;
-		transition: all 0.2s ease-in-out 0s;
-	}
-	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
-		background-color: #42b983;
-	}
-	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
-		color: #42b983;
-		border-color: #42b983;
-	}
-	#vcomment .vcards .vcard .vhead .vsys i {
-		display: none;
-	}
-	/* 底部valine链接 */
-	#vcomment .vpower {
-		display: none;
-	}
-	
-	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
-	/* #vcomment .vheader {
-		display: flex;
-		justify-content: space-around;
-	}
-	
-	#vcomment .vheader .vnick {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	}
-
-	#vcomment .vheader .vmail {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	}
-
-	#vcomment .vheader .vlink {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	} */
-
-	img.vimg {
-		transition: all 1s;
-		/* 头像旋转时间为 1s */
-	}
-
-	img.vimg:hover {
-		transform: rotate(360deg);
-		-webkit-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-	}
-
-	#vcomment .vcards .vcard {
-		padding: 15px 20px 0 20px;
-		border-radius: 10px;
-		margin-bottom: 15px;
-		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
-		transition: all .3s
-	}
-
-	#vcomment .vcards .vcard:hover {
-		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
-	}
-
-	#vcomment .vcards .vcard .vh .vcard {
-		border: none;
-		box-shadow: none;
-	}
-</style>
-    
+  typedFn();
+</script>
+  
   </div>
-
-<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
-
-
-  </div>
-
-  <!-- 目录 -->
-  
-<aside id='l_side'>
-  
-    
-      
-        <section class="widget side_blogger">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img src='/medias/logo.png'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-          <h2>浅斟低唱</h2>
-        
-        
-          <p>博客</p>
-
-        
-        
-          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
-      </div>
-    
-    
-      <div class="social-wrapper">
-        
-          
-            <a href="/atom.xml"
-              class="social fas fa-rss flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="mailto:1150118968@qq.com"
-              class="social fas fa-envelope flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="https://github.com/caozhaoqi/"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
-              class="social fab fa-qq flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-      </div>
-    
-  </div>
-</section>
-
-      
-    
-  
-  
-  
-    
-  
-
-  <div class="layout_sticky">    
-    
-      
-<section class="widget side_toc">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="toc-main">
-      <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9E%B6%E6%9E%84%E5%8D%87%E7%BA%A7%EF%BC%9A%E4%BB%8E%E5%8D%95%E5%90%91%E7%94%9F%E6%88%90%E5%88%B0%E5%8F%8C%E5%90%91%E4%BA%A4%E4%BA%92"><span class="toc-text">1. 架构升级：从单向生成到双向交互</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9B%BE-v2-0"><span class="toc-text">1.1 系统架构图 (v2.0)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="toc-text">2. 核心功能实现细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95%E4%B8%8E%E6%B5%81%E5%BC%8F%E5%AF%B9%E8%AF%9D-Streaming-Chat"><span class="toc-text">2.1 模拟面试与流式对话 (Streaming Chat)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%AF%AD%E9%9F%B3%E4%BA%A4%E4%BA%92%E9%97%AD%E7%8E%AF-The-Voice-Loop"><span class="toc-text">2.2 语音交互闭环 (The Voice Loop)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#A-ASR-%E5%90%AC"><span class="toc-text">A. ASR (听)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#B-TTS-%E8%AF%B4-%E5%85%B3%E9%94%AE%E4%BC%98%E5%8C%96%EF%BC%9A%E9%9F%B3%E9%A2%91%E9%98%9F%E5%88%97-Audio-Queue"><span class="toc-text">B. TTS (说) - 关键优化：音频队列 (Audio Queue)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E4%B8%8E%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5-Infrastructure"><span class="toc-text">3. 基础设施与配置策略 (Infrastructure)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%88%86%E7%A6%BB%E9%85%8D%E7%BD%AE-env-config-py"><span class="toc-text">3.1 分离配置 (.env &amp; config.py)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95-Troubleshooting"><span class="toc-text">4. 前端工程化踩坑记录 (Troubleshooting)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%BD%8D-1%EF%BC%9AWorker-is-not-defined"><span class="toc-text">坑位 1：Worker is not defined</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%BD%8D-2%EF%BC%9A%E5%B8%83%E5%B1%80%E9%81%AE%E6%8C%A1%E4%B8%8E%E6%BB%9A%E5%8A%A8%E5%A4%B1%E6%95%88"><span class="toc-text">坑位 2：布局遮挡与滚动失效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%BD%8D-3%EF%BC%9AMarkdown-%E6%A0%B7%E5%BC%8F%E4%B8%A2%E5%A4%B1"><span class="toc-text">坑位 3：Markdown 样式丢失</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-text">5. 总结</span></a></li></ol> -->
-        <div class="toc"></div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- 手机端目录按钮 -->
-<div id="toc-mobile-btn">
-  <i class="fas fa-list-ul" aria-hidden="true"></i>
+  <div class="mask-box"></div>
 </div>
 
+<div class="archive-video">
+  <video class="full-video" autoplay loop muted>
+      <source style="width: 100%;height: 100vh;" src="/">
+  </video>
+  <div class="video-header-title">
+    归档
+  </div>
+  <div class="video-header-desc">
+  
+      <span class="title" id="archive-video-header-desc"></span>
+      <script>
+  function typedFn() {
+    const el = '#archive-video-header-desc';
+    const type = 'archive';
+    let desc = '愿你如风，被人温柔以待'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
+  }
+  typedFn();
+</script>
       
-  <section class="widget side_recent_post">
-    
-  <header>
-    
-      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
-    
-  </header>
+  </div>
+  <div class="mask-box"></div>
+</div>
+
+<!-- hash算法 -->
 
 
-    <div class='content'>
-      
-      <!-- hash算法 -->
-      
-      <div class="aside-list">
+<div class="archive-main">
+  <section class="archive">
+    <div class="archive-content">
+      <ul class="post-archive">
         
-          <div class="aside-list-item">
+        
+          
             
+            <div class="year" data-aos="zoom-in-up">
+                <div class="bullet"></div>
+                <a href="/archives/2025">2025</a>
+            </div>
+          
+          <li class="post-item" data-aos="fade-left">
             
-            
-
             <div class="post-img-box">
               <a href="/2025/12/01/agent-advance-high/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                
-                  <span class="post-date">12-01</span>
-                
+                <span class="post-date">12-01</span>
               </div>
               <a class="post-title" href="/2025/12/01/agent-advance-high/">打造 L5 级人机协同与全双工语音的 AI 面试官</a>
             </div>
-          </div>
+          </li>
         
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/11/30/tts-asr-agent/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">11-30</span>
-                
-              </div>
-              <a class="post-title" href="/2025/11/30/tts-asr-agent/">实时语音模拟面试</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/11/29/llm-agent-memory/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">11-29</span>
-                
-              </div>
-              <a class="post-title" href="/2025/11/29/llm-agent-memory/">从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/11/28/agent-rag-jd/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">11-28</span>
-                
-              </div>
-              <a class="post-title" href="/2025/11/28/agent-rag-jd/">基于 RAG 与 Agent 协作的智能面试助手开发指南</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/11/26/agent-research-llm/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">11-26</span>
-                
-              </div>
-              <a class="post-title" href="/2025/11/26/agent-research-llm/">基于 FastAPI + LangChain 的简单agent实现</a>
-            </div>
-          </div>
-        
-      </div>
+      </ul>
     </div>
   </section>
-
+  <div class="w-70">
     
   </div>
-</aside>
-
-
-  <!-- 图片放大 Wrap images with fancybox support -->
-  <script src="/js/wrapImage.js"></script>
 </div>
-
-<!-- 文章详情页背景图 -->
-<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
-	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
-	<transition-group tag="ul" :name="names">
-		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
-			<img :src="image" class="bg-swiper-img no-lazy">
-		</li>
-	</transition-group>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#appBgSwiper',
-		data: {
-			names: '' || 'fade' || 'fade', // translate-fade fade
-			mark: 0,
-			img: [],
-			bgColor: '',
-			time: null
-		},
-		methods: {   //添加方法
-			change(i, m) {
-				if (i > m) {
-					// this.names = 'fade';
-				} else if (i < m) {
-					// this.names = 'fade';
-				} else {
-					return;
-				}
-				this.mark = i;
-			},
-			prev() {
-				// this.names = 'fade';
-				this.mark--;
-				if (this.mark === -1) {
-					this.mark = 3;
-					return
-				}
-			},
-			next() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			autoPlay() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			play() {
-				let bgImgDelay = '' || '180000'
-				let delay = parseInt(bgImgDelay) || 180000;
-				this.time = setInterval(this.autoPlay, delay);
-			},
-			enter() {
-				clearInterval(this.time);
-			},
-			leave() {
-				this.play();
-			}
-		},
-		created() {
-			this.play()
-		},
-		beforeDestroy() {
-			clearInterval(this.time);
-		},
-		mounted() {
-			let prop = '' || '';
-			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
-			if (isImg) {
-				let img = prop.split(',');
-				let configRoot = '/'
-				let arrImg = [];
-				img.forEach(el => {
-					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-					var objExp = new RegExp(Expression);
-
-					if (objExp.test(el)) {
-						// http or https
-						arrImg.push(el);
-					} else {
-						// 非http or https开头
-						// 本地文件
-						let firstStr = el.charAt(0);
-						if (firstStr == '/') {
-							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
-						}
-						el = configRoot + el;
-						arrImg.push(el);
-					}
-				})
-				this.img = arrImg;
-			} else {
-				this.bgColor = prop;
-			}
-		}
-	})
-</script>
-
-<style>
-	.bg-swiper-box {
-		position: absolute;
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.bg-swiper-img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
-
-
-  <script>
-  function loadMermaid() {
-    if (document.getElementsByClassName('mermaid').length) {
-      if (window.mermaidJsLoad) mermaid.init()
-      else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
-          window.mermaidJsLoad = true
-          mermaid.initialize({
-            theme: 'default',
-          })
-          if ('true') {
-            mermaid.init();
-          }
-        })
-      }
-    }
-  };
-  document.addEventListener("DOMContentLoaded", function () {
-    loadMermaid();
-  })
-
-  document.addEventListener('pjax:complete', function () {
-    loadMermaid();
-  })
-  
-</script>
-
 
       </main>
     </div>
