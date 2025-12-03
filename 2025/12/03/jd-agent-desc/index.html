@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>archives | Zhaoqi.Cao static blog</title>
+  <title>基于 FastAPI + LangChain 的高并发 Agent 架构解析 | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -608,280 +608,856 @@
     
 </header>
         <!-- 内容区域 -->
-        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
-<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
-<div class="archive-header" style="background-image:url('https://pic1.zhimg.com/80/v2-1414b3a4b205e19060db18a20d08723a_1440w.jpg?source=1940ef5c')">
-  <div class="archive-header-title">
-    归档
-  </div>
-  <div class="archive-header-desc">
-  
-  <span class="title" id="archive-header-desc"></span>
-  <script>
-  function typedFn() {
-    const el = '#archive-header-desc';
-    const type = 'archive';
-    let desc = '愿你如风，被人温柔以待'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
-  
-  </div>
-  <div class="mask-box"></div>
-</div>
+        
+ <!-- prismjs 代码高亮 -->
+ 
 
-<div class="archive-video">
-  <video class="full-video" autoplay loop muted>
-      <source style="width: 100%;height: 100vh;" src="/">
-  </video>
-  <div class="video-header-title">
-    归档
-  </div>
-  <div class="video-header-desc">
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
-      <span class="title" id="archive-video-header-desc"></span>
-      <script>
-  function typedFn() {
-    const el = '#archive-video-header-desc';
-    const type = 'archive';
-    let desc = '愿你如风，被人温柔以待'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        基于 FastAPI + LangChain 的高并发 Agent 架构解析
+      </span>
+    </div>
+    
+    
       
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2025-12-03 |
+        </span>
+      
+
+      
+
+      
+        <div class="post-detail-header_wordcount">
+          <span class="totalcount">
+            <i class="fas fa-file-text-o"></i> Words: 1.4k |
+          </span>
+  
+          <span class="min2read">
+            <i class="fas fa-clock"></i> Reading time: 5min |
+          </span>
+  
+          
+            <span class="reading">
+              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+        </div>
+      
+    
   </div>
-  <div class="mask-box"></div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
 </div>
 
-<!-- hash算法 -->
 
 
-<div class="archive-main">
-  <section class="archive">
-    <div class="archive-content">
-      <ul class="post-archive">
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1>基于 FastAPI + LangChain 的高并发 Agent 架构解析</h1>
+<p><strong>项目地址</strong>: <a target="_blank" rel="noopener" href="https://github.com/caozhaoqi/jd_agent">https://github.com/caozhaoqi/jd_agent</a></p>
+<blockquote>
+<p><strong>摘要</strong>：在 AI Agent 爆发的今天，如何让大模型从“聊天玩具”变成“生产力工具”？本文将深度拆解 <code>jd_agent</code> 项目。这是一个全栈 AI 应用，它能自动分析岗位描述（JD），并行生成技术面试题、HR 行为面试指南及公司背景调研。项目采用 <strong>FastAPI</strong> + <strong>LangChain</strong> 构建高并发后端，配合 <strong>Next.js</strong> + <strong>Tailwind</strong> 实现类似 DeepSeek 的现代化交互界面。</p>
+</blockquote>
+<hr>
+<h2 id="1-项目背景与痛点">1. 项目背景与痛点</h2>
+<p>求职者在准备面试时，往往面临“信息过载”与“针对性不足”的矛盾：</p>
+<ul>
+<li><strong>手动分析慢</strong>：面对几十个 JD，逐个提取技术栈和核心职责非常耗时。</li>
+<li><strong>准备无方向</strong>：不知道该复习哪些底层原理，也不知道 HR 会问什么刁钻的行为问题。</li>
+<li><strong>通用 AI 效率低</strong>：直接问 ChatGPT，需要反复输入 Prompt，且输出格式乱七八糟，难以保存。</li>
+</ul>
+<p><strong><code>jd_agent</code> 的目标</strong>：输入一段 JD，<strong>10秒内</strong> 输出一份结构清晰、包含技术突击点与回答策略的<strong>全方位面试指南</strong>。</p>
+<hr>
+<h2 id="2-核心功能-Core-Features">2. 核心功能 (Core Features)</h2>
+<p>截至目前，项目已实现以下核心能力：</p>
+<h3 id="✅-1-智能-JD-解析-Smart-Parsing">✅ 1. 智能 JD 解析 (Smart Parsing)</h3>
+<p>利用 LLM 的语义理解能力，从非结构化的 JD 文本中精准提取：</p>
+<ul>
+<li><strong>核心技术栈</strong> (e.g., Python, K8s, Redis)</li>
+<li><strong>职级/经验要求</strong> (e.g., 架构师, 3-5年)</li>
+<li><strong>软技能要求</strong> (e.g., 抗压能力, 跨部门沟通)</li>
+<li><strong>公司名称</strong> (用于后续背调)</li>
+</ul>
+<h3 id="✅-2-深度技术题生成-Hardcore-Tech-QA">✅ 2. 深度技术题生成 (Hardcore Tech QA)</h3>
+<p>基于提取的技术栈和职级，生成<strong>定制化</strong>的面试题：</p>
+<ul>
+<li><strong>差异化出题</strong>：针对初级岗位问语法，针对高级岗位问底层原理（如 GIL 锁、分布式一致性）。</li>
+<li><strong>参考答案</strong>：每道题均附带“参考回答要点”，辅助记忆。</li>
+</ul>
+<h3 id="✅-3-HR-行为面试指南-Behavioral-Guide">✅ 3. HR 行为面试指南 (Behavioral Guide)</h3>
+<p>结合 JD 中的软技能要求，基于 <strong>STAR 法则</strong>（情境、任务、行动、结果）生成行为面试题及高分回答策略。</p>
+<h3 id="✅-4-现代化对话界面-Modern-UI">✅ 4. 现代化对话界面 (Modern UI)</h3>
+<ul>
+<li><strong>DeepSeek 风格交互</strong>：采用 Next.js + Tailwind CSS 构建，支持 Markdown 实时渲染。</li>
+<li><strong>流式响应 (预留)</strong>：后端架构已支持 SSE，前端具备打字机效果展示能力。</li>
+</ul>
+<hr>
+<h2 id="3-技术架构设计-System-Architecture">3. 技术架构设计 (System Architecture)</h2>
+<p>为了保证高性能与可扩展性，项目采用了 <strong>分层架构 (Layered Architecture)</strong> 与 <strong>异步并发 (Asyncio)</strong> 设计。</p>
+<h3 id="3-1-架构图解">3.1 架构图解</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    User[用户 (Next.js UI)] --&gt;|HTTP POST| API[API Layer (FastAPI)]</span><br><span class="line">    </span><br><span class="line">    subgraph Backend_Core [后端核心服务]</span><br><span class="line">        API --&gt; Service[Service Layer (编排层)]</span><br><span class="line">        </span><br><span class="line">        Service --&gt; Parser[JD 解析器 (Chain A)]</span><br><span class="line">        </span><br><span class="line">        subgraph Parallel_Zone [异步并行执行区]</span><br><span class="line">            direction TB</span><br><span class="line">            Parser --&gt;|提取技术栈| TechGen[技术题生成器 (Chain B)]</span><br><span class="line">            Parser --&gt;|提取公司名| Research[公司背调/HR生成 (Chain C)]</span><br><span class="line">        end</span><br><span class="line">        </span><br><span class="line">        TechGen --&gt; LLM[(LLM Factory)]</span><br><span class="line">        Research --&gt; LLM</span><br><span class="line">        </span><br><span class="line">        LLM --&gt;|OpenAI/DeepSeek| Cloud[模型服务商]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    Service --&gt;|Structured JSON| User</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-核心技术栈">3.2 核心技术栈</h3>
+<ul>
+<li><strong>后端</strong>: Python 3.9+, <strong>FastAPI</strong> (异步 Web 框架), <strong>Pydantic</strong> (数据验证)。</li>
+<li><strong>AI 编排</strong>: <strong>LangChain</strong> (管理 Prompt 与 Chains)。</li>
+<li><strong>模型层</strong>: <strong>OpenAI SDK</strong> (兼容 DeepSeek-V3, SiliconFlow 等多渠道)。</li>
+<li><strong>前端</strong>: <strong>Next.js 14</strong>, Tailwind CSS, Lucide React。</li>
+</ul>
+<hr>
+<h2 id="4-关键实现原理-Implementation-Deep-Dive">4. 关键实现原理 (Implementation Deep Dive)</h2>
+<h3 id="4-1-强制结构化输出-Solving-the-JSON-Problem">4.1 强制结构化输出 (Solving the JSON Problem)</h3>
+<p>大模型天生喜欢“说话”，但程序需要 JSON。我们摒弃了不稳定的正则表达式，使用 LangChain 的 <code>PydanticOutputParser</code>。</p>
+<p><strong>代码片段</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义期望的数据结构</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">InterviewQuestion</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    category: <span class="built_in">str</span></span><br><span class="line">    question: <span class="built_in">str</span></span><br><span class="line">    reference_answer: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 注入 Schema 指令</span></span><br><span class="line">parser = PydanticOutputParser(pydantic_object=InterviewQuestion)</span><br><span class="line">format_instructions = parser.get_format_instructions()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Prompt 中包含 format_instructions，强制 LLM 输出 JSON</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-2-异步并发优化-From-30s-to-10s">4.2 异步并发优化 (From 30s to 10s)</h3>
+<p>这是本项目最大的工程亮点。</p>
+<ul>
+<li><strong>串行模式</strong>: 解析(5s) + 技术题(10s) + HR题(10s) = <strong>25s+</strong></li>
+<li><strong>并行模式</strong>: 解析(5s) + [技术题 &amp; HR题 同时跑](max 10s) = <strong>15s</strong></li>
+</ul>
+<p>利用 Python 的 <code>asyncio.gather</code> 实现“Fire and Forget”模式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">generate_interview_guide</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="comment"># 1. 前置依赖：解析 JD</span></span><br><span class="line">    jd_meta = <span class="keyword">await</span> parse_jd_async(request.jd_text)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 并发执行无依赖的任务</span></span><br><span class="line">    <span class="comment"># 使用 ainvoke 而不是 invoke</span></span><br><span class="line">    task_tech = generate_tech_async(jd_meta.tech_stack, jd_meta.years_required)</span><br><span class="line">    task_hr = generate_hr_async(jd_meta.soft_skills)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 挂起等待所有任务完成</span></span><br><span class="line">    tech_qs, hr_qs = <span class="keyword">await</span> asyncio.gather(task_tech, task_hr)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> InterviewReport(...)</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-LLM-工厂模式-Cost-Optimization">4.3 LLM 工厂模式 (Cost Optimization)</h3>
+<p>为了降低 token 成本，我们设计了配置驱动的 LLM 工厂。开发时使用 <strong>DeepSeek (充值 10 元用很久)</strong>，生产环境可无缝切换至 <strong>GPT-4</strong>。</p>
+<p><strong>配置管理 (<code>.env</code> 驱动)</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># core/config.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Settings</span>(<span class="title class_ inherited__">BaseSettings</span>):</span><br><span class="line">    OPENAI_API_KEY: <span class="built_in">str</span></span><br><span class="line">    OPENAI_API_BASE: <span class="built_in">str</span> = <span class="string">&quot;https://api.deepseek.com&quot;</span> <span class="comment"># 一键切换底座</span></span><br><span class="line">    MODEL_NAME: <span class="built_in">str</span> = <span class="string">&quot;deepseek-chat&quot;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="5-工程踩坑与解决方案-Troubleshooting">5. 工程踩坑与解决方案 (Troubleshooting)</h2>
+<p>在开发过程中，我们解决了一系列真实的工程问题，这些经验非常宝贵：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">问题现象</th>
+<th style="text-align:left">根本原因</th>
+<th style="text-align:left">解决方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Error 402 / 429</strong></td>
+<td style="text-align:left">API 账户余额不足（OpenAI 欠费）。</td>
+<td style="text-align:left">切换至 <strong>DeepSeek</strong> 或 <strong>硅基流动</strong> 的免费额度。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>ValidationError</strong></td>
+<td style="text-align:left">某些情况下 LLM 未生成非必填项（如系统设计题），导致返回 None。</td>
+<td style="text-align:left">在 Pydantic Schema 中使用 <code>Optional[T] = None</code>。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>UI 样式丢失</strong></td>
+<td style="text-align:left">Next.js 页面内容堆叠在左上角，无样式。</td>
+<td style="text-align:left">1. 检查 <code>layout.tsx</code> 是否引入 <code>globals.css</code>。<br>2. 检查 <code>tailwind.config.ts</code> 的 <code>content</code> 路径是否包含 <code>app</code> 目录。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>SSL Error</strong></td>
+<td style="text-align:left">Mac 自带 LibreSSL 版本过低。</td>
+<td style="text-align:left">降级 urllib3 或使用 Homebrew 升级 OpenSSL。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="6-总结与展望">6. 总结与展望</h2>
+<p><code>jd_agent</code> 不仅仅是一个 Demo，它展示了现代 AI 应用开发的标准范式：<strong>Prompt 工程化 + 异步后端 + 结构化数据流</strong>。</p>
+<p><strong>未来规划 (Roadmap)</strong>:</p>
+<ol>
+<li><strong>RAG 增强</strong>: 集成 Tavily 搜索 API，实时抓取公司财报和新闻，生成更犀利的反问环节。</li>
+<li><strong>简历匹配</strong>: 上传用户简历 PDF，自动计算与 JD 的匹配度分数 (Matching Score)。</li>
+<li><strong>多模态</strong>: 支持直接输入 JD 截图或 PDF 文件。</li>
+</ol>
+<hr>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/python/" class="">
+              python
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>Zhaoqi.Cao</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2025/12/03/jd-agent-desc/" target="_blank" title="基于 FastAPI + LangChain 的高并发 Agent 架构解析">https://caozhaoqi.github.io/2025/12/03/jd-agent-desc/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/12/01/agent-advance-high/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">打造 L5 级人机协同与全双工语音的 AI 面试官</div>
+      </div>
+      <!-- <div class="content">
+        🚀 [实战] 进化！从脚本到数字员工：打造 L5 级人机协同与全双工语音的 AI 面试官
+
+摘要：今天是一个里程碑。我
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+      <div id="appDonate" class="post-donate">
+  <div id="donate_board" class="donate_bar center" ref="donate">
+    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
+  </div>
+  <transition name="fade">
+    <div 
+      class="donate-box-mask"
+      v-cloak 
+      v-show="visible"
+      @click="cancelDialogDrawer()"
+    >
+    </div>
+  </transition>
+  <transition name="bounce">
+    <div class="donate-box" v-cloak v-show="visible">
+      <div class="donate-box_close">
+        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
+      </div>
+      <div class="donate-box_title">
+        <h4>
+          你的赏识是我前进的动力
+        </h4>
+      </div>
+      <div class="donate-box_tab">
+        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
+          支付宝
+        </div>
+        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
+          微信
+        </div>
+      </div>
+      <div class="donate-box_img">
+        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
+        </div> 
+        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDonate',
+    data: {
+      visible: false,
+      tabActive: 'Alipay',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        // function getScroll() {
+        //   return {
+        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+        //   };
+        // }
+        this.top = $(document).scrollTop() // or getScroll().top
+        // console.log('aa', $('.main-content'));
+        body.style.cssText = 'overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+      changeTabActive(name) {
+        this.tabActive = name;
+      }
+    },
+    created() {}
+  })
+</script>
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      
+<section id="comments" style="padding: 1em;"
+	class="animated bounceInUp">
+	<div id="vcomment" class="comment"></div>
+</section>
+<style>
+	#comments {
+		background: rgba(255,255,255,0.9);
+	}
+	#veditor {
+		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: right;
+		background-color: rgba(255, 255, 255, 0);
+		resize: vertical;
+	}
+	#veditor:focus{
+		background-position-y: 200px;
+		transition: all 0.2s ease-in-out 0s;
+	}
+	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
+		background-color: #42b983;
+	}
+	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
+		color: #42b983;
+		border-color: #42b983;
+	}
+	#vcomment .vcards .vcard .vhead .vsys i {
+		display: none;
+	}
+	/* 底部valine链接 */
+	#vcomment .vpower {
+		display: none;
+	}
+	
+	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
+	/* #vcomment .vheader {
+		display: flex;
+		justify-content: space-around;
+	}
+	
+	#vcomment .vheader .vnick {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vmail {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	}
+
+	#vcomment .vheader .vlink {
+		width: 31%;
+		border: 2px solid #dedede;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px
+	} */
+
+	img.vimg {
+		transition: all 1s;
+		/* 头像旋转时间为 1s */
+	}
+
+	img.vimg:hover {
+		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+	}
+
+	#vcomment .vcards .vcard {
+		padding: 15px 20px 0 20px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
+		transition: all .3s
+	}
+
+	#vcomment .vcards .vcard:hover {
+		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
+	}
+
+	#vcomment .vcards .vcard .vh .vcard {
+		border: none;
+		box-shadow: none;
+	}
+</style>
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='/medias/logo.png'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>浅斟低唱</h2>
         
         
+          <p>博客</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
           
-            
-            <div class="year" data-aos="zoom-in-up">
-                <div class="bullet"></div>
-                <a href="/archives/2025">2025</a>
-            </div>
+            <a href="/atom.xml"
+              class="social fas fa-rss flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
           
-          <li class="post-item" data-aos="fade-left">
+        
+          
+            <a href="mailto:1150118968@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="https://github.com/caozhaoqi/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+    
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">基于 FastAPI + LangChain 的高并发 Agent 架构解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF%E4%B8%8E%E7%97%9B%E7%82%B9"><span class="toc-text">1. 项目背景与痛点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD-Core-Features"><span class="toc-text">2. 核心功能 (Core Features)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-1-%E6%99%BA%E8%83%BD-JD-%E8%A7%A3%E6%9E%90-Smart-Parsing"><span class="toc-text">✅ 1. 智能 JD 解析 (Smart Parsing)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-2-%E6%B7%B1%E5%BA%A6%E6%8A%80%E6%9C%AF%E9%A2%98%E7%94%9F%E6%88%90-Hardcore-Tech-QA"><span class="toc-text">✅ 2. 深度技术题生成 (Hardcore Tech QA)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-3-HR-%E8%A1%8C%E4%B8%BA%E9%9D%A2%E8%AF%95%E6%8C%87%E5%8D%97-Behavioral-Guide"><span class="toc-text">✅ 3. HR 行为面试指南 (Behavioral Guide)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-4-%E7%8E%B0%E4%BB%A3%E5%8C%96%E5%AF%B9%E8%AF%9D%E7%95%8C%E9%9D%A2-Modern-UI"><span class="toc-text">✅ 4. 现代化对话界面 (Modern UI)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-System-Architecture"><span class="toc-text">3. 技术架构设计 (System Architecture)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9E%B6%E6%9E%84%E5%9B%BE%E8%A7%A3"><span class="toc-text">3.1 架构图解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-text">3.2 核心技术栈</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%85%B3%E9%94%AE%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-Implementation-Deep-Dive"><span class="toc-text">4. 关键实现原理 (Implementation Deep Dive)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%BC%BA%E5%88%B6%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA-Solving-the-JSON-Problem"><span class="toc-text">4.1 强制结构化输出 (Solving the JSON Problem)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%BC%82%E6%AD%A5%E5%B9%B6%E5%8F%91%E4%BC%98%E5%8C%96-From-30s-to-10s"><span class="toc-text">4.2 异步并发优化 (From 30s to 10s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-LLM-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-Cost-Optimization"><span class="toc-text">4.3 LLM 工厂模式 (Cost Optimization)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%B7%A5%E7%A8%8B%E8%B8%A9%E5%9D%91%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-Troubleshooting"><span class="toc-text">5. 工程踩坑与解决方案 (Troubleshooting)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="toc-text">6. 总结与展望</span></a></li></ol></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
             
+            
+            
+
             <div class="post-img-box">
-              <a href="/2025/04/03/video-secene-detect/" class="post-img " style="background-size: cover; 
+              <a href="/2025/12/03/jd-agent-desc/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                <span class="post-date">04-03</span>
+                
+                  <span class="post-date">12-03</span>
+                
               </div>
-              <a class="post-title" href="/2025/04/03/video-secene-detect/">视频场景切换检测</a>
+              <a class="post-title" href="/2025/12/03/jd-agent-desc/">基于 FastAPI + LangChain 的高并发 Agent 架构解析</a>
             </div>
-          </li>
+          </div>
         
-          
-          <li class="post-item" data-aos="fade-left">
+          <div class="aside-list-item">
             
+            
+            
+
             <div class="post-img-box">
-              <a href="/2025/03/26/mail-server-Postfix/" class="post-img " style="background-size: cover; 
+              <a href="/2025/12/01/agent-advance-high/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" class="lazyload placeholder" data-srcset="https://pic4.zhimg.com/80/v2-e434e3a2888fb4efb1844845b8791d1f_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                <span class="post-date">03-26</span>
+                
+                  <span class="post-date">12-01</span>
+                
               </div>
-              <a class="post-title" href="/2025/03/26/mail-server-Postfix/">在ubuntu使用Postfix搭建邮件服务器</a>
+              <a class="post-title" href="/2025/12/01/agent-advance-high/">打造 L5 级人机协同与全双工语音的 AI 面试官</a>
             </div>
-          </li>
+          </div>
         
-          
-          <li class="post-item" data-aos="fade-left">
+          <div class="aside-list-item">
             
+            
+            
+
             <div class="post-img-box">
-              <a href="/2025/03/18/smb-git-svn/" class="post-img " style="background-size: cover; 
+              <a href="/2025/11/30/tts-asr-agent/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/80/v2-5f7cb7e900b9dcf5354c3d4d2c5cc3c2_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                <span class="post-date">03-18</span>
+                
+                  <span class="post-date">11-30</span>
+                
               </div>
-              <a class="post-title" href="/2025/03/18/smb-git-svn/">搭建 Git 或 SVN 服务器并通过 Samba 共享</a>
+              <a class="post-title" href="/2025/11/30/tts-asr-agent/">实时语音模拟面试</a>
             </div>
-          </li>
+          </div>
         
-          
-          <li class="post-item" data-aos="fade-left">
+          <div class="aside-list-item">
             
+            
+            
+
             <div class="post-img-box">
-              <a href="/2025/03/17/vpn-ee-build/" class="post-img " style="background-size: cover; 
+              <a href="/2025/11/29/llm-agent-memory/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-b44931ea513e5f7b3b06f2703f79653c_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                <span class="post-date">03-17</span>
+                
+                  <span class="post-date">11-29</span>
+                
               </div>
-              <a class="post-title" href="/2025/03/17/vpn-ee-build/">企业级VPN搭建方案对比与指导</a>
+              <a class="post-title" href="/2025/11/29/llm-agent-memory/">从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现</a>
             </div>
-          </li>
+          </div>
         
-          
-          <li class="post-item" data-aos="fade-left">
+          <div class="aside-list-item">
             
+            
+            
+
             <div class="post-img-box">
-              <a href="/2025/03/11/rsync-nas-backup/" class="post-img " style="background-size: cover; 
+              <a href="/2025/11/28/agent-rag-jd/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" class="lazyload placeholder" data-srcset="https://pic1.zhimg.com/80/v2-03a22891ccba9bccf6424dfd7cbf4be7_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                <span class="post-date">03-11</span>
+                
+                  <span class="post-date">11-28</span>
+                
               </div>
-              <a class="post-title" href="/2025/03/11/rsync-nas-backup/">使用rsync同步备份NAS中的文件到其他NSA服务器</a>
+              <a class="post-title" href="/2025/11/28/agent-rag-jd/">基于 RAG 与 Agent 协作的智能面试助手开发指南</a>
             </div>
-          </li>
+          </div>
         
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2025/03/10/smb-elk-log/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">03-10</span>
-              </div>
-              <a class="post-title" href="/2025/03/10/smb-elk-log/">Samba (Linux) + Syslog + Logstash + Elasticsearch 转发smb日志</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2025/03/04/python-spider-introduce/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" class="lazyload placeholder" data-srcset="https://picx.zhimg.com/80/v2-85c31120acff76826ab53ea8934ef4bb_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">03-04</span>
-              </div>
-              <a class="post-title" href="/2025/03/04/python-spider-introduce/">python_spider_introduce</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2025/02/28/py-gen-excel/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-28</span>
-              </div>
-              <a class="post-title" href="/2025/02/28/py-gen-excel/">python批量写入图片到excel中</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2025/02/25/ntfs-macos-mounty/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-25</span>
-              </div>
-              <a class="post-title" href="/2025/02/25/ntfs-macos-mounty/">在macOS使用ntfs格式硬盘方法</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2025/02/08/python-publish/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-08</span>
-              </div>
-              <a class="post-title" href="/2025/02/08/python-publish/">python 可视化打包工具集锦</a>
-            </div>
-          </li>
-        
-      </ul>
+      </div>
     </div>
   </section>
-  <div class="w-70">
-    
-  <!-- <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/archives/page/2/">Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/page/4/">4</a><a class="page-number" href="/archives/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/10/">10</a><a class="extend next" rel="next" href="/archives/page/4/">Next</a>
-  </nav> -->
-  <div class="page-nav">
-    
-      <a href="/archives/page/2/"
-         class="page-nav-pre">
-         <i class="fas fa-angle-left"></i><span class="ml-5">Prev</span>
-      </a>
-    
-    <div class="page-info">
-        <div class="page-info-text">3 / 10</div>
-    </div>
-    
-      <a href="/archives/page/4/"
-         class="page-nav-next">
-          <span class="mr-5">Next</span><i class="fas fa-angle-right"></i>
-      </a>
-      
-  </div>
 
+    
   </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
 </div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
 
       </main>
     </div>
