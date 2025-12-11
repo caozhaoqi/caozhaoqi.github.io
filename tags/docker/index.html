@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>在macOS使用ntfs格式硬盘方法 | Zhaoqi.Cao static blog</title>
+  <title>Tag: docker | Zhaoqi.Cao static blog</title>
 
   <link rel="icon" type="image/png" href="/medias/logo.png">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -609,860 +609,106 @@
 </header>
         <!-- 内容区域 -->
         
- <!-- prismjs 代码高亮 -->
- 
 
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
+<div class="bg-light-floor-tagDetail" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
 
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
-
-
-  <!-- 文章详情页顶部图片和标题 -->
-
-
-
-
-<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg')">
-  <div class="post-detail-header-mask"></div>
-  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
-  
-  <div class="post-detail-header_info-box">
-    <div class="title-box">
-      <span class="title">
-        在macOS使用ntfs格式硬盘方法
-      </span>
-    </div>
-    
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2025-02-25 |
-        </span>
-      
-
-      
-
-      
-        <div class="post-detail-header_wordcount">
-          <span class="totalcount">
-            <i class="fas fa-file-text-o"></i> Words: 1.8k |
-          </span>
-  
-          <span class="min2read">
-            <i class="fas fa-clock"></i> Reading time: 8min |
-          </span>
-  
-          
-            <span class="reading">
-              <i class="fas fa-eye"></i> reading：<span id="busuanzi_value_page_pv"></span>
-            </span>
-          
-        </div>
-      
-    
+<div class="tag-header" style="background-image: url('https://pic1.zhimg.com/80/v2-604a15cef201cf177943af2d915eb2e7_1440w.jpg?source=1940ef5c');">
+  <div class="tag-header-title">
+    标签详情
   </div>
+  <div class="tag-header-desc">
   
-  
-    <script src="/js/bubble/bubble.js"></script>
-  
-</div>
-
-
-
-
-
-<div class="post-detail-content post-row" 
-  style="padding-top: 0px;">
-  <div class="main-content">
-    <article class="post post-detail">
-      <div class="post-content">
-        <h1>在macOS使用ntfs格式硬盘方法</h1>
-<p><strong>1. FAT32 (File Allocation Table 32-bit)</strong></p>
-<ul>
-<li><strong>历史：</strong> FAT32 是 FAT 文件系统家族的一员，是 FAT16 的后继者。它在 Windows 95 OSR2 中首次引入，旨在克服 FAT16 的一些限制。</li>
-<li><strong>结构：</strong> FAT32 文件系统使用文件分配表 (FAT) 来跟踪磁盘上的文件和目录。FAT 表实际上是一个索引表，记录了磁盘上每个簇（cluster，磁盘上最小的存储单元）的使用情况。</li>
-<li><strong>特点：</strong>
-<ul>
-<li><strong>兼容性好：</strong> FAT32 得到了广泛的支持，几乎所有的操作系统和设备（包括 Windows、macOS、Linux、嵌入式系统、游戏机等）都可以读取和写入 FAT32 格式的磁盘。</li>
-<li><strong>简单易用：</strong> FAT32 的结构比较简单，实现起来也相对容易。</li>
-</ul>
-</li>
-<li><strong>缺点：</strong>
-<ul>
-<li><strong>最大文件尺寸限制：</strong> FAT32 文件系统对单个文件的大小有限制，最大不能超过 4GB。 这使得它无法存储高清视频、大型数据库文件等。</li>
-<li><strong>最大分区尺寸限制：</strong> 虽然理论上 FAT32 可以支持最大 8TB 的分区，但实际上由于一些操作系统（特别是 Windows）的限制，FAT32 分区通常限制在 32GB。</li>
-<li><strong>安全性较差：</strong> FAT32 不支持文件权限、加密等安全特性。</li>
-<li><strong>可靠性较低：</strong> FAT32 的元数据（FAT 表）通常只有一个副本，一旦损坏，可能会导致数据丢失。</li>
-</ul>
-</li>
-<li><strong>适用场景：</strong>
-<ul>
-<li><strong>移动存储设备：</strong> 比如 U 盘、SD 卡等，如果不需要存储超过 4GB 的单个文件，并且需要在多个操作系统或设备上使用，FAT32 是一个不错的选择。</li>
-<li><strong>嵌入式系统：</strong> 一些嵌入式设备仍然使用 FAT32，因为它的实现简单且资源占用较少。</li>
-<li><strong>老旧操作系统：</strong> 对于一些老旧的操作系统，可能只能支持 FAT32 格式。</li>
-</ul>
-</li>
-</ul>
-<p><strong>2. NTFS (New Technology File System)</strong></p>
-<ul>
-<li><strong>历史：</strong> NTFS 是微软为 Windows NT 系列操作系统设计的现代文件系统，旨在取代 FAT 文件系统。它首次出现在 Windows NT 3.1 中，并在后续的 Windows 版本中得到了广泛应用。</li>
-<li><strong>结构：</strong> NTFS 使用主文件表 (MFT, Master File Table) 来管理磁盘上的文件和目录。MFT 类似于一个数据库，记录了每个文件和目录的元数据（大小、创建时间、权限等）以及数据存储位置。</li>
-<li><strong>特点：</strong>
-<ul>
-<li><strong>支持大文件和分区：</strong> NTFS 没有 4GB 的文件尺寸限制，可以存储大型文件。 NTFS 可以支持非常大的分区（理论上可达 256TB），但实际受操作系统限制。</li>
-<li><strong>安全性高：</strong> NTFS 支持文件权限管理，可以控制用户对文件和目录的访问权限。 它还支持加密文件系统 (EFS)，可以对文件进行加密存储。</li>
-<li><strong>可靠性高：</strong> NTFS 具有日志功能，可以记录文件系统的操作，并在系统崩溃后进行恢复，从而保证数据的完整性。 NTFS 的元数据（MFT）通常有多个副本，可以提高容错能力。</li>
-<li><strong>高级特性：</strong> NTFS 支持磁盘配额、压缩、稀疏文件、符号链接等高级特性。</li>
-</ul>
-</li>
-<li><strong>缺点：</strong>
-<ul>
-<li><strong>兼容性稍差：</strong> 虽然 Windows 操作系统对 NTFS 的支持非常好，但 macOS 和 Linux 对 NTFS 的支持可能存在一些问题。 在 macOS 上，默认只能读取 NTFS 格式的磁盘，无法写入。 在 Linux 上，虽然可以通过安装驱动程序来支持 NTFS 的读写，但性能可能不如在 Windows 上。</li>
-<li><strong>实现复杂：</strong> NTFS 的结构比 FAT32 复杂得多，实现起来也比较困难。</li>
-</ul>
-</li>
-<li><strong>适用场景：</strong>
-<ul>
-<li><strong>Windows 操作系统：</strong> NTFS 是 Windows 操作系统的默认文件系统，用于系统盘和数据盘。</li>
-<li><strong>需要存储大文件的场合：</strong> 比如高清视频编辑、大型数据库服务器等。</li>
-<li><strong>对数据安全性有较高要求的场合：</strong> 比如企业服务器、存储敏感数据的磁盘等。</li>
-<li><strong>需要使用 NTFS 高级特性的场合：</strong> 比如磁盘配额、压缩等。</li>
-</ul>
-</li>
-</ul>
-<h2 id="brew">brew</h2>
-<h3 id="install">install</h3>
-<ul>
-<li>script example</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置脚本遇到错误时退出</span></span><br><span class="line">set -e</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">定义颜色</span></span><br><span class="line">RED=&#x27;\033[0;31m&#x27;</span><br><span class="line">GREEN=&#x27;\033[0;32m&#x27;</span><br><span class="line">YELLOW=&#x27;\033[0;33m&#x27;</span><br><span class="line">NC=&#x27;\033[0m&#x27; # No Color</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查是否为 macOS</span></span><br><span class="line">if [[ &quot;$(uname)&quot; != &quot;Darwin&quot; ]]; then</span><br><span class="line">    echo -e &quot;$&#123;RED&#125;This script is intended for macOS only.$&#123;NC&#125;&quot;</span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查是否已安装 Homebrew</span></span><br><span class="line">if ! command -v brew &amp;&gt; /dev/null; then</span><br><span class="line">    echo -e &quot;$&#123;YELLOW&#125;Homebrew is not installed. Installing...$&#123;NC&#125;&quot;</span><br><span class="line">    /bin/bash -c &quot;$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)&quot;</span><br><span class="line">    if [ $? -ne 0 ]; then</span><br><span class="line">        echo -e &quot;$&#123;RED&#125;Failed to install Homebrew. Please install it manually and then rerun this script.$&#123;NC&#125;&quot;</span><br><span class="line">        exit 1</span><br><span class="line">    fi</span><br><span class="line">    echo -e &quot;$&#123;GREEN&#125;Homebrew installed successfully!$&#123;NC&#125;&quot;</span><br><span class="line">else</span><br><span class="line">    # 更新 Homebrew</span><br><span class="line">    echo -e &quot;$&#123;YELLOW&#125;Updating Homebrew...$&#123;NC&#125;&quot;</span><br><span class="line">    brew update</span><br><span class="line">    if [ $? -ne 0 ]; then</span><br><span class="line">      echo -e &quot;$&#123;RED&#125;Warning: Failed to update Homebrew.  Continuing anyway...$&#123;NC&#125;&quot;</span><br><span class="line">    fi</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 FFmpeg</span></span><br><span class="line">if ! brew list --versions ffmpeg &amp;&gt; /dev/null; then</span><br><span class="line">  echo -e &quot;$&#123;YELLOW&#125;Installing FFmpeg...$&#123;NC&#125;&quot;</span><br><span class="line">  brew install ffmpeg</span><br><span class="line">  if [ $? -ne 0 ]; then</span><br><span class="line">      echo -e &quot;$&#123;RED&#125;Failed to install FFmpeg.$&#123;NC&#125;&quot;</span><br><span class="line">      exit 1</span><br><span class="line">  fi</span><br><span class="line">  echo -e &quot;$&#123;GREEN&#125;FFmpeg installed successfully!$&#123;NC&#125;&quot;</span><br><span class="line">else</span><br><span class="line">  echo -e &quot;$&#123;YELLOW&#125;FFmpeg is already installed. Skipping...$&#123;NC&#125;&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 macFUSE, ntfs-3g-mac 和 Mounty (用于 NTFS 写入支持)</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">see https://mounty.app/#installation</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">macFUSE (Cask)</span></span><br><span class="line">if ! brew list --cask --versions macfuse &amp;&gt; /dev/null; then</span><br><span class="line">  echo -e &quot;$&#123;YELLOW&#125;Installing macFUSE...$&#123;NC&#125;&quot;</span><br><span class="line">  brew install --cask macfuse</span><br><span class="line">  if [ $? -ne 0 ]; then</span><br><span class="line">      echo -e &quot;$&#123;RED&#125;Failed to install macFUSE.  You may need to install it manually from https://osxfuse.github.io/. Continuing...$&#123;NC&#125;&quot;</span><br><span class="line">  fi</span><br><span class="line">else</span><br><span class="line">  echo -e &quot;$&#123;YELLOW&#125;macFUSE is already installed. Skipping...$&#123;NC&#125;&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">ntfs-3g-mac (Formula)</span></span><br><span class="line">if ! brew list --versions ntfs-3g-mac &amp;&gt; /dev/null; then</span><br><span class="line">  echo -e &quot;$&#123;YELLOW&#125;Installing ntfs-3g-mac...$&#123;NC&#125;&quot;</span><br><span class="line">  brew install gromgit/fuse/ntfs-3g-mac</span><br><span class="line">  if [ $? -ne 0 ]; then</span><br><span class="line">    echo -e &quot;$&#123;RED&#125;Failed to install ntfs-3g-mac. This may cause issues with writing to NTFS drives. Continuing...$&#123;NC&#125;&quot;</span><br><span class="line">  fi</span><br><span class="line">else</span><br><span class="line">  echo -e &quot;$&#123;YELLOW&#125;ntfs-3g-mac is already installed. Skipping...$&#123;NC&#125;&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Mounty (Cask)</span></span><br><span class="line">if ! brew list --cask --versions mounty &amp;&gt; /dev/null; then</span><br><span class="line">  echo -e &quot;$&#123;YELLOW&#125;Installing Mounty...$&#123;NC&#125;&quot;</span><br><span class="line">  brew install --cask mounty</span><br><span class="line">  if [ $? -ne 0 ]; then</span><br><span class="line">      echo -e &quot;$&#123;RED&#125;Failed to install Mounty.  You may need to manually mount NTFS drives. Continuing...$&#123;NC&#125;&quot;</span><br><span class="line">  fi</span><br><span class="line">else</span><br><span class="line">  echo -e &quot;$&#123;YELLOW&#125;Mounty is already installed. Skipping...$&#123;NC&#125;&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo -e &quot;$&#123;GREEN&#125;Installation complete!$&#123;NC&#125;&quot;</span><br><span class="line">echo -e &quot;$&#123;YELLOW&#125;Please reboot your computer for the changes (especially macFUSE) to take effect.$&#123;NC&#125;&quot;</span><br><span class="line">echo -e &quot;$&#123;YELLOW&#125;After rebooting, you may need to manually enable &#x27;System Extensions&#x27; for macFUSE in System Preferences &gt; Security &amp; Privacy &gt; General.$&#123;NC&#125;&quot;</span><br><span class="line">echo -e &quot;$&#123;GREEN&#125;If you encounter any issues, run &#x27;brew doctor&#x27; to diagnose potential problems.$&#123;NC&#125;&quot;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>use</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod 777 ./sh.sh</span><br><span class="line">./sh.sh</span><br></pre></td></tr></table></figure>
-<h2 id="mounty">mounty</h2>
-<h3 id="地址：">地址：</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://mounty.app</span><br></pre></td></tr></table></figure>
-<h3 id="install-and-use">install and use</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">macbook:~ uwe$ brew install --cask macfuse</span><br><span class="line">macbook:~ uwe$ brew install gromgit/fuse/ntfs-3g-mac</span><br><span class="line">macbook:~ uwe$ brew install --cask mounty</span><br></pre></td></tr></table></figure>
-<h2 id="use">use</h2>
-<ul>
-<li>
-<p>安装完成后，重启软件 进入设置-&gt;隐私与安全性-&gt;启用未知来源安装</p>
-</li>
-<li>
-<p>系统自动重启后，长按电源键进入恢复模式，点击菜单栏查看启动安全实用工具，点击选择中等安全性，然后重启</p>
-</li>
-<li>
-<p>尝试重新挂载硬盘，如果mounty图标由黄变蓝则代表挂载成功，即可在目标磁盘创建文件</p>
-</li>
-</ul>
-<h2 id="ffmpeg安装">ffmpeg安装</h2>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install ffmpeg</span><br></pre></td></tr></table></figure>
-<h1>see</h1>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://mounty.app/#aBitOfBackground">https://mounty.app/#aBitOfBackground</a></li>
-</ul>
-<h2 id="about-me-个人微信">about me 个人微信</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/me.jpeg?Expires=1741078870&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=3OQ42kDkDuA1517Z6lKc2ZUhiQU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-<h2 id="wechat-offical-微信公众号">wechat offical 微信公众号</h2>
-<p><img src="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" class="lazyload placeholder" data-srcset="https://czq-blog.oss-cn-beijing.aliyuncs.com/wechat.jpg?Expires=1741078900&amp;OSSAccessKeyId=TMP.3Kqnu2nGq3bZ4KHKg3CKb4cix6tBsmx7Nhi7A7qcv84ZvM8W24oGTuKCih6se8FQJtPuh8fHNK6NqbkbsbkDAwGCfmeBHV&amp;Signature=y3fPR2LjlkZXW%2FAQCh5n%2ByfHcxQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="img"></p>
-
-      </div>
-      <div class="post-tags-categories">
-        
-        <div class="tags">
-          
-            <a href="/tags/macOS/" class="">
-              macOS
-            </a>
-          
-        </div>
-        
-      </div>
-      
-        <div class="copyright">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-    <strong>author:  </strong>Zhaoqi.Cao</a>
-    </li>
-    <li class="post-copyright-link">
-    <strong>link:  </strong>
-    <a href="/2025/02/25/ntfs-macos-mounty/" target="_blank" title="在macOS使用ntfs格式硬盘方法">https://caozhaoqi.github.io/2025/02/25/ntfs-macos-mounty/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>Copyright notice:   </strong>
-      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-      reprint policy. If reproduced, please indicate source!
-    </li>
-  </ul>
-<div>
-      
-    </article>
-    <!-- 上一篇文章和下一篇文章 -->
-    
-      <!-- 文章详情页的上一页和下一页 -->
-<div class="post-nav">
-
-
-
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2025/02/28/py-gen-excel/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">python批量写入图片到excel中</div>
-      </div>
-      
-      <!-- <div class="content">
-        python批量写入图片到excel中
-技术
-1. pandas
-
-
-用途：
-
-数据分析和处理的核心库，特别是处理表格型
-      </div> -->
-    </a>
-  </div>
-
-
-
-  
-  <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
-    </div>
-    <a href="/2025/02/08/python-publish/" class="post-nav-link">
-      <div class="title">
-        Next: <i class="fas fa-angle-right"></i>
-        <div class="title-text">python 可视化打包工具集锦</div>
-      </div>
-      <!-- <div class="content">
-        python 可视化打包工具集锦
-打包
-
-Python 打包工具用于将代码、依赖和资源文件整理成可分发的格式（如库、可执
-      </div> -->
-    </a>
-  </div>
-
-</div>
-
-    
-    
-
-    <!-- 打赏 -->
-    
-      <div id="appDonate" class="post-donate">
-  <div id="donate_board" class="donate_bar center" ref="donate">
-    <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏" @click="showDialogDrawer()"></a>
-  </div>
-  <transition name="fade">
-    <div 
-      class="donate-box-mask"
-      v-cloak 
-      v-show="visible"
-      @click="cancelDialogDrawer()"
-    >
-    </div>
-  </transition>
-  <transition name="bounce">
-    <div class="donate-box" v-cloak v-show="visible">
-      <div class="donate-box_close">
-        <i class="fas fa-times" aria-hidden="true" @click="cancelDialogDrawer" pointer></i>
-      </div>
-      <div class="donate-box_title">
-        <h4>
-          你的赏识是我前进的动力
-        </h4>
-      </div>
-      <div class="donate-box_tab">
-        <div class="Alipay" pointer :class="{'active': tabActive === 'Alipay'}" @click="changeTabActive('Alipay')">
-          支付宝
-        </div>
-        <div class="WeChatpay" pointer :class="{'active': tabActive === 'WeChatpay'}" @click="changeTabActive('WeChatpay')">
-          微信
-        </div>
-      </div>
-      <div class="donate-box_img">
-        <div class="AlipayImg" v-show="tabActive === 'Alipay'">
-          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="支付宝打赏" />
-        </div> 
-        <div class="WeChatpayImg" v-show="tabActive === 'WeChatpay'">
-          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="微信打赏" />
-        </div>
-      </div>
-    </div>
-  </transition>
-</div>
-
-<script>
-  var body = document.body || document.documentElement || window;
-  var vm = new Vue({
-    el: '#appDonate',
-    data: {
-      visible: false,
-      tabActive: 'Alipay',
-      top: 0,
-    },
-    computed: {
-    },
-    mounted() {
-    },
-    methods: {
-      showDialogDrawer() {
-        this.visible = true;
-        // 防止页面滚动，只能让弹框滚动
-        // function getScroll() {
-        //   return {
-        //     left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
-        //     top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
-        //   };
-        // }
-        this.top = $(document).scrollTop() // or getScroll().top
-        // console.log('aa', $('.main-content'));
-        body.style.cssText = 'overflow: hidden;';
-      },
-      cancelDialogDrawer() {
-        this.visible = false;
-        body.removeAttribute('style');
-        $(document).scrollTop(this.top)
-      },
-      changeTabActive(name) {
-        this.tabActive = name;
-      }
-    },
-    created() {}
-  })
-</script>
-    
-
-    <!-- 分享 -->
-    
-      <!-- https://github.com/overtrue/share.js -->
-<!-- 文章详情页的分享 -->
-<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-
-<script src="/js/shareJs/social-share.min.js"></script>
-</script>
-
-<style>
-  .social-share {
-    margin: 20px 0;
+    <span class="title" id="tag-header-desc"></span>
+    <script>
+  function typedFn() {
+    const el = '#tag-header-desc';
+    const type = 'tagDetail';
+    let desc = '愿你如风，被人温柔以待'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
   }
-</style>
-
-
-    
-    
-    <!-- 评论 -->
-    <!-- 评论 -->
-
-  <div id="myComment">
-    
-      
-<section id="comments" style="padding: 1em;"
-	class="animated bounceInUp">
-	<div id="vcomment" class="comment"></div>
-</section>
-<style>
-	#comments {
-		background: rgba(255,255,255,0.9);
-	}
-	#veditor {
-		background-image: url('https://img.zcool.cn/community/01a253594c71cfa8012193a329a77f.gif');
-		background-size: contain;
-		background-repeat: no-repeat;
-		background-position: right;
-		background-color: rgba(255, 255, 255, 0);
-		resize: vertical;
-	}
-	#veditor:focus{
-		background-position-y: 200px;
-		transition: all 0.2s ease-in-out 0s;
-	}
-	#vcomment .vcards .vcard .vh .vhead .vtag.vvisitor {
-		background-color: #42b983;
-	}
-	.v[data-class=v] .vbtn:active, .v[data-class=v] .vbtn:hover {
-		color: #42b983;
-		border-color: #42b983;
-	}
-	#vcomment .vcards .vcard .vhead .vsys i {
-		display: none;
-	}
-	/* 底部valine链接 */
-	#vcomment .vpower {
-		display: none;
-	}
-	
-	/* 底下注释是修改 名称和邮箱和网址输入框的样式 */
-	/* #vcomment .vheader {
-		display: flex;
-		justify-content: space-around;
-	}
-	
-	#vcomment .vheader .vnick {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	}
-
-	#vcomment .vheader .vmail {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	}
-
-	#vcomment .vheader .vlink {
-		width: 31%;
-		border: 2px solid #dedede;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-radius: 5px
-	} */
-
-	img.vimg {
-		transition: all 1s;
-		/* 头像旋转时间为 1s */
-	}
-
-	img.vimg:hover {
-		transform: rotate(360deg);
-		-webkit-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-	}
-
-	#vcomment .vcards .vcard {
-		padding: 15px 20px 0 20px;
-		border-radius: 10px;
-		margin-bottom: 15px;
-		box-shadow: 0 0 4px 1px rgba(0, 0, 0, .12);
-		transition: all .3s
-	}
-
-	#vcomment .vcards .vcard:hover {
-		box-shadow: 0 0 8px 3px rgba(0, 0, 0, .12)
-	}
-
-	#vcomment .vcards .vcard .vh .vcard {
-		border: none;
-		box-shadow: none;
-	}
-</style>
+  typedFn();
+</script>
     
   </div>
+  <div class="mask-box"></div>
+</div>
 
-<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
 
 
+<div class="tag">
+  <div class="tag-name">
+    <div class="name" style="background-color: #F8F9F9;">docker category</div>
   </div>
+  <!-- 每一篇文章卡片 -->
+  <!-- hash算法 -->
 
-  <!-- 目录 -->
-  
-<aside id='l_side'>
+<section class="posts">
   
     
-      
-        <section class="widget side_blogger">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img src='/medias/logo.png'/>
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2025-12-11</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2025/12/11/docker-compose-k8s/">Docker, Compose 与 K8s</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+    <i class="iconfont icontag"></i>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2025/12/11/docker-compose-k8s/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            从零构建微服务架构：Docker, Compose 与 K8s 的演进之路
+
+在现代云原生开发的浪潮中，微服务（Microservices） 已经成为构建复杂系统的首选架构。然而，随着服务数量的裂变，如何开发、打包、部署和管理这些服务成为了
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2025/12/11/docker-compose-k8s/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2025/12/11/docker-compose-k8s/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
-      
-    
-    
-      <div class='text'>
-        
-          <h2>浅斟低唱</h2>
-        
-        
-          <p>博客</p>
-
-        
-        
-          <p><span id="jinrishici-sentence">Zhaoqi.Cao static blog</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
       </div>
-    
-    
-      <div class="social-wrapper">
-        
-          
-            <a href="/atom.xml"
-              class="social fas fa-rss flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="mailto:1150118968@qq.com"
-              class="social fas fa-envelope flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="https://github.com/caozhaoqi/"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=1150118968"
-              class="social fab fa-qq flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-      </div>
-    
-  </div>
+    </article>
+  
 </section>
-
-      
-    
-  
-  
-  
-    
-  
-
-  <div class="layout_sticky">    
-    
-      
-<section class="widget side_toc">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="toc-main">
-      <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">在macOS使用ntfs格式硬盘方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#brew"><span class="toc-text">brew</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#install"><span class="toc-text">install</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mounty"><span class="toc-text">mounty</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%EF%BC%9A"><span class="toc-text">地址：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#install-and-use"><span class="toc-text">install and use</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#use"><span class="toc-text">use</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ffmpeg%E5%AE%89%E8%A3%85"><span class="toc-text">ffmpeg安装</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">see</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#about-me-%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1"><span class="toc-text">about me 个人微信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wechat-offical-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">wechat offical 微信公众号</span></a></li></ol></li></ol> -->
-        <div class="toc"></div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- 手机端目录按钮 -->
-<div id="toc-mobile-btn">
-  <i class="fas fa-list-ul" aria-hidden="true"></i>
 </div>
 
-      
-  <section class="widget side_recent_post">
-    
-  <header>
-    
-      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      
-      <!-- hash算法 -->
-      
-      <div class="aside-list">
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/12/11/docker-compose-k8s/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">12-11</span>
-                
-              </div>
-              <a class="post-title" href="/2025/12/11/docker-compose-k8s/">Docker, Compose 与 K8s</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/12/03/jd-agent-desc/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">12-03</span>
-                
-              </div>
-              <a class="post-title" href="/2025/12/03/jd-agent-desc/">基于 FastAPI + LangChain 的高并发 Agent 架构解析</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/12/01/agent-advance-high/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" class="lazyload placeholder" data-srcset="https://pic3.zhimg.com/v2-a5267dfbf175991d4b3a69b41f3f678a_b.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">12-01</span>
-                
-              </div>
-              <a class="post-title" href="/2025/12/01/agent-advance-high/">打造 L5 级人机协同与全双工语音的 AI 面试官</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/11/30/tts-asr-agent/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" class="lazyload placeholder" data-srcset="https://pica.zhimg.com/80/v2-61f99f8dcf899f54cad2a1aa28b21e44_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">11-30</span>
-                
-              </div>
-              <a class="post-title" href="/2025/11/30/tts-asr-agent/">实时语音模拟面试</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/11/29/llm-agent-memory/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">11-29</span>
-                
-              </div>
-              <a class="post-title" href="/2025/11/29/llm-agent-memory/">从零构建全栈 AI 简历助手：复刻 DeepSeek 交互与长期记忆实现</a>
-            </div>
-          </div>
-        
-      </div>
-    </div>
-  </section>
-
-    
-  </div>
-</aside>
-
-
-  <!-- 图片放大 Wrap images with fancybox support -->
-  <script src="/js/wrapImage.js"></script>
-</div>
-
-<!-- 文章详情页背景图 -->
-<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
-	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
-	<transition-group tag="ul" :name="names">
-		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
-			<img :src="image" class="bg-swiper-img no-lazy">
-		</li>
-	</transition-group>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#appBgSwiper',
-		data: {
-			names: '' || 'fade' || 'fade', // translate-fade fade
-			mark: 0,
-			img: [],
-			bgColor: '',
-			time: null
-		},
-		methods: {   //添加方法
-			change(i, m) {
-				if (i > m) {
-					// this.names = 'fade';
-				} else if (i < m) {
-					// this.names = 'fade';
-				} else {
-					return;
-				}
-				this.mark = i;
-			},
-			prev() {
-				// this.names = 'fade';
-				this.mark--;
-				if (this.mark === -1) {
-					this.mark = 3;
-					return
-				}
-			},
-			next() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			autoPlay() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			play() {
-				let bgImgDelay = '' || '180000'
-				let delay = parseInt(bgImgDelay) || 180000;
-				this.time = setInterval(this.autoPlay, delay);
-			},
-			enter() {
-				clearInterval(this.time);
-			},
-			leave() {
-				this.play();
-			}
-		},
-		created() {
-			this.play()
-		},
-		beforeDestroy() {
-			clearInterval(this.time);
-		},
-		mounted() {
-			let prop = '' || '';
-			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
-			if (isImg) {
-				let img = prop.split(',');
-				let configRoot = '/'
-				let arrImg = [];
-				img.forEach(el => {
-					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-					var objExp = new RegExp(Expression);
-
-					if (objExp.test(el)) {
-						// http or https
-						arrImg.push(el);
-					} else {
-						// 非http or https开头
-						// 本地文件
-						let firstStr = el.charAt(0);
-						if (firstStr == '/') {
-							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
-						}
-						el = configRoot + el;
-						arrImg.push(el);
-					}
-				})
-				this.img = arrImg;
-			} else {
-				this.bgColor = prop;
-			}
-		}
-	})
-</script>
-
-<style>
-	.bg-swiper-box {
-		position: absolute;
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.bg-swiper-img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
-
-
-  <script>
-  function loadMermaid() {
-    if (document.getElementsByClassName('mermaid').length) {
-      if (window.mermaidJsLoad) mermaid.init()
-      else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
-          window.mermaidJsLoad = true
-          mermaid.initialize({
-            theme: 'default',
-          })
-          if ('true') {
-            mermaid.init();
-          }
-        })
-      }
-    }
-  };
-  document.addEventListener("DOMContentLoaded", function () {
-    loadMermaid();
-  })
-
-  document.addEventListener('pjax:complete', function () {
-    loadMermaid();
-  })
+<div class="w-70">
   
-</script>
-
+</div>
 
       </main>
     </div>
