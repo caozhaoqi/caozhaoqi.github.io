@@ -1,3 +1,4 @@
+https://caozhaoqi.github.io/2025/12/13/vector-db-compare/
 https://caozhaoqi.github.io/2025/12/11/decorator-py-use/
 https://caozhaoqi.github.io/2025/12/11/pytorch-cpp-py/
 https://caozhaoqi.github.io/2025/12/11/cnn-transformer-model/
